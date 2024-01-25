@@ -7,10 +7,12 @@ import Search from "./pages/Search";
 import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
 import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
 import FlowMy from "./pages/FlowMy"; // 내 일정 플로우 페이지
+import GlobalStyle from "./GlobalStyles"; //전역 스타일
 
 function App() {
   return (
     <div className="App">
+      <GlobalStyle />
       <Header />
       <Routes>
         <Route path="/" element={<Main />} /> {/* 메인 */}
