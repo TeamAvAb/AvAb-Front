@@ -3,7 +3,7 @@ import React from "react";
 import recreationMainIllustration from "../../assets/recreation/recreationMainIllustration.png";
 import starIcon from "../../assets/recreation/mingcute_star-fill.svg";
 
-export default function RecreationTopMenu() {
+export default function RecreationInfo() {
   const hashtag = "#해시태그";
   const recreationTitle = "레크레이션 제목";
   const kewords = ["키워드1", "키워드2", "키워드3"];
