@@ -11,10 +11,12 @@ import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 �
 import FlowWriteRecommend from "./pages/FlowWriteRecommend"; // 플로우 만들기 추천 페이지
 import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 내용 페이지
 import FlowMy from "./pages/FlowMy"; // 내 일정 플로우 페이지
+import GlobalStyle from "./GlobalStyles"; //전역 스타일
 
 function App() {
   return (
     <div className="App">
+      <GlobalStyle />
       <Header />
       <Routes>
         <Route path="/" element={<Main />} /> {/* 메인 */}
