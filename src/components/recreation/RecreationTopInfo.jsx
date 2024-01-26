@@ -44,11 +44,12 @@ const RecreationTopMenuContainer = styled.div`
 
 const MainImage = styled.img`
   width: 250px;
-  margin-left: 277px;
+  margin-left: 377px;
 `;
 
 const ContentBox = styled.div`
-  margin-left: 250px;
+  margin-left: auto;
+  margin-right: 486px;
 `;
 
 const HashTagBox = styled.div`
