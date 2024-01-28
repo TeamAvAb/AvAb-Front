@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import recreationMainIllustration from "../../assets/recreation/recreationMainIllustration.png";
-import starIcon from "../../assets/recreation/mingcute_star-fill.svg";
+import yellowStar from "../../assets/recreation/yellowStar.svg";
 
 export default function RecreationInfo() {
   const hashtag = "#해시태그";
@@ -22,7 +22,7 @@ export default function RecreationInfo() {
           <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
           {/* 레크레이션 제목 */}
           <Star>
-            <img src={starIcon}></img> <StarRating>{StarRate}</StarRating>
+            <img src={yellowStar}></img> <StarRating>{StarRate}</StarRating>
           </Star>
           {/* 별점*/}
         </TitleStar>
