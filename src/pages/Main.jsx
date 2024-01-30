@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Search from "../components/main/Search";
-import KeywordModal from "../components/main/KeywordModal";
 import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
+import Carousel from "../components/main/Carousel";
 
 export default function Main() {
-  const [keywordModal, setKeywordModal] = useState(false);
-  const [purposeModal, setPurposeModal] = useState(false);
+  const banner = [
+    { title: "제목1", description: "설명설명설명", img: null },
+    { title: "제목2", description: "설명설명설명", img: null },
+    { title: "제목3", description: "설명설명설명", img: null },
+  ];
   return (
     <>
       <Container>
@@ -22,8 +25,8 @@ export default function Main() {
           </Comment>
           <img src={blankImg} style={{ width: "328px", height: "328px" }} />
         </Recommend>
-        <Search keywordModal={setKeywordModal} purposeModal={setPurposeModal} />
-        {keywordModal ? <KeywordModal closeModal={setKeywordModal} /> : null}
+        <Search />
+
         <Popular>
           <PopularHeader>
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
@@ -36,6 +39,7 @@ export default function Main() {
             </More>
           </PopularHeader>
         </Popular>
+        <Carousel content={banner} />
       </Container>
     </>
   );
@@ -48,6 +52,7 @@ const Container = styled.div`
     --BG,
     linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%)
   );
+  overflow: hidden;
 `;
 const Recommend = styled.div`
   display: flex;
