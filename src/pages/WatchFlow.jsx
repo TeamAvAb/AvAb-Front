@@ -6,11 +6,6 @@ import LeftButton from "../assets/watchflow/moveLeft.png";
 import RightButton from "../assets/watchflow/moveRight.png";
 
 export default function WatchFlow() {
-  const [scrapColor, setScrapColor] = useState("#E9EBED");
-  const scrapping = () => {
-    scrapColor === "#E9EBED" ? setScrapColor("#FFAA29") : setScrapColor("#E9EBED");
-  };
-
   return (
     <MyFlowWrap>
       {/* 플로우 왼쪽 메뉴바 */}
