@@ -10,7 +10,7 @@ import RecreationDetail from './pages/recreation/RecreationDetail'; // 레크레
 import FlowWriteDetail from './pages/FlowWriteDetail'; // 플로우 만들기 상세 페이지
 import FlowWriteRecommend from './pages/FlowWriteRecommend'; // 플로우 만들기 추천 페이지
 import FlowWriteContent from './pages/FlowWriteContent'; // 플로우 만들기 내용 페이지
-import FlowMy from './pages/FlowMy'; // 내 일정 플로우 페이지
+import WatchFlow from './pages/WatchFlow'; // 내 일정 플로우 페이지
 import GlobalStyle from './GlobalStyles'; //전역 스타일
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
         <Route path="/flow/write/detail" element={<FlowWriteDetail />} /> {/* 플로우 만들기 상세 페이지 */}
         <Route path="/flow/write/recommend" element={<FlowWriteRecommend />} /> {/* 플로우 만들기 상세 페이지 */}
         <Route path="/flow/write/content" element={<FlowWriteContent />} /> {/* 플로우 만들기 상세 페이지 */}
-        <Route path="/flow/my" element={<FlowMy />} /> {/* 내 일정 플로우 페이지 */}
+        <Route path="/flow/watch" element={<WatchFlow />} /> {/* 내 일정 플로우 페이지 */}
         <Route path="/recreation/detail" element={<RecreationDetail />} /> {/* 레크레이션 상세정보 페이지 */}
       </Routes>
       <Footer />
