@@ -4,8 +4,14 @@ import blankImg from "../assets/myflow/blank.png";
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
 import MadeFlowBox from "../components/flow/MadeFlowBox";
+import { useNavigate } from "react-router-dom";
 
 export default function MyFlow() {
+  const navigate = useNavigate();
+  const moveToWatch = () => {
+    navigate(`/flow/watch`);
+  };
+
   // 내가 만든 일정플로우 개수에 따른 렌더링 화면 확인용
   const flowN = 1;
 
@@ -14,7 +20,7 @@ export default function MyFlow() {
       {/* 플로우 왼쪽 메뉴바 */}
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
-        <MyFlowMenuBox>플로우 구경하기</MyFlowMenuBox>
+        <MyFlowMenuBox onClick={moveToWatch}>플로우 구경하기</MyFlowMenuBox>
         <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>

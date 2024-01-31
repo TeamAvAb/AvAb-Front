@@ -21,13 +21,29 @@ export default function MadeFlowBox() {
   return (
     <div style={{ marginTop: "230.65px", marginLeft: "-34px" }}>
       {/* 모달창 */}
-      <ModalContainer>
+      {del ? (
+        <ModalContainer>
           <ModalBox>
             <CloseBtn onClick={close}>
-              <img src={Close} alt="닫기" style={{ width: "42px", height: "42px" }} />
+              <img src={Close} alt="닫기" />
             </CloseBtn>
+            <ModalBoxDetail>
+              <div>
+                <ModalTitle>
+                  일정 플로우를
+                  <br />
+                  삭제하시겠습니까?
+                </ModalTitle>
+                <ModalDetail>삭제한 플로우를 다시 복구할 수 없습니다.</ModalDetail>
+              </div>
+              <ModalStoreBtn>저장하기</ModalStoreBtn>
+              <ModalNotStoreBtn>저장하지 않기</ModalNotStoreBtn>
+            </ModalBoxDetail>
           </ModalBox>
         </ModalContainer>
+      ) : (
+        <></>
+      )}
 
       <MyFlowBoxParent>
         <MyFlowBoxChild>
@@ -87,6 +103,7 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(70, 76, 82, 0.5);
+  z-index: 3;
 `;
 
 const ModalBox = styled.div`
@@ -99,14 +116,75 @@ const ModalBox = styled.div`
   left: 548px;
 `;
 
+const ModalBoxDetail = styled.div`
+  margin-left: 57.5px;
+  margin-top: 55px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const CloseBtn = styled.div`
   width: 42px;
   height: 42px;
   position: absolute;
   top: 20px;
   left: 378px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
+const ModalTitle = styled.div`
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+`;
+
+const ModalDetail = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+`;
+
+const ModalStoreBtn = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  background-color: #4036ed;
+  color: white;
+  width: 223px;
+  padding: 15px 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  margin-top: 60px;
+  cursor: pointer;
+`;
+
+const ModalNotStoreBtn = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  background-color: white;
+  color: #464c52;
+  width: 223px;
+  padding: 15px 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #464c52;
+  border-radius: 50px;
+  margin-top: 40px;
+  cursor: pointer;
+`;
+
+// 플로우 박스 - Grid
 const MyFlowBoxParent = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 370px);
