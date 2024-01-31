@@ -16,7 +16,16 @@ export default function RecreationReview() {
         <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
         <ReviewInputButton>등록</ReviewInputButton>
       </ReviewInputWrap>
-      <ReviewBox starNum={4} />
+      <ReviewBox
+        starNum={4}
+        nickname={"윤카우"}
+        date={"2024.01.01"}
+        review={
+          "이거는 정말 미쳤어요.. 실화인가 진짜 재밌음... 수건 돌리기를 MT때 안 한다?? 100% 유죄임"
+        }
+        like={10}
+        dislike={2}
+      />
     </RecreationReviewContainer>
   );
 }
@@ -38,7 +47,6 @@ const TitleText = styled.div`
 
 const StarBox = styled.div`
   display: flex;
-  margin-bottom: 29px;
 `;
 
 const SelectStar = styled.div`
@@ -48,7 +56,9 @@ const SelectStar = styled.div`
   line-height: 30px;
 `;
 
-const ReviewInputWrap = styled.div``;
+const ReviewInputWrap = styled.div`
+  margin: 29px 0px;
+`;
 const ReviewInputBox = styled.input`
   width: 897px;
   padding: 16px 19px;
