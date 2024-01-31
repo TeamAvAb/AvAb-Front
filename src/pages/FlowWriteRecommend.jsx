@@ -14,6 +14,9 @@ export default function FlowWriteRecommend() {
   const handleNextClick = () => {
     navigate('/flow/write/content');
   };
+  const handleBeforeClick = () => {
+    navigate('/flow/write/detail');
+  };
 
   const handleButtonClick = (button) => {
     setSelectedButton(button);
@@ -65,7 +68,7 @@ export default function FlowWriteRecommend() {
                </Select2Button>
               </Recommend2>
             <CardGoContent></CardGoContent>
-            <LastButton>
+            <LastButton onClick={handleBeforeClick}>
               이전으로
             </LastButton>
             <NextButton onClick={handleNextClick}>
