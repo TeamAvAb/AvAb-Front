@@ -56,7 +56,7 @@ const MyFlowWrap = styled.div`
   display: flex;
   background-color: #f7f8f9;
   width: 1536px;
-  height: 1921px;
+  height: 100%;
 `;
 
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
@@ -64,7 +64,6 @@ const MyFlowMenuContainer = styled.div`
   background-color: white;
   border: 0.5px solid #cacdd2;
   width: 320px;
-  height: 1771px;
   font-size: 24px;
 `;
 
@@ -84,7 +83,6 @@ const MyFlowContainer = styled.div`
   box-sizing: border-box;
   background-color: white;
   width: 1128px;
-  height: 1771px;
   padding-top: 30px;
   padding-left: 126px;
   display: flex;
@@ -131,15 +129,13 @@ const MyFlowBoxTitle = styled.div`
   font-size: 47px;
 `;
 
+// 페이지 번호
 const PageNumberContainer = styled.div`
   display: flex;
-  position: absolute;
-  top: 1617px;
-  left: 0;
-  width: 100%;
+  margin-top: 82px;
+  margin-left: 186px;
+  margin-bottom: 112px;
   height: 42px;
-  justify-content: center;
-  align-items: center;
 `;
 
 const PageNumber = styled.div`
@@ -155,6 +151,7 @@ const PageNumber = styled.div`
 `;
 
 const ImageBox = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -163,7 +160,8 @@ const ImageBox = styled.div`
 `;
 
 const ButtonImage = styled.img`
-  width: 42px;
-  height: 42px;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
   cursor: pointer;
 `;

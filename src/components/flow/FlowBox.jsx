@@ -17,7 +17,7 @@ export default function FlowBox() {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "39px", marginLeft: "-34px" }}>
       <MyFlowBoxParent>
         <MyFlowBoxChild>
           {/* 키워드 */}
@@ -80,17 +80,16 @@ export default function FlowBox() {
 const MyFlowBoxParent = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 370px);
-  margin-top: 4vh;
   row-gap: 20px;
   column-gap: 120px;
 `;
 
 const MyFlowBoxChild = styled.div`
-  width: 370px;
-  height: 409px;
+  width: 368px;
+  height: 408px;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 0px -2px 20px -10px gray;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
   position: relative;
 `;
 
@@ -100,30 +99,27 @@ const FlowBoxKeyWord = styled.div`
   position: absolute;
   color: #1b1d1f;
   font-size: 20px;
-  font-weight: bold;
-  width: 120px;
-  height: 56px;
-  top: 37px;
-  left: 37px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-style: normal;
+  font-weight: 700;
+  padding: 16px 34px;
+  margin-top: 37px;
+  margin-left: 36px;
 `;
 
 const FlowBoxTitle = styled.div`
-  position: absolute;
-  top: 116px;
-  left: 37px;
+  margin-top: 116px;
+  margin-left: 36px;
   font-size: 24px;
-  font-weight: bold;
+  font-style: normal;
+  font-weight: 700;
 `;
 
 const FlowBoxScrapBox = styled.div`
-  position: absolute;
-  top: 32px;
-  left: 292px;
   width: 42px;
   height: 42px;
+  position: absolute;
+  margin-top: 37px;
+  margin-left: 291px;
 `;
 
 const FlowBoxScrapImg = styled.img`
@@ -134,17 +130,15 @@ const FlowBoxScrapImg = styled.img`
 `;
 
 const FlowBoxImg = styled.img`
-  position: absolute;
-  top: 168px;
-  left: 37px;
+  margin-top: 23px;
+  margin-left: 36px;
   width: 142px;
   height: 142px;
 `;
 
 const FlowBoxDetailBox = styled.div`
-  position: absolute;
-  top: 142px;
-  left: 240px;
+  margin-left: 239px;
+  margin-top: -168px;
 `;
 
 const FlowBoxDetails = styled.div`
