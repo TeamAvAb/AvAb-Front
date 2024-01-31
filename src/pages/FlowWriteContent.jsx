@@ -10,7 +10,10 @@ export default function FlowWriteContent() {
   const navigate = useNavigate();
 
   const handleNextClick = () => {
-    navigate('/flow/write');
+    navigate('/flow/my');
+  };
+  const handleBeforeClick = () => {
+    navigate('/flow/write/recommend');
   };
 
     return (
@@ -44,7 +47,7 @@ export default function FlowWriteContent() {
               <ContentInfo>
                 기본 정보
               </ContentInfo>
-              <LastButton>
+              <LastButton onClick={handleBeforeClick}>
                 이전으로
               </LastButton>
               <SaveButton onClick={handleNextClick}>

@@ -14,57 +14,70 @@ export default function FlowWriteRecommend() {
   const handleNextClick = () => {
     navigate('/flow/write/content');
   };
+  const handleBeforeClick = () => {
+    navigate('/flow/write/detail');
+  };
 
   const handleButtonClick = (button) => {
     setSelectedButton(button);
     console.log(`Selected button: ${button}`);
   };
 
-  return (
-    <FlowWriteWrap>
-      <ProgressbarStyle>
-        <ProgressBarItem>
-          <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
-          <span>기본정보</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
-          <span>세부정보</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
-          <span style={{ color: '#19297C' }}>추천 플로우</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
-          <span>플로우 내용</span>
-        </ProgressBarItem>
-      </ProgressbarStyle>
-      <FlowwriteRecommend>
-        <div>
-          <AdditionalExplain>
-            <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
-          </AdditionalExplain>
-          <Recommend1 selected={selectedButton === '1안'}>
-            <Select1Button onClick={() => handleButtonClick('1안')} clicked={selectedButton === '1안'}>
-              1안
-            </Select1Button>
-          </Recommend1>
-          <Recommend2 selected={selectedButton === '2안'}>
-            <Select2Button onClick={() => handleButtonClick('2안')} clicked={selectedButton === '2안'}>
-              2안
-            </Select2Button>
-          </Recommend2>
-          <CardGoContent></CardGoContent>
-          <LastButton>이전으로</LastButton>
-          <NextButton onClick={handleNextClick}>다음으로</NextButton>
-        </div>
-      </FlowwriteRecommend>
-    </FlowWriteWrap>
-  );
+    return (
+        <FlowWriteWrap>
+          <ProgressbarStyle>
+            <ProgressBarItem>
+              <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
+              <span>기본정보</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+              <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
+              <span>세부정보</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+              <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
+              <span style={{ color: '#19297C' }}>추천 플로우</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+            <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
+              <span>플로우 내용</span>
+            </ProgressBarItem>
+          </ProgressbarStyle>
+          <FlowwriteRecommend>
+            <div>
+            <AdditionalExplain>
+              <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
+            </AdditionalExplain>
+              <Recommend1 selected={selectedButton === '1안'}>
+                <Select1Button
+                  onClick={() => handleButtonClick('1안')}
+                  clicked={selectedButton === '1안'}
+                >
+                1안
+                </Select1Button>
+              </Recommend1>
+              <Recommend2 selected={selectedButton === '2안'}>
+               <Select2Button
+                onClick={() => handleButtonClick('2안')}
+                clicked={selectedButton === '2안'}
+               >
+                2안
+               </Select2Button>
+              </Recommend2>
+            <CardGoContent></CardGoContent>
+            <LastButton onClick={handleBeforeClick}>
+              이전으로
+            </LastButton>
+            <NextButton onClick={handleNextClick}>
+              다음으로
+            </NextButton>
+            </div>
+          </FlowwriteRecommend>
+        </FlowWriteWrap>
+      );
 }
 
 const FlowWriteWrap = styled.div`
