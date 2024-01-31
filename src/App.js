@@ -7,9 +7,14 @@ import Footer3 from "./components/Footer/Footer3";
 import Main from "./pages/Main";
 import MyPage from "./pages/Mypage";
 import Search from "./pages/Search";
+import SearchList from "./pages/SearchList";
 import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
-import RecreationDetail from "./pages/RecreationDetail"; // 레크레이션 상세정보 페이지
+import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
+import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 상세 페이지
+import FlowWriteRecommend from "./pages/FlowWriteRecommend"; // 플로우 만들기 추천 페이지
+import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 내용 페이지
 import FlowMy from "./pages/FlowMy"; // 내 일정 플로우 페이지
+import GlobalStyle from "./GlobalStyles"; //전역 스타일
 
 function App() {
   const navigate = useNavigate();
