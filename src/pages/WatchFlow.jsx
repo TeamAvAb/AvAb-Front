@@ -4,15 +4,21 @@ import blankImg from "../assets/watchflow/blank.png";
 import Flow from "../components/flow/FlowBox.jsx";
 import LeftButton from "../assets/watchflow/moveLeft.png";
 import RightButton from "../assets/watchflow/moveRight.png";
+import { useNavigate } from 'react-router-dom';
 
 export default function WatchFlow() {
+  const navigate = useNavigate();
+  const moveToMy = ()=>{
+    navigate(`/flow/my`)
+  }
+
   return (
     <MyFlowWrap>
       {/* 플로우 왼쪽 메뉴바 */}
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
         <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>플로우 구경하기</MyFlowMenuBox>
-        <MyFlowMenuBox>내가 만든 일정플로우</MyFlowMenuBox>
+        <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
