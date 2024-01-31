@@ -85,14 +85,14 @@ const FlowWriteWrap = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background-color: #F7F8F9;
+  background-color: #f7f8f9;
 `;
 
 const ProgressbarStyle = styled.div`
   width: 1356px;
   height: 156px;
-  background-color: #FFF;
-  border: 0.5px solid #CACDD2;
+  background-color: #fff;
+  border: 0.5px solid #cacdd2;
   border-radius: 20px;
   display: flex;
   margin-bottom: 33px;
@@ -113,7 +113,7 @@ const ProgressBarItem = styled.div`
   }
 
   span {
-    color: #CACDD2;
+    color: #cacdd2;
     font-size: 24px;
     font-weight: 700;
   }
@@ -122,8 +122,8 @@ const ProgressBarItem = styled.div`
 const FlowwriteRecommend = styled.div`
   width: 1356px;
   height: 1691px;
-  background-color: #FFF;
-  border: 0.5px solid #CACDD2;
+  background-color: #fff;
+  border: 0.5px solid #cacdd2;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -135,7 +135,7 @@ const AdditionalExplain = styled.div`
   height: 47px;
   border-radius: 50px;
   border: none;
-  background-color: #19297C;
+  background-color: #19297c;
   margin-left: 113px;
   display: flex;
   flex-direction: column;
@@ -154,7 +154,7 @@ const RecommendBase = styled.div`
   height: 1034px;
   border-radius: 20px;
   border: ${({ selected }) => (selected ? '2.5px solid #4036ED' : '0.5px solid #9FA4A9')};
-  background: #FFF;
+  background: #fff;
   display: inline-block;
   align-items: center;
   font-size: 24px;
@@ -167,11 +167,11 @@ const Select1Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1B1D1F;
+  border: 0.5px solid #1b1d1f;
   border-radius: 50px;
   font-size: 20px;
   font-weight: 700;
-  color: ${({clicked}) => (clicked ? '#fff': '#1B1D1F')};
+  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
 
@@ -191,11 +191,11 @@ const Select2Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1B1D1F;
+  border: 0.5px solid #1b1d1f;
   border-radius: 50px;
   font-size: 20px;
   font-weight: 700;
-  color: ${({clicked}) => (clicked ? '#fff': '#1B1D1F')};
+  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
 
@@ -204,7 +204,6 @@ const Recommend2 = styled(RecommendBase)`
   flex-grow: 1;
   margin-left: 25px;
   position: relative;
-
 
   ${Select2Button} {
     position: absolute;
@@ -217,7 +216,7 @@ const CardGoContent = styled.div`
   height: 131px;
   border-radius: 20px;
   border: none;
-  background: #FFAA29;
+  background: #ffaa29;
   margin-top: 46px;
   margin-left: 113px;
   align-items: center;
@@ -227,9 +226,9 @@ const CardGoContent = styled.div`
 const LastButton = styled.button`
   width: 138px;
   height: 54px;
-  color: #464C52;
+  color: #464c52;
   background-color: #fff;
-  border: 1px solid #464C52;
+  border: 1px solid #464c52;
   border-radius: 50px;
   font-size: 19px;
   font-weight: 700;
@@ -239,14 +238,14 @@ const LastButton = styled.button`
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #F7F8F9; /* hover 시의 배경색 변경 */
+    background-color: #f7f8f9; /* hover 시의 배경색 변경 */
   }
 `;
 
 const NextButton = styled.button`
   width: 138px;
   height: 54px;
-  background-color: #4036ED;
+  background-color: #4036ed;
   border: none;
   border-radius: 50px;
   font-size: 19px;
@@ -257,6 +256,6 @@ const NextButton = styled.button`
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #3530ED; /* hover 시의 배경색 변경 */
+    background-color: #3530ed; /* hover 시의 배경색 변경 */
   }
 `;

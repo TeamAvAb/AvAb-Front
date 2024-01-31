@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Search from "../components/main/Search";
-import KeywordModal from "../components/main/KeywordModal";
-import blankImg from "../assets/main/blankImg.png";
-import plusIconImg from "../assets/main/plusIcon.svg";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Search from '../components/main/Search';
+import KeywordModal from '../components/main/KeywordModal';
+import blankImg from '../assets/main/blankImg.png';
+import plusIconImg from '../assets/main/plusIcon.svg';
 
 export default function Main() {
   const [keywordModal, setKeywordModal] = useState(false);
@@ -20,7 +20,7 @@ export default function Main() {
             을 <br />
             검색해보세요!
           </Comment>
-          <img src={blankImg} style={{ width: "328px", height: "328px" }} />
+          <img src={blankImg} style={{ width: '328px', height: '328px' }} />
         </Recommend>
         <Search keywordModal={setKeywordModal} purposeModal={setPurposeModal} />
         {keywordModal ? <KeywordModal closeModal={setKeywordModal} /> : null}
@@ -29,10 +29,7 @@ export default function Main() {
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
             <More>
               더보기
-              <img
-                src={plusIconImg}
-                style={{ width: "24px", height: "24px" }}
-              />
+              <img src={plusIconImg} style={{ width: '24px', height: '24px' }} />
             </More>
           </PopularHeader>
         </Popular>
@@ -44,10 +41,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(
-    --BG,
-    linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%)
-  );
+  background: var(--BG, linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%));
 `;
 const Recommend = styled.div`
   display: flex;
