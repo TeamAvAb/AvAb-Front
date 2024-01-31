@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
   src: url(${Pretendard}) format("woff");
 }
 
-body {
+* {
     font-family: 'Pretendard';
     margin: 0;
     font-size: 16px;
