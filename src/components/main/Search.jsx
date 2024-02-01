@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import KeywordModal from "./KeywordModal";
@@ -43,21 +43,22 @@ export default function Search({}) {
   ];
   const keywordOptions = [
     { id: 1, title: "협동" },
-    { id: 2, title: "센스" },
-    { id: 3, title: "순발력" },
+    { id: 2, title: "순발력" },
+    { id: 3, title: "센스" },
     { id: 4, title: "두뇌" },
-    { id: 5, title: "두뇌" },
-    { id: 6, title: "두뇌" },
-    { id: 7, title: "두뇌" },
-    { id: 8, title: "두뇌" },
+    { id: 5, title: "창의력" },
+    { id: 6, title: "액티브" },
+    { id: 7, title: "심리" },
+    { id: 8, title: "행운" },
+    { id: 9, title: "상식" },
+    { id: 10, title: "준비물" },
   ];
   const purposeOptions = [
-    { id: 1, title: "MT" },
-    { id: 2, title: "워크샵" },
-    { id: 3, title: "야유회" },
-    { id: 4, title: "새내기배움터" },
-    { id: 5, title: "송년회" },
-    { id: 6, title: "신년회" },
+    { id: 1, title: "신년회" },
+    { id: 2, title: "MT" },
+    { id: 3, title: "워크샵" },
+    { id: 4, title: "이벤트" },
+    { id: 5, title: "축제" },
   ];
 
   // 필터 더보기 메뉴
@@ -245,6 +246,7 @@ export default function Search({}) {
       </SearchBtns>
       {keywordModal ? (
         <KeywordModal
+          category="keyword"
           content={keywordOptions}
           modalControl={setKeywordModal}
           keywordControl={setKeyword}
@@ -253,6 +255,7 @@ export default function Search({}) {
       ) : null}
       {purposeModal ? (
         <KeywordModal
+          category="purpose"
           content={purposeOptions}
           modalControl={setPurposeModal}
           keywordControl={setPurpose}

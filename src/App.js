@@ -20,7 +20,6 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} /> {/* 메인 */}
-        <Route path="/search" element={<Search />} /> {/* 검색 페이지 */}
         <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
         <Route path="/search/list" element={<SearchList />} />{" "}
         {/* 검색 리스트 페이지 */}

@@ -1,109 +1,162 @@
-import React, { useState, Component } from "react";
+import React from "react";
 import styled from "styled-components";
-import blankImg from "../../assets/main/blankImg.png";
-import bannerIndexImg from "../../assets/main/bannerIndexIcon.svg";
-import prevIconImg from "../../assets/main/prevIcon.svg";
-import nextIconImg from "../../assets/main/nextIcon.svg";
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// export default function Carousel({ content }) {
-//   const settings = {
-//     dots: true,
-//     arrow: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//     autoPlay: true,
-//   };
-//   return (
-//     <StyledSlider {...settings}>
-//       {content.map((el) => (
-//         <div key={el.title}>
-//           <Title>{el.title}</Title>
-//           <Description>{el.description}</Description>
-//         </div>
-//       ))}
-//     </StyledSlider>
-//   );
-// }
+import blankImg from "../../assets/main/blankImg.png";
+import nextIconImg from "../../assets/main/nextIcon.svg";
+import prevIconImg from "../../assets/main/prevIcon.svg";
 
-export default function Carousel({ content }) {
-  const [current, setCurrent] = useState(2);
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
   return (
-    <Container>
-      {/* <NextBtn></NextBtn> */}
-      <img src={prevIconImg} style={{ position: "fixed", left: "263px" }} />
-      {content.map((el) => (
-        <Banner>
-          <Text>
-            <Title>{el.title}</Title>
-            <Description>{el.description}</Description>
-            <GotoRecBtn>레크레이션 보러가기</GotoRecBtn>
-          </Text>
-          <img src={blankImg} style={{ width: "161px", height: "161px" }} />
-        </Banner>
-      ))}
-      <img src={nextIconImg} style={{ position: "fixed", right: "263px" }} />
-      <img
-        src={bannerIndexImg}
-        style={{
-          width: "74px",
-          height: "14px",
-          position: "absolute",
-          left: "50%",
-          bottom: "30px",
-        }}
-      />
-    </Container>
+    <img
+      src={nextIconImg}
+      className={className}
+      style={{ ...style, display: "block", width: "42px", height: "42px" }}
+      onClick={onClick}
+    />
   );
 }
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 100px;
-  overflow: hidden;
-  position: relative;
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <img
+      src={prevIconImg}
+      className={className}
+      style={{ ...style, display: "block", width: "42px", height: "42px" }}
+      onClick={onClick}
+    />
+  );
+}
+
+export default function Carousel({ content }) {
+  const settings = {
+    className: "slider variable-width",
+    dots: true,
+    infinite: true,
+    centerMode: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+    arrrow: true,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 4000,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  };
+
+  const getColor = (id) => {
+    switch (id) {
+      case 1:
+        return [
+          "var(--main-a-0-ddff, #A0DDFF)",
+          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
+          "var(--gray-scale-26282-b, #26282B)",
+          "#FFF",
+        ];
+      case 2:
+        return [
+          "var(--main-4036-ed, #4036ED)",
+          "var(--gray-scale-e-9-ebed, #E9EBED)",
+          "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)",
+          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
+        ];
+      case 3:
+        return [
+          "var(--main-ffaa-29, #FFAA29)",
+          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
+          "var(--gray-scale-26282-b, #26282B)",
+          "#FFF",
+        ];
+      default:
+        return "black";
+    }
+  };
+
+  return (
+    <StyledSlider {...settings}>
+      {content.map((banner) => (
+        <div style={{ width: "957px" }}>
+          <Banner color={getColor(banner.index)}>
+            <Left>
+              <Title color={getColor(banner.index)}>{banner.title}</Title>
+              <Comment color={getColor(banner.index)}>
+                {banner.description}
+              </Comment>
+              <Button color={getColor(banner.index)}>
+                레크레이션 보러가기
+              </Button>
+            </Left>
+
+            <img src={blankImg} style={{ width: "161px", height: "161px" }} />
+          </Banner>
+        </div>
+      ))}
+    </StyledSlider>
+  );
+}
+
+const StyledSlider = styled(Slider)`
+  .slick-track {
+    display: flex;
+    gap: 100px;
+  }
+  .slick-slide {
+    transform: translateX(270px);
+  }
+  .slick-arrow {
+    position: absolute;
+    z-index: 10;
+  }
+  .slick-prev {
+    left: 253px;
+  }
+  .slick-next {
+    right: 268px;
+  }
+  .slick-dots {
+    position: absolute;
+    bottom: 30px;
+  }
 `;
+
 const Banner = styled.div`
-  width: 957px;
-  height: 254px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  padding: 46px 90px 30px 80px;
+  padding: 46px 90px 47px 80px;
+  background: ${(props) => props.color[0]};
   border-radius: 20px;
-  background: var(--main-4036-ed, #4036ed);
   box-shadow: 0px 0px 60px 20px rgba(0, 0, 0, 0.1);
 `;
-
-const Text = styled.div`
+const Left = styled.div`
   display: flex;
   flex-direction: column;
+  color: var(--gray-scale-e-9-ebed, #e9ebed);
 `;
 const Title = styled.span`
   margin-bottom: 10px;
-  color: var(--gray-scale-e-9-ebed, #e9ebed);
+  color: ${(props) => props.color[1]};
   font-size: 24px;
   font-weight: 700;
 `;
-const Description = styled.span`
+const Comment = styled.span`
   margin-bottom: 25px;
-  color: var(--gray-scale-e-9-ebed, #e9ebed);
+  color: ${(props) => props.color[1]};
   font-size: 20px;
   font-weight: 700;
 `;
-const GotoRecBtn = styled.button`
+const Button = styled.button`
   padding: 15px 34px;
   text-align: center;
   border: none;
   border-radius: 50px;
-  background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+  background: ${(props) => props.color[2]};
+  color: ${(props) => props.color[3]};
   font-size: 20px;
   font-weight: 700;
 `;

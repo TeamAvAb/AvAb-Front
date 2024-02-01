@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import rechoiceIcon from "../../assets/main/rechoiceIcon.svg";
 export default function KeywordModal({
+  category,
   content,
   modalControl,
   keywordControl,
@@ -30,9 +31,10 @@ export default function KeywordModal({
   return (
     <Container>
       <Modal>
-        <Keywords>
+        <Keywords category={category}>
           {content.map((el) => (
             <Keyword
+              category={category}
               key={el.id}
               onClick={() => handleSingleSelect(el.id)}
               selected={result.includes(el.id)}
@@ -83,24 +85,34 @@ const Keywords = styled.div`
   /* height: 250px; */
   display: flex;
   flex-direction: row;
-
-  padding: 43px 39px 42px;
-  gap: 40px 20px;
+  justify-content: space-between;
+  padding: ${(props) =>
+    props.category == "keyword" ? "42px 49px" : "58px 69px"};
+  gap: ${(props) => (props.category == "keyword" ? "20px" : "15px")};
   flex-wrap: wrap;
   box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.2) inset;
 `;
 const Keyword = styled.div`
   height: 29px;
   display: flex;
-  padding: 5px 29px;
+  padding: ${(props) =>
+    props.category == "keyword" ? "10px 40px" : "16px 34px"};
   justify-content: center;
   align-items: center;
-
-  border-radius: 5px;
+  border: ${(props) =>
+    props.category == "keyword"
+      ? "none"
+      : "1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"};
+  border-radius: ${(props) => (props.category == "keyword" ? "5px" : "50px")};
   background: ${(props) =>
     props.selected
       ? "var(--main-a-0-ddff, #a0ddff)"
-      : "var(--gray-scale-e-9-ebed, #E9EBED)"};
+      : props.category === "keyword"
+      ? "var(--gray-scale-e-9-ebed, #E9EBED)"
+      : "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)"};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
 `;
 const SetModal = styled.div`
   padding: 16px 32px;
