@@ -7,7 +7,7 @@ import MadeFlowBox from "../components/flow/MadeFlowBox";
 import { useNavigate } from "react-router-dom";
 
 // 내가 만든 일정플로우 개수에 따른 렌더링 화면 확인용
-export const flowN = 3;
+export const flowN = 1;
 
 export default function MyFlow() {
   const navigate = useNavigate();
