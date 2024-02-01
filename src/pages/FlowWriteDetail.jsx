@@ -21,6 +21,10 @@ export default function FlowWriteDetail() {
     navigate('/flow/write/recommend');
   };
 
+  const handleBeforeClick = () => {
+    navigate('/flow/write');
+  };
+
   const handleGenderClick = (gender) => {
     console.log(`Clicked gender button with value: ${gender}`);
     if (selectedGenders.includes(gender)) {
@@ -122,7 +126,7 @@ export default function FlowWriteDetail() {
                 </CardGoContainer>
               </CardGoContent>
             </CardContainer>
-            <LastButton>
+            <LastButton onClick={handleBeforeClick}>
               이전으로
             </LastButton>
             <NextButton onClick={handleNextClick}>
@@ -282,8 +286,8 @@ const AgeButton = styled.div`
 `;
 
 const AgeSpan = styled.span`
-  width: 136px;
-  height: 62px;
+  display: inline-flex;
+  padding: 16px 34px;
   border-radius: 50px;
   border: 0.5px solid #9FA4A9;
   background-color: ${({ clicked }) => (clicked ? '#B1BEFF' : '#fff')};

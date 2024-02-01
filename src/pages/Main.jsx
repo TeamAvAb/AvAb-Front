@@ -5,6 +5,13 @@ import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
 import Carousel from "../components/main/Carousel";
 import Login from "../components/Login";
+import React, { useState } from "react";
+import styled from "styled-components";
+import Search from "../components/main/Search";
+import KeywordModal from "../components/main/KeywordModal";
+import blankImg from "../assets/main/blankImg.png";
+import plusIconImg from "../assets/main/plusIcon.svg";
+
 export default function Main() {
   const banner = [
     { index: 1, title: "제목1", description: "설명설명설명", img: null },
