@@ -9,9 +9,9 @@ const GlobalStyle = createGlobalStyle`
 
 * {
     font-family: 'Pretendard';
-    margin: 0;
-    font-size: 16px;
+    margin: 0px;
 }
+
 
 `;
 

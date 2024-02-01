@@ -26,7 +26,7 @@ export default function ReviewBox({
   };
 
   return (
-    <>
+    <ReviewBoxWrap>
       <ReviewStarsContainer>
         <StarsWrap>{Stars()}</StarsWrap>
         <StarNum>{starNum}/5</StarNum>
@@ -37,7 +37,7 @@ export default function ReviewBox({
       </NickNameDateBox>
       <ReviewContent>{review}</ReviewContent>
       <NickNameDateBox>
-        <LikeDislikeBox marginRight="0px">
+        <LikeDislikeBox marginRight="40px">
           <LikeDislikeIcon src={good} alt="good" />
           10
         </LikeDislikeBox>
@@ -46,9 +46,13 @@ export default function ReviewBox({
           10
         </LikeDislikeBox>
       </NickNameDateBox>
-    </>
+    </ReviewBoxWrap>
   );
 }
+
+const ReviewBoxWrap = styled.div`
+  margin-bottom: 35px;
+`;
 
 const ReviewStarsContainer = styled.div`
   display: flex;
