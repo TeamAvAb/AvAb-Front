@@ -4,13 +4,16 @@ import blankImg from "../assets/watchflow/blank.png";
 import Flow from "../components/flow/FlowBox.jsx";
 import LeftButton from "../assets/watchflow/moveLeft.png";
 import RightButton from "../assets/watchflow/moveRight.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function WatchFlow() {
   const navigate = useNavigate();
-  const moveToMy = ()=>{
-    navigate(`/flow/my`)
-  }
+  const moveToMy = () => {
+    navigate(`/flow/my`);
+  };
+  const moveToScrap = () => {
+    navigate(`/flow/scrap`);
+  };
 
   return (
     <MyFlowWrap>
@@ -19,7 +22,7 @@ export default function WatchFlow() {
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
         <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>플로우 구경하기</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
-        <MyFlowMenuBox>스크랩 일정 플로우</MyFlowMenuBox>
+        <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
       {/* 플로우 구경하기 */}
@@ -78,7 +81,7 @@ const MyFlowMenuTitle = styled.div`
 `;
 
 const MyFlowMenuBox = styled.div`
-  border-top: 0.5px solid #cacdd2;
+  border: 0.5px solid #cacdd2;
   text-align: center;
   justify-content: center;
   padding: 1.5vh 3vh;

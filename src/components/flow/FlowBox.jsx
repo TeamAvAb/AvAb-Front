@@ -17,7 +17,7 @@ export default function FlowBox() {
   };
 
   return (
-    <div style={{ marginTop: "39px", marginLeft: "-34px" }}>
+    <div style={{ marginTop: "31px", marginLeft: "-34px" }}>
       <MyFlowBoxParent>
         <MyFlowBoxChild>
           {/* 키워드 */}
