@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-export default function RecreationFlow() {
+import React, { forwardRef } from "react";
+
+const RecreationFlow = forwardRef((props, ref) => {
   return (
-    <RecreationFlowContainer>
+    <RecreationFlowContainer ref={ref}>
       <TitleText>연관 플로우</TitleText>
       <SubText>해당 레크레이션과 관련된 플로우를 제공해드려요!</SubText>
     </RecreationFlowContainer>
   );
-}
+});
 
 const RecreationFlowContainer = styled.div`
   background-color: white;
@@ -31,3 +32,5 @@ const SubText = styled.div`
   margin-bottom: 31px;
   line-height: 30px;
 `;
+
+export default RecreationFlow;

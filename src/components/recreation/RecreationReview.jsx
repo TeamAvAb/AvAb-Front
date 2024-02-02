@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
-export default function RecreationReview() {
+import RecreationPagination from "./RecreationPagination";
+const RecreationReview = forwardRef((props, ref) => {
   const reviewNum = 17;
 
   return (
-    <RecreationReviewContainer>
+    <RecreationReviewContainer ref={ref}>
       <TitleText>리뷰 및 평가 ({reviewNum})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
@@ -26,9 +27,12 @@ export default function RecreationReview() {
         like={10}
         dislike={2}
       />
+      <RecreationPagination itemsPerPage={5} />
     </RecreationReviewContainer>
   );
-}
+});
+
+export default RecreationReview;
 
 const RecreationReviewContainer = styled.div`
   background-color: white;

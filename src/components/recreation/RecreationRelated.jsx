@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { forwardRef } from "react";
 import RelatedRecreationBox from "./RelatedRecreationBox";
-export default function RecreationRelated() {
+
+const RecreationRelated = forwardRef((props, ref) => {
   const hashtag = "#해시태그";
   const recreationTitle = "레크레이션 제목";
   const kewords = ["키워드1", "키워드2", "키워드3"];
   const starRate = 4.5;
 
   return (
-    <RecreationReviewContainer>
+    <RecreationRelatedContainer ref={ref}>
       <TitleText>연관 레크레이션</TitleText>
       <SubText>해당 레크레이션과 함께 사용할 수 있어요!</SubText>
       <RelatedRecreationBox
@@ -17,11 +18,13 @@ export default function RecreationRelated() {
         kewords={kewords}
         starRate={starRate}
       />
-    </RecreationReviewContainer>
+    </RecreationRelatedContainer>
   );
-}
+});
 
-const RecreationReviewContainer = styled.div`
+export default RecreationRelated;
+
+const RecreationRelatedContainer = styled.div`
   background-color: white;
   padding: 40px 44px;
   border-radius: 20px;
