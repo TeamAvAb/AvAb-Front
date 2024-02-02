@@ -7,6 +7,7 @@ import View from "../../assets/watchflow/view.png";
 import Write from "../../assets/watchflow/write.png";
 import User from "../../assets/watchflow/user.png";
 import Blank from "../../assets/watchflow/blank.png";
+import { useNavigate } from "react-router-dom";
 
 export default function FlowBox() {
   // 스크랩 상태
@@ -14,6 +15,11 @@ export default function FlowBox() {
   // 스크랩 상태 변경
   const scrapping = () => {
     doScrap ? setDoScrap(false) : setDoScrap(true);
+  };
+  // 더보기 이동
+  const navigate = useNavigate();
+  const moveToMoreWatchFlow = () => {
+    navigate(`/flow/morewatchflow`);
   };
 
   return (
@@ -65,7 +71,7 @@ export default function FlowBox() {
               <FlowBoxDetail>2,232</FlowBoxDetail>
             </FlowBoxDetails>
           </FlowBoxDetailBox>
-          <MoreBtn>자세히 보기</MoreBtn>
+          <MoreBtn onClick={moveToMoreWatchFlow}>자세히 보기</MoreBtn>
         </MyFlowBoxChild>
         <MyFlowBoxChild></MyFlowBoxChild>
         <MyFlowBoxChild></MyFlowBoxChild>

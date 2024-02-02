@@ -16,6 +16,8 @@ import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레
 import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
 import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
 import ScrapFlow from './pages/ScrapFlow'; // 스크랩 한 플로우 보기
+import MoreMyflow from './pages/MoreMyflow'; // 내가 만든 일정플로우 더보기
+import MoreWatchFlow from './pages/MoreWatchFlow'; // 다른 사람이 만든 일정플로우 더보기
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +36,8 @@ function App() {
       <Route path="/flow/watch" element={<WatchFlow />} /> {/* 플로우 구경하기 */}
       <Route path="/flow/my" element={<MyFlow />} /> {/* 내 일정 플로우 페이지 */}
       <Route path="/flow/scrap" element={<ScrapFlow />} /> {/* 스크랩 한 플로우 보기 */}
+      <Route path="/flow/moremyflow" element={<MoreMyflow />} /> {/* 내가 만든 일정플로우 더보기 */}
+      <Route path="/flow/morewatchflow" element={<MoreWatchFlow />} /> {/* 다른 사람이 만든 일정플로우 더보기 */}
       <Route path="/recreation/detail" element={<RecreationDetail />} /> {/* 레크레이션 상세정보 페이지 */}
     </Routes>
   );

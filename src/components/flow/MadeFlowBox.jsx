@@ -6,6 +6,7 @@ import User from "../../assets/myflow/user.png";
 import Blank from "../../assets/myflow/blank.png";
 import Close from "../../assets/myflow/close.png";
 import { flowN } from "../../pages/MyFlow";
+import { useNavigate } from "react-router-dom";
 
 export default function MadeFlowBox() {
   // 삭제 버튼 모달창을 위한 상태
@@ -17,6 +18,12 @@ export default function MadeFlowBox() {
   // 삭제 모달 창 닫기 위한 상태 변화 함수
   const close = () => {
     setDel(false);
+  };
+
+  //더보기 이동
+  const navigate = useNavigate();
+  const moveToMoreMyFlow = () => {
+    navigate(`/flow/moremyflow`);
   };
 
   //flowN에 값에 따라 div 추가
@@ -61,7 +68,7 @@ export default function MadeFlowBox() {
             <FlowBoxDetail>2,232</FlowBoxDetail>
           </FlowBoxDetails>
         </FlowBoxDetailBox>
-        <MoreBtn>자세히 보기</MoreBtn>
+        <MoreBtn onClick={moveToMoreMyFlow}>자세히 보기</MoreBtn>
       </MyFlowBoxChild>
     );
   }
