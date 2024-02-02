@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import useDetectClose from "../../hooks/main/useDetectClose";
 import downIconImg from "../../assets/main/downIcon.svg";
 
 export default function DropdownMenu({ list, setOption, selectedOption }) {
-  const [myPageIsOpen, myPageRef, myPageHandler] = useDetectClose(false);
+  const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
 
   return (
-    <DropdownContainer isopen={myPageIsOpen}>
-      <Menu isdropped={myPageIsOpen}>
+    <DropdownContainer>
+      <Menu isdropped={dropdownOpen}>
         <Ul>
           {list.map((li) => (
             <Li
@@ -22,11 +22,7 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
           ))}
         </Ul>
       </Menu>
-      <DropdownButton
-        ispen={myPageIsOpen}
-        onClick={myPageHandler}
-        ref={myPageRef}
-      >
+      <DropdownButton onClick={myPageHandler} ref={myPageRef}>
         {selectedOption}분
         <img src={downIconImg} style={{ width: "24px", height: "24px" }} />
       </DropdownButton>
@@ -41,7 +37,7 @@ const DropdownContainer = styled.div`
   position: relative;
   text-align: center;
   color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
-  border-radius: ${(props) => (props.myPageIsOpen ? "0" : "50px")};
+  border-radius: 50px;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -51,7 +47,7 @@ const DropdownButton = styled.button`
   cursor: pointer;
   width: 155px;
   height: 44px;
-  border-radius: ${(props) => (props.myPageIsOpen ? "0" : "50px")};
+  border-radius: 50px;
   text-align: center;
   display: flex;
   flex-direction: row;

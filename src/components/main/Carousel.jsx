@@ -137,23 +137,24 @@ export default function Carousel({ content }) {
 
   return (
     <StyledSlider {...settings}>
-      {content.map((banner) => (
-        <div style={{ width: "957px" }}>
-          <Banner color={getColor(banner.index)}>
-            <Left>
-              <Title color={getColor(banner.index)}>{banner.title}</Title>
-              <Comment color={getColor(banner.index)}>
-                {banner.description}
-              </Comment>
-              <Button color={getColor(banner.index)}>
-                레크레이션 보러가기
-              </Button>
-            </Left>
+      {content &&
+        content.map((banner) => (
+          <div key={banner.index} style={{ width: "957px" }}>
+            <Banner color={getColor(banner.index)}>
+              <Left>
+                <Title color={getColor(banner.index)}>{banner.title}</Title>
+                <Comment color={getColor(banner.index)}>
+                  {banner.description}
+                </Comment>
+                <Button color={getColor(banner.index)}>
+                  레크레이션 보러가기
+                </Button>
+              </Left>
 
-            <img src={blankImg} style={{ width: "161px", height: "161px" }} />
-          </Banner>
-        </div>
-      ))}
+              <img src={blankImg} style={{ width: "161px", height: "161px" }} />
+            </Banner>
+          </div>
+        ))}
     </StyledSlider>
   );
 }

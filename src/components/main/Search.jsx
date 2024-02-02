@@ -125,7 +125,7 @@ export default function Search({}) {
         />
       </SearchWordBox>
       <SearchBox>
-        <Filters menu={menu}>
+        <Filters menu={menu.toString()}>
           {/* 키워드 */}
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
@@ -173,7 +173,7 @@ export default function Search({}) {
           </Filter>
         </Filters>
         <Filters>
-          <More isOpen={menu}>
+          <More isopen={menu.toString()}>
             <div
               style={{
                 width: "100%",
@@ -213,7 +213,7 @@ export default function Search({}) {
             </Filter>
 
             {/* 연령대 */}
-            <Filter last={true}>
+            <Filter last="true">
               <LabelName htmlFor="age">연령대</LabelName>
               <RadioInput
                 content={ageOptions}
@@ -269,7 +269,6 @@ export default function Search({}) {
 // 스타일링
 const SearchEngine = styled.div`
   width: 958px;
-  /* padding: 0 4px; */
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -403,9 +402,9 @@ const More = styled.div`
   align-items: flex-start;
   gap: 22px;
   overflow: hidden;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  max-height: ${({ isOpen }) => (isOpen ? "1000px" : "0")};
+  opacity: ${(props) => (props.isopen ? "1" : "0")};
+  visibility: ${(props) => (props.isopen ? "visible" : "hidden")};
+  max-height: ${({ isopen }) => (isopen ? "1000px" : "0")};
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 `;
 
