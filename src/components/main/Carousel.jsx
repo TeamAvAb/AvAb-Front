@@ -5,30 +5,88 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import blankImg from "../../assets/main/blankImg.png";
-import nextIconImg from "../../assets/main/nextIcon.svg";
-import prevIconImg from "../../assets/main/prevIcon.svg";
-
-function SampleNextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <img
-      src={nextIconImg}
-      className={className}
-      style={{ ...style, display: "block", width: "42px", height: "42px" }}
-      onClick={onClick}
-    />
-  );
-}
+import elipseImg from "../../assets/main/elipse.svg";
+import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
+import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
 
 function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   return (
-    <img
-      src={prevIconImg}
+    <div
+      style={{
+        display: "block",
+        width: "42px",
+        height: "42px",
+        border: "none",
+        position: "absolute",
+        top: "118px",
+      }}
       className={className}
-      style={{ ...style, display: "block", width: "42px", height: "42px" }}
       onClick={onClick}
-    />
+    >
+      <img
+        src={elipseImg}
+        style={{
+          width: "42px",
+          height: "42px",
+          position: "absolute",
+          top: "0",
+          left: "0",
+          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+        }}
+      />
+      <img
+        src={prevArrowImg}
+        style={{
+          display: "block",
+          width: "8px",
+          height: "16px",
+          position: "absolute",
+          top: "13px",
+          left: "17px",
+        }}
+      />
+    </div>
+  );
+}
+function SampleNextArrow(props) {
+  const { className, onClick } = props;
+  return (
+    <div
+      style={{
+        display: "block",
+        width: "42px",
+        height: "42px",
+        border: "none",
+        position: "absolute",
+        top: "118px",
+      }}
+      className={className}
+      onClick={onClick}
+    >
+      <img
+        src={elipseImg}
+        style={{
+          width: "42px",
+          height: "42px",
+          position: "absolute",
+          top: "0",
+          right: "0",
+          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+        }}
+      />
+      <img
+        src={nextArrowImg}
+        style={{
+          display: "block",
+          width: "8px",
+          height: "16px",
+          position: "absolute",
+          top: "13px",
+          right: "17px",
+        }}
+      />
+    </div>
   );
 }
 
@@ -41,12 +99,12 @@ export default function Carousel({ content }) {
     slidesToShow: 1,
     slidesToScroll: 1,
     variableWidth: true,
-    arrrow: true,
+    arrrow: false,
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 4000,
-    nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
   };
 
   const getColor = (id) => {
@@ -101,22 +159,28 @@ export default function Carousel({ content }) {
 }
 
 const StyledSlider = styled(Slider)`
+  .slick-list {
+    background-color: transparent;
+  }
   .slick-track {
     display: flex;
     gap: 100px;
   }
   .slick-slide {
-    transform: translateX(270px);
+    transform: translateX(290px);
   }
   .slick-arrow {
     position: absolute;
     z-index: 10;
   }
+  .slick-arrow::before {
+    display: none;
+  }
   .slick-prev {
-    left: 253px;
+    left: 263px;
   }
   .slick-next {
-    right: 268px;
+    right: 226px;
   }
   .slick-dots {
     position: absolute;
