@@ -4,7 +4,6 @@ import Search from "../components/main/Search";
 import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
 import Carousel from "../components/main/Carousel";
-import Login from "../components/Login";
 
 export default function Main() {
   const banner = [
@@ -12,12 +11,9 @@ export default function Main() {
     { index: 2, title: "제목2", description: "설명설명설명", img: null },
     { index: 3, title: "제목3", description: "설명설명설명", img: null },
   ];
-  const [loginModal, setLoginModal] = useState(false);
   return (
     <>
       <Container>
-        <button onClick={() => setLoginModal(true)}>로그인</button>
-        {loginModal ? <Login modalControl={setLoginModal} /> : null}
         <Recommend>
           <Comment>
             <span style={{ fontWeight: 700 }}>

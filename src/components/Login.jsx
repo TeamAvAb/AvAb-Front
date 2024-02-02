@@ -4,8 +4,8 @@ import styled from "styled-components";
 import blankImg from "../assets/main/blankImg.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
-export default function Login({ modalControl }) {
-  const [dayClose, setDayClose] = useState(false);
+export default function Login({ handleLoginStatus, handleLoginModal }) {
+  const [temporaryClose, setTemporaryClose] = useState(false);
 
   return (
     <Container>
@@ -23,20 +23,22 @@ export default function Login({ modalControl }) {
                 성공적인 레크레이션
               </span>을 <br /> 경험해보세요!
             </Comment>
-            <Button>간편 로그인하기</Button>
+            <Button onClick={() => handleLoginStatus(true)}>
+              간편 로그인하기
+            </Button>
           </Text>
           <img src={blankImg} style={{ width: "249px", height: "249px" }} />
         </Content>
         <Controls>
-          <Control onClick={() => setDayClose(true)}>
-            {dayClose ? (
+          <Control onClick={() => setTemporaryClose((prev) => !prev)}>
+            {temporaryClose ? (
               "X"
             ) : (
               <img src={elipseImg} style={{ width: "38px", height: "38px" }} />
             )}
             오늘 하루 보지 않기
           </Control>
-          <Control onClick={() => modalControl(false)}>
+          <Control onClick={() => handleLoginModal(false)}>
             <img src={closeImg} style={{ width: "24px", height: "25px" }} />
             닫기
           </Control>

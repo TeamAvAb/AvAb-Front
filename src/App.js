@@ -15,11 +15,13 @@ import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 
 import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
 import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
 import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
+import Login from "./components/Login";
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
   const routes = (
     <Routes>
       <Route path="/" element={<Main />} /> {/* 메인 */}
@@ -61,7 +63,17 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header />
+      <Header
+        isLoggedIn={isLoggedIn}
+        handleLoginStatus={setIsLoggedIn}
+        handleLoginModal={setLoginModal}
+      />
+      {loginModal ? (
+        <Login
+          handleLoginStatus={setIsLoggedIn}
+          handleLoginModal={setLoginModal}
+        />
+      ) : null}
       {routes}
       {selectedFooter}
     </div>
