@@ -6,7 +6,7 @@ import writeSelect2 from '../assets/flowwrite/write_select_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
-import filter from '../assets/flowwrite/filter.png';
+import check from '../assets/flowwrite/check.png';
 
 import writeSelect3 from '../assets/flowwrite/write_select_3.png' // 임시 이미지 -> 수정필요
 import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
@@ -77,14 +77,14 @@ export default function FlowWriteDetail() {
           <FlowwriteDetail>
             <div>
             <AdditionalExplain>
-            <span>플로우는 <strong>세부정보</strong>를 입력할수록 <strong>정확한 추천</strong>을 얻을 수 있습니다.</span>
+              <span>세부정보 입력은 필수사항은 아니지만, <strong>세부정보</strong>를 입력할수록 <strong>정확한 추천</strong>을 얻을 수 있습니다.</span>
             </AdditionalExplain>
             <TextLine>원하는 키워드를 입력해주세요.</TextLine>
             <KeywordSearch>
-              <img src={filter} alt="Filter" style={{ width: '25px', height: '25px' }} />
-              <KeywordInput type="text" placeholder="키워드 필터링 검색" style={{ width: '90%', height: '18px'}} />
+              <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
+              <KeywordInput type="text" placeholder="클릭하면 키워드 선택창이 나와요!" style={{ width: '90%', height: '18px'}} />
             </KeywordSearch>
-            <TextLine>성별과 연령대를 선택해주세요.</TextLine>
+            <TextLine>레크레이션에 참여하는 인원의 성별과 연령대를 선택해주세요.</TextLine>
             <SubTextLine>성별</SubTextLine>
             <GenderButton clicked={selectedGenders.includes('F')} onClick={() => handleGenderClick('F')}>
               <span className={`genderBtn ${selectedGenders.includes('F') ? 'clicked' : ''}`}>
@@ -104,8 +104,10 @@ export default function FlowWriteDetail() {
               </AgeButton>
             ))}
             </div>
-            <TextLine>레크레이션에 참여하는 총 인원을 선택해주세요.</TextLine>
-            <JoinPeople></JoinPeople>
+            <TextLine>레크레이션에 참여하는 조별 인원을 선택해주세요.</TextLine>
+            <JoinPeople>
+              <JoinPeopleInput type="text" placeholder="조별 인원을 입력해주세요." style={{ width: '90%', height: '18px'}} />
+            </JoinPeople>
             <CardContainer>
               <CardGoRecommend>
               <CardGoContainer>
@@ -179,7 +181,7 @@ const ProgressBarItem = styled.div`
 
 const FlowwriteDetail = styled.div`
   width: 1356px;
-  height: 1156px;
+  height: 1186px;
   background-color: #FFF;
   border: 0.5px solid #CACDD2;
   border-radius: 20px;
@@ -200,6 +202,7 @@ const AdditionalExplain = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 40px;
+  margin-bottom: 100px;
 
   span {
     color: #fff;
@@ -243,6 +246,7 @@ const KeywordInput = styled.input`
   margin-left: 8px;
   border: none;
   outline: none;
+  font-size: 16px;
 
   &::placeholder {
     color: #9FA4A9;
@@ -287,7 +291,7 @@ const AgeButton = styled.div`
 
 const AgeSpan = styled.span`
   display: inline-flex;
-  padding: 16px 34px;
+  padding: 19px 48px;
   border-radius: 50px;
   border: 0.5px solid #9FA4A9;
   background-color: ${({ clicked }) => (clicked ? '#B1BEFF' : '#fff')};
@@ -302,12 +306,31 @@ const AgeSpan = styled.span`
 `;
 
 const JoinPeople = styled.div`
-  width: 161px;
+  width: 200px;
   height: 63px;
   border-radius: 20px;
   border: 0.5px solid #9FA4A9;
   background: #FFF;
   margin-left: 116px;
+  display: flex;
+  align-items: center;
+`;
+
+const JoinPeopleInput = styled.input`
+  width: 90%;
+  height: 18px;
+  margin-left: 16px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+
+  &::placeholder {
+    color: #9FA4A9;
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -342,7 +365,7 @@ const CardGo3Text = styled.div`
   color: #000;
   text-align: left;
   margin-bottom: 8px;
-  margin-left: 50px;
+  margin-left: 42px;
 `;
 
 const CardGo3SubText = styled.div`
@@ -351,7 +374,7 @@ const CardGo3SubText = styled.div`
   color: #000;
   text-align: left;
   white-space: pre-line;
-  margin-left: 50px;
+  margin-left: 42px;
 `;
 
 const CardGoContent = styled.div`
@@ -372,7 +395,7 @@ const CardGo4Text = styled.div`
   color: #000;
   text-align: right;
   margin-bottom: 8px;
-  margin-right: 50px;
+  margin-right: 42px;
 `;
 
 const CardGo4SubText = styled.div`
@@ -381,7 +404,7 @@ const CardGo4SubText = styled.div`
   color: #000;
   text-align: right;
   white-space: pre-line;
-  margin-right: 50px;
+  margin-right: 42px;
 `;
 
 const LastButton = styled.button`
