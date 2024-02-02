@@ -180,7 +180,7 @@ const StyledSlider = styled(Slider)`
     left: 263px;
   }
   .slick-next {
-    right: 226px;
+    right: 247px;
   }
   .slick-dots {
     position: absolute;
