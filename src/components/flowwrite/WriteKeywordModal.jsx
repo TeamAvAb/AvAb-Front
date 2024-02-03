@@ -2,29 +2,43 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
-const WriteKeywordModal = ({ onClose }) => {
-    const [selectedKeywords, setSelectedKeywords] = useState([]);
+const WriteKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
+    console.log("Selected Keywords in WriteKeywordModal:", propSelectedKeywords);
+    const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
     const keywordGroups = ['신년회', 'MT', '워크샵', '이벤트', '축제'];
     
-    const handleKeywordClick = (Keyword) => {
-        console.log(`Clicked keyword button with value: ${Keyword}`);
-        if (selectedKeywords.includes(Keyword)) {
-          // 키워드가 이미 선택되었는지 확인
-          setSelectedKeywords(selectedKeywords.filter((selected) => selected !== Keyword));
-        } else {
-          // 클릭을 기반으로 선택한 키워드 업데이트
-          setSelectedKeywords([...selectedKeywords, Keyword]);
-        }
-      };
+    const handleKeywordClick = (keyword) => {
+      console.log(`Clicked keyword button with value: ${keyword}`);
+      if (internalSelectedKeywords.includes(keyword)) {
+        // 키워드가 이미 선택되었는지 확인
+        setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== keyword));
+      } else {
+        // 클릭을 기반으로 선택한 키워드 업데이트
+        setInternalSelectedKeywords([...internalSelectedKeywords, keyword]);
+      }
+  };
+
+  const handleResetKeywords = () => {
+      // 선택된 키워드 리셋
+      setInternalSelectedKeywords([]);
+  };
+
+  const handleSelectKeywords = () => {
+    console.log("Selected Keywords before update:", internalSelectedKeywords);
+    onSelectKeywords(internalSelectedKeywords);
+    console.log("Selected Keywords after update:", internalSelectedKeywords);
+    setInternalSelectedKeywords([]);
+    onClose();
+};
 
   return (
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContent>
         <KeywordWrap>
-      {keywordGroups.map((age) => (
-              <KeywordButton key={age} onClick={() => handleKeywordClick(age)}>
-                <KeywordSpan clicked={selectedKeywords.includes(age)}>{age}</KeywordSpan>
+      {keywordGroups.map((keyword) => (
+              <KeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
+                <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>{keyword}</KeywordSpan>
               </KeywordButton>
             ))}
             </KeywordWrap>
@@ -32,11 +46,11 @@ const WriteKeywordModal = ({ onClose }) => {
         <CloseButton onClick={onClose}>
             닫기
           </CloseButton>
-          <RechoiceButton>
+          <RechoiceButton onClick={handleResetKeywords}>
           <img src={rechoice} alt="Rechoice" style={{ width: '42px', height: '42px' }} />
           초기화
           </RechoiceButton>
-          <KeywordSelectButton onClick={onClose}>
+          <KeywordSelectButton onClick={handleSelectKeywords}>
             선택 완료
           </KeywordSelectButton>
         </BottomContainer>
@@ -138,10 +152,6 @@ const RechoiceButton = styled.button`
   margin-top: 16px;
   display: inline-flex;
   align-items: center;
-
-  &:hover {
-    background-color: #F7F8F9; /* hover 시의 배경색 변경 */
-  }
 `;
 
 const KeywordSelectButton = styled.button`
