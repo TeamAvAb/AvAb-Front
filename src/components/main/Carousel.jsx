@@ -8,6 +8,8 @@ import blankImg from "../../assets/main/blankImg.png";
 import elipseImg from "../../assets/main/elipse.svg";
 import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
 import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
+import currentDotImg from "../../assets/main/bannerDotCurrent.svg";
+import defaultDotImg from "../../assets/main/bannerDotDefault.svg";
 
 function SamplePrevArrow(props) {
   const { className, onClick } = props;
@@ -186,6 +188,17 @@ const StyledSlider = styled(Slider)`
   .slick-dots {
     position: absolute;
     bottom: 30px;
+  }
+  .slick-dots li button:before {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    justify-content: center;
+
+    content: url(${defaultDotImg});
+  }
+  .slick-dots li.slick-active button:before {
+    content: url(${currentDotImg});
   }
 `;
 
