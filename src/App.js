@@ -42,7 +42,10 @@ function App() {
       {/* 플로우 구경하기 */}
       <Route path="/flow/my" element={<MyFlow />} />{" "}
       {/* 내 일정 플로우 페이지 */}
-      <Route path="/recreation/detail" element={<RecreationDetail />} />{" "}
+      <Route
+        path="/recreation/detail/:recreationId"
+        element={<RecreationDetail />}
+      />{" "}
       {/* 레크레이션 상세정보 페이지 */}
     </Routes>
   );

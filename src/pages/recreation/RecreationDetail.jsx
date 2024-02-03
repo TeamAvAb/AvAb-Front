@@ -6,9 +6,10 @@ import RecreationReview from "../../components/recreation/RecreationReview";
 import RecreationRelated from "../../components/recreation/RecreationRelated";
 import RecreationFlow from "../../components/recreation/RecreationFlow";
 import styled from "styled-components";
-import Header from "../../components/Header";
-
+import { useParams } from "react-router-dom";
 export default function RecreationDetail() {
+  const { recreationId } = useParams();
+  console.log(recreationId);
   const infoRef = useRef(null);
   const reviewRef = useRef(null);
   const relatedRef = useRef(null);
