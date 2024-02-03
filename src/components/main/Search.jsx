@@ -173,7 +173,7 @@ export default function Search({}) {
           </Filter>
         </Filters>
         <Filters>
-          <More isopen={menu.toString()}>
+          <More isopen={menu}>
             <div
               style={{
                 width: "100%",
