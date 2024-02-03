@@ -87,6 +87,3 @@ const PaginationBox = styled.div`
     height: 42px;
   }
 `;
-const nextPrevButton = styled.img`
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-`;

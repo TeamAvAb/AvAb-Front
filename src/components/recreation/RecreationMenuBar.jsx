@@ -1,9 +1,9 @@
-import styled from "styled-components";
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 export default function RecreationMenuBar({ scrollRefs }) {
   const [activeIndex, setActiveIndex] = useState(null);
-
+  const offset = -90;
   const MenuBar = [
     { idx: 0, name: "상세정보" },
     { idx: 1, name: "리뷰 및 평가" },
@@ -19,8 +19,8 @@ export default function RecreationMenuBar({ scrollRefs }) {
       scrollRefs.current.forEach((ref, index) => {
         if (
           ref.current &&
-          ref.current.offsetTop - 570 <= scrollPosition &&
-          ref.current.offsetTop + ref.current.offsetHeight - 570 >
+          ref.current.offsetTop + offset <= scrollPosition &&
+          ref.current.offsetTop + ref.current.offsetHeight + offset >
             scrollPosition
         ) {
           activeSectionIndex = index;
@@ -38,7 +38,6 @@ export default function RecreationMenuBar({ scrollRefs }) {
   }, [scrollRefs]);
 
   const handleButtonClick = (index) => {
-    const offset = -570;
     const targetPosition = scrollRefs.current[index].current.offsetTop + offset;
 
     window.scrollTo({
@@ -63,9 +62,14 @@ export default function RecreationMenuBar({ scrollRefs }) {
 }
 
 const RecreationMenuBarContainer = styled.div`
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
   display: flex;
   align-items: center;
 `;
+
 const NavBtn = styled.button`
   border-bottom: 0.5px solid #cacdd2;
   color: #1b1d1f;
