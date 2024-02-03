@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import none from '../assets/Footer/none.png'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import none from "../assets/Footer/none.png";
 
-export default function Header() {
+export default function Header({
+  isLoggedIn,
+  handleLoginStatus,
+  handleLoginModal,
+}) {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogin = () => {
-    setIsLoggedIn((prev) => !prev);
+    if (isLoggedIn) {
+      handleLoginStatus(false);
+    } else {
+      handleLoginModal(true);
+    }
   };
   const ToMainpage = () => {
     navigate(`/`);
@@ -24,16 +31,16 @@ export default function Header() {
 
   return (
     <HeaderWrap>
-      <LogoImg src={none}/>
+      <LogoImg src={none} />
       <Logo>Avab</Logo>
       <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      <Login onClick={handleLogin}>{isLoggedIn ? '로그아웃' : '로그인'}</Login>
+      <Login onClick={handleLogin}>{isLoggedIn ? "로그아웃" : "로그인"}</Login>
     </HeaderWrap>
   );
-};
+}
 
 const HeaderWrap = styled.header`
   display: flex;
