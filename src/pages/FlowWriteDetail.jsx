@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import DetailKeywordModal from '../components/flowwrite/DetailKeywordModal.jsx';
 import write1 from '../assets/flowwrite/write_1.png';
 import writeSelect2 from '../assets/flowwrite/write_select_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
 import check from '../assets/flowwrite/check.png';
+import deleteIcon from '../assets/flowwrite/deleteIcon.png';
 
 import writeSelect3 from '../assets/flowwrite/write_select_3.png' // 임시 이미지 -> 수정필요
 import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
 
 export default function FlowWriteDetail() {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAges, setSelectedAges] = useState([]);
   const ageGroups = ['10대 미만', '10대', '20대', '30대', '40대', '50대 이상'];
@@ -51,8 +55,40 @@ export default function FlowWriteDetail() {
     // checkAllFields();
   };
 
+  const handleDetailSearchClick = () => {
+    if (!isModalOpen) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectDetailKeywords = (keywords) => {
+    setSelectedKeywords(keywords);
+    handleCloseModal();
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteKeyword = (index, event) => {
+    // Prevent the click event from propagating to the parent container (PurposeSearch)
+    event.stopPropagation();
+  
+    const updatedKeywords = [...selectedKeywords];
+    updatedKeywords.splice(index, 1);
+    setSelectedKeywords(updatedKeywords);
+  };
+
     return (
         <FlowWriteWrap>
+          {isModalOpen && (
+              <DetailKeywordModal
+                onClose={handleCloseModal}
+                onSelectDetailKeywords={handleSelectDetailKeywords}
+                selectedKeywords={selectedKeywords}
+              />
+            )}
           <ProgressbarStyle>
             <ProgressBarItem>
               <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
@@ -80,10 +116,33 @@ export default function FlowWriteDetail() {
               <span>세부정보 입력은 필수사항은 아니지만, <strong>세부정보</strong>를 입력할수록 <strong>정확한 추천</strong>을 얻을 수 있습니다.</span>
             </AdditionalExplain>
             <TextLine>원하는 키워드를 입력해주세요.</TextLine>
-            <KeywordSearch>
-              <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
-              <KeywordInput type="text" placeholder="클릭하면 키워드 선택창이 나와요!" style={{ width: '90%', height: '18px'}} />
-            </KeywordSearch>
+            <KeywordSearch onClick={handleDetailSearchClick}>
+        <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
+          {selectedKeywords.length === 0 ? (
+            <KeywordInput
+              type="text"
+              placeholder="클릭하면 키워드 선택창이 나와요!"
+              style={{ width: '90%', height: '18px' }}
+            />
+          ) : (
+            <div style={{ width: '90%', display: 'flex' }}>
+              {selectedKeywords.map((keyword, index) => (
+                <React.Fragment key={index}>
+                  <StyledKeyword>
+                    {keyword}
+                    <img
+                      src={deleteIcon}
+                      alt="Delete"
+                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
+                      onClick={(event) => handleDeleteKeyword(index, event)}
+                    />
+                  </StyledKeyword>
+                  {index !== selectedKeywords.length - 1 && ' '}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+        </KeywordSearch>
             <TextLine>레크레이션에 참여하는 인원의 성별과 연령대를 선택해주세요.</TextLine>
             <SubTextLine>성별</SubTextLine>
             <GenderButton clicked={selectedGenders.includes('F')} onClick={() => handleGenderClick('F')}>
@@ -226,7 +285,7 @@ const TextLine = styled.div`
 `;
 
 const KeywordSearch = styled.div`
-  width: 808px;
+  width: 1130px;
   height: 63px;
   border-radius: 20px;
   border: 0.5px solid #9FA4A9;
@@ -254,6 +313,23 @@ const KeywordInput = styled.input`
 
   &:focus::placeholder {
     color: transparent;
+  }
+`;
+
+const StyledKeyword = styled.span`
+  display: flex;
+  height: 25px;
+  padding: 2px 10px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: #D9D9D9;
+  font-size: 16px;
+  color: #1B1D1F;
+  margin-left: 8px;
+  align-items: center;
+
+  img {
+    margin-left: 12px;
   }
 `;
 
