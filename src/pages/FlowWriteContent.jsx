@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import write1 from '../assets/flowwrite/write_1.png';
@@ -5,19 +6,36 @@ import write2 from '../assets/flowwrite/write_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
+import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
+import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
+import NoTitle from '../components/flowwrite/NoTitleModal.jsx'
 
 export default function FlowWriteContent() {
   const navigate = useNavigate();
+  const [modal, setModal] = useState(null);
 
   const handleNextClick = () => {
-    navigate('/flow/my');
+    // Temporary condition to show WithoutSaving modal when Save button is clicked
+    const shouldShowWithoutSaving = true;
+  
+    if (shouldShowWithoutSaving) {
+      setModal(<NoTitle onClose={() => setModal(null)} />);
+    } else {
+      // Continue with navigation logic
+      navigate('/flow/my');
+    }
   };
+
+  // const handleNextClick = () => {
+  //   navigate('/flow/my');
+  // };
   const handleBeforeClick = () => {
     navigate('/flow/write/recommend');
   };
 
     return (
         <FlowWriteWrap>
+          {modal && modal}
           <ProgressbarStyle>
             <ProgressBarItem>
               <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
