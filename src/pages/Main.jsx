@@ -3,13 +3,87 @@ import styled from "styled-components";
 import Search from "../components/main/Search";
 import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
+import PopularCarousel from "../components/main/PopularCarousel";
 import Carousel from "../components/main/Carousel";
-
 export default function Main() {
   const banner = [
     { index: 1, title: "제목1", description: "설명설명설명", img: null },
     { index: 2, title: "제목2", description: "설명설명설명", img: null },
     { index: 3, title: "제목3", description: "설명설명설명", img: null },
+  ];
+  const recreationData = [
+    {
+      index: 1,
+      title: "레크레이션 1",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 2,
+      title: "레크레이션 2",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 3,
+      title: "레크레이션 3",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 4,
+      title: "레크레이션 4",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 5,
+      title: "레크레이션 5",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 6,
+      title: "레크레이션 6",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 7,
+      title: "레크레이션 7",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 8,
+      title: "레크레이션 8",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 9,
+      title: "레크레이션 9",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
   ];
   return (
     <>
@@ -38,6 +112,7 @@ export default function Main() {
               />
             </More>
           </PopularHeader>
+          <PopularCarousel content={recreationData} />
         </Popular>
       </Container>
       <Carousel content={banner} />
@@ -78,6 +153,7 @@ const Popular = styled.div`
   width: 957px;
   height: 659px;
   margin-top: 135px;
+  margin-bottom: 90px;
 `;
 const PopularHeader = styled.div`
   display: flex;
