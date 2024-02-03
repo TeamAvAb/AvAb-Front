@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
-const WriteKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
+const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
     console.log("Selected Keywords in WriteKeywordModal:", propSelectedKeywords);
     const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
     const keywordGroups = ['신년회', 'MT', '워크샵', '이벤트', '축제'];
@@ -59,7 +59,7 @@ const WriteKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSe
   );
 };
 
-export default WriteKeywordModal;
+export default PurposeKeywordModal;
 
 const ModalOverlay = styled.div`
   position: fixed;
