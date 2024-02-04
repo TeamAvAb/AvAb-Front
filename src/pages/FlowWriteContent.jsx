@@ -219,7 +219,6 @@ const ContentBase = styled.div`
 const ContentSelect = styled(ContentBase)`
   width: 606px;
   margin-left: 40px;
-  margin-top: 40px;
 `;
 
 const ContentInfo = styled(ContentBase)`
