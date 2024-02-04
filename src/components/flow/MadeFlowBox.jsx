@@ -5,6 +5,8 @@ import View from "../../assets/myflow/view.png";
 import User from "../../assets/myflow/user.png";
 import Blank from "../../assets/myflow/blank.png";
 import Close from "../../assets/myflow/close.png";
+import { flowN } from "../../pages/MyFlow";
+import { useNavigate } from "react-router-dom";
 
 export default function MadeFlowBox() {
   // 삭제 버튼 모달창을 위한 상태
@@ -17,6 +19,59 @@ export default function MadeFlowBox() {
   const close = () => {
     setDel(false);
   };
+
+  //더보기 이동
+  const navigate = useNavigate();
+  const moveToMoreMyFlow = () => {
+    navigate(`/flow/moremyflow`);
+  };
+
+  //flowN에 값에 따라 div 추가
+  const divs = [];
+
+  for (let i = 0; i < flowN; i++) {
+    divs.push(
+      <MyFlowBoxChild>
+        {/* 수정/삭제 버튼 */}
+        <FlowBoxCorDelBox>
+          <FlowBoxCor>수정</FlowBoxCor>
+          <FlowBoxDel onClick={deleteBtn}>삭제</FlowBoxDel>
+        </FlowBoxCorDelBox>
+
+        {/* 키워드 */}
+        <FlowBoxKeyWord>신년회</FlowBoxKeyWord>
+
+        {/* 플로우 이름 */}
+        <FlowBoxTitle>플로우 이름</FlowBoxTitle>
+
+        {/* 플로우 사진 */}
+        <FlowBoxImg src={Blank} alt="플로우 사진" />
+
+        {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
+        <FlowBoxDetailBox>
+          <FlowBoxDetails>
+            <FlowBoxDetailImg>
+              <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+            </FlowBoxDetailImg>
+            <FlowBoxDetail>70분</FlowBoxDetail>
+          </FlowBoxDetails>
+          <FlowBoxDetails>
+            <FlowBoxDetailImg>
+              <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+            </FlowBoxDetailImg>
+            <FlowBoxDetail>2,232</FlowBoxDetail>
+          </FlowBoxDetails>
+          <FlowBoxDetails>
+            <FlowBoxDetailImg>
+              <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
+            </FlowBoxDetailImg>
+            <FlowBoxDetail>2,232</FlowBoxDetail>
+          </FlowBoxDetails>
+        </FlowBoxDetailBox>
+        <MoreBtn onClick={moveToMoreMyFlow}>자세히 보기</MoreBtn>
+      </MyFlowBoxChild>
+    );
+  }
 
   return (
     <div style={{ marginTop: "230.65px", marginLeft: "-34px" }}>
@@ -45,49 +100,7 @@ export default function MadeFlowBox() {
         <></>
       )}
 
-      <MyFlowBoxParent>
-        <MyFlowBoxChild>
-          {/* 수정/삭제 버튼 */}
-          <FlowBoxCorDelBox>
-            <FlowBoxCor>수정</FlowBoxCor>
-            <FlowBoxDel onClick={deleteBtn}>삭제</FlowBoxDel>
-          </FlowBoxCorDelBox>
-
-          {/* 키워드 */}
-          <FlowBoxKeyWord>신년회</FlowBoxKeyWord>
-
-          {/* 플로우 이름 */}
-          <FlowBoxTitle>플로우 이름</FlowBoxTitle>
-
-          {/* 플로우 사진 */}
-          <FlowBoxImg src={Blank} alt="플로우 사진" />
-
-          {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
-          <FlowBoxDetailBox>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>70분</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>2,232</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>2,232</FlowBoxDetail>
-            </FlowBoxDetails>
-          </FlowBoxDetailBox>
-          <MoreBtn>자세히 보기</MoreBtn>
-        </MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-      </MyFlowBoxParent>
+      <MyFlowBoxParent>{divs}</MyFlowBoxParent>
     </div>
   );
 }
