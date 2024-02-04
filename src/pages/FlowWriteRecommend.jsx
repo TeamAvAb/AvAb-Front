@@ -52,7 +52,7 @@ export default function FlowWriteRecommend() {
           <FlowwriteRecommend>
             <div>
             <AdditionalExplain>
-              <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
+              <span>입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를 <strong>클릭</strong>하여 저장해주세요.</span>
             </AdditionalExplain>
               <Recommend1 selected={selectedButton === '1안'}>
                 <Select1Button
@@ -127,7 +127,6 @@ const ProgressBarItem = styled.div`
   span {
     color: #cacdd2;
     font-size: 24px;
-    font-weight: 700;
   }
 `;
 
@@ -163,6 +162,7 @@ const AdditionalExplain = styled.div`
 `;
 
 const RecommendBase = styled.div`
+  box-sizing: border-box;
   height: 1034px;
   border-radius: 20px;
   border: ${({ selected }) => (selected ? '2.5px solid #4036ED' : '0.5px solid #9FA4A9')};
@@ -176,6 +176,7 @@ const RecommendBase = styled.div`
 `;
 
 const Select1Button = styled.button`
+  position: relative;
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
@@ -200,6 +201,7 @@ const Recommend1 = styled(RecommendBase)`
 `;
 
 const Select2Button = styled.button`
+  position: relative;
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
