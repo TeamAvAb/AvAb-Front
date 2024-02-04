@@ -13,7 +13,6 @@ export default function Footer() {
 
 const FooterWrap = styled.footer`
   position: relative;
-  width: 1536px;
   height: 83px;
   display: flex;
   justify-content: center;

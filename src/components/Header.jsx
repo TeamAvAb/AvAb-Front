@@ -22,10 +22,10 @@ export default function Header({
     navigate(`/`);
   };
   const ToRecreation = () => {
-    navigate(`/recreation/detail`);
+    navigate(`/search/list`);
   };
   const ToFlowWrite = () => {
-    navigate(`/flow/write`);
+    navigate(`flow/watch`);
   };
   const ToMypage = () => {
     navigate(`/mypage`);
@@ -57,7 +57,6 @@ const HeaderWrap = styled.header`
   box-shadow: 0px 3px 3px #abaaae;
   position: relative;
   height: 67px;
-  width: 1536px;
   z-index: 999;
 `;
 

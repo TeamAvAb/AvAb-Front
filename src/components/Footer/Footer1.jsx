@@ -9,10 +9,10 @@ export default function Footer() {
     navigate(`/`);
   };
   const ToRecreation = () => {
-    navigate(`/recreation/detail`);
+    navigate(`/search/list`);
   };
   const ToFlowWrite = () => {
-    navigate(`/flow/write`);
+    navigate(`flow/watch`);
   };
   const ToMypage = () => {
     navigate(`/mypage`);
@@ -47,7 +47,6 @@ export default function Footer() {
 
 const FooterWrap = styled.footer`
   position: relative;
-  width: 1536px;
   height: 577px;
   background-image: linear-gradient(to bottom, white 104px, #e9ebed 104px, #e9ebed 577px);
   display: flex;
