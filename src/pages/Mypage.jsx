@@ -184,8 +184,8 @@ const MenuItem = styled.div`
 `;
 
 const Content = styled.div`
-    width: 1128px;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
     border: solid #cacdd2 1px;
@@ -395,7 +395,7 @@ const ButtonImage = styled.img`
 `;
 
 const RightSide = styled.div`
-    width: 88px;
+    width: 5.7325%;
     background-color: #f7f8f9;
 `;
 
