@@ -70,7 +70,7 @@ export default function FlowWriteRecommend() {
                 2안
                </Select2Button>
               </Recommend2>
-            <CardGoContent>
+            <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>
                 <CardGoTextContainer>
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>

@@ -29,6 +29,10 @@ export default function FlowWriteDetail() {
     navigate('/flow/write');
   };
 
+  const handleGo4Click = () => {
+    navigate('/flow/write/content');
+  };
+
   const handleGenderClick = (gender) => {
     console.log(`Clicked gender button with value: ${gender}`);
     if (selectedGenders.includes(gender)) {
@@ -168,7 +172,7 @@ export default function FlowWriteDetail() {
               <JoinPeopleInput type="text" placeholder="조별 인원을 입력해주세요." style={{ width: '90%', height: '18px'}} />
             </JoinPeople>
             <CardContainer>
-              <CardGoRecommend>
+              <CardGoRecommend onClick={handleNextClick}>
               <CardGoContainer>
                 <img src={writeSelect3} alt="go 3" style={{ width: '120px', height: '120px' }} />
                 <CardGoTextContainer>
@@ -177,7 +181,7 @@ export default function FlowWriteDetail() {
                 </CardGoTextContainer>
                </CardGoContainer>
               </CardGoRecommend>
-              <CardGoContent>
+              <CardGoContent onClick={handleGo4Click}>
                 <CardGoContainer>
                 <CardGoTextContainer>
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
