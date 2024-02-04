@@ -5,11 +5,18 @@ import plus from '../assets/header/Icon.svg'
 import circle from '../assets/header/Logout.svg'
 import none from '../assets/Footer/none.png'
 
-export default function Header() {
+export default function Header({
+  isLoggedIn,
+  handleLoginStatus,
+  handleLoginModal,
+}) {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogin = () => {
-    setIsLoggedIn((prev) => !prev);
+    if (isLoggedIn) {
+      handleLoginStatus(false);
+    } else {
+      handleLoginModal(true);
+    }
   };
   const ToMainpage = () => {
     navigate(`/`);
@@ -26,7 +33,7 @@ export default function Header() {
 
   return (
     <HeaderWrap>
-      <LogoImg src={none}/>
+      <LogoImg src={none} />
       <Logo>Avab</Logo>
       <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
@@ -41,7 +48,7 @@ export default function Header() {
       )}
     </HeaderWrap>
   );
-};
+}
 
 const HeaderWrap = styled.header`
   display: flex;

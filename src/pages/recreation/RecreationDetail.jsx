@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useRef } from "react";
 import RecreationTopInfo from "../../components/recreation/RecreationTopInfo";
 import RecreationMenuBar from "../../components/recreation/RecreationMenuBar";
 import RecreationInformation from "../../components/recreation/RecreationInformation";
 import RecreationReview from "../../components/recreation/RecreationReview";
 import RecreationRelated from "../../components/recreation/RecreationRelated";
-
+import RecreationFlow from "../../components/recreation/RecreationFlow";
 import styled from "styled-components";
-
+import { useParams } from "react-router-dom";
 export default function RecreationDetail() {
+  const { recreationId } = useParams();
+  console.log(recreationId);
+  const infoRef = useRef(null);
+  const reviewRef = useRef(null);
+  const relatedRef = useRef(null);
+  const flowRef = useRef(null);
+  const scrollRefs = useRef([infoRef, reviewRef, relatedRef, flowRef]);
   return (
     <>
       <RecreationTopInfo /> {/* 상단 정보란 */}
-      <RecreationMenuBar /> {/* 메뉴바 */}
+      <RecreationMenuBar scrollRefs={scrollRefs} /> {/* 메뉴바 */}
       <RecreationDetailContainer>
-        <RecreationInformation /> {/* 레크레이션 소개, 목적, 방법 */}
-        <RecreationReview /> {/* 리뷰 및 평가 */}
-        <RecreationRelated /> {/* 연관 레크레이션 */}
+        <RecreationInformation ref={infoRef} />{" "}
+        {/* 레크레이션 소개, 목적, 방법 */}
+        <RecreationReview ref={reviewRef} /> {/* 리뷰 및 평가 */}
+        <RecreationRelated ref={relatedRef} /> {/* 연관 레크레이션 */}
+        <RecreationFlow ref={flowRef} /> {/* 연관 플로우 */}
       </RecreationDetailContainer>
     </>
   );
