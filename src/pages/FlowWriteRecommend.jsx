@@ -6,6 +6,9 @@ import write2 from '../assets/flowwrite/write_2.png';
 import writeSelect3 from '../assets/flowwrite/write_select_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
+import fast from '../assets/flowwrite/fast.png';
+
+import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
 
 export default function FlowWriteRecommend() {
   const navigate = useNavigate();
@@ -14,57 +17,79 @@ export default function FlowWriteRecommend() {
   const handleNextClick = () => {
     navigate('/flow/write/content');
   };
+  const handleBeforeClick = () => {
+    navigate('/flow/write/detail');
+  };
 
   const handleButtonClick = (button) => {
     setSelectedButton(button);
     console.log(`Selected button: ${button}`);
   };
 
-  return (
-    <FlowWriteWrap>
-      <ProgressbarStyle>
-        <ProgressBarItem>
-          <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
-          <span>기본정보</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
-          <span>세부정보</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
-          <span style={{ color: '#19297C' }}>추천 플로우</span>
-          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-        </ProgressBarItem>
-        <ProgressBarItem>
-          <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
-          <span>플로우 내용</span>
-        </ProgressBarItem>
-      </ProgressbarStyle>
-      <FlowwriteRecommend>
-        <div>
-          <AdditionalExplain>
-            <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
-          </AdditionalExplain>
-          <Recommend1 selected={selectedButton === '1안'}>
-            <Select1Button onClick={() => handleButtonClick('1안')} clicked={selectedButton === '1안'}>
-              1안
-            </Select1Button>
-          </Recommend1>
-          <Recommend2 selected={selectedButton === '2안'}>
-            <Select2Button onClick={() => handleButtonClick('2안')} clicked={selectedButton === '2안'}>
-              2안
-            </Select2Button>
-          </Recommend2>
-          <CardGoContent></CardGoContent>
-          <LastButton>이전으로</LastButton>
-          <NextButton onClick={handleNextClick}>다음으로</NextButton>
-        </div>
-      </FlowwriteRecommend>
-    </FlowWriteWrap>
-  );
+    return (
+        <FlowWriteWrap>
+          <ProgressbarStyle>
+            <ProgressBarItem>
+              <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
+              <span>기본정보</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+              <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
+              <span>세부정보</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+              <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
+              <span style={{ color: '#19297C' }}>추천 플로우</span>
+              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+            </ProgressBarItem>
+            <ProgressBarItem>
+            <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
+              <span>플로우 내용</span>
+            </ProgressBarItem>
+          </ProgressbarStyle>
+          <FlowwriteRecommend>
+            <div>
+            <AdditionalExplain>
+              <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
+            </AdditionalExplain>
+              <Recommend1 selected={selectedButton === '1안'}>
+                <Select1Button
+                  onClick={() => handleButtonClick('1안')}
+                  clicked={selectedButton === '1안'}
+                >
+                1안
+                </Select1Button>
+              </Recommend1>
+              <Recommend2 selected={selectedButton === '2안'}>
+               <Select2Button
+                onClick={() => handleButtonClick('2안')}
+                clicked={selectedButton === '2안'}
+               >
+                2안
+               </Select2Button>
+              </Recommend2>
+            <CardGoContent>
+                <CardGoContainer>
+                <CardGoTextContainer>
+                <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
+                <CardGo4SubText>원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!</CardGo4SubText>
+                </CardGoTextContainer>
+                <img src={writeSelect4} alt="go 4" style={{ width: '120px', height: '120px' }} />
+                <img src={fast} alt="Fast" style={{ width: '44px', height: '44px', marginLeft: '225px'}} />
+                </CardGoContainer>
+              </CardGoContent>
+            <LastButton onClick={handleBeforeClick}>
+              이전으로
+            </LastButton>
+            <NextButton onClick={handleNextClick}>
+              다음으로
+            </NextButton>
+            </div>
+          </FlowwriteRecommend>
+        </FlowWriteWrap>
+      );
 }
 
 const FlowWriteWrap = styled.div`
@@ -108,7 +133,7 @@ const ProgressBarItem = styled.div`
 
 const FlowwriteRecommend = styled.div`
   width: 1356px;
-  height: 1691px;
+  height: 1731px;
   background-color: #fff;
   border: 0.5px solid #cacdd2;
   border-radius: 20px;
@@ -210,6 +235,34 @@ const CardGoContent = styled.div`
   padding: 39px 30px 39px 295px;
 `;
 
+const CardGoContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CardGoTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CardGo4Text = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  text-align: right;
+  margin-bottom: 8px;
+  margin-right: 200px;
+`;
+
+const CardGo4SubText = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  text-align: right;
+  white-space: pre-line;
+  margin-right: 200px;
+`;
+
 const LastButton = styled.button`
   width: 138px;
   height: 54px;
@@ -221,7 +274,7 @@ const LastButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   margin-left: 510px;
-  margin-top: 35px;
+  margin-top: 120px;
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
