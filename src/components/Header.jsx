@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import plus from '../assets/header/Icon.svg'
+import circle from '../assets/header/Logout.svg'
 import none from '../assets/Footer/none.png'
 
 export default function Header() {
@@ -30,7 +32,13 @@ export default function Header() {
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      <Login onClick={handleLogin}>{isLoggedIn ? '로그아웃' : '로그인'}</Login>
+      {isLoggedIn ? 
+      ( <> <LogoutImg src={circle} onClick={ToMypage}/> </> ) : 
+      ( <>
+          <PlusImg src={plus}/>
+          <Login onClick={handleLogin}>로그인</Login>
+        </>
+      )}
     </HeaderWrap>
   );
 };
@@ -43,6 +51,7 @@ const HeaderWrap = styled.header`
   position: relative;
   height: 67px;
   width: 1536px;
+  z-index: 999;
 `;
 
 const LogoImg = styled.img`
@@ -54,25 +63,36 @@ const Logo = styled.div`
   padding: 15px;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 10%;
+  margin-right: 150px;
   font-size: 22px;
   font-weight: 600;
+`;
+
+const PlusImg = styled.img`
+  width: 12px;
+  margin-left: 120px;
 `;
 
 const Login = styled.div`
   display: flex;
   justify-content: center;
-  width: 70px;
+  width: 80px;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 10%;
-  font-size: 17px;
-  font-weight: 550;
+  font-size: 19px;
+  font-weight: 600;
+`;
+
+const LogoutImg = styled.img`
+  width: 42px;
+  margin-left: 150px;
+  margin-right: 20px;
+  cursor: pointer;
 `;
 
 const HeaderDetail = styled.div`
   font-size: 20px;
-  margin-left: 3%;
-  margin-right: 3%;
+  margin-left: 55px;
+  margin-right: 55px;
   cursor: pointer;
 `;
