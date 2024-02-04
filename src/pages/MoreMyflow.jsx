@@ -5,9 +5,9 @@ import Share from "../assets/moreflow/share.png";
 import Time from "../assets/moreflow/time.png";
 import User from "../assets/moreflow/user.png";
 import View from "../assets/moreflow/view.png";
-import Write from "../assets/moreflow/write.png";
 import Scrap from "../assets/moreflow/scrap.png";
 import Scrap2 from "../assets/moreflow/scrap2.png";
+import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 
 export default function MoreMyFlow() {
@@ -17,8 +17,52 @@ export default function MoreMyFlow() {
     scrap ? setScrap(false) : setScrap(true);
   };
 
+  // 삭제 버튼 모달창을 위한 상태
+  const [share, setShare] = useState(false);
+  const [modal, setModal] = useState(false);
+  // 모달 창 열기 위한 상태 변화 함수
+  const OpenModal = () => {
+    setModal(true);
+  };
+  // 삭제 버튼 누를 시 상태 변화 함수
+  const ShareBtn = () => {
+    setShare(true);
+  };
+  // 삭제 모달 창 닫기 위한 상태 변화 함수
+  const close = () => {
+    setModal(false);
+    setShare(false);
+  };
+
   return (
     <div style={{ width: "1536px", backgroundColor: "#E9EBED" }}>
+      {/* 모달창 */}
+      {modal ? (
+        <ModalContainer>
+          <ModalBox>
+            <CloseBtn onClick={close}>
+              <img src={Close} alt="닫기" />
+            </CloseBtn>
+            <ModalBoxDetail>
+              <div>
+                <ModalTitle>
+                  일정 플로우를
+                  <br />
+                  공유하세요!
+                </ModalTitle>
+              </div>
+              {share ? (
+                <AfterCopyBtn>복사 완료</AfterCopyBtn>
+              ) : (
+                <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
+              )}
+            </ModalBoxDetail>
+          </ModalBox>
+        </ModalContainer>
+      ) : (
+        <></>
+      )}
+
       <TitleContainer>
         <img
           src={Blank}
@@ -50,12 +94,6 @@ export default function MoreMyFlow() {
             </FlowBoxDetails>
             <FlowBoxDetails>
               <FlowBoxDetailImg>
-                <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>윤카우</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
                 <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
               </FlowBoxDetailImg>
               <FlowBoxDetail>2,232</FlowBoxDetail>
@@ -63,7 +101,7 @@ export default function MoreMyFlow() {
           </FlowBoxDetailBox>
 
           {/* 공유버튼 */}
-          <ShareImg>
+          <ShareImg onClick={OpenModal}>
             <img src={Share} alt="공유하기" />
           </ShareImg>
         </TitleBox>
@@ -132,7 +170,7 @@ export default function MoreMyFlow() {
           </FlowContainer>
 
           {/* 삭제 수정 버튼 */}
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", marginBottom:'131px' }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", marginBottom: "131px" }}>
             <Delete>삭제</Delete>
             <Change>수정</Change>
           </div>
@@ -141,6 +179,95 @@ export default function MoreMyFlow() {
     </div>
   );
 }
+
+// 모달창
+const ModalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(70, 76, 82, 0.5);
+  z-index: 3;
+`;
+
+const ModalBox = styled.div`
+  width: 440px;
+  height: 435px;
+  border-radius: 20px;
+  background: white;
+  position: fixed;
+  top: 215px;
+  left: 548px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalBoxDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+`;
+
+const CloseBtn = styled.div`
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  top: 20px;
+  left: 378px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const ModalTitle = styled.div`
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+`;
+
+const BeforeCopyBtn = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  width: 223px;
+  padding: 15px 34px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  background: #4036ed;
+  color: white;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+`;
+
+const AfterCopyBtn = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  height: 54px;
+  width: 223px;
+  padding: 15px 34px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 1px solid #4036ed;
+  background: white;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  color: #4036ed;
+  text-align: center;
+`;
 
 const TitleContainer = styled.div`
   width: 1536px;
@@ -195,7 +322,7 @@ const FlowName = styled.div`
 
 const FlowBoxDetailBox = styled.div`
   margin-left: 279px;
-  margin-top: -28px;
+  margin-top: 14px;
 `;
 
 const FlowBoxDetails = styled.div`

@@ -7,6 +7,7 @@ import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
 import Blank from "../../assets/scrapflow/blank.png";
 import { flowN } from "../../pages/ScrapFlow";
+import { useNavigate } from 'react-router-dom';
 
 export default function ScrapFlowBox() {
   // 스크랩 상태
@@ -15,6 +16,12 @@ export default function ScrapFlowBox() {
   const scrapping = () => {
     doScrap ? setDoScrap(false) : setDoScrap(true);
   };
+
+  // 자세히 보기
+  const navigate = useNavigate();
+  const moveToMoreInfo = ()=>{
+    navigate(`/flow/morewatchflow`)
+  }
 
   //flowN에 값에 따라 div 추가
   const divs = [];
@@ -63,7 +70,7 @@ export default function ScrapFlowBox() {
             <FlowBoxDetail>2,232</FlowBoxDetail>
           </FlowBoxDetails>
         </FlowBoxDetailBox>
-        <MoreBtn>자세히 보기</MoreBtn>
+        <MoreBtn onClick={moveToMoreInfo}>자세히 보기</MoreBtn>
       </MyFlowBoxChild>
     );
   }
