@@ -6,14 +6,18 @@ import write2 from '../assets/flowwrite/write_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
+import blankImg from "../assets/main/blankImg.png";
 // import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
 // import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx'
-import RecreationInfo from "../components/recreationInfo/RecreationInfo";
+import WriteRecreationInfo from "../components/flowwrite/WriteRecreationInfo.jsx";
+import RecommendRecreation from "../components/flowwrite/RecommendRecreation.jsx";
 
 export default function FlowWriteContent() {
   const navigate = useNavigate();
   const [modal, setModal] = useState(null);
+  const [flowTitle, setFlowTitle] = useState("");
+  const [time] = useState(10);
 
   const handleNextClick = () => {
     // Temporary condition to show WithoutSaving modal when Save button is clicked
@@ -27,11 +31,91 @@ export default function FlowWriteContent() {
     }
   };
 
+  const recreationData = [
+    {
+      index: 1,
+      title: "레크레이션 1",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 2,
+      title: "레크레이션 2",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 3,
+      title: "레크레이션 3",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 4,
+      title: "레크레이션 4",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 5,
+      title: "레크레이션 5",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 6,
+      title: "레크레이션 6",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 7,
+      title: "레크레이션 7",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 8,
+      title: "레크레이션 8",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 9,
+      title: "레크레이션 9",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+  ];
+
   // const handleNextClick = () => {
   //   navigate('/flow/my');
   // };
   const handleBeforeClick = () => {
     navigate('/flow/write/recommend');
+  };
+
+  const handleFlowTitleChange = (e) => {
+    // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
+    setFlowTitle(e.target.value);
   };
 
     return (
@@ -68,6 +152,11 @@ export default function FlowWriteContent() {
                 <ContentSelectDetail>
                     추천 레크레이션
                 </ContentSelectDetail>
+                <RecommendRecreation content={recreationData} />
+                <ContentSelectDetail>
+                    즐겨찾는 레크레이션
+                </ContentSelectDetail>
+                <RecommendRecreation content={recreationData} /> {/* 컴포넌트 수정 예정 */}
               </FlowInfoBox>
             </FlowInfoContainer>
 
@@ -120,22 +209,33 @@ export default function FlowWriteContent() {
                 </ContentInfoDetail>
 
                 <ContentTitle>
-                    <div style={{ marginLeft: "38px"}}>일정플로우 제목</div>
+                  <div style={{ marginLeft: "38px" }}>일정플로우 제목</div>
                 </ContentTitle>
-                <ContentTitleInput type="text" placeholder="일정플로우의 제목을 입력해주세요.">
-                </ContentTitleInput>
+
+                {/* ContentTitleInput에서 플로우 제목을 입력받음 */}
+                <ContentTitleInput
+                  type="text"
+                  placeholder="일정플로우의 제목을 입력해주세요."
+                  value={flowTitle}
+                  onChange={handleFlowTitleChange}
+                />
 
                 <FlowContainer>
                   <div style={{ width: "393px", textAlign: "center" }}>
-                    <FlowTitle>플로우 제목</FlowTitle>
+                    {/* FlowTitle에 상태로부터 받은 값을 전달 */}
+                    <FlowTitle>{flowTitle || "플로우 제목"}</FlowTitle>
                   </div>
 
                   {/* 레크레이션 박스 */}
-                  <RecreationInfo time={10} num={1} />
-                  <RecreationInfo time={20} num={2} />
-                  <RecreationInfo time={10} num={3} />
-                  <RecreationInfo time={40} num={4} />
-                  <RecreationInfo time={30} num={5} />
+                  <WriteRecreationInfo time={time} num={1} />
+                  <WriteRecreationInfo time={time} num={2} />
+                  <WriteRecreationInfo time={time} num={3} />
+                  <WriteRecreationInfo time={time} num={4} />
+                  <WriteRecreationInfo time={time} num={5} />
+
+                  <AddFlowButton>
+                    +
+                  </AddFlowButton>
                 </FlowContainer>
               </FlowInfoBox>
             </FlowInfoContainer>
@@ -255,7 +355,6 @@ const ContentSelectDetail = styled.div`
   border-radius: 20px;
   background: #F7F8F9;
   margin-left: 40px;
-  margin-bottom: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -319,6 +418,25 @@ const FlowTitle = styled.div`
   margin-bottom: 59px;
   font-size: 24px;
   font-weight: 700;
+`;
+
+const AddFlowButton = styled.button`
+  width: 246px;
+  height: 53px;
+  box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15);
+  border: none;
+  border-radius: 20px;
+  margin-top: 59px;
+  margin-left: 75px;
+  margin-bottom: 29px;
+  font-size: 30px;
+  background-color: #F7F8F9;
+
+  &:hover {
+    background-color: #5950ED;
+    color: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15);
+  }
 `;
 
 const LastButton = styled.button`
