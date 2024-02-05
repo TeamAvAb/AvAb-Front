@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import character from "../assets/main/loginCharacter.png";
 import blankImg from "../assets/main/blankImg.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
@@ -27,7 +28,7 @@ export default function Login({ handleLoginStatus, handleLoginModal }) {
               간편 로그인하기
             </Button>
           </Text>
-          <img src={blankImg} style={{ width: "249px", height: "249px" }} />
+          <img src={character} style={{ width: "249px", height: "286px" }} />
         </Content>
         <Controls>
           <Control onClick={() => setTemporaryClose((prev) => !prev)}>
