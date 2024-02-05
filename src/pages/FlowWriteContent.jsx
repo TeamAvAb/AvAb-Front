@@ -6,16 +6,18 @@ import write2 from '../assets/flowwrite/write_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
+import blankImg from "../assets/main/blankImg.png";
 // import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
 // import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx'
 import WriteRecreationInfo from "../components/flowwrite/WriteRecreationInfo.jsx";
+import RecommendRecreation from "../components/flowwrite/RecommendRecreation.jsx";
 
 export default function FlowWriteContent() {
   const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const [flowTitle, setFlowTitle] = useState("");
-  const [time, setTime] = useState(10);
+  const [time] = useState(10);
 
   const handleNextClick = () => {
     // Temporary condition to show WithoutSaving modal when Save button is clicked
@@ -28,6 +30,81 @@ export default function FlowWriteContent() {
       navigate('/flow/my');
     }
   };
+
+  const recreationData = [
+    {
+      index: 1,
+      title: "레크레이션 1",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 2,
+      title: "레크레이션 2",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 3,
+      title: "레크레이션 3",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 4,
+      title: "레크레이션 4",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 5,
+      title: "레크레이션 5",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 6,
+      title: "레크레이션 6",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 7,
+      title: "레크레이션 7",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 8,
+      title: "레크레이션 8",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+    {
+      index: 9,
+      title: "레크레이션 9",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      add: "추가하기",
+      rate: "4.5",
+    },
+  ];
 
   // const handleNextClick = () => {
   //   navigate('/flow/my');
@@ -75,6 +152,11 @@ export default function FlowWriteContent() {
                 <ContentSelectDetail>
                     추천 레크레이션
                 </ContentSelectDetail>
+                <RecommendRecreation content={recreationData} />
+                <ContentSelectDetail>
+                    즐겨찾는 레크레이션
+                </ContentSelectDetail>
+                <RecommendRecreation content={recreationData} /> {/* 컴포넌트 수정 예정 */}
               </FlowInfoBox>
             </FlowInfoContainer>
 
@@ -273,7 +355,6 @@ const ContentSelectDetail = styled.div`
   border-radius: 20px;
   background: #F7F8F9;
   margin-left: 40px;
-  margin-bottom: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
