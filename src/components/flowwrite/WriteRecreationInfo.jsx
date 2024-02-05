@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import fix from "../../assets/flowwrite/fix_flow_write.png";
 
-export default function WriteRecreationInfo({ time, num}) {
+export default function WriteRecreationInfo({ num }) {
     const [title, setTitle] = useState("");
+    const [time, setTime] = useState(10);
 
-  const handleInputChange = (e) => {
+  const handleTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 title 상태 업데이트
     setTitle(e.target.value);
+  };
+
+  const handleTimeChange = (e) => {
+    // 사용자 입력이 변경될 때마다 time 상태 업데이트
+    setTime(e.target.value);
   };
 
   return (
@@ -19,12 +26,13 @@ export default function WriteRecreationInfo({ time, num}) {
           <RecreationTitleInput
             type="text"
             value={title}
-            onChange={handleInputChange}
+            onChange={handleTitleChange}
             placeholder="레크레이션 제목 입력"
             style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700", border: "none", outline: "none" }}
           />
+          <img src={fix} alt="Fix" style={{ width: '24px', height: '24px' }} />
         </RecreationTitle>
-
+        
         {/* 레크레이션 키워드 */}
         <KeywordBox>
           <Keyword>키워드 1</Keyword>
@@ -35,7 +43,14 @@ export default function WriteRecreationInfo({ time, num}) {
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
           <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "400", color: "#9FA4A9" }}>플레이까지</div>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>{time}분</div>
+          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#9FA4A9"}}>
+          <PlayTimeInput
+            type="text"
+            value={time}
+            onChange={handleTimeChange}
+            style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#9FA4A9", border: "none", outline: "none" }}
+            />분
+        </div>
         </PlayTime>
       </InfoBox>
     </div>
@@ -44,8 +59,8 @@ export default function WriteRecreationInfo({ time, num}) {
 
 const Line = styled.div`
   width: 0px;
-  height: ${(props) => `${(props.time / 10) * 119.004}px`};
-  border: 8px solid #b1beff;
+  height: ${(props) => `${Math.max((props.time / 10) * 119.004, 119.004)}px`};
+  border: 5px solid #b1beff;
   border-radius: 20px;
   margin-right: 21px;
 `;
@@ -55,7 +70,8 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) => `${-(props.time / 10 - 1) * 119.04}px`};
+  top: ${(props) => `${Math.min(-(props.time / 10 - 1) * 119.04, 0)}px`};
+  min-height: 119.004px;
 `;
 
 const RecreationTitle = styled.div`
@@ -73,6 +89,18 @@ const RecreationTitleInput = styled.input`
     color: transparent;
   }
 `;
+
+const PlayTimeInput = styled.input`
+  width: 20px;
+  &::placeholder {
+    color: #9FA4A9;
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
+`;
+
 
 const Number = styled.div`
   width: 42px;
