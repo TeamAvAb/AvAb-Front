@@ -137,11 +137,12 @@ export default function Carousel({ content }) {
     }
   };
 
+  let bannerWidth = "957px";
   return (
-    <StyledSlider {...settings}>
+    <StyledSlider {...settings} bannerWidth={bannerWidth}>
       {content &&
         content.map((banner) => (
-          <div key={banner.index} style={{ width: "957px" }}>
+          <div key={banner.index} style={{ width: bannerWidth }}>
             <Banner color={getColor(banner.index)}>
               <Left>
                 <Title color={getColor(banner.index)}>{banner.title}</Title>
@@ -170,7 +171,7 @@ const StyledSlider = styled(Slider)`
     gap: 100px;
   }
   .slick-slide {
-    transform: translateX(290px);
+    transform: translateX(calc((100vw - ${(props) => props.bannerWidth}) / 2));
   }
   .slick-arrow {
     position: absolute;
@@ -180,10 +181,10 @@ const StyledSlider = styled(Slider)`
     display: none;
   }
   .slick-prev {
-    left: 263px;
+    left: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 27px);
   }
   .slick-next {
-    right: 247px;
+    right: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 22px);
   }
   .slick-dots {
     position: absolute;
@@ -200,6 +201,8 @@ const StyledSlider = styled(Slider)`
   .slick-dots li.slick-active button:before {
     content: url(${currentDotImg});
   }
+
+  margin-bottom: 140px;
 `;
 
 const Banner = styled.div`

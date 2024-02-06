@@ -63,12 +63,19 @@ function App() {
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (currentPath.startsWith("/flow/write")) {
+    if (currentPath === "/flow/watch" ||
+        currentPath === "/flow/my" ||
+        currentPath === "/recreation/detail"
+    ) {
       setSelectedFooter(<Footer2 />);
-    } else if (currentPath === "/mypage") {
-      setSelectedFooter(<Footer3 />);
-    } else {
+    } 
+    else if (currentPath === "/" || 
+        currentPath.startsWith("/search")
+    ) {
       setSelectedFooter(<Footer1 />);
+    } 
+    else {
+      setSelectedFooter(<Footer3 />);
     }
   }, [navigate]);
 

@@ -7,6 +7,7 @@ import writeSelect3 from '../assets/flowwrite/write_select_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
 import fast from '../assets/flowwrite/fast.png';
+import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 
 import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
 
@@ -52,7 +53,7 @@ export default function FlowWriteRecommend() {
           <FlowwriteRecommend>
             <div>
             <AdditionalExplain>
-              <span>입력한 내용을 기반으로 한 추천 플로우입니다.</span>
+              <span>입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를 <strong>클릭</strong>하여 저장해주세요.</span>
             </AdditionalExplain>
               <Recommend1 selected={selectedButton === '1안'}>
                 <Select1Button
@@ -61,6 +62,16 @@ export default function FlowWriteRecommend() {
                 >
                 1안
                 </Select1Button>
+                  <div style={{ width: "393px", textAlign: "center" }}>
+                    <FlowTitle>플로우 제목</FlowTitle>
+                  </div>
+
+                  {/* 레크레이션 박스 */}
+                  <RecreationInfo time={10} num={1} />
+                  <RecreationInfo time={20} num={2} />
+                  <RecreationInfo time={10} num={3} />
+                  <RecreationInfo time={10} num={4} />
+                  <RecreationInfo time={20} num={5} />
               </Recommend1>
               <Recommend2 selected={selectedButton === '2안'}>
                <Select2Button
@@ -69,8 +80,18 @@ export default function FlowWriteRecommend() {
                >
                 2안
                </Select2Button>
+               <div style={{ width: "393px", textAlign: "center" }}>
+                    <FlowTitle>플로우 제목</FlowTitle>
+                  </div>
+
+                  {/* 레크레이션 박스 */}
+                  <RecreationInfo time={10} num={1} />
+                  <RecreationInfo time={20} num={2} />
+                  <RecreationInfo time={10} num={3} />
+                  <RecreationInfo time={10} num={4} />
+                  <RecreationInfo time={20} num={5} />
               </Recommend2>
-            <CardGoContent>
+            <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>
                 <CardGoTextContainer>
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
@@ -127,19 +148,19 @@ const ProgressBarItem = styled.div`
   span {
     color: #cacdd2;
     font-size: 24px;
-    font-weight: 700;
   }
 `;
 
 const FlowwriteRecommend = styled.div`
   width: 1356px;
-  height: 1731px;
   background-color: #fff;
   border: 0.5px solid #cacdd2;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   margin-bottom: 45px;
+  justify-content: space-between;
+  padding-bottom: 40px;
 `;
 
 const AdditionalExplain = styled.div`
@@ -163,19 +184,20 @@ const AdditionalExplain = styled.div`
 `;
 
 const RecommendBase = styled.div`
-  height: 1034px;
+  box-sizing: border-box;
+  height: 1092px;
   border-radius: 20px;
   border: ${({ selected }) => (selected ? '2.5px solid #4036ED' : '0.5px solid #9FA4A9')};
   background: #fff;
   display: inline-block;
   align-items: center;
-  font-size: 24px;
-  font-weight: 700;
   padding-top: 30px;
+  padding-left: 65px;
   box-shadow: ${({ selected }) => (selected ? '0px 0px 20px 0px rgba(27, 29, 31, 0.15)' : 'none')};
 `;
 
 const Select1Button = styled.button`
+  position: relative;
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
@@ -183,6 +205,7 @@ const Select1Button = styled.button`
   border-radius: 50px;
   font-size: 20px;
   font-weight: 700;
+  align-items: center;
   color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
@@ -200,6 +223,7 @@ const Recommend1 = styled(RecommendBase)`
 `;
 
 const Select2Button = styled.button`
+  position: relative;
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
@@ -213,7 +237,6 @@ const Select2Button = styled.button`
 
 const Recommend2 = styled(RecommendBase)`
   width: 552px;
-  flex-grow: 1;
   margin-left: 25px;
   position: relative;
 
@@ -221,6 +244,12 @@ const Recommend2 = styled(RecommendBase)`
     position: absolute;
     left: 433px;
   }
+`;
+
+const FlowTitle = styled.div`
+  margin-bottom: 59px;
+  font-size: 24px;
+  font-weight: 700;
 `;
 
 const CardGoContent = styled.div`

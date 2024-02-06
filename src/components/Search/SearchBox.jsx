@@ -67,20 +67,12 @@ export default function Search({}) {
     setMenu(!menu);
   };
 
-  const onRemove = (category, id) => {
-    if (category === keywordOptions) {
-      setKeyword(
-        keyword.filter((el) => {
-          return el !== id;
-        })
-      );
-    } else if (category === purposeOptions) {
-      setPurpose(
-        purpose.filter((el) => {
-          return el !== id;
-        })
-      );
-    }
+  const onRemove = (id) => {
+    setKeyword(
+      keyword.filter((el) => {
+        return el !== id;
+      })
+    );
   };
 
   // 모달창
@@ -98,7 +90,7 @@ export default function Search({}) {
             style={{ width: "15px", height: "15px" }}
             onClick={(e) => {
               e.stopPropagation();
-              onRemove(label, el);
+              onRemove(el);
             }}
           />
         </SelectedKeyword>
@@ -181,17 +173,6 @@ export default function Search({}) {
           </Filter>
         </Filters>
         <Filters>
-          <More isopen={menu}>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <img src={hrImg} />
-            </div>
-
             {/* 목적 */}
             <Filter>
               <LabelName htmlFor="purpose">목적</LabelName>
@@ -229,24 +210,7 @@ export default function Search({}) {
                 selectedOption={age}
               />
             </Filter>
-          </More>
         </Filters>
-        <Menu onClick={openMenu}>
-          {menu ? (
-            <>
-              필터 접기
-              <img style={{ width: "24px", height: "24px" }} src={arrowUpImg} />
-            </>
-          ) : (
-            <>
-              필터 더보기
-              <img
-                style={{ width: "24px", height: "24px" }}
-                src={arrowDownImg}
-              />
-            </>
-          )}
-        </Menu>
       </SearchBox>
       <SearchBtns>
         <ResetBtn onClick={reset}>초기화</ResetBtn>
@@ -311,7 +275,6 @@ const SearchWord = styled.input`
   font-size: 20px;
   transition: max-height 0.3s ease-out;
   border: 0;
-  outline: none;
 `;
 
 // 필터링 박스
