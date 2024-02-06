@@ -25,7 +25,7 @@ export default function Header({
     navigate(`/search/list`);
   };
   const ToFlowWrite = () => {
-    navigate(`flow/watch`);
+    navigate(`/flow/watch`);
   };
   const ToMypage = () => {
     navigate(`/mypage`);
