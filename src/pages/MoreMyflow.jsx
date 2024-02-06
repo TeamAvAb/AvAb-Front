@@ -35,7 +35,7 @@ export default function MoreMyFlow() {
   };
 
   return (
-    <div style={{ width: "1536px", backgroundColor: "#E9EBED" }}>
+    <div style={{ backgroundColor: "#E9EBED" }}>
       {/* 모달창 */}
       {modal ? (
         <ModalContainer>
@@ -270,7 +270,6 @@ const AfterCopyBtn = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 1536px;
   height: 403px;
   background-color: #8896df;
   display: flex;
@@ -364,7 +363,8 @@ const FlowInfoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
-  width: 1536px;
+  position: relative;
+  left: 401.5px;
 `;
 
 const FlowInfoBox = styled.div`

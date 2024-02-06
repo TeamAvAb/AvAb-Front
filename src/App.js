@@ -18,6 +18,7 @@ import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
 import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기
 import MoreMyflow from "./pages/MoreMyflow"; // 내가 만든 일정플로우 더보기
 import MoreWatchFlow from "./pages/MoreWatchFlow"; // 다른 사람이 만든 일정플로우 더보기
+import MoreScrapFlow from "./pages/MoreScrapFlow"; // 스크랩 한 일정플로우 더보기
 import Login from "./components/Login";
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 function App() {
@@ -53,6 +54,8 @@ function App() {
       <Route path="/flow/moremyflow" element={<MoreMyflow />} />
       {/* 다른 사람이 만든 일정플로우 더보기 */}
       <Route path="/flow/morewatchflow" element={<MoreWatchFlow />} />
+      {/* 스크랩 한 일정플로우 더보기 */}
+      <Route path="/flow/morescrapflow" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
       <Route path="/recreation/detail" element={<RecreationDetail />} />
     </Routes>
