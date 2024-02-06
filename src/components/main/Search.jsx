@@ -67,12 +67,20 @@ export default function Search({}) {
     setMenu(!menu);
   };
 
-  const onRemove = (id) => {
-    setKeyword(
-      keyword.filter((el) => {
-        return el !== id;
-      })
-    );
+  const onRemove = (category, id) => {
+    if (category === keywordOptions) {
+      setKeyword(
+        keyword.filter((el) => {
+          return el !== id;
+        })
+      );
+    } else if (category === purposeOptions) {
+      setPurpose(
+        purpose.filter((el) => {
+          return el !== id;
+        })
+      );
+    }
   };
 
   // 모달창
@@ -90,7 +98,7 @@ export default function Search({}) {
             style={{ width: "15px", height: "15px" }}
             onClick={(e) => {
               e.stopPropagation();
-              onRemove(el);
+              onRemove(label, el);
             }}
           />
         </SelectedKeyword>
@@ -303,6 +311,7 @@ const SearchWord = styled.input`
   font-size: 20px;
   transition: max-height 0.3s ease-out;
   border: 0;
+  outline: none;
 `;
 
 // 필터링 박스

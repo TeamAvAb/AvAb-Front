@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Search from "../components/main/Search";
-import blankImg from "../assets/main/blankImg.png";
-import plusIconImg from "../assets/main/plusIcon.svg";
 import PopularCarousel from "../components/main/PopularCarousel";
 import Carousel from "../components/main/Carousel";
+
+import character from "../assets/main/character.png";
+import blankImg from "../assets/main/blankImg.png";
+import plusIconImg from "../assets/main/plusIcon.svg";
+
 export default function Main() {
+  const navigator = useNavigate();
   const banner = [
     { index: 1, title: "제목1", description: "설명설명설명", img: null },
     { index: 2, title: "제목2", description: "설명설명설명", img: null },
@@ -97,14 +102,21 @@ export default function Main() {
             을 <br />
             검색해보세요!
           </Comment>
-          <img src={blankImg} style={{ width: "328px", height: "328px" }} />
+          <img
+            src={character}
+            style={{
+              width: "370px",
+              height: "308px",
+              marginRight: "120.5px",
+            }}
+          />
         </Recommend>
         <Search />
 
         <Popular>
           <PopularHeader>
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
-            <More>
+            <More onClick={() => navigator(`/search/list`)}>
               더보기
               <img
                 src={plusIconImg}
@@ -132,11 +144,12 @@ const Container = styled.div`
 const Recommend = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 56px;
+  align-items: end;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   font-size: 72px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 8px;
+  margin-bottom: 90px;
+  margin-left: 59.5px;
 `;
 const Comment = styled.div`
   width: 434px;
