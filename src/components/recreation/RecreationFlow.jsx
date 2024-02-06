@@ -8,8 +8,8 @@ const RecreationFlow = forwardRef((props, ref) => {
 
       <SubText>해당 레크레이션과 관련된 플로우를 제공해드려요!</SubText>
       <FlowBoxWrap>
-        <FlowBox num={1}></FlowBox>
-        <FlowBox num={2}></FlowBox>
+        <FlowBox num={1} marginRight="110px"></FlowBox>
+        <FlowBox num={2} marginRight="0px"></FlowBox>
       </FlowBoxWrap>
     </RecreationFlowContainer>
   );
@@ -40,7 +40,7 @@ const SubText = styled.div`
 
 const FlowBoxWrap = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export default RecreationFlow;

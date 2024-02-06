@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/Search/SearchBox';
+import recreationData from '../components/Search/RecreationData';
 import KeywordModal from '../components/main/KeywordModal';
 import starIcon from "../assets/mypage/mingcute_star-fill.svg";
 import YellowHeart from "../assets/mypage/YellowHeart.svg"
@@ -12,23 +14,20 @@ import RightButton from "../assets/myflow/moveRight.png";
 export default function Main() {
   const [keywordModal, setKeywordModal] = useState(false);
   const [purposeModal, setPurposeModal] = useState(false);
-  const [isHeartFilled, setHeartFilled] = useState(false);
-  const toggleHeart = () => {
-    setHeartFilled(!isHeartFilled);
+  const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
+  const navigate = useNavigate();
+  
+  const ToRecreationDetail = () => {
+    navigate(`/recreation/detail`);
   };
-  const recreationData = [
-    {
-      more: '자세히 보기 >',
-      title: '레크레이션 제목',
-      keyword1: '키워드1',
-      keyword2: '키워드2',
-      keyword3: '키워드3',
-      rate: '4.5',
-      starSrc: starIcon,
-      imgSrc: none,
-      hashtag: '#해시태그'
+  const toggleHeart = (index) => {
+    if (selectedRecreationIndex === index) {
+      setSelectedRecreationIndex(null);
+    } else {
+      setSelectedRecreationIndex(index);
     }
-  ]
+  };
+  
   return (
     <>
       <Container>
@@ -39,7 +38,7 @@ export default function Main() {
           <PopularHeader>레크레이션 찾기</PopularHeader>
           <RecreationMain>
             {recreationData.map((recreation, index) => 
-              Array.from({length: 9}).map((_, i) => 
+              Array.from({length: 1}).map((_, i) => 
                 <Categories key={`${index}-${i}`}>
                   <RecreationExplain>
                     <Hashtag>{recreation.hashtag}</Hashtag>
@@ -55,9 +54,12 @@ export default function Main() {
                     </KeyWords>
                     <ImgSpace>
                       <ExImg src={recreation.imgSrc}/>
-                      <HeartImg src={isHeartFilled ? YellowHeart : GrayHeart} onClick={toggleHeart} />
+                      <HeartImg
+                        src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
+                        onClick={() => toggleHeart(index)}
+                      />
                     </ImgSpace>
-                    <Explain>
+                    <Explain onClick={ToRecreationDetail}>
                       <Section>{recreation.more}</Section>
                     </Explain>
                   </RecreationExplain>
@@ -225,6 +227,7 @@ const HeartImg = styled.img`
   width: 28px;
   margin-left: 50px;
   margin-top: 120px;
+  cursor: pointer;
 `;
 
 const Explain = styled.div`

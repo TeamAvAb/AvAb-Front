@@ -7,10 +7,8 @@ import RadioInput from "./RadioInput";
 
 import searchIconImg from "../../assets/main/searchIcon.svg";
 import keywordImg from "../../assets/main/checkIcon.svg";
-import hrImg from "../../assets/main/hr.svg";
 import deleteImg from "../../assets/main/deleteIcon.svg";
-import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
-import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
+import none from '../../assets/Footer/none.png'
 
 export default function Search({}) {
   // 검색어 및 키워드 저장
@@ -63,9 +61,6 @@ export default function Search({}) {
 
   // 필터 더보기 메뉴
   const [menu, setMenu] = useState(false);
-  const openMenu = () => {
-    setMenu(!menu);
-  };
 
   const onRemove = (id) => {
     setKeyword(
@@ -171,6 +166,7 @@ export default function Search({}) {
               selectedOption={place}
             />
           </Filter>
+          <MiddleLine/>
         </Filters>
         <Filters>
             {/* 목적 */}
@@ -212,6 +208,7 @@ export default function Search({}) {
             </Filter>
         </Filters>
       </SearchBox>
+      <ImgBox src={none}/>
       <SearchBtns>
         <ResetBtn onClick={reset}>초기화</ResetBtn>
         <SearchBtn>필터 적용</SearchBtn>
@@ -237,6 +234,19 @@ export default function Search({}) {
     </SearchEngine>
   );
 }
+
+const ImgBox = styled.img`
+  position: absolute;
+  width: 235px;
+  margin-top: 120px;
+  margin-left: 1120px;
+`;
+
+const MiddleLine = styled.hr`
+  width: 200px;
+  border: 1px dashed white;
+  margin-left: 38%;
+`;
 
 // 스타일링
 const SearchEngine = styled.div`
@@ -366,31 +376,6 @@ const Input = styled.input`
 
     appearance: none;
   }
-`;
-
-const More = styled.div`
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 22px;
-  overflow: hidden;
-  opacity: ${(props) => (props.isopen ? "1" : "0")};
-  visibility: ${(props) => (props.isopen ? "visible" : "hidden")};
-  max-height: ${({ isopen }) => (isopen ? "1000px" : "0")};
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-`;
-
-const Menu = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 69px;
-  border-radius: 0px 0px 20px 20px;
-  background: var(--main-scale-b-1-beff, #b1beff);
-  font-size: 20px;
-  font-weight: 700;
-  gap: 8px;
 `;
 
 // 버튼

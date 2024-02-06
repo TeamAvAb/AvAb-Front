@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
-export default function FlowBox({ num }) {
+export default function FlowBox({ num, marginRight }) {
   const kewords = ["키워드1", "키워드2", "키워드3"];
   return (
-    <FlowBoxWrap>
+    <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
         <FlowTitle>플로우 제목</FlowTitle>
@@ -49,11 +49,12 @@ const FlowTitle = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 700;
-  margin: 0px 160px 0px 95px;
+  margin: 0px 150px 0px 85px;
 `;
 
 const NumberBox = styled.div`
   display: inline-flex;
+  width: 30px;
   height: 29px;
   padding: 2px 31px;
   justify-content: center;
