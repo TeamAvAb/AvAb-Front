@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import recreationMainIllustration from "../../assets/recreation/recreationMainIllustration.png";
 import RecreationContentBox from "./RecreationContentBox";
-
+import viewIcon from "../../assets/recreation/viewIcon.svg";
 export default function RecreationInfo() {
   const hashtag = "#해시태그";
   const recreationTitle = "레크레이션 제목";
@@ -13,12 +13,18 @@ export default function RecreationInfo() {
     <RecreationTopMenuContainer>
       <MainImage src={recreationMainIllustration}></MainImage>
       {/* 레크레이션 정보 */}
-      <RecreationContentBox
-        hashtag={hashtag}
-        recreationTitle={recreationTitle}
-        kewords={kewords}
-        starRate={starRate}
-      />
+      <div>
+        <RecreationContentBox
+          hashtag={hashtag}
+          recreationTitle={recreationTitle}
+          kewords={kewords}
+          starRate={starRate}
+        />
+        <ViewBox>
+          <ViewIcon src={viewIcon} />
+          <ViewText>2,232</ViewText>
+        </ViewBox>
+      </div>
     </RecreationTopMenuContainer>
   );
 }
@@ -30,6 +36,22 @@ const RecreationTopMenuContainer = styled.div`
   border-top-left-radius: 20px;
   display: flex;
   align-items: center;
+`;
+const ViewBox = styled.div`
+  margin-top: 51px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+`;
+const ViewIcon = styled.img`
+  margin-right: 8px;
+  float: right;
+`;
+const ViewText = styled.div`
+  color: #26282b;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 400;
 `;
 
 const MainImage = styled.img`
