@@ -7,7 +7,7 @@ import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
 import Blank from "../../assets/scrapflow/blank.png";
 import { flowN } from "../../pages/ScrapFlow";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function ScrapFlowBox() {
   // 스크랩 상태
@@ -19,9 +19,9 @@ export default function ScrapFlowBox() {
 
   // 자세히 보기
   const navigate = useNavigate();
-  const moveToMoreInfo = ()=>{
-    navigate(`/flow/morescrapflow`)
-  }
+  const moveToMoreInfo = () => {
+    navigate(`/flow/morescrapflow`);
+  };
 
   //flowN에 값에 따라 div 추가
   const divs = [];
@@ -76,7 +76,7 @@ export default function ScrapFlowBox() {
   }
 
   return (
-    <div style={{ marginTop: "230.65px", marginLeft: "-34px" }}>
+    <div>
       <MyFlowBoxParent>{divs}</MyFlowBoxParent>
     </div>
   );
