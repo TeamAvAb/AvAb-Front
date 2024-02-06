@@ -8,10 +8,10 @@ export default function Footer() {
     navigate(`/`);
   };
   const ToRecreation = () => {
-    navigate(`/recreation/detail`);
+    navigate(`/search/list`);
   };
   const ToFlowWrite = () => {
-    navigate(`/flow/write`);
+    navigate(`flow/watch`);
   };
   const ToMypage = () => {
     navigate(`/mypage`);
@@ -36,7 +36,6 @@ export default function Footer() {
 
 const FooterWrap = styled.footer`
   position: relative;
-  width: 1536px;
   height: 208px;
   background-color: #e9ebed;
   display: flex;

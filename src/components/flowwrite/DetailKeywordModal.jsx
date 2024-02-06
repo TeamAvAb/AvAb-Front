@@ -2,32 +2,32 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
-const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
-    console.log("Selected Keywords in WriteKeywordModal:", propSelectedKeywords);
-    const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
-    const keywordGroups = ['신년회', 'MT', '워크샵', '이벤트', '축제'];
+const DetailKeywordModal = ({ onClose, onSelectDetailKeywords, selectedKeywords: propSelectedDetailKeywords }) => {
+    console.log("Selected Keywords in DetailKeywordModal:", propSelectedDetailKeywords);
+    const [detailSelectedKeywords, setDetailSelectedKeywords] = useState([]);
+    const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
     
     const handleKeywordClick = (keyword) => {
       console.log(`Clicked keyword button with value: ${keyword}`);
-      if (internalSelectedKeywords.includes(keyword)) {
+      if (detailSelectedKeywords.includes(keyword)) {
         // 키워드가 이미 선택되었는지 확인
-        setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== keyword));
+        setDetailSelectedKeywords(detailSelectedKeywords.filter((selected) => selected !== keyword));
       } else {
         // 클릭을 기반으로 선택한 키워드 업데이트
-        setInternalSelectedKeywords([...internalSelectedKeywords, keyword]);
+        setDetailSelectedKeywords([...detailSelectedKeywords, keyword]);
       }
   };
 
-  const handleResetKeywords = () => {
+  const handleResetDetailKeywords = () => {
       // 선택된 키워드 리셋
-      setInternalSelectedKeywords([]);
+      setDetailSelectedKeywords([]);
   };
 
-  const handleSelectKeywords = () => {
-    console.log("Selected Keywords before update:", internalSelectedKeywords);
-    onSelectKeywords(internalSelectedKeywords);
-    console.log("Selected Keywords after update:", internalSelectedKeywords);
-    setInternalSelectedKeywords([]);
+  const handleSelectDetailKeywords = () => {
+    console.log("Selected Keywords before update:", detailSelectedKeywords);
+    onSelectDetailKeywords(detailSelectedKeywords);
+    console.log("Selected Keywords after update:", detailSelectedKeywords);
+    setDetailSelectedKeywords([]);
     onClose();
 };
 
@@ -35,31 +35,31 @@ const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: prop
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContent>
-        <KeywordWrap>
+        <DetailKeywordWrap>
       {keywordGroups.map((keyword) => (
-              <KeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
-                <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>{keyword}</KeywordSpan>
-              </KeywordButton>
+              <DetailKeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
+                <DetailKeywordSpan clicked={detailSelectedKeywords.includes(keyword)}>{keyword}</DetailKeywordSpan>
+              </DetailKeywordButton>
             ))}
-            </KeywordWrap>
+            </DetailKeywordWrap>
         <BottomContainer>
         <CloseButton onClick={onClose}>
             닫기
           </CloseButton>
-          <RechoiceButton onClick={handleResetKeywords}>
+          <RechoiceButton onClick={handleResetDetailKeywords}>
           <img src={rechoice} alt="Rechoice" style={{ width: '42px', height: '42px' }} />
           초기화
           </RechoiceButton>
-          <KeywordSelectButton onClick={handleSelectKeywords}>
+          <DetailKeywordSelectButton onClick={handleSelectDetailKeywords}>
             선택 완료
-          </KeywordSelectButton>
+          </DetailKeywordSelectButton>
         </BottomContainer>
       </ModalContent>
     </>
   );
 };
 
-export default PurposeKeywordModal;
+export default DetailKeywordModal;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -78,29 +78,30 @@ const ModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 760px;
-  height: 258px;
+  height: 288px;
   background-color: #FFF;
   border: 0.5px solid #CACDD2;
   border-radius: 20px;
   z-index: 1001; /* Ensure the modal is above the overlay */
 `;
 
-const KeywordWrap = styled.div`
-  padding-left: 69px;
+const DetailKeywordWrap = styled.div`
+  padding-left: 49px;
+  padding-top: 42px;
+  padding-bottom: 22px;
 `;
 
-const KeywordButton = styled.div`
+const DetailKeywordButton = styled.div`
   display: inline-block;
-  margin-top: 58px;
-  margin-bottom: 58px;
+  margin-bottom: 20px;
 `;
 
-const KeywordSpan = styled.span`
+const DetailKeywordSpan = styled.span`
   display: inline-flex;
-  padding: 16px 34px;
-  border-radius: 50px;
-  border: 1px solid #1B1D1F;
-  background-color: ${({ clicked }) => (clicked ? '#A0DDFF' : '#F7F8F9')};
+  padding: 10px 40px;
+  border-radius: 5px;
+  border: 1px solid #E9EBED;
+  background-color: ${({ clicked }) => (clicked ? '#A0DDFF' : '#E9EBED')};
   justify-content: center;
   align-items: center;
   display: flex;
@@ -114,8 +115,6 @@ const KeywordSpan = styled.span`
 const BottomContainer = styled.div`
   height: 70px;
   border-top: 0.5px solid var(--gray-scale-464-c-52, #464C52);
-  background: #FFF;
-
   display: flex;
   align-items: center;
 `;
@@ -154,7 +153,7 @@ const RechoiceButton = styled.button`
   align-items: center;
 `;
 
-const KeywordSelectButton = styled.button`
+const DetailKeywordSelectButton = styled.button`
     width: 138px;
     height: 54px;
     background-color: #4036ED;

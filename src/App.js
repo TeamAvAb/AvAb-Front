@@ -15,6 +15,9 @@ import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 
 import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
 import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
 import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
+import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기
+import MoreMyflow from "./pages/MoreMyflow"; // 내가 만든 일정플로우 더보기
+import MoreWatchFlow from "./pages/MoreWatchFlow"; // 다른 사람이 만든 일정플로우 더보기
 import Login from "./components/Login";
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 function App() {
@@ -24,59 +27,60 @@ function App() {
   const [loginModal, setLoginModal] = useState(false);
   const routes = (
     <Routes>
-      <Route path="/" element={<Main />} /> {/* 메인 */}
-      <Route path="/search" element={<Search />} /> {/* 검색 페이지 */}
-      <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
-      <Route path="/search/list" element={<SearchList />} />{" "}
+      {/* 메인 */}
+      <Route path="/" element={<Main />} />
+      {/* 검색 페이지 */}
+      <Route path="/search" element={<Search />} />
+      {/* 마이 페이지 */}
+      <Route path="/mypage" element={<MyPage />} />
       {/* 검색 리스트 페이지 */}
-      <Route path="/flow/write" element={<FlowWrite />} />{" "}
+      <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
-      <Route path="/flow/write/detail" element={<FlowWriteDetail />} />{" "}
+      <Route path="/flow/write" element={<FlowWrite />} />
       {/* 플로우 만들기 상세 페이지 */}
-      <Route
-        path="/flow/write/recommend"
-        element={<FlowWriteRecommend />}
-      />{" "}
+      <Route path="/flow/write/detail" element={<FlowWriteDetail />} />
       {/* 플로우 만들기 상세 페이지 */}
-      <Route path="/flow/write/content" element={<FlowWriteContent />} />{" "}
+      <Route path="/flow/write/recommend" element={<FlowWriteRecommend />} />
       {/* 플로우 만들기 상세 페이지 */}
-      <Route path="/flow/watch" element={<WatchFlow />} />{" "}
+      <Route path="/flow/write/content" element={<FlowWriteContent />} />
       {/* 플로우 구경하기 */}
-      <Route path="/flow/my" element={<MyFlow />} />{" "}
+      <Route path="/flow/watch" element={<WatchFlow />} />
       {/* 내 일정 플로우 페이지 */}
-      <Route
-        path="/recreation/detail/:recreationId"
-        element={<RecreationDetail />}
-      />{" "}
+      <Route path="/flow/my" element={<MyFlow />} />
+      {/* 스크랩 한 플로우 보기 */}
+      <Route path="/flow/scrap" element={<ScrapFlow />} />
+      {/* 내가 만든 일정플로우 더보기 */}
+      <Route path="/flow/moremyflow" element={<MoreMyflow />} />
+      {/* 다른 사람이 만든 일정플로우 더보기 */}
+      <Route path="/flow/morewatchflow" element={<MoreWatchFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
+      <Route path="/recreation/detail" element={<RecreationDetail />} />
     </Routes>
   );
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (currentPath.startsWith("/flow/write")) {
+    if (currentPath === "/flow/watch" ||
+        currentPath === "/flow/my" ||
+        currentPath === "/recreation/detail"
+    ) {
       setSelectedFooter(<Footer2 />);
-    } else if (currentPath === "/mypage") {
-      setSelectedFooter(<Footer3 />);
-    } else {
+    } 
+    else if (currentPath === "/" || 
+        currentPath.startsWith("/search")
+    ) {
       setSelectedFooter(<Footer1 />);
+    } 
+    else {
+      setSelectedFooter(<Footer3 />);
     }
   }, [navigate]);
 
   return (
     <div className="App">
       <GlobalStyle />
-      <Header
-        isLoggedIn={isLoggedIn}
-        handleLoginStatus={setIsLoggedIn}
-        handleLoginModal={setLoginModal}
-      />
-      {loginModal ? (
-        <Login
-          handleLoginStatus={setIsLoggedIn}
-          handleLoginModal={setLoginModal}
-        />
-      ) : null}
+      <Header isLoggedIn={isLoggedIn} handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} />
+      {loginModal ? <Login handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} /> : null}
       {routes}
       {selectedFooter}
     </div>

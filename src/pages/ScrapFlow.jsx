@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import blankImg from "../assets/watchflow/blank.png";
-import Flow from "../components/flow/FlowBox.jsx";
-import LeftButton from "../assets/watchflow/moveLeft.png";
-import RightButton from "../assets/watchflow/moveRight.png";
+import blankImg from "../assets/myflow/blank.png";
+import LeftButton from "../assets/myflow/moveLeft.png";
+import RightButton from "../assets/myflow/moveRight.png";
 import { useNavigate } from "react-router-dom";
+import ScrapFlowBox from "../components/flow/ScrapFlowBox";
 
-export default function WatchFlow() {
+// 스크랩 한 일정플로우 개수에 따른 렌더링 화면 확인용
+export const flowN = 2;
+
+export default function ScrapFlow() {
   const navigate = useNavigate();
+  const moveToWatch = () => {
+    navigate(`/flow/watch`);
+  };
   const moveToMy = () => {
     navigate(`/flow/my`);
-  };
-  const moveToScrap = () => {
-    navigate(`/flow/scrap`);
   };
 
   return (
@@ -20,12 +23,12 @@ export default function WatchFlow() {
       {/* 플로우 왼쪽 메뉴바 */}
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>플로우 구경하기</MyFlowMenuBox>
+        <MyFlowMenuBox onClick={moveToWatch}>플로우 구경하기</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
-        <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
-      {/* 플로우 구경하기 */}
+      {/* 내가 만든 일정플로우 - Title */}
       <MyFlowContainer>
         <MyFlowBoxContainer>
           <MyFlowBoxImage src={blankImg} />
@@ -34,8 +37,20 @@ export default function WatchFlow() {
           </TitleBox>
         </MyFlowBoxContainer>
 
-        {/* 플로우 데이터 불러온 부분 - Component */}
-        <Flow />
+        {/* 내가 만든 일정플로우 - Grid */}
+        {flowN ? (
+          <ScrapFlowBox />
+        ) : (
+          <MyFlowNoneBox>
+            <MyFlowNoneImg src={blankImg} />
+            <MyFlowNoneDetail>
+              <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
+              <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
+              </div>
+            </MyFlowNoneDetail>
+          </MyFlowNoneBox>
+        )}
 
         {/* 페이지번호 */}
         <PageNumberContainer>
@@ -82,6 +97,8 @@ const MyFlowMenuTitle = styled.div`
 
 const MyFlowMenuBox = styled.div`
   border: 0.5px solid #cacdd2;
+  border-right: 0px;
+  border-left: 0px;
   text-align: center;
   justify-content: center;
   padding: 1.5vh 3vh;
@@ -99,7 +116,7 @@ const MyFlowContainer = styled.div`
   position: relative;
 `;
 
-// 일정플로우 만들기 부분
+// 내가 만든 일정 플로우 - Title
 const MyFlowBoxContainer = styled.div`
   display: flex;
 `;
@@ -108,6 +125,9 @@ const MyFlowBoxImage = styled.img`
   width: 199.65px;
   height: 199.65px;
   z-index: 2;
+  position: absolute;
+  top: 30px;
+  left: 126px;
 `;
 
 const TitleBox = styled.div`
@@ -136,6 +156,27 @@ const MyFlowBoxTitle = styled.div`
   height: 57px;
   font-weight: bold;
   font-size: 47px;
+`;
+
+// 내가 만든 일정 플로우 - None
+const MyFlowNoneBox = styled.div`
+  width: 315px;
+  top: 237px;
+  margin-top: 237px;
+  margin-left: 286.5px;
+  text-align: center;
+`;
+
+const MyFlowNoneImg = styled.img`
+  width: 120px;
+  height: 120px;
+`;
+
+const MyFlowNoneDetail = styled.div`
+  width: 315px;
+  height: 85px;
+  margin-top: 40px;
+  text-align: center;
 `;
 
 // 페이지 번호
