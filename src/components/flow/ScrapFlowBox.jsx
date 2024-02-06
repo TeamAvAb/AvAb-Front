@@ -20,7 +20,7 @@ export default function ScrapFlowBox() {
   // 자세히 보기
   const navigate = useNavigate();
   const moveToMoreInfo = ()=>{
-    navigate(`/flow/morewatchflow`)
+    navigate(`/flow/morescrapflow`)
   }
 
   //flowN에 값에 따라 div 추가

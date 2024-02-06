@@ -17,6 +17,9 @@ export default function MyFlow() {
   const moveToScrap = () => {
     navigate(`/flow/scrap`);
   };
+  const moveToMakeFlow = ()=>{
+    navigate(`/flow/write`)
+  }
 
   return (
     <MyFlowWrap>
@@ -33,7 +36,7 @@ export default function MyFlow() {
         <MyFlowBoxContainer>
           <MyFlowBoxImage src={blankImg} />
           <TitleBox>
-            <MyFlowBoxTitle>일정플로우 만들기</MyFlowBoxTitle>
+            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
           </TitleBox>
         </MyFlowBoxContainer>
 
@@ -79,7 +82,6 @@ export default function MyFlow() {
 const MyFlowWrap = styled.div`
   display: flex;
   background-color: #f7f8f9;
-  width: 1536px;
   height: 100%;
 `;
 
