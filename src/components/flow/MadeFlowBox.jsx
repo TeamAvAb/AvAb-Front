@@ -74,7 +74,7 @@ export default function MadeFlowBox() {
   }
 
   return (
-    <div style={{ marginTop: "230.65px", marginLeft: "-34px" }}>
+    <div>
       {/* 모달창 */}
       {del ? (
         <ModalContainer>

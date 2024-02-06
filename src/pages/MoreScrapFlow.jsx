@@ -29,7 +29,7 @@ export default function MoreScrapFlow() {
   };
 
   return (
-    <div style={{backgroundColor: "#E9EBED" }}>
+    <div style={{ backgroundColor: "#E9EBED" }}>
       {/* 모달창 */}
       {modal ? (
         <ModalContainer>
@@ -58,11 +58,7 @@ export default function MoreScrapFlow() {
       )}
 
       <TitleContainer>
-        <img
-          src={Blank}
-          alt="플로우사진"
-          style={{ width: "250px", height: "250px", marginLeft: "227px", marginTop: "86px" }}
-        />
+        <img src={Blank} alt="플로우사진" style={{ width: "250px", height: "250px", marginTop: "86px" }} />
         <TitleBox>
           <DetailTitleBox>
             <KeyWord>신년회</KeyWord>
@@ -185,7 +181,7 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(70, 76, 82, 0.5);
-  z-index: 3;
+  z-index: 999;
 `;
 
 const ModalBox = styled.div`
@@ -195,7 +191,8 @@ const ModalBox = styled.div`
   background: white;
   position: fixed;
   top: 215px;
-  left: 548px;
+  left: 50%;
+  transform: translate(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -267,15 +264,16 @@ const TitleContainer = styled.div`
   height: 403px;
   background-color: #8896df;
   display: flex;
+  justify-content: center;
 `;
 
 const TitleBox = styled.div`
   width: 372px;
   height: 251px;
   gap: -24px;
-  position: absolute;
-  left: 778px;
   margin-top: 86px;
+  margin-left: 251px;
+  position: relative;
 `;
 
 const DetailTitleBox = styled.div`
@@ -352,13 +350,11 @@ const ShareImg = styled.div`
 `;
 
 const FlowInfoContainer = styled.div`
-  height: 100%;
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 40px;
-  position: relative;
-  left: 401.5px;
 `;
 
 const FlowInfoBox = styled.div`
