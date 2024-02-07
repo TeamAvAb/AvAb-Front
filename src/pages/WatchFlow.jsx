@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import blankImg from "../assets/watchflow/blank.png";
 import Flow from "../components/flow/FlowBox.jsx";

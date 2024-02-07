@@ -89,6 +89,7 @@ function PrevArrow(props) {
     >
       <img
         src={elipseImg}
+        alt="Elipse"
         style={{
           width: "42px",
           height: "42px",
@@ -100,6 +101,7 @@ function PrevArrow(props) {
       />
       <img
         src={prevArrowImg}
+        alt="PrevArrow"
         style={{
           display: "block",
           width: "8px",
@@ -130,6 +132,7 @@ function NextArrow(props) {
     >
       <img
         src={elipseImg}
+        alt="Elipse"
         style={{
           width: "42px",
           height: "42px",
@@ -141,6 +144,7 @@ function NextArrow(props) {
       />
       <img
         src={nextArrowImg}
+        alt="NextArrow"
         style={{
           display: "block",
           width: "8px",

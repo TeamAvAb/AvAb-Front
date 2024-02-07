@@ -4,7 +4,7 @@ import arrow from "../../assets/main/nextSlide.svg";
 import heartImg from "../../assets/main/heart.svg";
 import starImg from "../../assets/main/starIcon.svg";
 
-export default function RecreationPrev({ content }) {
+export default function WriteRecreationPrev({ content }) {
   return (
     <Categories>
       <RecreationExplain>
@@ -12,6 +12,7 @@ export default function RecreationPrev({ content }) {
           <ExImg src={content.imgSrc}></ExImg>
           <img
             src={heartImg}
+            alt="Heart"
             style={{
               width: "42px",
               height: "42px",
@@ -24,12 +25,12 @@ export default function RecreationPrev({ content }) {
         <Explain>
           <Section1>
             {content.title}
-            <img src={arrow} style={{ width: "24px", height: "24px" }} />
+            <img src={arrow} alt="Arrow" style={{ width: "24px", height: "24px" }} />
           </Section1>
           <Section2>
             <Keywords>{content.keywords}</Keywords>
             <Rate>
-              <img src={starImg} style={{ width: "16px", height: "16px" }} />
+              <img src={starImg} alt="Star" style={{ width: "16px", height: "16px" }} />
               {content.rate}
             </Rate>
           </Section2>
