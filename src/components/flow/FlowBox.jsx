@@ -23,7 +23,7 @@ export default function FlowBox() {
   };
 
   return (
-    <div style={{ marginTop: "31px", marginLeft: "-34px" }}>
+    <div>
       <MyFlowBoxParent>
         <MyFlowBoxChild>
           {/* 키워드 */}
@@ -73,11 +73,6 @@ export default function FlowBox() {
           </FlowBoxDetailBox>
           <MoreBtn onClick={moveToMoreWatchFlow}>자세히 보기</MoreBtn>
         </MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
-        <MyFlowBoxChild></MyFlowBoxChild>
       </MyFlowBoxParent>
     </div>
   );

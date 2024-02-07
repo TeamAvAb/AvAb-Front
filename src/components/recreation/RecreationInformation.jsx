@@ -29,6 +29,18 @@ const RecreationInformation = forwardRef((props, ref) => {
       <ContentBox>
         <TitleText>레크레이션 소개</TitleText>
         <ContentText>{recreationContent}</ContentText>
+        <PlaceTime marginTop="28px">
+          <ContentText fontSize="16px" fontWeight="600" marginRight="8px">
+            장소
+          </ContentText>
+          <ContentText fontSize="16px">실내</ContentText>
+        </PlaceTime>
+        <PlaceTime>
+          <ContentText fontSize="16px" fontWeight="600" marginRight="8px">
+            진행시간
+          </ContentText>
+          <ContentText fontSize="16px">10분</ContentText>
+        </PlaceTime>
       </ContentBox>
       <ContentBox>
         <TitleText>레크레이션 목적</TitleText>
@@ -55,7 +67,7 @@ const RecreationInformation = forwardRef((props, ref) => {
           <CircleText>성별</CircleText>
           <CircleSubText>여성, 남성</CircleSubText>
         </Circle>
-        <Circle>
+        <Circle marginRight="0px">
           <img src={timeIcon}></img>
           <CircleText>연령대</CircleText>
           <CircleSubText>10대, 20대, 30대</CircleSubText>
@@ -84,8 +96,9 @@ const TitleText = styled.div`
 
 const ContentText = styled.div`
   color: #1b1d1f;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: ${(props) => props.fontSize || "20px"};
+  font-weight: ${(props) => props.fontWeight || "400"};
+  margin-right: ${(props) => props.marginRight || "0px"};
   line-height: 30px;
 `;
 
@@ -98,7 +111,7 @@ const ContentBox = styled.div`
 const IconBox = styled.div`
   padding-bottom: 28px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const Circle = styled.div`
@@ -113,6 +126,7 @@ const Circle = styled.div`
   align-items: center;
   flex-wrap: wrap;
   flex-direction: column;
+  margin-right: ${(props) => props.marginRight || "122px"};
 `;
 const CircleText = styled.div`
   color: #5b6bbe;
@@ -144,4 +158,10 @@ const PurposeBox = styled.div`
 
 const RecreationImg = styled.img`
   margin-bottom: 60px;
+`;
+
+const PlaceTime = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: ${(props) => props.marginTop || "8px"};
 `;
