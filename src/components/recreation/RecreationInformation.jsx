@@ -4,73 +4,140 @@ import peopleIcon from "../../assets/recreation/peopleIcon.svg";
 import fixIcon from "../../assets/recreation/fixIcon.svg";
 import genderIcon from "../../assets/recreation/genderIcon.svg";
 import timeIcon from "../../assets/recreation/timeIcon.svg";
-import recreationImage from "../../assets/recreation/RecreationImage.png";
 
-const RecreationInformation = forwardRef((props, ref) => {
-  const recreationContent =
-    "수건돌리기는 여러 명이서 즐길 수 있는 한국의 전통 민속 놀이이다. 일부 지역에서는 수건 찾기라고도 한다. 주로 충분한 공간이 확보되는 야외에서 하나, 방만 넓다면 실내에서도 할 수 있다. 규칙도 간단하고 적당한 공간만 있으면 쉽게 할 수 있으며 사람들이 모여 있어서 통제하기 쉽고 그럼에도 운동량은 많은 특성상 교육 현장에서 무척이나 선호되는 놀이이다. 웬만한 사람이라면 어릴 적에 한 번쯤은 해보았을 놀이이며, 아마 지금도 많은 어린이 혹은 어른이들이 이 놀이를 하고 있을 것이다.";
-  const recreationWay = [
-    "수건이나 천을 준비한다.",
-    "술래를 제외한 사람들은 마주 보고 둥그렇게 앉는다.",
-    "술래는 수건을 들고 사람들의 등 뒤를 빙글빙글 돈다.",
-    "술래는 빙글빙글 돌다가 적절한 타이밍에 다른 사람의 등 뒤에 수건을 놓는다.",
-    "한 바퀴를 돌아 술래가 수건을 내려 놓은 사람에게 돌아온다면, 그 사람은 탈락이다.",
-    "탈락되지 않으려면, 술래를 잡거나 술래에게 잡히지 않으면 된다.",
-    "탈락자가 나올 때까지 게임을 진행한다.",
-  ];
+const RecreationInformation = forwardRef(({ recreationData }, ref) => {
+  const getPlaceText = () => {
+    if (
+      recreationData.placeList.includes("INDOOR") &&
+      recreationData.placeList.includes("OUTDOOR")
+    ) {
+      return "실내, 실외";
+    } else if (recreationData.placeList.includes("INDOOR")) {
+      return "실내";
+    } else if (recreationData.placeList.includes("OUTDOOR")) {
+      return "실외";
+    } else {
+      return "";
+    }
+  };
 
-  const recreationWayList = recreationWay.map((way, index) => (
-    <ContentText key={index}>
-      {index + 1}. {way}
-    </ContentText>
+  const getGenderText = () => {
+    if (
+      recreationData.genderList.includes("MALE") &&
+      recreationData.genderList.includes("FEMALE")
+    ) {
+      return "여성, 남성";
+    } else if (recreationData.placeList.includes("MALE")) {
+      return "남성";
+    } else if (recreationData.placeList.includes("FEMALE")) {
+      return "여성";
+    } else {
+      return "";
+    }
+  };
+
+  const getAgeText = (ageGroups) => {
+    const ageGroupMap = {
+      UNDER_TEENAGER: "10대 미만",
+      TEENAGER: "10대",
+      TWENTIES: "20대",
+      THIRTIES: "30대",
+      FORTIES: "40대",
+      OVER_FIFTIES: "50대 이상",
+    };
+
+    const matchedAges = ageGroups.map((ageGroup) => ageGroupMap[ageGroup]);
+
+    return matchedAges.join(", ");
+  };
+
+  const translatedPurposeList = recreationData.purposeList.map(
+    (purpose, index) => {
+      let translatedPurpose = "";
+
+      switch (purpose) {
+        case "WORKSHOP":
+          translatedPurpose = "워크샵";
+          break;
+        case "SPORTS_DAY":
+          translatedPurpose = "체육대회";
+          break;
+        case "MT":
+          translatedPurpose = "MT";
+          break;
+        case "GATHERING":
+          translatedPurpose = "모임";
+          break;
+        case "RETREAT":
+          translatedPurpose = "수련회";
+          break;
+        default:
+          translatedPurpose = purpose;
+          break;
+      }
+
+      return <PurposeBox key={index}>{translatedPurpose}</PurposeBox>;
+    }
+  );
+  const wayListImages = recreationData.wayList.map((ways, index) => (
+    <div key={index}>
+      <ContentText>
+        {index + 1}. {ways.contents}
+      </ContentText>
+      {ways.imageUrl && (
+        <RecreationImg src={ways.imageUrl} alt={`이미지 ${index + 1}`} />
+      )}
+    </div>
   ));
+
   return (
     <RecreationInformationContainer ref={ref}>
       <ContentBox>
         <TitleText>레크레이션 소개</TitleText>
-        <ContentText>{recreationContent}</ContentText>
+        <ContentText>{recreationData.summary}</ContentText>
         <PlaceTime marginTop="28px">
           <ContentText fontSize="16px" fontWeight="600" marginRight="8px">
             장소
           </ContentText>
-          <ContentText fontSize="16px">실내</ContentText>
+          <ContentText fontSize="16px">{getPlaceText()}</ContentText>
         </PlaceTime>
         <PlaceTime>
           <ContentText fontSize="16px" fontWeight="600" marginRight="8px">
             진행시간
           </ContentText>
-          <ContentText fontSize="16px">10분</ContentText>
+          <ContentText fontSize="16px">{recreationData.playTime}분</ContentText>
         </PlaceTime>
       </ContentBox>
       <ContentBox>
         <TitleText>레크레이션 목적</TitleText>
-        <PurposeBox>신년회</PurposeBox>
+        {translatedPurposeList}
       </ContentBox>
       <ContentBox>
-        <RecreationImg src={recreationImage} />
         <TitleText>레크레이션 방법</TitleText>
-        {recreationWayList}
+        {wayListImages}
       </ContentBox>
       <IconBox>
         <Circle>
           <img src={peopleIcon}></img>
           <CircleText>조별 추천 인원</CircleText>
-          <CircleSubText>5~20명</CircleSubText>
+          <CircleSubText>
+            {recreationData.minParticipants}~{recreationData.maxParticipants}명
+          </CircleSubText>
         </Circle>
         <Circle>
           <img src={fixIcon}></img>
           <CircleText>준비물</CircleText>
-          <CircleSubText>수건이나 천</CircleSubText>
+          <CircleSubText>{recreationData.preparationList}</CircleSubText>
         </Circle>
         <Circle>
           <img src={genderIcon}></img>
           <CircleText>성별</CircleText>
-          <CircleSubText>여성, 남성</CircleSubText>
+          <CircleSubText>{getGenderText()}</CircleSubText>
         </Circle>
         <Circle marginRight="0px">
           <img src={timeIcon}></img>
           <CircleText>연령대</CircleText>
-          <CircleSubText>10대, 20대, 30대</CircleSubText>
+          <CircleSubText>{getAgeText(recreationData.ageList)}</CircleSubText>
         </Circle>
       </IconBox>
     </RecreationInformationContainer>
@@ -141,6 +208,7 @@ const CircleSubText = styled.div`
   text-align: center;
   font-size: 20px;
   font-weight: 400;
+  width: 150px;
 `;
 
 const PurposeBox = styled.div`
@@ -154,10 +222,13 @@ const PurposeBox = styled.div`
   text-align: center;
   font-size: 20px;
   font-weight: 700;
+  margin-right: 15px;
 `;
 
 const RecreationImg = styled.img`
-  margin-bottom: 60px;
+  margin-bottom: 40px;
+  margin-top: 15px;
+  height: 360px;
 `;
 
 const PlaceTime = styled.div`
