@@ -1,13 +1,95 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Search from '../components/main/Search';
-import KeywordModal from '../components/main/KeywordModal';
-import blankImg from '../assets/main/blankImg.png';
-import plusIconImg from '../assets/main/plusIcon.svg';
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import styled from "styled-components";
+import Search from "../components/main/Search";
+import PopularCarousel from "../components/main/PopularCarousel";
+import Carousel from "../components/main/Carousel";
+
+import character from "../assets/main/character.png";
+import blankImg from "../assets/main/blankImg.png";
+import plusIconImg from "../assets/main/plusIcon.svg";
 
 export default function Main() {
-  const [keywordModal, setKeywordModal] = useState(false);
-  const [purposeModal, setPurposeModal] = useState(false);
+  const navigator = useNavigate();
+  const banner = [
+    { index: 1, title: "제목1", description: "설명설명설명", img: null },
+    { index: 2, title: "제목2", description: "설명설명설명", img: null },
+    { index: 3, title: "제목3", description: "설명설명설명", img: null },
+  ];
+  const recreationData = [
+    {
+      index: 1,
+      title: "레크레이션 1",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 2,
+      title: "레크레이션 2",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 3,
+      title: "레크레이션 3",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 4,
+      title: "레크레이션 4",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 5,
+      title: "레크레이션 5",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 6,
+      title: "레크레이션 6",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 7,
+      title: "레크레이션 7",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 8,
+      title: "레크레이션 8",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+    {
+      index: 9,
+      title: "레크레이션 9",
+      keywords: "키워드1, 키워드2, 키워드3",
+      imgSrc: blankImg,
+      hashtag: "#해시태그",
+      rate: "4.5",
+    },
+  ];
   return (
     <>
       <Container>
@@ -20,20 +102,32 @@ export default function Main() {
             을 <br />
             검색해보세요!
           </Comment>
-          <img src={blankImg} style={{ width: '328px', height: '328px' }} />
+          <img
+            src={character}
+            style={{
+              width: "370px",
+              height: "308px",
+              marginRight: "120.5px",
+            }}
+          />
         </Recommend>
-        <Search keywordModal={setKeywordModal} purposeModal={setPurposeModal} />
-        {keywordModal ? <KeywordModal closeModal={setKeywordModal} /> : null}
+        <Search />
+
         <Popular>
           <PopularHeader>
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
-            <More>
+            <More onClick={() => navigator(`/search/list`)}>
               더보기
-              <img src={plusIconImg} style={{ width: '24px', height: '24px' }} />
+              <img
+                src={plusIconImg}
+                style={{ width: "24px", height: "24px" }}
+              />
             </More>
           </PopularHeader>
+          <PopularCarousel content={recreationData} />
         </Popular>
       </Container>
+      <Carousel content={banner} />
     </>
   );
 }
@@ -41,16 +135,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--BG, linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%));
+  background: var(
+    --BG,
+    linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%)
+  );
+  overflow: hidden;
 `;
 const Recommend = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 56px;
+  align-items: end;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   font-size: 72px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 8px;
+  margin-bottom: 90px;
+  margin-left: 59.5px;
 `;
 const Comment = styled.div`
   width: 434px;
@@ -67,6 +166,7 @@ const Popular = styled.div`
   width: 957px;
   height: 659px;
   margin-top: 135px;
+  margin-bottom: 90px;
 `;
 const PopularHeader = styled.div`
   display: flex;

@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
+import recreationData from '../components/mypage/Recreationdata';
 import none from '../assets/Footer/none.png'
+import LeftButton from "../assets/myflow/moveLeft.png";
+import RightButton from "../assets/myflow/moveRight.png";
+import starIcon from "../assets/mypage/mingcute_star-fill.svg";
+import YellowHeart from "../assets/mypage/YellowHeart.svg"
+import GrayHeart from "../assets/mypage/GrayHeart.svg"
 
 export default function Mypage () {
   const [selectedMenu, setSelectedMenu] = useState('내 정보');
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -18,14 +25,13 @@ export default function Mypage () {
     setLogoutModalOpen(false);
   };
 
-  const recreationData = [
-    {
-      title: '레크레이션 제목 >',
-      keywords: '키워드1, 키워드2, 키워드3',
-      imgSrc: none,
-      hashtag: '#해시태그'
+  const toggleHeart = (index) => {
+    if (selectedRecreationIndex === index) {
+      setSelectedRecreationIndex(null);
+    } else {
+      setSelectedRecreationIndex(index);
     }
-  ]
+  };
 
   return (
     <Container>
@@ -44,6 +50,7 @@ export default function Mypage () {
         </MenuList>
       </SideBar>
       <Content>
+        {/*내 정보 페이지*/}
         {selectedMenu === '내 정보' && 
           <MyInfo>
             <MyTitle>카카오 계정</MyTitle>
@@ -56,32 +63,61 @@ export default function Mypage () {
               <SaveBut>저장하기</SaveBut>
             </ButtonSection>
           </MyInfo>}
+        {/*즐겨 찾는 레크레이션 페이지*/}
         {selectedMenu === '레크레이션' && 
         <RecreationWrap>
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
           <RecreationMain>
             {recreationData.map((recreation, index) => 
-              Array.from({length: 6}).map((_, i) => 
+              Array.from({length: 1}).map((_, i) => 
                 <Categories key={`${index}-${i}`}>
                   <Hashtag>{recreation.hashtag}</Hashtag>
                   <RecreationExplain>
                     <ImgSpace>
-                      <ExImg src={recreation.imgSrc}></ExImg>
+                      <ExImg src={recreation.imgSrc}/>
+                      <HeartImg
+                        src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
+                        onClick={() => toggleHeart(index)}
+                      />
                     </ImgSpace>
                     <Explain>
                       <Section1>{recreation.title}</Section1>
-                      <Section2>{recreation.keywords}</Section2>
+                      <SectionWrap>
+                        <Section2>{recreation.keywords}</Section2>
+                        <Section3 src={recreation.starSrc}/>
+                        <Section4>{recreation.rate}</Section4>
+                      </SectionWrap>
                     </Explain>
                   </RecreationExplain>
                 </Categories>
               )
             )}
           </RecreationMain>
-          <NextPage>페이지 전환</NextPage>
+          {/*페이지 전환*/}
+          <NextPage>
+            <ImageBox>
+              <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
+            </ImageBox>
+            <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
+              1
+            </PageNumber>
+            <PageNumber>2</PageNumber>
+            <PageNumber>3</PageNumber>
+            <PageNumber>4</PageNumber>
+            <PageNumber>5</PageNumber>
+            <PageNumber>6</PageNumber>
+            <PageNumber>7</PageNumber>
+            <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
+            <ImageBox>
+              <ButtonImage src={RightButton} alt="오른쪽 버튼" />
+            </ImageBox>
+          </NextPage>
         </RecreationWrap>
         }
       </Content>
+      {/*우측 바*/}
       <RightSide/>
+      {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
         <LogoutModal>
           <ModalContent>
@@ -145,8 +181,8 @@ const MenuItem = styled.div`
 `;
 
 const Content = styled.div`
-    width: 1128px;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
     border: solid #cacdd2 1px;
@@ -262,6 +298,7 @@ const RecreationExplain = styled.div`
 
 const ImgSpace = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 284px;
@@ -271,6 +308,12 @@ const ImgSpace = styled.div`
 const ExImg = styled.img`
   width: 120px;
   width: 120px;
+  margin-top: 20px;
+`;
+
+const HeartImg = styled.img`
+  width: 28px;
+  margin-left: 200px;
 `;
 
 const Explain = styled.div`
@@ -283,6 +326,15 @@ const Explain = styled.div`
   height: 112px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+
+  &:hover {
+    background-color: #a0ddff;
+  }
+`;
+
+const SectionWrap = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Section1 = styled.div`
@@ -292,28 +344,62 @@ const Section1 = styled.div`
 `
 
 const Section2 = styled.div`
-  font-size: 13px;
+  font-size: 15px;
+`;
+
+const Section3 = styled.img`
+  margin-left: 30px;
+  width: 13.72px
+`;
+
+const Section4 = styled.div`
+margin-left: 5px;
 `;
 
 const NextPage = styled.div`
   display: flex;
+  margin-top: 52px;
+  margin-bottom: 30px;
+  height: 42px;
+`;
+
+const PageNumber = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  width: 42px;
+  height: 42px;
+  margin-right: 8px;
+  display: flex;
   justify-content: center;
-  width: 450px;
-  margin-top: 40px;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  border: solid black;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const ImageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+`;
+
+const ButtonImage = styled.img`
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
+  cursor: pointer;
 `;
 
 const RightSide = styled.div`
-    width: 88px;
+    width: 5.7325%;
     background-color: #f7f8f9;
 `;
 
 const LogoutModal = styled.div`
   position: fixed;
   top: 0;
-  width: 1536px;
+  width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -332,7 +418,6 @@ const ModalContent = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 230px;
-  margin-right: 80px;
 `;
 
 const ModalTitle = styled.div`
