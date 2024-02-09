@@ -25,6 +25,8 @@ export default function ReviewBox({
     return stars;
   };
 
+  const slice_date = date.substring(0, 10);
+
   return (
     <ReviewBoxWrap>
       <ReviewStarsContainer>
@@ -33,17 +35,17 @@ export default function ReviewBox({
       </ReviewStarsContainer>
       <NickNameDateBox>
         <NickName>{nickname}</NickName>
-        <Date>{date}</Date>
+        <Date>{slice_date}</Date>
       </NickNameDateBox>
       <ReviewContent>{review}</ReviewContent>
       <NickNameDateBox>
         <LikeDislikeBox marginRight="40px">
           <LikeDislikeIcon src={good} alt="good" />
-          10
+          {like}
         </LikeDislikeBox>
         <LikeDislikeBox>
           <LikeDislikeIcon src={bad} alt="good" />
-          10
+          {dislike}
         </LikeDislikeBox>
       </NickNameDateBox>
     </ReviewBoxWrap>
