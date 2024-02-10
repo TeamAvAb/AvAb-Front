@@ -14,7 +14,7 @@ export default function RecreationContentBox({
   return (
     <>
       <ContentBox>
-        <HashTagBox>{hashtag}</HashTagBox> {/* 해시태그 */}
+        <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
         <TitleStar>
           <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
           {/* 레크레이션 제목 */}
