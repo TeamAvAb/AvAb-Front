@@ -15,13 +15,13 @@ export default function RecommendRecreation({ content }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
     className: "slider variable-width",
-    infinite: true,
+    infinite: false,
     centerMode: false,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 2,
+    slidesToScroll: 1,
     variableWidth: true,
     arrrow: false,
-    speed: 2000,
+    speed: 500,
     autoplaySpeed: 4000,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -82,7 +82,7 @@ function PrevArrow(props) {
         border: "none",
         position: "absolute",
         top: "206px",
-        left: "-10px",
+        left: "25px",
       }}
       className={className}
       onClick={onClick}
@@ -125,7 +125,7 @@ function NextArrow(props) {
         border: "none",
         position: "absolute",
         top: "206px",
-        right: "-10px",
+        right: "10px",
       }}
       className={className}
       onClick={onClick}
