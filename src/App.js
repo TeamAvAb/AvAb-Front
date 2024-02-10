@@ -57,24 +57,24 @@ function App() {
       {/* 스크랩 한 일정플로우 더보기 */}
       <Route path="/flow/morescrapflow" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
-      <Route path="/recreation/detail" element={<RecreationDetail />} />
+      <Route
+        path="/recreation/detail/:recreationId"
+        element={<RecreationDetail />}
+      />
     </Routes>
   );
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (currentPath === "/flow/watch" ||
-        currentPath === "/flow/my" ||
-        currentPath === "/recreation/detail"
+    if (
+      currentPath === "/flow/watch" ||
+      currentPath === "/flow/my" ||
+      currentPath === "/recreation/detail"
     ) {
       setSelectedFooter(<Footer2 />);
-    } 
-    else if (currentPath === "/" || 
-        currentPath.startsWith("/search")
-    ) {
+    } else if (currentPath === "/" || currentPath.startsWith("/search")) {
       setSelectedFooter(<Footer1 />);
-    } 
-    else {
+    } else {
       setSelectedFooter(<Footer3 />);
     }
   }, [navigate]);
@@ -82,8 +82,17 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header isLoggedIn={isLoggedIn} handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} />
-      {loginModal ? <Login handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} /> : null}
+      <Header
+        isLoggedIn={isLoggedIn}
+        handleLoginStatus={setIsLoggedIn}
+        handleLoginModal={setLoginModal}
+      />
+      {loginModal ? (
+        <Login
+          handleLoginStatus={setIsLoggedIn}
+          handleLoginModal={setLoginModal}
+        />
+      ) : null}
       {routes}
       {selectedFooter}
     </div>

@@ -4,11 +4,18 @@ import Pagination from "react-js-pagination";
 import prevButton from "../../assets/myflow/moveLeft.png";
 import nextButton from "../../assets/myflow/moveRight.png";
 
-export default function PaginatedItems() {
-  const [page, setPage] = useState(1);
+export default function RecreationPagination({
+  itemsPerPage,
+  totalItems,
+  currentPage,
+  setCurrentPage,
+  totalPageNum,
+}) {
   const handlePageChange = (page) => {
-    setPage(page);
+    setCurrentPage(page);
   };
+
+  console.log(totalPageNum);
   return (
     <>
       <PaginationBox>
@@ -35,10 +42,10 @@ export default function PaginatedItems() {
               }}
             />
           }
-          activePage={1}
-          itemsCountPerPage={5}
+          activePage={currentPage}
+          itemsCountPerPage={itemsPerPage}
           totalItemsCount={300}
-          pageRangeDisplayed={8}
+          pageRangeDisplayed={totalPageNum}
           onChange={handlePageChange}
         ></Pagination>
       </PaginationBox>
