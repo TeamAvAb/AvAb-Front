@@ -18,6 +18,8 @@ export default function FlowWriteContent() {
   const [modal, setModal] = useState(null);
   const [flowTitle, setFlowTitle] = useState("");
   const [time] = useState(10);
+  const [infoBoxes, setInfoBoxes] = useState([1]);
+  const [numOfRecreationInfo, setNumOfRecreationInfo] = useState(1);
 
   const handleNextClick = () => {
     // Temporary condition to show WithoutSaving modal when Save button is clicked
@@ -117,6 +119,18 @@ export default function FlowWriteContent() {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
     setFlowTitle(e.target.value);
   };
+
+  const handleAddFlow = () => {
+    // Add a new number to the infoBoxes array
+    setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
+  };
+
+  const handleDelete = (num) => {
+    // Remove the InfoBox with the corresponding number
+    setInfoBoxes((prevInfoBoxes) =>
+        prevInfoBoxes.filter((item) => item !== num)
+    );
+};
 
     return (
         <FlowWriteWrap>
@@ -223,19 +237,20 @@ export default function FlowWriteContent() {
                 <FlowContainer>
                   <div style={{ width: "393px", textAlign: "center" }}>
                     {/* FlowTitle에 상태로부터 받은 값을 전달 */}
-                    <FlowTitle>{flowTitle || "플로우 제목"}</FlowTitle>
+                    <FlowTitle hasTitle={!!flowTitle}>{flowTitle || "플로우 제목"}</FlowTitle>
                   </div>
 
-                  {/* 레크레이션 박스 */}
-                  <WriteRecreationInfo time={time} num={1} />
-                  <WriteRecreationInfo time={time} num={2} />
-                  <WriteRecreationInfo time={time} num={3} />
-                  <WriteRecreationInfo time={time} num={4} />
-                  <WriteRecreationInfo time={time} num={5} />
+                  {/* 기본 레크레이션 박스 */}
+                  {infoBoxes.map((num) => (
+                    <WriteRecreationInfo key={num} num={num} onDelete={handleDelete} />
+                  ))}
 
-                  <AddFlowButton>
-                    +
-                  </AddFlowButton>
+                  {/* 버튼 클릭 시 추가되는 WriteRecreationInfo */}
+                  {[...Array(numOfRecreationInfo - 1)].map((_, index) => (
+                    <WriteRecreationInfo key={index + 2} time={time} num={index + 2} onDelete={handleDelete} />
+                ))}
+
+                  <AddFlowButton onClick={handleAddFlow}>+</AddFlowButton>
                 </FlowContainer>
               </FlowInfoBox>
             </FlowInfoContainer>
@@ -418,6 +433,7 @@ const FlowTitle = styled.div`
   margin-bottom: 59px;
   font-size: 24px;
   font-weight: 700;
+  color: ${props => props.hasTitle ? 'black' : '#9FA4A9'};
 `;
 
 const AddFlowButton = styled.button`
