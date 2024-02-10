@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import Search from '../components/Search/SearchBox';
 import recreationData from '../components/Search/RecreationData';
 import KeywordModal from '../components/main/KeywordModal';
-import starIcon from "../assets/mypage/mingcute_star-fill.svg";
+
 import YellowHeart from "../assets/mypage/YellowHeart.svg"
 import GrayHeart from "../assets/mypage/GrayHeart.svg"
-import none from '../assets/Footer/none.png'
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
 
@@ -53,7 +52,7 @@ export default function Main() {
                       <KeyWord>{recreation.keyword3}</KeyWord>
                     </KeyWords>
                     <ImgSpace>
-                      <ExImg src={recreation.imgSrc}/>
+                      <ExImg src={recreation.imgSrc} onClick={ToRecreationDetail}/>
                       <HeartImg
                         src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
                         onClick={() => toggleHeart(index)}
@@ -221,6 +220,7 @@ const ExImg = styled.img`
   width: 142px;
   margin-left: 50px;
   margin-top: 20px;
+  cursor: pointer;
 `;
 
 const HeartImg = styled.img`
