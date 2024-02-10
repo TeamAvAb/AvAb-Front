@@ -1,5 +1,5 @@
 import React from 'react';
-import none from '../../assets/Footer/none.png'
+import FooterP from '../../assets/Footer/FooterP.svg'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -17,16 +17,19 @@ export default function Footer() {
   const ToMypage = () => {
     navigate(`/mypage`);
   };
+  const ToInstagram = () => {
+    window.location.href = 'https://www.instagram.com/avab.ovo/';
+  };
   return (
     <FooterWrap>
       <FooterHigh>
         <High1>
-          <NoneImg src={none}></NoneImg>
+          <NoneImg src={FooterP}></NoneImg>
         </High1>
         <High2>
           <Section1>아브아브</Section1>
           <Section2>에게<br/>의견을 보내주세요</Section2>
-          <ContactBut>의견 보내러 가기</ContactBut>
+          <ContactBut onClick={ToInstagram}>의견 보내러 가기</ContactBut>
         </High2>
       </FooterHigh>
       <Middle>
@@ -66,8 +69,8 @@ const High1 = styled.div`
 `;
 
 const NoneImg = styled.img`
-  width: 361px;
-  height: 361px;
+  width: 421px;
+  height: 421px;
 `;
 
 const High2 = styled.div`
@@ -79,7 +82,7 @@ const High2 = styled.div`
 const Section1 = styled.span`
   font-size: 40px;
   font-weight: 600;
-  margin-left: 27%;
+  margin-left: 80px;
 `;
 
 const Section2 = styled.span`
@@ -93,7 +96,7 @@ const ContactBut = styled.div`
   padding: 15px 10px;
   width: 179px;
   margin-top: 40px;
-  margin-left: 140px;
+  margin-left: 90px;
   background-color: #081882;
   color: white;
   border: none;
@@ -106,7 +109,6 @@ const ContactBut = styled.div`
 const Middle = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 50px;
   width: 1080px;
   border-bottom: 2px solid #9fa4a9;
 `;
