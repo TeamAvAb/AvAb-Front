@@ -1,20 +1,28 @@
 import styled from "styled-components";
 import React from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
-
+import heartIcon from "../../assets/recreation/heartIcon.svg";
 export default function RecreationContentBox({
   hashtag,
   recreationTitle,
   kewords,
   starRate,
+  isFavorite,
 }) {
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
+
+  const heartIconColor = isFavorite ? "#E54B4B" : "#E9EBED";
   return (
     <>
       <ContentBox>
         <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
+        <HeartIcon
+          src={heartIcon}
+          alt="heart"
+          style={{ fill: heartIconColor }}
+        />
         <TitleStar>
           <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
           {/* 레크레이션 제목 */}
@@ -56,6 +64,12 @@ const RecreationTitle = styled.div`
   line-height: normal;
   margin: 21px 0px;
   display: inline-block;
+`;
+const HeartIcon = styled.img`
+  float: right;
+  margin-top: 5px;
+  margin-right: 15px;
+  cursor: pointer;
 `;
 const TitleStar = styled.div`
   display: flex;

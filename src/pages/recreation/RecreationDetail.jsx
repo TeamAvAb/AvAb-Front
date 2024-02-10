@@ -54,7 +54,7 @@ export default function RecreationDetail() {
               recreationData={recreationData}
             />
             <RecreationReview ref={reviewRef} recreationId={recreationId} />
-            <RecreationRelated ref={relatedRef} />
+            <RecreationRelated ref={relatedRef} recreationId={recreationId} />
             <RecreationFlow ref={flowRef} />
           </>
         ) : (

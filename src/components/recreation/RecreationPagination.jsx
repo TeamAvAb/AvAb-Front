@@ -15,7 +15,6 @@ export default function RecreationPagination({
     setCurrentPage(page);
   };
 
-  console.log(totalPageNum);
   return (
     <>
       <PaginationBox>
