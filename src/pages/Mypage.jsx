@@ -1,14 +1,16 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import recreationData from '../components/mypage/Recreationdata';
-import none from '../assets/Footer/none.png'
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
-import starIcon from "../assets/mypage/mingcute_star-fill.svg";
 import YellowHeart from "../assets/mypage/YellowHeart.svg"
 import GrayHeart from "../assets/mypage/GrayHeart.svg"
+import LogoutP from "../assets/mypage/LogoutImg.svg"
+import WarnLogo from "../assets/mypage/WarnLogo.svg"
 
-export default function Mypage () {
+export default function Mypage ({ handleLoginStatus }) {
   const [selectedMenu, setSelectedMenu] = useState('내 정보');
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
@@ -19,6 +21,20 @@ export default function Mypage () {
 
   const openLogoutModal = () => {
     setLogoutModalOpen(true);
+  };
+
+  const handleLogout = () => {
+    axios.post('/logout')
+      .then(response => {
+        console.log('로그아웃 성공');
+      })
+      .catch(error => {
+        console.error('로그아웃 실패', error);
+      })
+      .finally(() => {
+        closeLogoutModal();
+        handleLoginStatus(false);
+      });
   };
   
   const closeLogoutModal = () => {
@@ -56,8 +72,11 @@ export default function Mypage () {
             <MyTitle>카카오 계정</MyTitle>
             <MyInput placeholder='이메일'/>
             <MyTitle2>닉네임</MyTitle2>
-            <MyInput placeholder='닉네임'/>
-            <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
+            <MyInput placeholder='닉네임' maxLength={10}/>
+            <WarnSpace>
+              <WarnImg src={WarnLogo}/>
+              <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
+            </WarnSpace>
             <ButtonSection>
               <OutBut>회원탈퇴</OutBut>
               <SaveBut>저장하기</SaveBut>
@@ -123,9 +142,9 @@ export default function Mypage () {
           <ModalContent>
             <ModalTitle>로그아웃 하시게요?</ModalTitle>
             <SemiTitle>더 많은 혜택이 기다리고 있어요.</SemiTitle>
-            <LogoutImg src={none}/>
+            <LogoutImg src={LogoutP}/>
             <ModalBut>
-              <LogoutButton onClick={closeLogoutModal}>로그아웃</LogoutButton>
+              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               <CloseButton onClick={closeLogoutModal}>닫기</CloseButton>
             </ModalBut>
           </ModalContent>
@@ -215,9 +234,19 @@ const MyInput = styled.input`
   padding-left: 25px;
 `;
 
-const Warn = styled.div`
+const WarnSpace = styled.div`
+  display: flex;
   margin-top: 10px;
+`;
+
+const WarnImg = styled.img`
+  width: 16px;
+  margin-left: 10px;
+`;
+
+const Warn = styled.div`
   color: #9fa4a9;
+  margin-left: 10px;
 `;
 
 const ButtonSection = styled.div`
@@ -326,6 +355,7 @@ const Explain = styled.div`
   height: 112px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  cursor: pointer;
 
   &:hover {
     background-color: #a0ddff;
