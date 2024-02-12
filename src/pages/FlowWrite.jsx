@@ -28,9 +28,11 @@ export default function FlowWrite() {
 
   const handleNextClick = () => {
     navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
   const handleBeforeClick = () => {
     navigate('/flow/my');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handlePurposeSearchClick = () => {

@@ -17,14 +17,21 @@ export default function FlowWriteRecommend() {
 
   const handleNextClick = () => {
     navigate('/flow/write/content');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
   const handleBeforeClick = () => {
     navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleButtonClick = (button) => {
-    setSelectedButton(button);
-    console.log(`Selected button: ${button}`);
+    if (selectedButton === button) {
+      setSelectedButton(null);
+      console.log(`Button ${button} deselected`);
+    } else {
+      setSelectedButton(button);
+      console.log(`Selected button: ${button}`);
+    }
   };
 
     return (
@@ -66,7 +73,7 @@ export default function FlowWriteRecommend() {
                     <FlowTitle>플로우 제목</FlowTitle>
                   </div>
 
-                  {/* 레크레이션 박스 */}
+                  {/* 추천 레크레이션 박스 */}
                   <RecreationInfo time={10} num={1} />
                   <RecreationInfo time={20} num={2} />
                   <RecreationInfo time={10} num={3} />

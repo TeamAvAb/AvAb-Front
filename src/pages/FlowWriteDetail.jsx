@@ -23,14 +23,17 @@ export default function FlowWriteDetail() {
 
   const handleNextClick = () => {
     navigate('/flow/write/recommend');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleBeforeClick = () => {
     navigate('/flow/write');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleGo4Click = () => {
     navigate('/flow/write/content');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleGenderClick = (gender) => {
