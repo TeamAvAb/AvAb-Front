@@ -9,7 +9,7 @@ import line from '../assets/flowwrite/line.png';
 import fast from '../assets/flowwrite/fast.png';
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 
-import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
+import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 
 export default function FlowWriteRecommend() {
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ export default function FlowWriteRecommend() {
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
                 <CardGo4SubText>원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!</CardGo4SubText>
                 </CardGoTextContainer>
-                <img src={writeSelect4} alt="go 4" style={{ width: '120px', height: '120px' }} />
+                <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
                 <img src={fast} alt="Fast" style={{ width: '44px', height: '44px', marginLeft: '225px'}} />
                 </CardGoContainer>
               </CardGoContent>
