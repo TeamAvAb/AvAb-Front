@@ -9,12 +9,20 @@ import character from "../assets/main/character.png";
 import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
 
+import workshopImg from "../assets/main/banner1_workshop.png";
+import mtImg from "../assets/main/banner2_mt.png";
+import gatherImg from "../assets/main/banner3_gather.png";
+
 export default function Main() {
   const navigator = useNavigate();
   const banner = [
-    { index: 1, title: "제목1", description: "설명설명설명", img: null },
-    { index: 2, title: "제목2", description: "설명설명설명", img: null },
-    { index: 3, title: "제목3", description: "설명설명설명", img: null },
+    {
+      index: 0,
+      keyword: "워크샵",
+      img: workshopImg,
+    },
+    { index: 1, keyword: "MT", img: mtImg },
+    { index: 2, keyword: "모임", img: gatherImg },
   ];
   const recreationData = [
     {
@@ -107,7 +115,7 @@ export default function Main() {
             style={{
               width: "370px",
               height: "308px",
-              marginRight: "120.5px",
+              marginLeft: "-15px",
             }}
           />
         </Recommend>
@@ -150,6 +158,7 @@ const Recommend = styled.div`
   margin-top: 8px;
   margin-bottom: 90px;
   margin-left: 59.5px;
+  margin-right: 120.5px;
 `;
 const Comment = styled.div`
   width: 434px;
@@ -160,6 +169,7 @@ const Comment = styled.div`
   font-size: 72px;
   font-style: normal;
   font-weight: 400;
+  margin-right: -15px;
 `;
 
 const Popular = styled.div`
