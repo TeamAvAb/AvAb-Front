@@ -10,7 +10,7 @@ import elipseImg from "../../assets/main/elipse.svg";
 import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
 import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
 
-export default function RecommendRecreation({ content }) {
+export default function RecommendRecreation({ content, handleAddRecommendFlow }) {
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
@@ -37,8 +37,8 @@ export default function RecommendRecreation({ content }) {
       <StyledSlider ref={slider} {...settings}>
         {content &&
           content.map((banner) => (
-            <div key={banner.index} style={{ width: "284px" }}>
-              <WriteRecreationPrev content={banner} />
+            <div key={banner.id} style={{ width: "284px" }}>
+              <WriteRecreationPrev content={banner} handleAddRecommendFlow={handleAddRecommendFlow} />
             </div>
           ))}
       </StyledSlider>
