@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import rechoiceIcon from "../../assets/main/rechoiceIcon.svg";
+
 export default function KeywordModal({
   category,
   content,
@@ -10,7 +11,7 @@ export default function KeywordModal({
 }) {
   const [result, setResult] = useState(selectedOption);
   const handleSingleSelect = (id) => {
-    const isSelected = selectedOption.includes(id);
+    const isSelected = selectedOption.includes(id) || result.includes(id);
     if (isSelected) {
       // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
       setResult(result.filter((el) => el !== id));
@@ -82,18 +83,15 @@ const Modal = styled.div`
   background: var(--main-ffffff, #fff);
 `;
 const Keywords = styled.div`
-  /* height: 250px; */
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  padding: ${(props) =>
-    props.category == "keyword" ? "42px 49px" : "58px 69px"};
+  justify-content: center;
+  padding: ${(props) => (props.category == "keyword" ? "42px 49px" : "58px 0")};
   gap: ${(props) => (props.category == "keyword" ? "20px" : "15px")};
   flex-wrap: wrap;
   box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.2) inset;
 `;
 const Keyword = styled.div`
-  height: 29px;
   display: flex;
   padding: ${(props) =>
     props.category == "keyword" ? "10px 40px" : "16px 34px"};
@@ -101,6 +99,8 @@ const Keyword = styled.div`
   align-items: center;
   border: ${(props) =>
     props.category == "keyword"
+      ? "none"
+      : props.selected
       ? "none"
       : "1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"};
   border-radius: ${(props) => (props.category == "keyword" ? "5px" : "50px")};
@@ -110,8 +110,8 @@ const Keyword = styled.div`
       : props.category === "keyword"
       ? "var(--gray-scale-e-9-ebed, #E9EBED)"
       : "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)"};
-  font-size: 16px;
-  font-weight: 400;
+  font-size: ${(props) => (props.category == "keyword" ? "16px" : "20px")};
+  font-weight: ${(props) => (props.category == "keyword" ? "400" : "700")};
   line-height: normal;
 `;
 const SetModal = styled.div`
