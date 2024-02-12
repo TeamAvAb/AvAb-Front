@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import close from '../../assets/flowwrite/close_modal.png'
 
 const WithoutSaving = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
+      <CloseButtonContainer>
+        <ModalCloseButton onClick={onClose} src={close} alt="Close" />
+      </CloseButtonContainer>
         <ModalTitle>
             일정 플로우를<br/>저장하세요!
         </ModalTitle>
@@ -24,6 +28,18 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(70, 76, 82, 0.8);
   z-index: 1000;
+`;
+
+const CloseButtonContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
+const ModalCloseButton = styled.img`
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
 `;
 
 const ModalContent = styled.div`
