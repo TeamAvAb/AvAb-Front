@@ -19,12 +19,14 @@ import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기
 import MoreMyflow from "./pages/MoreMyflow"; // 내가 만든 일정플로우 더보기
 import MoreWatchFlow from "./pages/MoreWatchFlow"; // 다른 사람이 만든 일정플로우 더보기
 import Login from "./components/Login";
+import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
+
   const routes = (
     <Routes>
       {/* 메인 */}
@@ -55,23 +57,31 @@ function App() {
       <Route path="/flow/morewatchflow" element={<MoreWatchFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
       <Route path="/recreation/detail" element={<RecreationDetail />} />
+      {/* 로그인 리다이렉트 페이지 */}
+      <Route
+        path="/api/auth/login/kakao"
+        element={<LoginLoading handleLogin={setIsLoggedIn} />}
+      />
     </Routes>
   );
 
+  // 로그인 상태 확인
+  useEffect(() => {
+    if (window.localStorage.getItem("accessToken")) {
+      setIsLoggedIn(true);
+    }
+  });
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (currentPath === "/flow/watch" ||
-        currentPath === "/flow/my" ||
-        currentPath === "/recreation/detail"
+    if (
+      currentPath === "/flow/watch" ||
+      currentPath === "/flow/my" ||
+      currentPath === "/recreation/detail"
     ) {
       setSelectedFooter(<Footer2 />);
-    } 
-    else if (currentPath === "/" || 
-        currentPath.startsWith("/search")
-    ) {
+    } else if (currentPath === "/" || currentPath.startsWith("/search")) {
       setSelectedFooter(<Footer1 />);
-    } 
-    else {
+    } else {
       setSelectedFooter(<Footer3 />);
     }
   }, [navigate]);
@@ -79,8 +89,17 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header isLoggedIn={isLoggedIn} handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} />
-      {loginModal ? <Login handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} /> : null}
+      <Header
+        isLoggedIn={isLoggedIn}
+        handleLoginStatus={setIsLoggedIn}
+        handleLoginModal={setLoginModal}
+      />
+      {loginModal ? (
+        <Login
+          handleLoginStatus={setIsLoggedIn}
+          handleLoginModal={setLoginModal}
+        />
+      ) : null}
       {routes}
       {selectedFooter}
     </div>
