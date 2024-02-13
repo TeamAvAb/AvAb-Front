@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/loginCharacter.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
 
 export default function Login({ handleLoginStatus, handleLoginModal }) {
+  const { pathname } = useLocation();
   const [temporaryClose, setTemporaryClose] = useState(false);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
@@ -98,6 +100,7 @@ const Comment = styled.span`
 `;
 
 const Button = styled.button`
+  width: max-content;
   padding: 9px 24px;
   border: none;
   border-radius: 20px;

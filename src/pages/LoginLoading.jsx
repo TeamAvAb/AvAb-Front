@@ -6,6 +6,8 @@ import { FadeLoader } from "react-spinners";
 
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
+  const redirectURL = new URL(window.location.href).searchParams.get("state");
+
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export default function LoginLoading({ handleLogin }) {
       localStorage.setItem("refreshToken", response.data.result.refreshToken);
       localStorage.setItem("userId", response.data.result.userId);
       if (response.data.isSuccess === true) handleLogin(true);
-      navigator("/");
+      navigator(redirectURL);
     } catch (error) {
       console.log("에러 : ", error);
     }
