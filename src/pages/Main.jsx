@@ -13,7 +13,7 @@ import workshopImg from "../assets/main/banner1_workshop.png";
 import mtImg from "../assets/main/banner2_mt.png";
 import gatherImg from "../assets/main/banner3_gather.png";
 
-export default function Main() {
+export default function Main({ searchResult }) {
   const navigator = useNavigate();
   const banner = [
     {
@@ -119,7 +119,7 @@ export default function Main() {
             }}
           />
         </Recommend>
-        <Search />
+        <Search searchResult={searchResult} />
 
         <Popular>
           <PopularHeader>

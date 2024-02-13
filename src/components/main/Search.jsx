@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import qs from "qs";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 import KeywordModal from "./KeywordModal";
@@ -12,53 +15,53 @@ import deleteImg from "../../assets/main/deleteIcon.svg";
 import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
 import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
 
-export default function Search({}) {
+export default function Search({ searchResult }) {
   // 검색어 및 키워드 저장
-  const [searchWord, setSearchWord] = useState();
+  const [searchKeyword, setSearchKeyword] = useState();
   const [keyword, setKeyword] = useState([]);
-  const [personnel, setPersonnel] = useState();
-  const [time, setTime] = useState("10");
+  const [participants, setParticipants] = useState();
+  const [playTime, setPlayTime] = useState("10");
   const [place, setPlace] = useState([]);
   const [purpose, setPurpose] = useState([]);
-  const [sex, setSex] = useState([]);
+  const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
 
   // 더미 데이터
-  const timeOptions = [10, 20, 30, 40, 50, 60];
-  const placeOptions = [
-    { id: 1, value: "실내" },
-    { id: 2, value: "실외" },
-  ];
-  const sexOptions = [
-    { id: 1, value: "여성" },
-    { id: 2, value: "남성" },
-  ];
-  const ageOptions = [
-    { id: 1, value: "10대 미만" },
-    { id: 2, value: "10대" },
-    { id: 3, value: "20대" },
-    { id: 4, value: "30대" },
-    { id: 5, value: "40대" },
-    { id: 6, value: "50대 이상" },
-  ];
   const keywordOptions = [
-    { id: 1, title: "협동" },
-    { id: 2, title: "순발력" },
-    { id: 3, title: "센스" },
-    { id: 4, title: "두뇌" },
-    { id: 5, title: "창의력" },
-    { id: 6, title: "액티브" },
-    { id: 7, title: "심리" },
-    { id: 8, title: "행운" },
-    { id: 9, title: "상식" },
-    { id: 10, title: "준비물" },
+    { id: 0, title: "협동", param: "COOPERATIVE" },
+    { id: 1, title: "순발력", param: "QUICKNESS" },
+    { id: 2, title: "센스", param: "SENSIBLE" },
+    { id: 3, title: "두뇌", param: "BRAIN" },
+    { id: 4, title: "창의력", param: "CREATIVE" },
+    { id: 5, title: "액티브", param: "ACTIVE" },
+    { id: 6, title: "심리", param: "PSYCHOLOGICAL" },
+    { id: 7, title: "행운", param: "LUCK" },
+    { id: 8, title: "상식", param: "COMMON_SENSE" },
+    { id: 9, title: "준비물", param: "PREPARATION" },
+  ];
+  const playTimeOptions = [10, 20, 30, 40, 50, 60];
+  const placeOptions = [
+    { id: 0, value: "실내", param: "INDOOR" },
+    { id: 1, value: "실외", param: "OUTDOOR" },
   ];
   const purposeOptions = [
-    { id: 1, title: "신년회" },
-    { id: 2, title: "MT" },
-    { id: 3, title: "워크샵" },
-    { id: 4, title: "이벤트" },
-    { id: 5, title: "축제" },
+    { id: 0, title: "워크샵", param: "WORKSHOP" },
+    { id: 1, title: "체육대회", param: "SPORTS_DAY" },
+    { id: 2, title: "MT", param: "MT" },
+    { id: 3, title: "모임", parma: "GATHERING" },
+    { id: 4, title: "수련회", param: "RETREAT" },
+  ];
+  const genderOptions = [
+    { id: 0, value: "여성", param: "FEMALE" },
+    { id: 1, value: "남성", param: "MALE" },
+  ];
+  const ageOptions = [
+    { id: 0, value: "10대 미만", param: "UNDER_TEENAGER" },
+    { id: 1, value: "10대", param: "TEENAGER" },
+    { id: 2, value: "20대", param: "TWENTIES" },
+    { id: 3, value: "30대", param: "THIRTIES" },
+    { id: 4, value: "40대", param: "FORTIES" },
+    { id: 5, value: "50대 이상", param: "FIFTIES" },
   ];
 
   // 필터 더보기 메뉴
@@ -91,7 +94,7 @@ export default function Search({}) {
     return selected.map((el) => (
       <>
         <SelectedKeyword key={el}>
-          '{label[el - 1].title}' 포함
+          '{label[el].title}' 포함
           <img
             src={deleteImg}
             id={el}
@@ -108,14 +111,46 @@ export default function Search({}) {
 
   // 초기화 함수
   const reset = () => {
-    setSearchWord([]);
+    setSearchKeyword([]);
     setKeyword([]);
-    setPersonnel("");
-    setTime(10);
+    setParticipants("");
+    setPlayTime(10);
     setPlace([]);
     setPurpose([]);
-    setSex([]);
+    setGender([]);
     setAge([]);
+  };
+
+  // 필터 적용
+  axios.defaults.paramsSerializer = (params) => {
+    return qs.stringify(params, { arrayFormat: "repeat" });
+  };
+  const submit = async () => {
+    const requestURL = `https://dev.avab.shop/api/recreations/search`;
+    let keywordParam = keyword.map((el) => keywordOptions[el].param);
+    let purposeParam = purpose.map((el) => purposeOptions[el].param);
+
+    try {
+      const response = await axios.get(requestURL, {
+        params: {
+          keyword: keywordParam,
+          participants: participants,
+          playTime: playTime,
+          place: place,
+          purpose: purposeParam,
+          gender: gender,
+          age: age,
+        },
+      });
+      localStorage.removeItem("searchResult");
+      localStorage.setItem("searchResult", JSON.stringify(response));
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    if (window.location.href !== "/search/list") {
+      window.location.href = "/search/list";
+    }
   };
 
   return (
@@ -124,8 +159,8 @@ export default function Search({}) {
       <SearchWordBox>
         <SearchWord
           placeholder="오늘 MT 레크레이션 할 때 뭐하지?"
-          onChange={(e) => setSearchWord(e.target.value)}
-          value={searchWord}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          value={searchKeyword}
         />
         <img
           src={searchIconImg}
@@ -151,22 +186,22 @@ export default function Search({}) {
 
           {/* 인원 */}
           <Filter>
-            <LabelName htmlFor="personnel">인원</LabelName>
+            <LabelName htmlFor="participants">인원</LabelName>
             <Input
               placeholder="조별 인원을 입력해주세요."
               type="number"
-              onChange={(e) => setPersonnel(e.target.value)}
-              value={personnel}
+              onChange={(e) => setParticipants(e.target.value)}
+              value={participants}
             ></Input>
           </Filter>
 
           {/* 진행 시간*/}
           <Filter>
-            <LabelName htmlFor="playtime">진행 시간</LabelName>
+            <LabelName htmlFor="playTime">진행 시간</LabelName>
             <Dropdown
-              list={timeOptions}
-              setOption={setTime}
-              selectedOption={time}
+              list={playTimeOptions}
+              setOption={setPlayTime}
+              selectedOption={playTime}
             />
           </Filter>
 
@@ -212,11 +247,11 @@ export default function Search({}) {
 
             {/* 성별 */}
             <Filter>
-              <LabelName htmlFor="sex">성별</LabelName>
+              <LabelName htmlFor="gender">성별</LabelName>
               <RadioInput
-                content={sexOptions}
-                setOption={setSex}
-                selectedOption={sex}
+                content={genderOptions}
+                setOption={setGender}
+                selectedOption={gender}
               />
             </Filter>
 
@@ -250,7 +285,7 @@ export default function Search({}) {
       </SearchBox>
       <SearchBtns>
         <ResetBtn onClick={reset}>초기화</ResetBtn>
-        <SearchBtn>필터 적용</SearchBtn>
+        <SearchBtn onClick={submit}>필터 적용</SearchBtn>
       </SearchBtns>
       {keywordModal ? (
         <KeywordModal
