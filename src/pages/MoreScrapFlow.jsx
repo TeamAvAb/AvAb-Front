@@ -6,18 +6,11 @@ import Time from "../assets/moreflow/time.png";
 import User from "../assets/moreflow/user.png";
 import View from "../assets/moreflow/view.png";
 import Write from "../assets/moreflow/write.png";
-import Scrap from "../assets/moreflow/scrap.png";
 import Scrap2 from "../assets/moreflow/scrap2.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 
-export default function MoreWatchFlow() {
-  // scrap 상태
-  const [scrap, setScrap] = useState(false);
-  const ScrapFunc = () => {
-    scrap ? setScrap(false) : setScrap(true);
-  };
-
+export default function MoreScrapFlow() {
   // 삭제 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
   const [modal, setModal] = useState(false);
@@ -69,8 +62,8 @@ export default function MoreWatchFlow() {
         <TitleBox>
           <DetailTitleBox>
             <KeyWord>신년회</KeyWord>
-            <ScrapImg onClick={ScrapFunc}>
-              {scrap ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
+            <ScrapImg>
+              <img src={Scrap2} alt="스크랩" />
             </ScrapImg>
           </DetailTitleBox>
           <FlowName>플로우 이름</FlowName>
@@ -185,6 +178,8 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgba(70, 76, 82, 0.5);
   z-index: 999;
 `;
@@ -359,7 +354,6 @@ const FlowInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-top: 40px;
 `;
 

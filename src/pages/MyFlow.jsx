@@ -7,7 +7,7 @@ import MadeFlowBox from "../components/flow/MadeFlowBox";
 import { useNavigate } from "react-router-dom";
 
 // 내가 만든 일정플로우 개수에 따른 렌더링 화면 확인용
-export const flowN = 1;
+export const flowN = 0;
 
 export default function MyFlow() {
   const navigate = useNavigate();
@@ -16,6 +16,9 @@ export default function MyFlow() {
   };
   const moveToScrap = () => {
     navigate(`/flow/scrap`);
+  };
+  const moveToMakeFlow = () => {
+    navigate(`/flow/write`);
   };
 
   return (
@@ -33,13 +36,17 @@ export default function MyFlow() {
         <MyFlowBoxContainer>
           <MyFlowBoxImage src={blankImg} />
           <TitleBox>
-            <MyFlowBoxTitle>일정플로우 만들기</MyFlowBoxTitle>
+            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
           </TitleBox>
         </MyFlowBoxContainer>
 
         {/* 내가 만든 일정플로우 - Grid */}
         {flowN ? (
-          <MadeFlowBox />
+          <MyFlowBoxParent>
+            <MadeFlowBox />
+            <MadeFlowBox />
+            <MadeFlowBox />
+          </MyFlowBoxParent>
         ) : (
           <MyFlowNoneBox>
             <MyFlowNoneImg src={blankImg} />
@@ -72,6 +79,7 @@ export default function MyFlow() {
           </ImageBox>
         </PageNumberContainer>
       </MyFlowContainer>
+      <RightSide/>
     </MyFlowWrap>
   );
 }
@@ -79,8 +87,11 @@ export default function MyFlow() {
 const MyFlowWrap = styled.div`
   display: flex;
   background-color: #f7f8f9;
-  width: 1536px;
-  height: 100%;
+`;
+
+const RightSide = styled.div`
+  width: 5.7325%;
+  background-color: #f7f8f9;
 `;
 
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
@@ -106,34 +117,30 @@ const MyFlowMenuBox = styled.div`
 `;
 
 const MyFlowContainer = styled.div`
-  box-sizing: border-box;
   background-color: white;
-  width: 1128px;
-  padding-top: 30px;
-  padding-left: 126px;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  position: relative;
+  align-items: center;
+  border-right: 0.5px solid #cacdd2;
 `;
 
 // 내가 만든 일정 플로우 - Title
 const MyFlowBoxContainer = styled.div`
   display: flex;
+  align-items: center;
+  margin-top: 30px;
 `;
 
 const MyFlowBoxImage = styled.img`
   width: 199.65px;
   height: 199.65px;
   z-index: 2;
-  position: absolute;
-  top: 30px;
-  left: 126px;
 `;
 
 const TitleBox = styled.div`
-  position: absolute;
-  left: 301px;
-  top: 76px;
+  position: relative;
+  left: -23.65px;
   background-color: #19297c;
   border-radius: 15vh;
   width: 527px;
@@ -158,12 +165,18 @@ const MyFlowBoxTitle = styled.div`
   font-size: 47px;
 `;
 
+// 플로우 박스 - Grid
+const MyFlowBoxParent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 370px);
+  row-gap: 20px;
+  column-gap: 120px;
+  margin-top: 31px;
+`;
+
 // 내가 만든 일정 플로우 - None
 const MyFlowNoneBox = styled.div`
   width: 315px;
-  top: 237px;
-  margin-top: 237px;
-  margin-left: 286.5px;
   text-align: center;
 `;
 
@@ -183,7 +196,6 @@ const MyFlowNoneDetail = styled.div`
 const PageNumberContainer = styled.div`
   display: flex;
   margin-top: 82px;
-  margin-left: 186px;
   margin-bottom: 112px;
   height: 42px;
 `;

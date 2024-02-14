@@ -14,6 +14,9 @@ export default function WatchFlow() {
   const moveToScrap = () => {
     navigate(`/flow/scrap`);
   };
+  const moveToMakeFlow = () => {
+    navigate(`/flow/write`);
+  };
 
   return (
     <MyFlowWrap>
@@ -30,12 +33,16 @@ export default function WatchFlow() {
         <MyFlowBoxContainer>
           <MyFlowBoxImage src={blankImg} />
           <TitleBox>
-            <MyFlowBoxTitle>일정플로우 만들기</MyFlowBoxTitle>
+            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
           </TitleBox>
         </MyFlowBoxContainer>
 
         {/* 플로우 데이터 불러온 부분 - Component */}
-        <Flow />
+        <WatchFlowBoxParent>
+          <Flow />
+          <Flow />
+          <Flow />
+        </WatchFlowBoxParent>
 
         {/* 페이지번호 */}
         <PageNumberContainer>
@@ -57,6 +64,7 @@ export default function WatchFlow() {
           </ImageBox>
         </PageNumberContainer>
       </MyFlowContainer>
+      <RightSide />
     </MyFlowWrap>
   );
 }
@@ -64,12 +72,16 @@ export default function WatchFlow() {
 const MyFlowWrap = styled.div`
   display: flex;
   background-color: #f7f8f9;
-  width: 1536px;
-  height: 100%;
+`;
+
+const RightSide = styled.div`
+  width: 5.7325%;
+  background-color: #f7f8f9;
 `;
 
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
 const MyFlowMenuContainer = styled.div`
+  box-sizing: border-box;
   background-color: white;
   border: 0.5px solid #cacdd2;
   width: 320px;
@@ -89,19 +101,19 @@ const MyFlowMenuBox = styled.div`
 `;
 
 const MyFlowContainer = styled.div`
-  box-sizing: border-box;
   background-color: white;
-  width: 1128px;
   padding-top: 30px;
-  padding-left: 126px;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  position: relative;
+  align-items: center;
+  border-right: 0.5px solid #cacdd2;
 `;
 
 // 일정플로우 만들기 부분
 const MyFlowBoxContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const MyFlowBoxImage = styled.img`
@@ -111,9 +123,6 @@ const MyFlowBoxImage = styled.img`
 `;
 
 const TitleBox = styled.div`
-  position: absolute;
-  left: 301px;
-  top: 76px;
   background-color: #19297c;
   border-radius: 15vh;
   width: 527px;
@@ -122,12 +131,23 @@ const TitleBox = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1;
+  position: relative;
+  left: -23.65px;
   cursor: pointer;
 
   &:hover {
     background-color: #4036ed;
     transition: 0.2s;
   }
+`;
+
+// 플로우 박스 - Grid
+const WatchFlowBoxParent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 370px);
+  row-gap: 20px;
+  column-gap: 120px;
+  margin-top: 31px;
 `;
 
 const MyFlowBoxTitle = styled.div`
@@ -142,8 +162,7 @@ const MyFlowBoxTitle = styled.div`
 const PageNumberContainer = styled.div`
   display: flex;
   margin-top: 82px;
-  margin-left: 186px;
-  margin-bottom: 112px;
+  margin-bottom: 113px;
   height: 42px;
 `;
 
