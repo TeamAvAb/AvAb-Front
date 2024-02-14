@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { publicAPI } from "../../apis/user";
 import qs from "qs";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -122,16 +123,16 @@ export default function Search({ searchResult }) {
   };
 
   // 필터 적용
-  axios.defaults.paramsSerializer = (params) => {
+  publicAPI.defaults.paramsSerializer = (params) => {
     return qs.stringify(params, { arrayFormat: "repeat" });
   };
   const submit = async () => {
-    const requestURL = `https://dev.avab.shop/api/recreations/search`;
+    const requestURL = `/api/recreations/search`;
     let keywordParam = keyword.map((el) => keywordOptions[el].param);
     let purposeParam = purpose.map((el) => purposeOptions[el].param);
 
     try {
-      const response = await axios.get(requestURL, {
+      const response = await publicAPI.get(requestURL, {
         params: {
           keyword: keywordParam,
           participants: participants,
@@ -148,9 +149,9 @@ export default function Search({ searchResult }) {
     } catch (error) {
       console.log(error);
     }
-    if (window.location.href !== "/search/list") {
-      window.location.href = "/search/list";
-    }
+    // if (window.location.href !== "/search/list") {
+    //   window.location.href = "/search/list";
+    // }
   };
 
   return (
