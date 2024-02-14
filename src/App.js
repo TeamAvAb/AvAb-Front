@@ -59,7 +59,10 @@ function App() {
       {/* 스크랩 한 일정플로우 더보기 */}
       <Route path="/flow/morescrapflow" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
-      <Route path="/recreation/detail" element={<RecreationDetail />} />
+      <Route
+        path="/recreation/detail/:recreationId"
+        element={<RecreationDetail />}
+      />
       {/* 로그인 리다이렉트 페이지 */}
       <Route
         path="/api/auth/login/kakao"
