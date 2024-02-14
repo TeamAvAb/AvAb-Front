@@ -43,7 +43,7 @@ export default function RecreationPagination({
           }
           activePage={currentPage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={300}
+          totalItemsCount={totalItems}
           pageRangeDisplayed={totalPageNum}
           onChange={handlePageChange}
         ></Pagination>

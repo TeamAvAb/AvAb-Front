@@ -55,7 +55,7 @@ export default function RecreationDetail() {
             />
             <RecreationReview ref={reviewRef} recreationId={recreationId} />
             <RecreationRelated ref={relatedRef} recreationId={recreationId} />
-            <RecreationFlow ref={flowRef} />
+            <RecreationFlow ref={flowRef} recreationId={recreationId} />
           </>
         ) : (
           <div></div> // 데이터가 없는 경우
