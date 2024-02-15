@@ -5,12 +5,12 @@ export default function FlowRecreationBox({
   index,
   recreationTitle,
   kewords,
-  time,
+  playTime,
 }) {
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
-  const height = (time / 10) * 128;
+  const height = (playTime / 10) * 128;
   return (
     <FlowRecreationBoxWrap height={height}>
       <LeftTimeBar height={height}></LeftTimeBar>
@@ -22,7 +22,7 @@ export default function FlowRecreationBox({
         {kewordList}
         <TimeTextWrap>
           <PlayText>플레이까지</PlayText>
-          <Time>{time}분</Time>
+          <Time>{playTime}분</Time>
         </TimeTextWrap>
       </div>
     </FlowRecreationBoxWrap>

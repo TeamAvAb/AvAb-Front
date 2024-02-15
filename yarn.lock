@@ -1706,10 +1706,10 @@
     "schema-utils" "^3.0.0"
     "source-map" "^0.7.3"
 
-"@remix-run/router@1.14.2":
-  "integrity" "sha512-ACXpdMM9hmKZww21yEqWwiLws/UPLhNKvimN8RrYSqPSvB3ov7sLvAcfvaxePeLvccTQKGdkDIhLYApZVDFuKg=="
-  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.14.2.tgz"
-  "version" "1.14.2"
+"@remix-run/router@1.15.0":
+  "integrity" "sha512-HOil5aFtme37dVQTB6M34G95kPM3MMuqSmIRVCC52eKV+Y/tGSqw9P3rWhlAx6A+mz+MoX+XxsGsNJbaI5qCgQ=="
+  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.15.0.tgz"
+  "version" "1.15.0"
 
 "@rollup/plugin-babel@^5.2.0":
   "integrity" "sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q=="
@@ -7983,6 +7983,13 @@
   "resolved" "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
   "version" "1.5.1"
 
+"qs@^6.11.2":
+  "integrity" "sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA=="
+  "resolved" "https://registry.npmjs.org/qs/-/qs-6.11.2.tgz"
+  "version" "6.11.2"
+  dependencies:
+    "side-channel" "^1.0.4"
+
 "qs@6.11.0":
   "integrity" "sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.11.0.tgz"
@@ -8123,20 +8130,20 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"
   "version" "0.11.0"
 
-"react-router-dom@^6.21.3":
-  "integrity" "sha512-kNzubk7n4YHSrErzjLK72j0B5i969GsuCGazRl3G6j1zqZBLjuSlYBdVdkDOgzGdPIffUOc9nmgiadTEVoq91g=="
-  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.21.3.tgz"
-  "version" "6.21.3"
+"react-router-dom@^6.22.0":
+  "integrity" "sha512-z2w+M4tH5wlcLmH3BMMOMdrtrJ9T3oJJNsAlBJbwk+8Syxd5WFJ7J5dxMEW0/GEXD1BBis4uXRrNIz3mORr0ag=="
+  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.22.0.tgz"
+  "version" "6.22.0"
   dependencies:
-    "@remix-run/router" "1.14.2"
-    "react-router" "6.21.3"
+    "@remix-run/router" "1.15.0"
+    "react-router" "6.22.0"
 
-"react-router@^6.21.2", "react-router@6.21.3":
-  "integrity" "sha512-a0H638ZXULv1OdkmiK6s6itNhoy33ywxmUFT/xtSoVyf9VnC7n7+VT4LjVzdIHSaF5TIh9ylUgxMXksHTgGrKg=="
-  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.21.3.tgz"
-  "version" "6.21.3"
+"react-router@^6.21.2", "react-router@6.22.0":
+  "integrity" "sha512-q2yemJeg6gw/YixRlRnVx6IRJWZD6fonnfZhN1JIOhV2iJCPeRNSH3V1ISwHf+JWcESzLC3BOLD1T07tmO5dmg=="
+  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.22.0.tgz"
+  "version" "6.22.0"
   dependencies:
-    "@remix-run/router" "1.14.2"
+    "@remix-run/router" "1.15.0"
 
 "react-scripts@5.0.1":
   "integrity" "sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ=="
@@ -8204,6 +8211,11 @@
     "json2mq" "^0.2.0"
     "lodash.debounce" "^4.0.8"
     "resize-observer-polyfill" "^1.5.0"
+
+"react-spinners@^0.13.8":
+  "integrity" "sha512-3e+k56lUkPj0vb5NDXPVFAOkPC//XyhKPJjvcGjyMNPWsBKpplfeyialP74G7H7+It7KzhtET+MvGqbKgAqpZA=="
+  "resolved" "https://registry.npmjs.org/react-spinners/-/react-spinners-0.13.8.tgz"
+  "version" "0.13.8"
 
 "react@^18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
