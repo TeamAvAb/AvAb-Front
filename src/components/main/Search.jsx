@@ -21,7 +21,7 @@ export default function Search({ searchResult }) {
   const [searchKeyword, setSearchKeyword] = useState();
   const [keyword, setKeyword] = useState([]);
   const [participants, setParticipants] = useState();
-  const [playTime, setPlayTime] = useState("10");
+  const [playTime, setPlayTime] = useState();
   const [place, setPlace] = useState([]);
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
