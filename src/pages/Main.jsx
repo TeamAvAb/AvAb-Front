@@ -15,6 +15,10 @@ import gatherImg from "../assets/main/banner3_gather.png";
 
 export default function Main({ searchResult }) {
   const navigator = useNavigate();
+  const goToSearchList = () => {
+    navigator(`/search/list`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const banner = [
     {
       index: 0,
@@ -124,7 +128,7 @@ export default function Main({ searchResult }) {
         <Popular>
           <PopularHeader>
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
-            <More onClick={() => navigator(`/search/list`)}>
+            <More onClick={goToSearchList}>
               더보기
               <img
                 src={plusIconImg}
