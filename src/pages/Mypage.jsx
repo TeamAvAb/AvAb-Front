@@ -5,13 +5,14 @@ import axios from 'axios';
 import recreationData from '../components/mypage/Recreationdata';
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
-import YellowHeart from "../assets/mypage/YellowHeart.svg"
-import GrayHeart from "../assets/mypage/GrayHeart.svg"
-import LogoutP from "../assets/mypage/LogoutImg.svg"
+import starIcon from "../assets/mypage/mingcute_star-fill.svg";
+import YellowHeart from "../assets/mypage/YellowHeart.svg";
+import GrayHeart from "../assets/mypage/GrayHeart.svg";
 import WarnLogo from "../assets/mypage/WarnLogo.svg"
+import { privateAPI } from "../apis/user";
 
-export default function Mypage ({ handleLoginStatus }) {
-  const [selectedMenu, setSelectedMenu] = useState('내 정보');
+export default function Mypage({ handleLogin }) {
+  const [selectedMenu, setSelectedMenu] = useState("내 정보");
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
 
@@ -23,21 +24,18 @@ export default function Mypage ({ handleLoginStatus }) {
     setLogoutModalOpen(true);
   };
 
-  const handleLogout = () => {
-    axios.post('/logout')
-      .then(response => {
-        console.log('로그아웃 성공');
-      })
-      .catch(error => {
-        console.error('로그아웃 실패', error);
-      })
-      .finally(() => {
-        closeLogoutModal();
-        handleLoginStatus(false);
-      });
-  };
-  
   const closeLogoutModal = () => {
+    setLogoutModalOpen(false);
+  };
+  const handleLogout = async () => {
+    try {
+      const response = await privateAPI.delete("/api/auth/logout");
+      localStorage.clear();
+      console.log(response);
+    } catch (error) {
+      console.log("로그아웃 실패!");
+    }
+    handleLogin(false);
     setLogoutModalOpen(false);
   };
 
@@ -54,23 +52,27 @@ export default function Mypage ({ handleLoginStatus }) {
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem active={selectedMenu === '내 정보'} onClick={() => handleMenuClick('내 정보')}>
+          <MenuItem
+            active={selectedMenu === "내 정보"}
+            onClick={() => handleMenuClick("내 정보")}
+          >
             내 정보
           </MenuItem>
-          <MenuItem active={selectedMenu === '레크레이션'} onClick={() => handleMenuClick('레크레이션')}>
+          <MenuItem
+            active={selectedMenu === "레크레이션"}
+            onClick={() => handleMenuClick("레크레이션")}
+          >
             즐겨 찾는 레크레이션
           </MenuItem>
-          <MenuItem onClick={openLogoutModal}>
-            로그아웃
-          </MenuItem>
+          <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
       <Content>
         {/*내 정보 페이지*/}
-        {selectedMenu === '내 정보' && 
+        {selectedMenu === "내 정보" && (
           <MyInfo>
             <MyTitle>카카오 계정</MyTitle>
-            <MyInput placeholder='이메일'/>
+            <MyInput placeholder="이메일" />
             <MyTitle2>닉네임</MyTitle2>
             <MyInput placeholder='닉네임' maxLength={10}/>
             <WarnSpace>
@@ -81,7 +83,8 @@ export default function Mypage ({ handleLoginStatus }) {
               <OutBut>회원탈퇴</OutBut>
               <SaveBut>저장하기</SaveBut>
             </ButtonSection>
-          </MyInfo>}
+          </MyInfo>
+        )}
         {/*즐겨 찾는 레크레이션 페이지*/}
         {selectedMenu === '레크레이션' && 
         <RecreationWrap>
@@ -135,7 +138,7 @@ export default function Mypage ({ handleLoginStatus }) {
         }
       </Content>
       {/*우측 바*/}
-      <RightSide/>
+      <RightSide />
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
         <LogoutModal>
@@ -152,7 +155,7 @@ export default function Mypage ({ handleLoginStatus }) {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
@@ -200,12 +203,12 @@ const MenuItem = styled.div`
 `;
 
 const Content = styled.div`
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    border: solid #cacdd2 1px;
-    border-bottom: none;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border: solid #cacdd2 1px;
+  border-bottom: none;
 `;
 
 const MyInfo = styled.div`
@@ -217,7 +220,7 @@ const MyTitle = styled.div`
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
-  margin-top:20px;
+  margin-top: 20px;
 `;
 
 const MyTitle2 = styled(MyTitle)`
@@ -229,7 +232,7 @@ const MyInput = styled.input`
   height: 70px;
   border-radius: 20px;
   border: solid #cacdd2 1px;
-  font-color: #cacdd2;
+  color: #cacdd2;
   font-size: 20px;
   padding-left: 25px;
 `;
@@ -370,8 +373,8 @@ const SectionWrap = styled.div`
 const Section1 = styled.div`
   font-size: 17px;
   font-weight: 600;
-  margin-bottom: 10px
-`
+  margin-bottom: 10px;
+`;
 
 const Section2 = styled.div`
   font-size: 15px;
@@ -379,11 +382,11 @@ const Section2 = styled.div`
 
 const Section3 = styled.img`
   margin-left: 30px;
-  width: 13.72px
+  width: 13.72px;
 `;
 
 const Section4 = styled.div`
-margin-left: 5px;
+  margin-left: 5px;
 `;
 
 const NextPage = styled.div`
@@ -422,8 +425,8 @@ const ButtonImage = styled.img`
 `;
 
 const RightSide = styled.div`
-    width: 5.7325%;
-    background-color: #f7f8f9;
+  width: 5.7325%;
+  background-color: #f7f8f9;
 `;
 
 const LogoutModal = styled.div`

@@ -11,7 +11,8 @@ import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
 import currentDotImg from "../../assets/main/bannerDotCurrent.svg";
 import defaultDotImg from "../../assets/main/bannerDotDefault.svg";
 
-function SamplePrevArrow(props) {
+// 이전 배너 화살표
+function PrevArrow(props) {
   const { className, onClick } = props;
   return (
     <div
@@ -51,7 +52,8 @@ function SamplePrevArrow(props) {
     </div>
   );
 }
-function SampleNextArrow(props) {
+// 다음 배너 화살표
+function NextArrow(props) {
   const { className, onClick } = props;
   return (
     <div
@@ -105,29 +107,29 @@ export default function Carousel({ content }) {
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 4000,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
   };
 
   const getColor = (id) => {
     switch (id) {
-      case 1:
-        return [
-          "var(--main-a-0-ddff, #A0DDFF)",
-          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
-          "var(--gray-scale-26282-b, #26282B)",
-          "#FFF",
-        ];
-      case 2:
+      case 0:
         return [
           "var(--main-4036-ed, #4036ED)",
           "var(--gray-scale-e-9-ebed, #E9EBED)",
           "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)",
           "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
         ];
-      case 3:
+      case 1:
         return [
           "var(--main-ffaa-29, #FFAA29)",
+          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
+          "var(--gray-scale-26282-b, #26282B)",
+          "#FFF",
+        ];
+      case 2:
+        return [
+          "var(--main-a-0-ddff, #A0DDFF)",
           "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
           "var(--gray-scale-26282-b, #26282B)",
           "#FFF",
@@ -145,16 +147,22 @@ export default function Carousel({ content }) {
           <div key={banner.index} style={{ width: bannerWidth }}>
             <Banner color={getColor(banner.index)}>
               <Left>
-                <Title color={getColor(banner.index)}>{banner.title}</Title>
+                <Title color={getColor(banner.index)}>
+                  {banner.keyword} 레크레이션을 찾으시나요?
+                </Title>
                 <Comment color={getColor(banner.index)}>
-                  {banner.description}
+                  <span style={{ fontWeight: "700" }}>{banner.keyword}</span>{" "}
+                  키워드로 작성된 레크레이션을 보러가세요.
                 </Comment>
                 <Button color={getColor(banner.index)}>
                   레크레이션 보러가기
                 </Button>
               </Left>
 
-              <img src={blankImg} style={{ width: "161px", height: "161px" }} />
+              <img
+                src={banner.img}
+                style={{ width: "161px", height: "161px" }}
+              />
             </Banner>
           </div>
         ))}
@@ -175,7 +183,7 @@ const StyledSlider = styled(Slider)`
   }
   .slick-arrow {
     position: absolute;
-    z-index: 10;
+    z-index: 5;
   }
   .slick-arrow::before {
     display: none;
@@ -229,9 +237,10 @@ const Comment = styled.span`
   margin-bottom: 25px;
   color: ${(props) => props.color[1]};
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
 `;
 const Button = styled.button`
+  width: max-content;
   padding: 15px 34px;
   text-align: center;
   border: none;

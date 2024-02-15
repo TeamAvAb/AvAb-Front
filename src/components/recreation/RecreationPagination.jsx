@@ -15,7 +15,6 @@ export default function RecreationPagination({
     setCurrentPage(page);
   };
 
-  console.log(totalPageNum);
   return (
     <>
       <PaginationBox>
@@ -44,7 +43,7 @@ export default function RecreationPagination({
           }
           activePage={currentPage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={300}
+          totalItemsCount={totalItems}
           pageRangeDisplayed={totalPageNum}
           onChange={handlePageChange}
         ></Pagination>

@@ -20,12 +20,14 @@ import MoreMyflow from "./pages/MoreMyflow"; // 내가 만든 일정플로우 �
 import MoreWatchFlow from "./pages/MoreWatchFlow"; // 다른 사람이 만든 일정플로우 더보기
 import MoreScrapFlow from "./pages/MoreScrapFlow"; // 스크랩 한 일정플로우 더보기
 import Login from "./components/Login";
+import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
+
   const routes = (
     <Routes>
       {/* 메인 */}
@@ -33,7 +35,7 @@ function App() {
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 */}
-      <Route path="/mypage" element={<MyPage handleLoginStatus={setIsLoggedIn} />} />
+      <Route path="/mypage" element={<MyPage handleLogin={setIsLoggedIn} />} />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
@@ -61,9 +63,22 @@ function App() {
         path="/recreation/detail/:recreationId"
         element={<RecreationDetail />}
       />
+      {/* 로그인 리다이렉트 페이지 */}
+      <Route
+        path="/api/auth/login/kakao"
+        element={<LoginLoading handleLogin={setIsLoggedIn} />}
+      />
     </Routes>
   );
 
+  // 로그인 상태 확인
+  useEffect(() => {
+    if (window.localStorage.getItem("userId") !== null) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn]);
   useEffect(() => {
     const currentPath = window.location.pathname;
     if (

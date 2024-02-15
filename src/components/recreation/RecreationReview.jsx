@@ -6,12 +6,11 @@ import RecreationPagination from "./RecreationPagination";
 import axios from "axios";
 
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
-  const [reviewsData, setReviewsData] = useState([]);
+  const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPageNum, setTotalPageNum] = useState(0);
+  const [reviewData, setReviewData] = useState(0);
 
   const itemsPerPage = 2;
-  const totalItems = totalPageNum * itemsPerPage;
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -21,8 +20,9 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
             currentPage - 1
           }`
         );
-        setReviewsData(response.data.result.reviewList);
-        setTotalPageNum(response.data.result.totalPages);
+        setReviewListData(response.data.result.reviewList);
+        setReviewData(response.data.result);
+        // console.log(localStorage.getItem("accessToken"));
       } catch (error) {
         console.error(error);
       }
@@ -32,7 +32,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   }, [currentPage, recreationId]);
   return (
     <RecreationReviewContainer ref={ref}>
-      <TitleText>리뷰 및 평가 ({itemsPerPage})</TitleText>
+      <TitleText>리뷰 및 평가 ({reviewData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
         <ReviewStars></ReviewStars>
@@ -41,7 +41,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
         <ReviewInputButton>등록</ReviewInputButton>
       </ReviewInputWrap>
-      {reviewsData.map((review) => (
+      {reviewListData.map((review) => (
         <ReviewBox
           key={review.reviewId}
           starNum={review.stars}
@@ -54,10 +54,10 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       ))}
       <RecreationPagination
         itemsPerPage={itemsPerPage}
-        totalItems={totalItems}
+        totalItems={reviewData.totalReviews}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalPageNum={totalPageNum}
+        totalPageNum={reviewData.totalPages}
       />
     </RecreationReviewContainer>
   );
