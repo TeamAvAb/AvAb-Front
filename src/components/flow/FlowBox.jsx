@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Scrap from "../../assets/watchflow/scrap.png";
@@ -13,39 +13,27 @@ import { useNavigate } from "react-router-dom";
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function FlowBox({ datas, loading }) {
-  const [flowId, setFlowId] = useState(0);
-
+export default function FlowBox({ datas, setScrap }) {
   // 스크랩 상태 변경
-  const DoScrap = async (Id) => {
-    setFlowId(Id);
-    // 스크랩 상태를 서버에 업데이트하는 POST 요청
-    const response = await axios.post(`https://dev.avab.shop/api/flows/${flowId}/scraps`, {
-      headers: { Authorization: `Bearer ${JWT_TOKEN}` },
-    });
+  const DoScrap = async (id) => {
+    const response = await axios.post(
+      `https://dev.avab.shop/api/flows/${id}/scraps`,
+      {},
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }
+    );
 
     if (response.status === 200) {
       // 요청이 성공하면 상태 업데이트
-      console.log("스크랩 업데이트 성공");
+      console.log(response.data);
+      setScrap(true);
     } else {
       // 요청이 실패하면 에러 처리
-      console.log("스크랩 업데이트 실패");
-    }
-  };
-
-  const DeleteScrap = async (Id) => {
-    setFlowId(Id);
-    // 스크랩 상태를 서버에 업데이트하는 POST 요청
-    const response = await axios.post(`https://dev.avab.shop/api/flows/delete/${flowId}`, {
-      headers: { Authorization: `Bearer ${JWT_TOKEN}` },
-    });
-
-    if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
-      console.log("스크랩 업데이트 성공");
-    } else {
-      // 요청이 실패하면 에러 처리
-      console.log("스크랩 업데이트 실패");
+      console.log(response.data);
     }
   };
 
@@ -66,7 +54,7 @@ export default function FlowBox({ datas, loading }) {
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
               {data.isScraped ? (
-                <FlowBoxScrapImg src={Scrap2} alt="스크랩O" onClick={() => DeleteScrap(data.id)} />
+                <FlowBoxScrapImg src={Scrap2} alt="스크랩O" onClick={() => DoScrap(data.id)} />
               ) : (
                 <FlowBoxScrapImg src={Scrap} alt="스크랩X" onClick={() => DoScrap(data.id)} />
               )}

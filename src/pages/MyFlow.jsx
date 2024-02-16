@@ -7,32 +7,8 @@ import MadeFlowBox from "../components/flow/MadeFlowBox";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
 
-// 임시 데이터
-const ex = {
-  isSuccess: true,
-  code: "string",
-  message: "string",
-  result: {
-    flowList: [
-      {
-        id: 0,
-        purpose: ["WORKSHOP"],
-        title: "string",
-        totalPlayTime: 0,
-        viewCount: 0,
-        author: {
-          userId: 0,
-          username: "string",
-        },
-        scrapCount: 0,
-        isScraped: true,
-      },
-    ],
-    totalPages: 0,
-  },
-};
-export const exArray = [];
-for (let i = 0; i < 10; i++) exArray.push(ex);
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function MyFlow() {
   const navigate = useNavigate();
@@ -47,11 +23,11 @@ export default function MyFlow() {
   };
 
   // 데이터 가져오기
-  const [datas, setDatas] = useState(exArray);
+  const [datas, setDatas] = useState([]);
   // 데이터 불러오는 동안 로딩
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   // 한 페이지 당 데이터 수
   const datasPerPage = 6;
 
@@ -59,24 +35,21 @@ export default function MyFlow() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get("https://dev.avab.shop/api/flows");
-      setDatas(response.data);
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/flows?page=${currentPage}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result.flowList);
       setLoading(false);
-      console.log(datas);
     };
     fetchData();
-  }, []);
+  }, [currentPage]);
 
-  // 현재 페이지에서 마지막 데이터의 인덱스
-  const indexOfLast = currentPage * datasPerPage;
-  // 현재 페이지에서 첫번째 데이터의 인덱스
-  const indexOfFirst = indexOfLast - datasPerPage;
-  const currentDatas = (datas) => {
-    let currentDatas = datas.slice(indexOfFirst, indexOfLast);
-    return currentDatas;
-  };
-
-  console.log(exArray);
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
 
   return (
     <MyFlowWrap>
@@ -98,10 +71,17 @@ export default function MyFlow() {
             </TitleBox>
           </MyFlowBoxContainer>
           {/* 내가 만든 일정플로우 - Grid */}
-          {exArray.length !== 0 ? (
-            <MyFlowBoxParent>
-              <MadeFlowBox datas={currentDatas(exArray)} loading={loading} />
-            </MyFlowBoxParent>
+          {datas.length !== 0 ? (
+            <div>
+              <MyFlowBoxParent>{datas && <MadeFlowBox datas={datas} loading={loading} />}</MyFlowBoxParent>
+              {/* 페이지번호 */}
+              <Pagination
+                currentPage={currentPage}
+                totalDatas={datas.length}
+                datasPerPage={datasPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
           ) : (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noFlowImg} />
@@ -114,13 +94,6 @@ export default function MyFlow() {
             </MyFlowNoneBox>
           )}
         </div>
-        {/* 페이지번호 */}
-        <Pagination
-          currentPage={currentPage}
-          totalDatas={exArray.length}
-          datasPerPage={datasPerPage}
-          setCurrentPage={setCurrentPage}
-        />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>
@@ -224,6 +197,7 @@ const MyFlowBoxParent = styled.div`
 const MyFlowNoneBox = styled.div`
   width: 100%;
   text-align: center;
+  margin-bottom: 237px;
 `;
 
 const MyFlowNoneImg = styled.img`
