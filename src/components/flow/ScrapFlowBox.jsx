@@ -6,10 +6,9 @@ import View from "../../assets/scrapflow/view.png";
 import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
 import Blank from "../../assets/scrapflow/blank.png";
-import { flowN } from "../../pages/ScrapFlow";
 import { useNavigate } from "react-router-dom";
 
-export default function ScrapFlowBox() {
+export default function ScrapFlowBox({ datas, loading }) {
   // 스크랩 상태
   const [doScrap, setDoScrap] = useState(false);
   // 스크랩 상태 변경
@@ -23,61 +22,55 @@ export default function ScrapFlowBox() {
     navigate(`/flow/morescrapflow`);
   };
 
-  //flowN에 값에 따라 div 추가
-  const divs = [];
-
-  for (let i = 0; i < flowN; i++) {
-    divs.push(
-      <MyFlowBoxChild>
-        {/* 키워드 */}
-        <FlowBoxKeyWord>신년회</FlowBoxKeyWord>
-
-        {/* 스크랩 버튼 */}
-        <FlowBoxScrapBox>
-          <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={scrapping} />
-        </FlowBoxScrapBox>
-
-        {/* 플로우 이름 */}
-        <FlowBoxTitle>플로우 이름</FlowBoxTitle>
-
-        {/* 플로우 사진 */}
-        <FlowBoxImg src={Blank} alt="플로우 사진" />
-
-        {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
-        <FlowBoxDetailBox>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>70분</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>2,232</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>윤카우</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>2,232</FlowBoxDetail>
-          </FlowBoxDetails>
-        </FlowBoxDetailBox>
-        <MoreBtn onClick={moveToMoreInfo}>자세히 보기</MoreBtn>
-      </MyFlowBoxChild>
-    );
-  }
-
   return (
     <div>
-      <MyFlowBoxParent>{divs}</MyFlowBoxParent>
+      <MyFlowBoxParent>
+        {datas.map((data, i) => (
+          <MyFlowBoxChild>
+            {/* 키워드 */}
+            <FlowBoxKeyWord>{data.result.flowList[0].purpose[0]}</FlowBoxKeyWord>
+
+            {/* 스크랩 버튼 */}
+            <FlowBoxScrapBox>
+              <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={scrapping} />
+            </FlowBoxScrapBox>
+
+            {/* 플로우 이름 */}
+            <FlowBoxTitle>{data.result.flowList[0].title}</FlowBoxTitle>
+
+            {/* 플로우 사진 */}
+            <FlowBoxImg src={Blank} alt="플로우 사진" />
+            {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
+            <FlowBoxDetailBox>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.result.flowList[0].totalPlayTime}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.result.flowList[0].viewCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.result.flowList[0].author.username}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={User} alt="스크랩수" style={{ width: "24px", height: "24px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.result.flowList[0].scrapCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+            </FlowBoxDetailBox>
+            <MoreBtn onClick={moveToMoreInfo}>자세히 보기</MoreBtn>
+          </MyFlowBoxChild>
+        ))}
+      </MyFlowBoxParent>
     </div>
   );
 }
