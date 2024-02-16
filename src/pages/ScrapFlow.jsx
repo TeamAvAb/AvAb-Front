@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import blankImg from "../assets/myflow/blank.png";
-import LeftButton from "../assets/myflow/moveLeft.png";
-import RightButton from "../assets/myflow/moveRight.png";
+import penguinImg from "../assets/scrapflow/penguin.png";
+import noScrapImg from "../assets/scrapflow/noScrap.png";
 import { useNavigate } from "react-router-dom";
 import ScrapFlowBox from "../components/flow/ScrapFlowBox";
+import Pagination from "../components/pagination/Pagination";
 
-// 스크랩 한 일정플로우 개수에 따른 렌더링 화면 확인용
-export const flowN = 3;
+// 임시 데이터
+const ex = {
+  isSuccess: true,
+  code: "string",
+  message: "string",
+  result: {
+    flowList: [
+      {
+        id: 0,
+        purpose: ["WORKSHOP"],
+        title: "string",
+        totalPlayTime: 0,
+        viewCount: 0,
+        author: {
+          userId: 0,
+          username: "string",
+        },
+        scrapCount: 0,
+        isScraped: true,
+      },
+    ],
+    totalPages: 0,
+  },
+};
+export const exArray = [];
+for (let i = 0; i < 17; i++) exArray.push(ex);
 
 export default function ScrapFlow() {
   const navigate = useNavigate();
@@ -17,9 +42,41 @@ export default function ScrapFlow() {
   const moveToMy = () => {
     navigate(`/flow/my`);
   };
-  const moveToMakeFlow = ()=>{
-    navigate(`/flow/write`)
-  }
+  const moveToMakeFlow = () => {
+    navigate(`/flow/write`);
+  };
+
+  // 데이터 가져오기
+  const [datas, setDatas] = useState(exArray);
+  // 데이터 불러오는 동안 로딩
+  const [loading, setLoading] = useState(false);
+  // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(1);
+  // 한 페이지 당 데이터 수
+  const datasPerPage = 6;
+
+  // 처음 렌더링 시에만 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get("https://dev.avab.shop/api/flows");
+      setDatas(response.data);
+      setLoading(false);
+      console.log(datas);
+    };
+    fetchData();
+  }, []);
+
+  // 현재 페이지에서 마지막 데이터의 인덱스
+  const indexOfLast = currentPage * datasPerPage;
+  // 현재 페이지에서 첫번째 데이터의 인덱스
+  const indexOfFirst = indexOfLast - datasPerPage;
+  const currentDatas = (datas) => {
+    let currentDatas = datas.slice(indexOfFirst, indexOfLast);
+    return currentDatas;
+  };
+
+  // console.log(exArray);
 
   return (
     <MyFlowWrap>
@@ -33,51 +90,41 @@ export default function ScrapFlow() {
 
       {/* 내가 만든 일정플로우 - Title */}
       <MyFlowContainer>
-        <MyFlowBoxContainer>
-          <MyFlowBoxImage src={blankImg} />
-          <TitleBox>
-            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
-          </TitleBox>
-        </MyFlowBoxContainer>
+        <div>
+          <MyFlowBoxContainer>
+            <MyFlowBoxImage src={penguinImg} />
+            <TitleBox>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
+            </TitleBox>
+          </MyFlowBoxContainer>
 
-        {/* 내가 만든 일정플로우 - Grid */}
-        {flowN ? (
-          <ScrapFlowBoxParent>
-            <ScrapFlowBox />
-          </ScrapFlowBoxParent>
-        ) : (
-          <MyFlowNoneBox>
-            <MyFlowNoneImg src={blankImg} />
-            <MyFlowNoneDetail>
-              <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
-              <div style={{ fontSize: "20px", marginTop: "8px" }}>
-                위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
-              </div>
-            </MyFlowNoneDetail>
-          </MyFlowNoneBox>
-        )}
+          {/* 내가 만든 일정플로우 - Grid */}
+          {exArray.length !== 0 ? (
+            <ScrapFlowBoxParent>
+              <ScrapFlowBox datas={currentDatas(exArray)} loading={loading} />
+            </ScrapFlowBoxParent>
+          ) : (
+            <MyFlowNoneBox>
+              <MyFlowNoneImg src={noScrapImg} />
+              <MyFlowNoneDetail>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
+                <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                  위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
+                </div>
+              </MyFlowNoneDetail>
+            </MyFlowNoneBox>
+          )}
+        </div>
 
         {/* 페이지번호 */}
-        <PageNumberContainer>
-          <ImageBox>
-            <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-          </ImageBox>
-          <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
-            1
-          </PageNumber>
-          <PageNumber>2</PageNumber>
-          <PageNumber>3</PageNumber>
-          <PageNumber>4</PageNumber>
-          <PageNumber>5</PageNumber>
-          <PageNumber>6</PageNumber>
-          <PageNumber>7</PageNumber>
-          <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-          <ImageBox>
-            <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-          </ImageBox>
-        </PageNumberContainer>
+        <Pagination
+          currentPage={currentPage}
+          totalDatas={exArray.length}
+          datasPerPage={datasPerPage}
+          setCurrentPage={setCurrentPage}
+        />
       </MyFlowContainer>
-      <RightSide/>
+      <RightSide />
     </MyFlowWrap>
   );
 }
@@ -96,6 +143,7 @@ const RightSide = styled.div`
 const MyFlowMenuContainer = styled.div`
   background-color: white;
   border: 0.5px solid #cacdd2;
+  border-bottom: 0;
   width: 320px;
   font-size: 24px;
 `;
@@ -169,12 +217,12 @@ const ScrapFlowBoxParent = styled.div`
   grid-template-columns: repeat(2, 370px);
   row-gap: 20px;
   column-gap: 120px;
-  margin-top: 31px;
+  margin-top: 39px;
 `;
 
 // 내가 만든 일정 플로우 - None
 const MyFlowNoneBox = styled.div`
-  width: 315px;
+  width: 100%;
   text-align: center;
 `;
 
@@ -184,44 +232,7 @@ const MyFlowNoneImg = styled.img`
 `;
 
 const MyFlowNoneDetail = styled.div`
-  width: 315px;
-  height: 85px;
+  width: 100%;
   margin-top: 40px;
   text-align: center;
-`;
-
-// 페이지 번호
-const PageNumberContainer = styled.div`
-  display: flex;
-  margin-top: 82px;
-  margin-bottom: 112px;
-  height: 42px;
-`;
-
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
 `;
