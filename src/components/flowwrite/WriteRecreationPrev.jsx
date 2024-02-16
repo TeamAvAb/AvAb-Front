@@ -17,13 +17,20 @@ const keywordMapping = {
   PREPARATION: "준비물"
 }
 
-export default function WriteRecreationPrev({ content, handleAddRecommendFlow }) {
+export default function WriteRecreationPrev({ content, handleAddRecommendFlow, handleAddScrapFlow }) {
   const handleAddButtonClick = () => {
     if (handleAddRecommendFlow) {
       // handleAddRecommendFlow 함수가 정의되어 있다면 호출
       handleAddRecommendFlow();
     } else {
       console.error('handleAddRecommendFlow 함수가 정의되지 않았습니다.');
+    }
+
+    if (handleAddScrapFlow) {
+      // handleAddScrapFlow 함수가 정의되어 있다면 호출
+      handleAddScrapFlow();
+    } else {
+      console.error('handleAddScrapFlow 함수가 정의되지 않았습니다.');
     }
   };
 
