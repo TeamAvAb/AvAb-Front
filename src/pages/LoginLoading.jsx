@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import { publicAPI } from "../apis/user";
 import { FadeLoader } from "react-spinners";
 
 export default function LoginLoading({ handleLogin }) {
@@ -16,18 +16,16 @@ export default function LoginLoading({ handleLogin }) {
 
   const kakaoLogin = async () => {
     try {
-      const response = await axios({
-        method: "GET",
-        url: `https://dev.avab.shop/api/auth/login/kakao?code=${code}`,
-      });
-      console.log("응답 : ", response);
+      const response = await publicAPI.get(
+        `/api/auth/login/kakao?code=${code}`
+      );
       localStorage.setItem("accessToken", response.data.result.accessToken);
       localStorage.setItem("refreshToken", response.data.result.refreshToken);
       localStorage.setItem("userId", response.data.result.userId);
       if (response.data.isSuccess === true) handleLogin(true);
       navigator(redirectURL);
     } catch (error) {
-      console.log("에러 : ", error);
+      console.log("로그인 요청 에러 : ", error);
     }
   };
 

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import recreationData from '../components/mypage/Recreationdata';
-import none from '../assets/Footer/none.png'
+import React, { useState } from "react";
+import styled from "styled-components";
+import recreationData from "../components/mypage/Recreationdata";
+import none from "../assets/Footer/none.png";
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
 import starIcon from "../assets/mypage/mingcute_star-fill.svg";
@@ -29,9 +29,8 @@ export default function Mypage({ handleLogin }) {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
       localStorage.clear();
-      console.log(response);
     } catch (error) {
-      console.log("로그아웃 실패!");
+      console.log("로그아웃 요청 에러 : ", error);
     }
     handleLogin(false);
     setLogoutModalOpen(false);
@@ -81,56 +80,67 @@ export default function Mypage({ handleLogin }) {
           </MyInfo>
         )}
         {/*즐겨 찾는 레크레이션 페이지*/}
-        {selectedMenu === '레크레이션' && 
-        <RecreationWrap>
-          <RecreationTitle>레크레이션 찾기</RecreationTitle>
-          <RecreationMain>
-            {recreationData.map((recreation, index) => 
-              Array.from({length: 1}).map((_, i) => 
-                <Categories key={`${index}-${i}`}>
-                  <Hashtag>{recreation.hashtag}</Hashtag>
-                  <RecreationExplain>
-                    <ImgSpace>
-                      <ExImg src={recreation.imgSrc}/>
-                      <HeartImg
-                        src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
-                        onClick={() => toggleHeart(index)}
-                      />
-                    </ImgSpace>
-                    <Explain>
-                      <Section1>{recreation.title}</Section1>
-                      <SectionWrap>
-                        <Section2>{recreation.keywords}</Section2>
-                        <Section3 src={recreation.starSrc}/>
-                        <Section4>{recreation.rate}</Section4>
-                      </SectionWrap>
-                    </Explain>
-                  </RecreationExplain>
-                </Categories>
-              )
-            )}
-          </RecreationMain>
-          {/*페이지 전환*/}
-          <NextPage>
-            <ImageBox>
-              <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-            </ImageBox>
-            <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
-              1
-            </PageNumber>
-            <PageNumber>2</PageNumber>
-            <PageNumber>3</PageNumber>
-            <PageNumber>4</PageNumber>
-            <PageNumber>5</PageNumber>
-            <PageNumber>6</PageNumber>
-            <PageNumber>7</PageNumber>
-            <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-            <ImageBox>
-              <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-            </ImageBox>
-          </NextPage>
-        </RecreationWrap>
-        }
+        {selectedMenu === "레크레이션" && (
+          <RecreationWrap>
+            <RecreationTitle>레크레이션 찾기</RecreationTitle>
+            <RecreationMain>
+              {recreationData.map((recreation, index) =>
+                Array.from({ length: 1 }).map((_, i) => (
+                  <Categories key={`${index}-${i}`}>
+                    <Hashtag>{recreation.hashtag}</Hashtag>
+                    <RecreationExplain>
+                      <ImgSpace>
+                        <ExImg src={recreation.imgSrc} />
+                        <HeartImg
+                          src={
+                            index === selectedRecreationIndex
+                              ? YellowHeart
+                              : GrayHeart
+                          }
+                          onClick={() => toggleHeart(index)}
+                        />
+                      </ImgSpace>
+                      <Explain>
+                        <Section1>{recreation.title}</Section1>
+                        <SectionWrap>
+                          <Section2>{recreation.keywords}</Section2>
+                          <Section3 src={recreation.starSrc} />
+                          <Section4>{recreation.rate}</Section4>
+                        </SectionWrap>
+                      </Explain>
+                    </RecreationExplain>
+                  </Categories>
+                ))
+              )}
+            </RecreationMain>
+            {/*페이지 전환*/}
+            <NextPage>
+              <ImageBox>
+                <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
+              </ImageBox>
+              <PageNumber
+                style={{
+                  marginLeft: "14px",
+                  backgroundColor: "#8896DF",
+                  borderRadius: "50%",
+                  color: "white",
+                }}
+              >
+                1
+              </PageNumber>
+              <PageNumber>2</PageNumber>
+              <PageNumber>3</PageNumber>
+              <PageNumber>4</PageNumber>
+              <PageNumber>5</PageNumber>
+              <PageNumber>6</PageNumber>
+              <PageNumber>7</PageNumber>
+              <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
+              <ImageBox>
+                <ButtonImage src={RightButton} alt="오른쪽 버튼" />
+              </ImageBox>
+            </NextPage>
+          </RecreationWrap>
+        )}
       </Content>
       {/*우측 바*/}
       <RightSide />

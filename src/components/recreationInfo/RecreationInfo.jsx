@@ -1,28 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function RecreationInfo({ time, num }) {
+export default function RecreationInfo({ recreation, num }) {
+  console.log(recreation);
   return (
-    <div style={{ display: "flex", gap: "8px", alignItems: "end",marginBottom:'8px'}}>
-      <Line time={time}></Line>
-      <InfoBox time={time}>
+    <div style={{ display: "flex"}}>
+      <Line time={recreation.playTime}></Line>
+      <InfoBox time={recreation.playTime}>
         {/* 레크레이션 제목 */}
         <RecreationTitle>
-          <Number>{num}</Number>
-          <div style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700" }}>레크레이션 제목</div>
+          <Number>{num + 1}</Number>
+          <div style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700" }}>{recreation.title}</div>
         </RecreationTitle>
 
         {/* 레크레이션 키워드 */}
         <KeywordBox>
-          <Keyword>키워드 1</Keyword>
-          <Keyword>키워드 2</Keyword>
-          <Keyword>키워드 3</Keyword>
+          {recreation.keywordList.map((keyword) => (
+            <Keyword>{keyword}</Keyword>
+          ))}
         </KeywordBox>
 
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
           <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "400", color: "#9FA4A9" }}>플레이까지</div>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>{time}분</div>
+          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>{recreation.playTime}분</div>
         </PlayTime>
       </InfoBox>
     </div>
@@ -42,7 +43,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) => `${-(props.time / 10 - 1) * 119.04}px`};
+  width: 100%;
 `;
 
 const RecreationTitle = styled.div`
@@ -70,10 +71,13 @@ const KeywordBox = styled.div`
   align-items: flex-start;
   gap: 17px;
   margin-bottom: 21px;
+  max-width: 500px;
+  flex-wrap: wrap;
 `;
 
 const Keyword = styled.div`
   display: flex;
+  box-sizing: border-box;
   padding: 5px 29px;
   justify-content: center;
   align-items: center;
