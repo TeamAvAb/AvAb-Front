@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import styled from "styled-components";
-
 import character from "../assets/main/loginCharacter.png";
-import blankImg from "../assets/main/blankImg.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
+
 export default function Login({ handleLoginStatus, handleLoginModal }) {
+  const { pathname } = useLocation();
   const [temporaryClose, setTemporaryClose] = useState(false);
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
+  const toKakaoLogin = () => {
+    window.location.href = kakaoURL;
+  };
 
   return (
     <Container>
@@ -24,9 +31,7 @@ export default function Login({ handleLoginStatus, handleLoginModal }) {
                 성공적인 레크레이션
               </span>을 <br /> 경험해보세요!
             </Comment>
-            <Button onClick={() => handleLoginStatus(true)}>
-              간편 로그인하기
-            </Button>
+            <Button onClick={toKakaoLogin}>간편 로그인하기</Button>
           </Text>
           <img src={character} style={{ width: "249px", height: "286px" }} />
         </Content>
@@ -95,6 +100,7 @@ const Comment = styled.span`
 `;
 
 const Button = styled.button`
+  width: max-content;
   padding: 9px 24px;
   border: none;
   border-radius: 20px;

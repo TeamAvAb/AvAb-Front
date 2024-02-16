@@ -1,14 +1,38 @@
 import styled from "styled-components";
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
-const RecreationReview = forwardRef((props, ref) => {
-  const reviewNum = 17;
+import axios from "axios";
 
+const RecreationReview = forwardRef(({ recreationId }, ref) => {
+  const [reviewListData, setReviewListData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reviewData, setReviewData] = useState(0);
+
+  const itemsPerPage = 2;
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `https://dev.avab.shop/api/recreations/${recreationId}/reviews?page=${
+            currentPage - 1
+          }`
+        );
+        setReviewListData(response.data.result.reviewList);
+        setReviewData(response.data.result);
+        // console.log(localStorage.getItem("accessToken"));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchReviews();
+  }, [currentPage, recreationId]);
   return (
     <RecreationReviewContainer ref={ref}>
-      <TitleText>리뷰 및 평가 ({reviewNum})</TitleText>
+      <TitleText>리뷰 및 평가 ({reviewData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
         <ReviewStars></ReviewStars>
@@ -17,21 +41,27 @@ const RecreationReview = forwardRef((props, ref) => {
         <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
         <ReviewInputButton>등록</ReviewInputButton>
       </ReviewInputWrap>
-      <ReviewBox
-        starNum={4}
-        nickname={"윤카우"}
-        date={"2024.01.01"}
-        review={
-          "이거는 정말 미쳤어요.. 실화인가 진짜 재밌음... 수건 돌리기를 MT때 안 한다?? 100% 유죄임"
-        }
-        like={10}
-        dislike={2}
+      {reviewListData.map((review) => (
+        <ReviewBox
+          key={review.reviewId}
+          starNum={review.stars}
+          nickname={review.author.username}
+          date={review.createdAt}
+          review={review.contents}
+          like={review.goodCount}
+          dislike={review.badCount}
+        />
+      ))}
+      <RecreationPagination
+        itemsPerPage={itemsPerPage}
+        totalItems={reviewData.totalReviews}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPageNum={reviewData.totalPages}
       />
-      <RecreationPagination itemsPerPage={5} />
     </RecreationReviewContainer>
   );
 });
-
 export default RecreationReview;
 
 const RecreationReviewContainer = styled.div`

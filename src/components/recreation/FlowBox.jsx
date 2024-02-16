@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
-export default function FlowBox({ num, marginRight }) {
+export default function FlowBox({ num, marginRight, flowRecreations }) {
   const kewords = ["키워드1", "키워드2", "키워드3"];
   return (
     <FlowBoxWrap marginRight={marginRight}>
@@ -23,12 +23,23 @@ export default function FlowBox({ num, marginRight }) {
           />
         </svg>
       </TitleWrap>
-      <FlowRecreationBox
-        index={1}
-        recreationTitle={"레크레이션 제목"}
-        kewords={kewords}
-        time={10}
-      ></FlowRecreationBox>
+      {flowRecreations ? (
+        flowRecreations.map((index, recreations) => (
+          <FlowRecreationBox
+            index={index}
+            recreationTitle={recreations.title}
+            kewords={recreations.keywordList}
+            playTime={recreations.playTime}
+          />
+        ))
+      ) : (
+        <FlowRecreationBox
+          index={1}
+          recreationTitle={"레크레이션 제목"}
+          kewords={kewords}
+          playTime={10}
+        ></FlowRecreationBox>
+      )}
     </FlowBoxWrap>
   );
 }

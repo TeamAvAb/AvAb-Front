@@ -1,20 +1,30 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
-
+import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
 export default function RecreationContentBox({
   hashtag,
   recreationTitle,
   kewords,
   starRate,
+  isFavorite,
 }) {
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
+  const [isheartToggle, SetIsheartToggle] = useState(false);
+  const onHandleScrap = () => {
+    isheartToggle ? SetIsheartToggle(false) : SetIsheartToggle(true);
+  };
+
+  const heartIconColor = isheartToggle ? "#E54B4B" : "#E9EBED";
   return (
     <>
       <ContentBox>
-        <HashTagBox>{hashtag}</HashTagBox> {/* 해시태그 */}
+        <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
+        <HeartIconWrap onClick={onHandleScrap}>
+          <Icon fill={heartIconColor} />
+        </HeartIconWrap>
         <TitleStar>
           <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
           {/* 레크레이션 제목 */}
@@ -56,6 +66,12 @@ const RecreationTitle = styled.div`
   line-height: normal;
   margin: 21px 0px;
   display: inline-block;
+`;
+const HeartIconWrap = styled.div`
+  float: right;
+  margin-top: 5px;
+  margin-right: 15px;
+  cursor: pointer;
 `;
 const TitleStar = styled.div`
   display: flex;
