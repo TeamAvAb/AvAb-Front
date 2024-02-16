@@ -13,11 +13,32 @@ import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
 export default function MoreWatchFlow() {
-  // scrap 상태
   const [scrap, setScrap] = useState(false);
-  const ScrapFunc = () => {
-    scrap ? setScrap(false) : setScrap(true);
+  // 스크랩 상태 변경
+  const DoScrap = async (id) => {
+    const response = await axios.post(
+      `https://dev.avab.shop/api/flows/${id}/scraps`,
+      {},
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      setScrap(true);
+    } else {
+      // 요청이 실패하면 에러 처리
+      console.log(response.data);
+    }
   };
 
   // 삭제 버튼 모달창을 위한 상태
@@ -27,9 +48,17 @@ export default function MoreWatchFlow() {
   const OpenModal = () => {
     setModal(true);
   };
-  // 삭제 버튼 누를 시 상태 변화 함수
+  // 공유 버튼 누를 시 상태 변화 함수
   const ShareBtn = () => {
     setShare(true);
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        console.log("URL copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Could not copy text: ", err);
+      });
   };
   // 삭제 모달 창 닫기 위한 상태 변화 함수
   const close = () => {
@@ -45,14 +74,17 @@ export default function MoreWatchFlow() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`);
+        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`, {
+          headers: { Authorization: `Bearer ${JWT_TOKEN}` },
+        });
         setData(response.data.result);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [id]);
+    setScrap(false);
+  }, [id, scrap]);
 
   useEffect(() => {
     console.log(data);
@@ -93,8 +125,8 @@ export default function MoreWatchFlow() {
           <TitleBox>
             <DetailTitleBox>
               <KeyWord>{data.flowDetail.purposeList.map((p) => p).join(", ")}</KeyWord>
-              <ScrapImg onClick={ScrapFunc}>
-                {scrap ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
+              <ScrapImg onClick={() => DoScrap(id)}>
+                {data.flowDetail.isFavorite ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
               </ScrapImg>
             </DetailTitleBox>
             <FlowName>{data.flowDetail.title}</FlowName>
@@ -142,7 +174,7 @@ export default function MoreWatchFlow() {
             </FlowInfoTitle>
 
             <FlowInfoDetail>
-              <div style={{width:'284px'}}>
+              <div style={{ width: "284px" }}>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
                   <FlowInfo style={{ fontWeight: "400" }}>
@@ -190,16 +222,14 @@ export default function MoreWatchFlow() {
             </FlowInfoDetail>
 
             <FlowContainer>
-              <div style={{ width: "393px", textAlign: "center" }}>
-                <FlowTitle>플로우 제목</FlowTitle>
-              </div>
+              <FlowTitle>플로우 제목</FlowTitle>
 
               {/* 레크레이션 박스 */}
-              <RecreationInfo time={10} num={1} />
-              <RecreationInfo time={20} num={2} />
-              <RecreationInfo time={10} num={3} />
-              <RecreationInfo time={40} num={4} />
-              <RecreationInfo time={30} num={5} />
+              <RecreationBox>
+                {data.recreations.map((recreation, i) => (
+                  <RecreationInfo recreation={recreation} num={i} />
+                ))}
+              </RecreationBox>
             </FlowContainer>
           </FlowInfoBox>
         </FlowInfoContainer>
@@ -447,9 +477,9 @@ const FlowInfo2 = styled.div`
 const FlowContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 24px 170px;
   margin-bottom: 131px;
-  align-items: flex-start;
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   background: white;
@@ -467,4 +497,12 @@ const FlowTitle = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
+`;
+
+const RecreationBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Blank from "../assets/moreflow/blank.png";
 import Share from "../assets/moreflow/share.png";
@@ -6,11 +6,20 @@ import Time from "../assets/moreflow/time.png";
 import User from "../assets/moreflow/user.png";
 import View from "../assets/moreflow/view.png";
 import Write from "../assets/moreflow/write.png";
+import Scrap from "../assets/moreflow/scrap.png";
 import Scrap2 from "../assets/moreflow/scrap2.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
-export default function MoreScrapFlow() {
+export default function MoreWatchFlow() {
+  // scrap 상태
+  const [scrap, setScrap] = useState(false);
+  const ScrapFunc = () => {
+    scrap ? setScrap(false) : setScrap(true);
+  };
+
   // 삭제 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
   const [modal, setModal] = useState(false);
@@ -18,9 +27,17 @@ export default function MoreScrapFlow() {
   const OpenModal = () => {
     setModal(true);
   };
-  // 삭제 버튼 누를 시 상태 변화 함수
+  // 공유 버튼 누를 시 상태 변화 함수
   const ShareBtn = () => {
     setShare(true);
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        console.log("URL copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Could not copy text: ", err);
+      });
   };
   // 삭제 모달 창 닫기 위한 상태 변화 함수
   const close = () => {
@@ -28,145 +45,172 @@ export default function MoreScrapFlow() {
     setShare(false);
   };
 
+  // moreData 가져오기
+  const [data, setData] = useState([]);
+  const location = useLocation();
+  const id = location.state.moreData.id;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`);
+        setData(response.data.result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
-    <div style={{ backgroundColor: "#E9EBED" }}>
-      {/* 모달창 */}
-      {modal ? (
-        <ModalContainer>
-          <ModalBox>
-            <CloseBtn onClick={close}>
-              <img src={Close} alt="닫기" />
-            </CloseBtn>
-            <ModalBoxDetail>
+    data.length !== 0 && (
+      <div style={{ backgroundColor: "#E9EBED" }}>
+        {/* 모달창 */}
+        {modal ? (
+          <ModalContainer>
+            <ModalBox>
+              <CloseBtn onClick={close}>
+                <img src={Close} alt="닫기" />
+              </CloseBtn>
+              <ModalBoxDetail>
+                <div>
+                  <ModalTitle>
+                    일정 플로우를
+                    <br />
+                    공유하세요!
+                  </ModalTitle>
+                </div>
+                {share ? (
+                  <AfterCopyBtn>복사 완료</AfterCopyBtn>
+                ) : (
+                  <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
+                )}
+              </ModalBoxDetail>
+            </ModalBox>
+          </ModalContainer>
+        ) : (
+          <></>
+        )}
+
+        <TitleContainer>
+          <img src={Blank} alt="플로우사진" style={{ width: "250px", height: "250px", marginTop: "86px" }} />
+          <TitleBox>
+            <DetailTitleBox>
+              <KeyWord>{data.flowDetail.purposeList.map((p) => p).join(", ")}</KeyWord>
+              <ScrapImg onClick={ScrapFunc}>
+                {scrap ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
+              </ScrapImg>
+            </DetailTitleBox>
+            <FlowName>{data.flowDetail.title}</FlowName>
+
+            {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
+            <FlowBoxDetailBox>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.flowDetail.author.username}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+            </FlowBoxDetailBox>
+
+            {/* 공유버튼 */}
+            <ShareImg onClick={OpenModal}>
+              <img src={Share} alt="공유하기" />
+            </ShareImg>
+          </TitleBox>
+        </TitleContainer>
+
+        <FlowInfoContainer>
+          <FlowInfoBox>
+            <FlowInfoTitle>
+              <div>기본정보</div>
+              <div>세부정보</div>
+            </FlowInfoTitle>
+
+            <FlowInfoDetail>
+              <div style={{ width: "284px" }}>
+                <div style={{ display: "flex", marginBottom: "8px" }}>
+                  <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
+                  <FlowInfo style={{ fontWeight: "400" }}>
+                    {data.flowDetail.purposeList.map((p) => p).join(", ")}
+                  </FlowInfo>
+                </div>
+                <div style={{ display: "flex" }}>
+                  <FlowInfo>플레이 시간</FlowInfo>
+                  <div>{data.flowDetail.totalPlayTime}분</div>
+                </div>
+              </div>
+
+              <Line />
+
               <div>
-                <ModalTitle>
-                  일정 플로우를
-                  <br />
-                  공유하세요!
-                </ModalTitle>
-              </div>
-              {share ? (
-                <AfterCopyBtn>복사 완료</AfterCopyBtn>
-              ) : (
-                <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
-              )}
-            </ModalBoxDetail>
-          </ModalBox>
-        </ModalContainer>
-      ) : (
-        <></>
-      )}
-
-      <TitleContainer>
-        <img src={Blank} alt="플로우사진" style={{ width: "250px", height: "250px", marginTop: "86px" }} />
-        <TitleBox>
-          <DetailTitleBox>
-            <KeyWord>신년회</KeyWord>
-            <ScrapImg>
-              <img src={Scrap2} alt="스크랩" />
-            </ScrapImg>
-          </DetailTitleBox>
-          <FlowName>플로우 이름</FlowName>
-
-          {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
-          <FlowBoxDetailBox>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>70분</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>2,232</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>윤카우</FlowBoxDetail>
-            </FlowBoxDetails>
-            <FlowBoxDetails>
-              <FlowBoxDetailImg>
-                <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
-              </FlowBoxDetailImg>
-              <FlowBoxDetail>2,232</FlowBoxDetail>
-            </FlowBoxDetails>
-          </FlowBoxDetailBox>
-
-          {/* 공유버튼 */}
-          <ShareImg onClick={OpenModal}>
-            <img src={Share} alt="공유하기" />
-          </ShareImg>
-        </TitleBox>
-      </TitleContainer>
-
-      <FlowInfoContainer>
-        <FlowInfoBox>
-          <FlowInfoTitle>
-            <div>기본정보</div>
-            <div>세부정보</div>
-          </FlowInfoTitle>
-
-          <FlowInfoDetail>
-            <div style={{ marginLeft: "20px", marginTop: "56px" }}>
-              <div style={{ display: "flex", marginBottom: "8px" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
-                <div>회사 워크샵</div>
-              </div>
-              <div style={{ display: "flex" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
-                  플레이 시간
+                <div style={{ display: "flex", marginBottom: "8px" }}>
+                  <FlowInfo>키워드</FlowInfo>
+                  <FlowInfo2>
+                    {data.flowDetail.keywordList.map((keyword) => (
+                      <div>{keyword}</div>
+                    ))}
+                  </FlowInfo2>
                 </div>
-                <div>90분</div>
-              </div>
-            </div>
-
-            <Line></Line>
-
-            <div style={{ marginTop: "29px" }}>
-              <div style={{ display: "flex", marginBottom: "8px" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
-                  키워드
+                <div style={{ display: "flex", marginBottom: "8px" }}>
+                  <FlowInfo>성별</FlowInfo>
+                  <FlowInfo2>
+                    {data.flowDetail.gender.map((gender) => (
+                      <div>{gender}</div>
+                    ))}
+                  </FlowInfo2>
                 </div>
-                <div style={{ marginRight: "8px" }}>키워드 1</div>
-                <div style={{ marginRight: "8px" }}>키워드 2</div>
-                <div>키워드 3</div>
-              </div>
-              <div style={{ display: "flex", marginBottom: "8px" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>성별</div>
-                <div>여성, 남성</div>
-              </div>
-              <div style={{ display: "flex", marginBottom: "8px" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
-                  연령대
+                <div style={{ display: "flex", marginBottom: "8px" }}>
+                  <FlowInfo>연령대</FlowInfo>
+                  <FlowInfo2>
+                    {data.flowDetail.age.map((gender) => (
+                      <div>{gender}</div>
+                    ))}
+                  </FlowInfo2>
                 </div>
-                <div>30대, 40대</div>
+                <div style={{ display: "flex", marginBottom: "8px" }}>
+                  <FlowInfo>인원</FlowInfo>
+                  <div>{data.flowDetail.participants}명</div>
+                </div>
               </div>
-              <div style={{ display: "flex", marginBottom: "8px" }}>
-                <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>인원</div>
-                <div>40명</div>
-              </div>
-            </div>
-          </FlowInfoDetail>
+            </FlowInfoDetail>
 
-          <FlowContainer>
-            <div style={{ width: "393px", textAlign: "center" }}>
+            <FlowContainer>
               <FlowTitle>플로우 제목</FlowTitle>
-            </div>
 
-            {/* 레크레이션 박스 */}
-            <RecreationInfo time={10} num={1} />
-            <RecreationInfo time={20} num={2} />
-            <RecreationInfo time={10} num={3} />
-            <RecreationInfo time={40} num={4} />
-            <RecreationInfo time={30} num={5} />
-          </FlowContainer>
-        </FlowInfoBox>
-      </FlowInfoContainer>
-    </div>
+              {/* 레크레이션 박스 */}
+              <RecreationBox>
+                {data.recreations.map((recreation, i) => (
+                  <RecreationInfo recreation={recreation} num={i} />
+                ))}
+              </RecreationBox>
+            </FlowContainer>
+          </FlowInfoBox>
+        </FlowInfoContainer>
+      </div>
+    )
   );
 }
 
@@ -178,8 +222,6 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
   background: rgba(70, 76, 82, 0.5);
   z-index: 999;
 `;
@@ -317,7 +359,7 @@ const FlowBoxDetailBox = styled.div`
 `;
 
 const FlowBoxDetails = styled.div`
-  width: 93px;
+  width: 100%;
   height: 42px;
   font-size: 16px;
   display: flex;
@@ -354,6 +396,7 @@ const FlowInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-top: 40px;
 `;
 
@@ -380,21 +423,39 @@ const FlowInfoTitle = styled.div`
 `;
 
 const FlowInfoDetail = styled.div`
+  box-sizing: border-box;
   width: 608px;
   height: 158px;
   border-radius: 20px;
   border: 1px solid #cacdd2;
   background: white;
   margin-bottom: 40px;
+  padding: 29px 20px;
   display: flex;
+  align-items: center;
+  flex: 1;
+`;
+
+const FlowInfo = styled.div`
+  margin-right: 8px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+`;
+
+const FlowInfo2 = styled.div`
+  display: flex;
+  gap: 8px;
+  max-width: 190px;
+  flex-wrap: wrap;
 `;
 
 const FlowContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 24px 170px;
   margin-bottom: 131px;
-  align-items: flex-start;
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   background: white;
@@ -403,9 +464,7 @@ const FlowContainer = styled.div`
 const Line = styled.div`
   border: 0.5px solid #cacdd2;
   width: 0.5px;
-  height: 100px;
-  margin-top: 29px;
-  margin-left: 169px;
+  height: 11vh;
   margin-right: 20px;
 `;
 
@@ -414,4 +473,12 @@ const FlowTitle = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
+`;
+
+const RecreationBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
 `;

@@ -7,32 +7,8 @@ import { useNavigate } from "react-router-dom";
 import ScrapFlowBox from "../components/flow/ScrapFlowBox";
 import Pagination from "../components/pagination/Pagination";
 
-// 임시 데이터
-const ex = {
-  isSuccess: true,
-  code: "string",
-  message: "string",
-  result: {
-    flowList: [
-      {
-        id: 0,
-        purpose: ["WORKSHOP"],
-        title: "string",
-        totalPlayTime: 0,
-        viewCount: 0,
-        author: {
-          userId: 0,
-          username: "string",
-        },
-        scrapCount: 0,
-        isScraped: true,
-      },
-    ],
-    totalPages: 0,
-  },
-};
-export const exArray = [];
-for (let i = 0; i < 17; i++) exArray.push(ex);
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function ScrapFlow() {
   const navigate = useNavigate();
@@ -47,36 +23,36 @@ export default function ScrapFlow() {
   };
 
   // 데이터 가져오기
-  const [datas, setDatas] = useState(exArray);
+  const [datas, setDatas] = useState([]);
   // 데이터 불러오는 동안 로딩
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   // 한 페이지 당 데이터 수
   const datasPerPage = 6;
+  // 스크랩 변화 감지 함수
+  const [scrap, setScrap] = useState(false);
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get("https://dev.avab.shop/api/flows");
-      setDatas(response.data);
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/scraps/flows?page=${currentPage}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result.flowList);
       setLoading(false);
-      console.log(datas);
     };
     fetchData();
-  }, []);
+    setScrap(false);
+  }, [currentPage, scrap]);
 
-  // 현재 페이지에서 마지막 데이터의 인덱스
-  const indexOfLast = currentPage * datasPerPage;
-  // 현재 페이지에서 첫번째 데이터의 인덱스
-  const indexOfFirst = indexOfLast - datasPerPage;
-  const currentDatas = (datas) => {
-    let currentDatas = datas.slice(indexOfFirst, indexOfLast);
-    return currentDatas;
-  };
-
-  // console.log(exArray);
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
 
   return (
     <MyFlowWrap>
@@ -99,10 +75,8 @@ export default function ScrapFlow() {
           </MyFlowBoxContainer>
 
           {/* 내가 만든 일정플로우 - Grid */}
-          {exArray.length !== 0 ? (
-            <ScrapFlowBoxParent>
-              <ScrapFlowBox datas={currentDatas(exArray)} loading={loading} />
-            </ScrapFlowBoxParent>
+          {datas.length !== 0 ? (
+            <ScrapFlowBoxParent>{datas && <ScrapFlowBox datas={datas} setScrap={setScrap} />}</ScrapFlowBoxParent>
           ) : (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
@@ -119,7 +93,7 @@ export default function ScrapFlow() {
         {/* 페이지번호 */}
         <Pagination
           currentPage={currentPage}
-          totalDatas={exArray.length}
+          totalDatas={datas.length}
           datasPerPage={datasPerPage}
           setCurrentPage={setCurrentPage}
         />

@@ -6,6 +6,9 @@ import Flow from "../components/flow/FlowBox.jsx";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination.jsx";
 
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
 export default function WatchFlow() {
   const navigate = useNavigate();
   const moveToMy = () => {
@@ -26,17 +29,24 @@ export default function WatchFlow() {
   const [currentPage, setCurrentPage] = useState(0);
   // 한 페이지 당 데이터 수
   const datasPerPage = 6;
+  // 스크랩 변화 감지 함수
+  const [scrap, setScrap] = useState(false);
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/flows?$page=${currentPage}`);
+      const response = await axios.get(`https://dev.avab.shop/api/flows?page=${currentPage}`, {
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
       setDatas(response.data.result.flowList);
       setLoading(false);
     };
     fetchData();
-  }, [currentPage]);
+    setScrap(false);
+  }, [currentPage, scrap]);
 
   useEffect(() => {
     console.log(datas);
@@ -63,7 +73,7 @@ export default function WatchFlow() {
           </MyFlowBoxContainer>
 
           {/* 플로우 데이터 불러온 부분 - Component */}
-          <WatchFlowBoxParent>{datas && <Flow datas={datas} loading={loading} />}</WatchFlowBoxParent>
+          <WatchFlowBoxParent>{datas && <Flow datas={datas} setScrap={setScrap} />}</WatchFlowBoxParent>
         </div>
 
         {/* 페이지번호 */}
