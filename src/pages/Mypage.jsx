@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import recreationData from '../components/mypage/Recreationdata';
-import none from '../assets/Footer/none.png'
+import React, { useState } from "react";
+import styled from "styled-components";
+import recreationData from "../components/mypage/Recreationdata";
+import none from "../assets/Footer/none.png";
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
 import starIcon from "../assets/mypage/mingcute_star-fill.svg";
-import YellowHeart from "../assets/mypage/YellowHeart.svg"
-import GrayHeart from "../assets/mypage/GrayHeart.svg"
+import YellowHeart from "../assets/mypage/YellowHeart.svg";
+import GrayHeart from "../assets/mypage/GrayHeart.svg";
+import { privateAPI } from "../apis/user";
 
-export default function Mypage () {
-  const [selectedMenu, setSelectedMenu] = useState('내 정보');
+export default function Mypage({ handleLogin }) {
+  const [selectedMenu, setSelectedMenu] = useState("내 정보");
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
 
@@ -20,8 +21,18 @@ export default function Mypage () {
   const openLogoutModal = () => {
     setLogoutModalOpen(true);
   };
-  
+
   const closeLogoutModal = () => {
+    setLogoutModalOpen(false);
+  };
+  const handleLogout = async () => {
+    try {
+      const response = await privateAPI.delete("/api/auth/logout");
+      localStorage.clear();
+    } catch (error) {
+      console.log("로그아웃 요청 에러 : ", error);
+    }
+    handleLogin(false);
     setLogoutModalOpen(false);
   };
 
@@ -38,94 +49,110 @@ export default function Mypage () {
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem active={selectedMenu === '내 정보'} onClick={() => handleMenuClick('내 정보')}>
+          <MenuItem
+            active={selectedMenu === "내 정보"}
+            onClick={() => handleMenuClick("내 정보")}
+          >
             내 정보
           </MenuItem>
-          <MenuItem active={selectedMenu === '레크레이션'} onClick={() => handleMenuClick('레크레이션')}>
+          <MenuItem
+            active={selectedMenu === "레크레이션"}
+            onClick={() => handleMenuClick("레크레이션")}
+          >
             즐겨 찾는 레크레이션
           </MenuItem>
-          <MenuItem onClick={openLogoutModal}>
-            로그아웃
-          </MenuItem>
+          <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
       <Content>
         {/*내 정보 페이지*/}
-        {selectedMenu === '내 정보' && 
+        {selectedMenu === "내 정보" && (
           <MyInfo>
             <MyTitle>카카오 계정</MyTitle>
-            <MyInput placeholder='이메일'/>
+            <MyInput placeholder="이메일" />
             <MyTitle2>닉네임</MyTitle2>
-            <MyInput placeholder='닉네임'/>
+            <MyInput placeholder="닉네임" />
             <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
             <ButtonSection>
               <OutBut>회원탈퇴</OutBut>
               <SaveBut>저장하기</SaveBut>
             </ButtonSection>
-          </MyInfo>}
+          </MyInfo>
+        )}
         {/*즐겨 찾는 레크레이션 페이지*/}
-        {selectedMenu === '레크레이션' && 
-        <RecreationWrap>
-          <RecreationTitle>레크레이션 찾기</RecreationTitle>
-          <RecreationMain>
-            {recreationData.map((recreation, index) => 
-              Array.from({length: 1}).map((_, i) => 
-                <Categories key={`${index}-${i}`}>
-                  <Hashtag>{recreation.hashtag}</Hashtag>
-                  <RecreationExplain>
-                    <ImgSpace>
-                      <ExImg src={recreation.imgSrc}/>
-                      <HeartImg
-                        src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
-                        onClick={() => toggleHeart(index)}
-                      />
-                    </ImgSpace>
-                    <Explain>
-                      <Section1>{recreation.title}</Section1>
-                      <SectionWrap>
-                        <Section2>{recreation.keywords}</Section2>
-                        <Section3 src={recreation.starSrc}/>
-                        <Section4>{recreation.rate}</Section4>
-                      </SectionWrap>
-                    </Explain>
-                  </RecreationExplain>
-                </Categories>
-              )
-            )}
-          </RecreationMain>
-          {/*페이지 전환*/}
-          <NextPage>
-            <ImageBox>
-              <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-            </ImageBox>
-            <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
-              1
-            </PageNumber>
-            <PageNumber>2</PageNumber>
-            <PageNumber>3</PageNumber>
-            <PageNumber>4</PageNumber>
-            <PageNumber>5</PageNumber>
-            <PageNumber>6</PageNumber>
-            <PageNumber>7</PageNumber>
-            <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-            <ImageBox>
-              <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-            </ImageBox>
-          </NextPage>
-        </RecreationWrap>
-        }
+        {selectedMenu === "레크레이션" && (
+          <RecreationWrap>
+            <RecreationTitle>레크레이션 찾기</RecreationTitle>
+            <RecreationMain>
+              {recreationData.map((recreation, index) =>
+                Array.from({ length: 1 }).map((_, i) => (
+                  <Categories key={`${index}-${i}`}>
+                    <Hashtag>{recreation.hashtag}</Hashtag>
+                    <RecreationExplain>
+                      <ImgSpace>
+                        <ExImg src={recreation.imgSrc} />
+                        <HeartImg
+                          src={
+                            index === selectedRecreationIndex
+                              ? YellowHeart
+                              : GrayHeart
+                          }
+                          onClick={() => toggleHeart(index)}
+                        />
+                      </ImgSpace>
+                      <Explain>
+                        <Section1>{recreation.title}</Section1>
+                        <SectionWrap>
+                          <Section2>{recreation.keywords}</Section2>
+                          <Section3 src={recreation.starSrc} />
+                          <Section4>{recreation.rate}</Section4>
+                        </SectionWrap>
+                      </Explain>
+                    </RecreationExplain>
+                  </Categories>
+                ))
+              )}
+            </RecreationMain>
+            {/*페이지 전환*/}
+            <NextPage>
+              <ImageBox>
+                <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
+              </ImageBox>
+              <PageNumber
+                style={{
+                  marginLeft: "14px",
+                  backgroundColor: "#8896DF",
+                  borderRadius: "50%",
+                  color: "white",
+                }}
+              >
+                1
+              </PageNumber>
+              <PageNumber>2</PageNumber>
+              <PageNumber>3</PageNumber>
+              <PageNumber>4</PageNumber>
+              <PageNumber>5</PageNumber>
+              <PageNumber>6</PageNumber>
+              <PageNumber>7</PageNumber>
+              <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
+              <ImageBox>
+                <ButtonImage src={RightButton} alt="오른쪽 버튼" />
+              </ImageBox>
+            </NextPage>
+          </RecreationWrap>
+        )}
       </Content>
       {/*우측 바*/}
-      <RightSide/>
+      <RightSide />
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
         <LogoutModal>
           <ModalContent>
             <ModalTitle>로그아웃 하시게요?</ModalTitle>
             <SemiTitle>더 많은 혜택이 기다리고 있어요.</SemiTitle>
-            <LogoutImg src={none}/>
+            <LogoutImg src={none} />
             <ModalBut>
-              <LogoutButton onClick={closeLogoutModal}>로그아웃</LogoutButton>
+              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               <CloseButton onClick={closeLogoutModal}>닫기</CloseButton>
             </ModalBut>
           </ModalContent>
@@ -133,7 +160,7 @@ export default function Mypage () {
       )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
@@ -181,12 +208,12 @@ const MenuItem = styled.div`
 `;
 
 const Content = styled.div`
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    border: solid #cacdd2 1px;
-    border-bottom: none;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border: solid #cacdd2 1px;
+  border-bottom: none;
 `;
 
 const MyInfo = styled.div`
@@ -198,7 +225,7 @@ const MyTitle = styled.div`
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
-  margin-top:20px;
+  margin-top: 20px;
 `;
 
 const MyTitle2 = styled(MyTitle)`
@@ -210,7 +237,7 @@ const MyInput = styled.input`
   height: 70px;
   border-radius: 20px;
   border: solid #cacdd2 1px;
-  font-color: #cacdd2;
+  color: #cacdd2;
   font-size: 20px;
   padding-left: 25px;
 `;
@@ -340,8 +367,8 @@ const SectionWrap = styled.div`
 const Section1 = styled.div`
   font-size: 17px;
   font-weight: 600;
-  margin-bottom: 10px
-`
+  margin-bottom: 10px;
+`;
 
 const Section2 = styled.div`
   font-size: 15px;
@@ -349,11 +376,11 @@ const Section2 = styled.div`
 
 const Section3 = styled.img`
   margin-left: 30px;
-  width: 13.72px
+  width: 13.72px;
 `;
 
 const Section4 = styled.div`
-margin-left: 5px;
+  margin-left: 5px;
 `;
 
 const NextPage = styled.div`
@@ -392,8 +419,8 @@ const ButtonImage = styled.img`
 `;
 
 const RightSide = styled.div`
-    width: 5.7325%;
-    background-color: #f7f8f9;
+  width: 5.7325%;
+  background-color: #f7f8f9;
 `;
 
 const LogoutModal = styled.div`

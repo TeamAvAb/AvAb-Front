@@ -85,7 +85,7 @@ const StyledSlider = styled(Slider)`
   }
   .slick-arrow {
     position: absolute;
-    z-index: 10;
+    z-index: 5;
   }
   .slick-arrow::before {
     display: none;

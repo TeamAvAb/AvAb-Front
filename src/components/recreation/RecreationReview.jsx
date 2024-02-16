@@ -4,15 +4,20 @@ import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
 import axios from "axios";
-
+import { isLoggedIn, privateAPI } from "../../apis/user";
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
-  const [reviewsData, setReviewsData] = useState([]);
+  const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPageNum, setTotalPageNum] = useState(0);
-
+  const [reviewData, setReviewData] = useState(0);
+  const [reviewInput, setReviewInput] = useState("");
+  const [selectedStars, setSelectedStars] = useState(0);
+  const handleStarClick = (starCount) => {
+    setSelectedStars(starCount);
+  };
+  const testJWT =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const itemsPerPage = 2;
-  const totalItems = totalPageNum * itemsPerPage;
-
+  // 리뷰 목록 받아오기
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -21,8 +26,8 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
             currentPage - 1
           }`
         );
-        setReviewsData(response.data.result.reviewList);
-        setTotalPageNum(response.data.result.totalPages);
+        setReviewListData(response.data.result.reviewList);
+        setReviewData(response.data.result);
       } catch (error) {
         console.error(error);
       }
@@ -30,18 +35,63 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
     fetchReviews();
   }, [currentPage, recreationId]);
+
+  // 리뷰 작성
+  const handleReviewSubmit = async () => {
+    if (isLoggedIn()) {
+      try {
+        // const accessToken = localStorage.getItem("accessToken");
+        const accessToken = testJWT;
+        const response = await axios.post(
+          `https://dev.avab.shop/api/recreations/${recreationId}/reviews`,
+          {
+            stars: selectedStars,
+            contents: reviewInput,
+          },
+          {
+            headers: {
+              Accept: "*/*",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <RecreationReviewContainer ref={ref}>
-      <TitleText>리뷰 및 평가 ({itemsPerPage})</TitleText>
+      <TitleText>리뷰 및 평가 ({reviewData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
-        <ReviewStars></ReviewStars>
+        <ReviewStars onStarClick={handleStarClick} />
       </StarBox>
+
       <ReviewInputWrap>
-        <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
-        <ReviewInputButton>등록</ReviewInputButton>
+        {isLoggedIn() ? (
+          <>
+            <ReviewInputBox
+              placeholder="리뷰를 작성하세요."
+              value={reviewInput}
+              onChange={(e) => setReviewInput(e.target.value)}
+            ></ReviewInputBox>
+            <ReviewInputButton onClick={handleReviewSubmit}>
+              등록
+            </ReviewInputButton>
+          </>
+        ) : (
+          <>
+            <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
+            <ReviewInputButton>등록</ReviewInputButton>
+          </>
+        )}
       </ReviewInputWrap>
-      {reviewsData.map((review) => (
+
+      {reviewListData.map((review) => (
         <ReviewBox
           key={review.reviewId}
           starNum={review.stars}
@@ -54,10 +104,10 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       ))}
       <RecreationPagination
         itemsPerPage={itemsPerPage}
-        totalItems={totalItems}
+        totalItems={reviewData.totalReviews}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalPageNum={totalPageNum}
+        totalPageNum={reviewData.totalPages}
       />
     </RecreationReviewContainer>
   );

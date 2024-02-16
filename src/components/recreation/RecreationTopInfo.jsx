@@ -34,6 +34,7 @@ export default function RecreationTopInfo({ recreationData }) {
           recreationTitle={recreationData.title}
           kewords={kewords}
           starRate={recreationData.totalStars}
+          isFavorite={recreationData.isFavorite}
         />
         <ViewBox>
           <ViewIcon src={viewIcon} />

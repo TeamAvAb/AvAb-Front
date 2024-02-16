@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 export default function RadioInput({ content, setOption, selectedOption }) {
-  const handleSelect = (id) => {
-    const isSelected = selectedOption.includes(id);
+  const handleSelect = (param) => {
+    const isSelected = selectedOption.includes(param);
     if (isSelected) {
-      setOption(selectedOption.filter((el) => el !== id));
+      setOption(selectedOption.filter((el) => el !== param));
     } else {
-      setOption((prev) => [...prev, id]);
+      setOption((prev) => [...prev, param]);
     }
   };
 
@@ -16,8 +16,8 @@ export default function RadioInput({ content, setOption, selectedOption }) {
       {content.map((el) => (
         <Option
           key={el.id}
-          onClick={() => handleSelect(el.id)}
-          selected={selectedOption.includes(el.id)}
+          onClick={() => handleSelect(el.param)}
+          selected={selectedOption.includes(el.param)}
         >
           {el.value}
         </Option>

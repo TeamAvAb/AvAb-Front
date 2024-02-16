@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import blankImg from "../assets/watchflow/blank.png";
+import PenguinImg from "../assets/watchflow/penguin.png";
 import Flow from "../components/flow/FlowBox.jsx";
-import LeftButton from "../assets/watchflow/moveLeft.png";
-import RightButton from "../assets/watchflow/moveRight.png";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../components/pagination/Pagination.jsx";
+
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function WatchFlow() {
   const navigate = useNavigate();
@@ -18,6 +21,37 @@ export default function WatchFlow() {
     navigate(`/flow/write`);
   };
 
+  // 데이터 가져오기
+  const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
+  const [loading, setLoading] = useState(false);
+  // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(0);
+  // 한 페이지 당 데이터 수
+  const datasPerPage = 6;
+  // 스크랩 변화 감지 함수
+  const [scrap, setScrap] = useState(false);
+
+  // 처음 렌더링 시에만 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get(`https://dev.avab.shop/api/flows?page=${currentPage}`, {
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result.flowList);
+      setLoading(false);
+    };
+    fetchData();
+    setScrap(false);
+  }, [currentPage, scrap]);
+
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
+
   return (
     <MyFlowWrap>
       {/* 플로우 왼쪽 메뉴바 */}
@@ -30,39 +64,25 @@ export default function WatchFlow() {
 
       {/* 플로우 구경하기 */}
       <MyFlowContainer>
-        <MyFlowBoxContainer>
-          <MyFlowBoxImage src={blankImg} />
-          <TitleBox>
-            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
-          </TitleBox>
-        </MyFlowBoxContainer>
+        <div>
+          <MyFlowBoxContainer>
+            <MyFlowBoxImage src={PenguinImg} />
+            <TitleBox>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
+            </TitleBox>
+          </MyFlowBoxContainer>
 
-        {/* 플로우 데이터 불러온 부분 - Component */}
-        <WatchFlowBoxParent>
-          <Flow />
-          <Flow />
-          <Flow />
-        </WatchFlowBoxParent>
+          {/* 플로우 데이터 불러온 부분 - Component */}
+          <WatchFlowBoxParent>{datas && <Flow datas={datas} setScrap={setScrap} />}</WatchFlowBoxParent>
+        </div>
 
         {/* 페이지번호 */}
-        <PageNumberContainer>
-          <ImageBox>
-            <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-          </ImageBox>
-          <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
-            1
-          </PageNumber>
-          <PageNumber>2</PageNumber>
-          <PageNumber>3</PageNumber>
-          <PageNumber>4</PageNumber>
-          <PageNumber>5</PageNumber>
-          <PageNumber>6</PageNumber>
-          <PageNumber>7</PageNumber>
-          <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-          <ImageBox>
-            <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-          </ImageBox>
-        </PageNumberContainer>
+        <Pagination
+          currentPage={currentPage}
+          totalDatas={datas.length}
+          datasPerPage={datasPerPage}
+          setCurrentPage={setCurrentPage}
+        />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>
@@ -84,6 +104,7 @@ const MyFlowMenuContainer = styled.div`
   box-sizing: border-box;
   background-color: white;
   border: 0.5px solid #cacdd2;
+  border-bottom: 0;
   width: 320px;
   font-size: 24px;
 `;
@@ -147,7 +168,7 @@ const WatchFlowBoxParent = styled.div`
   grid-template-columns: repeat(2, 370px);
   row-gap: 20px;
   column-gap: 120px;
-  margin-top: 31px;
+  margin-top: 39px;
 `;
 
 const MyFlowBoxTitle = styled.div`
@@ -156,40 +177,4 @@ const MyFlowBoxTitle = styled.div`
   height: 57px;
   font-weight: bold;
   font-size: 47px;
-`;
-
-// 페이지 번호
-const PageNumberContainer = styled.div`
-  display: flex;
-  margin-top: 82px;
-  margin-bottom: 113px;
-  height: 42px;
-`;
-
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
 `;

@@ -1,13 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
-export default function FlowBox({ num, marginRight }) {
-  const kewords = ["키워드1", "키워드2", "키워드3"];
+export default function FlowBox({
+  num,
+  marginRight,
+  flowData,
+  flowRecreations,
+}) {
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
-        <FlowTitle>플로우 제목</FlowTitle>
+        <FlowTitle>{flowData?.title}</FlowTitle>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="42"
@@ -23,12 +27,18 @@ export default function FlowBox({ num, marginRight }) {
           />
         </svg>
       </TitleWrap>
-      <FlowRecreationBox
-        index={1}
-        recreationTitle={"레크레이션 제목"}
-        kewords={kewords}
-        time={10}
-      ></FlowRecreationBox>
+      {flowRecreations ? (
+        flowRecreations.map((recreations, index) => (
+          <FlowRecreationBox
+            index={index}
+            recreationTitle={recreations.title}
+            kewords={recreations.keywordList}
+            playTime={recreations.playTime}
+          />
+        ))
+      ) : (
+        <SubText> 추천 플로우가 존재하지 않습니다. </SubText>
+      )}
     </FlowBoxWrap>
   );
 }
@@ -46,6 +56,7 @@ const TitleWrap = styled.div`
 `;
 const FlowTitle = styled.div`
   color: #1b1d1f;
+  width: 0px;
   text-align: center;
   font-size: 24px;
   font-weight: 700;
@@ -61,4 +72,14 @@ const NumberBox = styled.div`
   align-items: center;
   border-radius: 50px;
   border: 0.5px solid #1b1d1f;
+`;
+const SubText = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  color: #9fa4a9;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 31px;
+  line-height: 30px;
 `;

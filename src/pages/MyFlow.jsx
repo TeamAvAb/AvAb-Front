@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import blankImg from "../assets/myflow/blank.png";
-import LeftButton from "../assets/myflow/moveLeft.png";
-import RightButton from "../assets/myflow/moveRight.png";
+import penguinImg from "../assets/myflow/penguin.png";
+import noFlowImg from "../assets/myflow/noFlow.png";
 import MadeFlowBox from "../components/flow/MadeFlowBox";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../components/pagination/Pagination";
 
-// 내가 만든 일정플로우 개수에 따른 렌더링 화면 확인용
-export const flowN = 0;
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function MyFlow() {
   const navigate = useNavigate();
@@ -21,6 +22,35 @@ export default function MyFlow() {
     navigate(`/flow/write`);
   };
 
+  // 데이터 가져오기
+  const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
+  const [loading, setLoading] = useState(false);
+  // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(0);
+  // 한 페이지 당 데이터 수
+  const datasPerPage = 6;
+
+  // 처음 렌더링 시에만 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/flows?page=${currentPage}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result.flowList);
+      setLoading(false);
+    };
+    fetchData();
+  }, [currentPage]);
+
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
+
   return (
     <MyFlowWrap>
       {/* 플로우 왼쪽 메뉴바 */}
@@ -31,55 +61,41 @@ export default function MyFlow() {
         <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
-      {/* 내가 만든 일정플로우 - Title */}
       <MyFlowContainer>
-        <MyFlowBoxContainer>
-          <MyFlowBoxImage src={blankImg} />
-          <TitleBox>
-            <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
-          </TitleBox>
-        </MyFlowBoxContainer>
-
-        {/* 내가 만든 일정플로우 - Grid */}
-        {flowN ? (
-          <MyFlowBoxParent>
-            <MadeFlowBox />
-            <MadeFlowBox />
-            <MadeFlowBox />
-          </MyFlowBoxParent>
-        ) : (
-          <MyFlowNoneBox>
-            <MyFlowNoneImg src={blankImg} />
-            <MyFlowNoneDetail>
-              <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
-              <div style={{ fontSize: "20px", marginTop: "8px" }}>
-                위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
-              </div>
-            </MyFlowNoneDetail>
-          </MyFlowNoneBox>
-        )}
-
-        {/* 페이지번호 */}
-        <PageNumberContainer>
-          <ImageBox>
-            <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-          </ImageBox>
-          <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
-            1
-          </PageNumber>
-          <PageNumber>2</PageNumber>
-          <PageNumber>3</PageNumber>
-          <PageNumber>4</PageNumber>
-          <PageNumber>5</PageNumber>
-          <PageNumber>6</PageNumber>
-          <PageNumber>7</PageNumber>
-          <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-          <ImageBox>
-            <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-          </ImageBox>
-        </PageNumberContainer>
+        <div>
+          {/* 내가 만든 일정플로우 - Title */}
+          <MyFlowBoxContainer>
+            <MyFlowBoxImage src={penguinImg} />
+            <TitleBox>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
+            </TitleBox>
+          </MyFlowBoxContainer>
+          {/* 내가 만든 일정플로우 - Grid */}
+          {datas.length !== 0 ? (
+            <div>
+              <MyFlowBoxParent>{datas && <MadeFlowBox datas={datas} loading={loading} />}</MyFlowBoxParent>
+              {/* 페이지번호 */}
+              <Pagination
+                currentPage={currentPage}
+                totalDatas={datas.length}
+                datasPerPage={datasPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          ) : (
+            <MyFlowNoneBox>
+              <MyFlowNoneImg src={noFlowImg} />
+              <MyFlowNoneDetail>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
+                <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                  위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
+                </div>
+              </MyFlowNoneDetail>
+            </MyFlowNoneBox>
+          )}
+        </div>
       </MyFlowContainer>
-      <RightSide/>
+      <RightSide />
     </MyFlowWrap>
   );
 }
@@ -98,6 +114,7 @@ const RightSide = styled.div`
 const MyFlowMenuContainer = styled.div`
   background-color: white;
   border: 0.5px solid #cacdd2;
+  border-bottom: 0;
   width: 320px;
   font-size: 24px;
 `;
@@ -129,18 +146,18 @@ const MyFlowContainer = styled.div`
 const MyFlowBoxContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   margin-top: 30px;
 `;
 
 const MyFlowBoxImage = styled.img`
   width: 199.65px;
   height: 199.65px;
+  position: relative;
   z-index: 2;
 `;
 
 const TitleBox = styled.div`
-  position: relative;
-  left: -23.65px;
   background-color: #19297c;
   border-radius: 15vh;
   width: 527px;
@@ -149,6 +166,8 @@ const TitleBox = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1;
+  position: relative;
+  left: -23.65px;
   cursor: pointer;
 
   &:hover {
@@ -171,13 +190,14 @@ const MyFlowBoxParent = styled.div`
   grid-template-columns: repeat(2, 370px);
   row-gap: 20px;
   column-gap: 120px;
-  margin-top: 31px;
+  margin-top: 39px;
 `;
 
 // 내가 만든 일정 플로우 - None
 const MyFlowNoneBox = styled.div`
-  width: 315px;
+  width: 100%;
   text-align: center;
+  margin-bottom: 237px;
 `;
 
 const MyFlowNoneImg = styled.img`
@@ -186,44 +206,7 @@ const MyFlowNoneImg = styled.img`
 `;
 
 const MyFlowNoneDetail = styled.div`
-  width: 315px;
-  height: 85px;
+  width: 100%;
   margin-top: 40px;
   text-align: center;
-`;
-
-// 페이지 번호
-const PageNumberContainer = styled.div`
-  display: flex;
-  margin-top: 82px;
-  margin-bottom: 112px;
-  height: 42px;
-`;
-
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
 `;
