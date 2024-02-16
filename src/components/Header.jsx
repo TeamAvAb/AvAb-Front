@@ -32,7 +32,7 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
-    navigate(`/mypage`);
+    navigate(`/mypage/myinfo`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
