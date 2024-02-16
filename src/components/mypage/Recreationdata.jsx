@@ -1,4 +1,3 @@
-import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
 import none from '../../assets/Footer/none.png'
 
 const recreationData = [
@@ -6,7 +5,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     },
@@ -14,7 +12,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     },
@@ -22,7 +19,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     },
@@ -30,7 +26,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     },
@@ -38,7 +33,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     },
@@ -46,7 +40,6 @@ const recreationData = [
       title: '레크레이션 제목 >',
       keywords: '키워드1, 키워드2, 키워드3',
       rate: '4.5',
-      starSrc: starIcon,
       imgSrc: none,
       hashtag: '#해시태그'
     }
