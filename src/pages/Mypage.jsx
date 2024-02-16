@@ -1,19 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import recreationData from "../components/mypage/Recreationdata";
-import none from "../assets/Footer/none.png";
+import none from '../assets/Footer/none.png'
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
 import starIcon from "../assets/mypage/mingcute_star-fill.svg";
 import YellowHeart from "../assets/mypage/YellowHeart.svg";
 import GrayHeart from "../assets/mypage/GrayHeart.svg";
 import WarnLogo from "../assets/mypage/WarnLogo.svg"
+import LogoutP from "../assets/mypage/LogoutImg.svg"
 import { privateAPI } from "../apis/user";
 
-export default function Mypage({ handleLogin }) {
+export default function Mypage({ handleLogin, isLoggedIn }) {
   const [selectedMenu, setSelectedMenu] = useState("내 정보");
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
+  const [userInfo, setUserInfo] = useState({ email: '이메일', username: '닉네임' });
+  const [recreationData, setRecreationData] = useState([]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (isLoggedIn) {
+        try {
+          const response = await privateAPI.get('/api/users/me');
+          if (response.data.isSuccess) {
+            setUserInfo({ email: response.data.result.email, username: response.data.result.username });
+          }
+        } catch (error) {
+          console.error("사용자 정보 요청 에러 : ", error);
+        }
+      }
+    };
+    fetchUserInfo();
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const fetchRecreationData = async () => {
+      if (isLoggedIn) {
+        try {
+          const response = await privateAPI.get('/api/users/me/favorites/recreations');
+          if (response.data.isSuccess) {
+            const data = response.data.result.recreationList.map(item => ({
+              title: item.title,
+              keywords: item.keywordList.join(', '),
+              rate: item.totalStars.toString(),
+              imgSrc: item.imageUrl || none,
+              hashtag: item.hashtagList.join(' '),
+            }));
+            setRecreationData(data);
+          }
+        } catch (error) {
+          console.error("레크레이션 정보 요청 에러 : ", error);
+        }
+      }
+    };
+    fetchRecreationData();
+  }, [isLoggedIn]);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -70,9 +111,9 @@ export default function Mypage({ handleLogin }) {
         {selectedMenu === "내 정보" && (
           <MyInfo>
             <MyTitle>카카오 계정</MyTitle>
-            <MyInput placeholder="이메일" />
+            <MyInput value={userInfo.email} readOnly/>
             <MyTitle2>닉네임</MyTitle2>
-            <MyInput placeholder='닉네임' maxLength={10}/>
+            <MyInput placeholder={userInfo.username} maxLength={10}/>
             <WarnSpace>
               <WarnImg src={WarnLogo}/>
               <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
@@ -108,7 +149,7 @@ export default function Mypage({ handleLogin }) {
                         <Section1>{recreation.title}</Section1>
                         <SectionWrap>
                           <Section2>{recreation.keywords}</Section2>
-                          <Section3 src={recreation.starSrc} />
+                          <Section3 src={starIcon} />
                           <Section4>{recreation.rate}</Section4>
                         </SectionWrap>
                       </Explain>
