@@ -11,7 +11,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const [reviewData, setReviewData] = useState(0);
 
   const itemsPerPage = 2;
-
+  const token = localStorage.getItem("accessToken");
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -22,7 +22,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         );
         setReviewListData(response.data.result.reviewList);
         setReviewData(response.data.result);
-        // console.log(localStorage.getItem("accessToken"));
+        console.log(token);
       } catch (error) {
         console.error(error);
       }
