@@ -4,14 +4,17 @@ import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
 import axios from "axios";
-
+import { isLoggedIn, privateAPI } from "../../apis/user";
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewData, setReviewData] = useState(0);
-
+  const [reviewInput, setReviewInput] = useState("");
+  const testJWT =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const itemsPerPage = 2;
-  const token = localStorage.getItem("accessToken");
+
+  // 리뷰 목록 받아오기
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -22,7 +25,6 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         );
         setReviewListData(response.data.result.reviewList);
         setReviewData(response.data.result);
-        console.log(token);
       } catch (error) {
         console.error(error);
       }
@@ -30,6 +32,33 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
     fetchReviews();
   }, [currentPage, recreationId]);
+
+  // 리뷰 작성
+  const handleReviewSubmit = async () => {
+    if (isLoggedIn()) {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+
+        const response = await privateAPI.post(
+          `https://dev.avab.shop/api/recreations/${recreationId}/reviews`,
+          {
+            stars: 5,
+            contents: reviewInput,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <RecreationReviewContainer ref={ref}>
       <TitleText>리뷰 및 평가 ({reviewData.totalReviews})</TitleText>
@@ -37,10 +66,20 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         <SelectStar>별점을 선택해주세요</SelectStar>
         <ReviewStars></ReviewStars>
       </StarBox>
+
       <ReviewInputWrap>
-        <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
-        <ReviewInputButton>등록</ReviewInputButton>
+        {isLoggedIn() ? (
+          <ReviewInputBox
+            placeholder="리뷰를 작성하세요."
+            value={reviewInput}
+            onChange={(e) => setReviewInput(e.target.value)}
+          ></ReviewInputBox>
+        ) : (
+          <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
+        )}
+        <ReviewInputButton onClick={handleReviewSubmit}>등록</ReviewInputButton>
       </ReviewInputWrap>
+
       {reviewListData.map((review) => (
         <ReviewBox
           key={review.reviewId}
