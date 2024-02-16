@@ -17,7 +17,8 @@ export default function Main() {
   const navigate = useNavigate();
   
   const ToRecreationDetail = () => {
-    navigate(`/recreation/detail`);
+    navigate(`/recreation/detail/:recreationId`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const toggleHeart = (index) => {
     if (selectedRecreationIndex === index) {
