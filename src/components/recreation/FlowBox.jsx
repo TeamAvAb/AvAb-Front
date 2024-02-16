@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
-export default function FlowBox({ num, marginRight, flowRecreations }) {
+export default function FlowBox({
+  num,
+  marginRight,
+  flowData,
+  flowRecreations,
+}) {
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
-        <FlowTitle>플로우 제목</FlowTitle>
+        <FlowTitle>{flowData?.title}</FlowTitle>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="42"
@@ -51,6 +56,7 @@ const TitleWrap = styled.div`
 `;
 const FlowTitle = styled.div`
   color: #1b1d1f;
+  width: 0px;
   text-align: center;
   font-size: 24px;
   font-weight: 700;

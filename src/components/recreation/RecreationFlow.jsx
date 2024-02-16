@@ -37,11 +37,13 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
         <FlowBox
           num={1}
           marginRight="110px"
+          flowData={flowData}
           flowRecreations={flowFirstRecreations}
         ></FlowBox>
         <FlowBox
           num={2}
           marginRight="0px"
+          flowData={flowData}
           flowRecreations={flowSecondRecreations}
         ></FlowBox>
       </FlowBoxWrap>

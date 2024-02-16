@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import greyStar from "../../assets/recreation/greyStar.svg";
 
-export default function ReviewStars() {
+export default function ReviewStars({ onStarClick }) {
   // 별점 기본값 설정
   const [clicked, setClicked] = useState([false, false, false, false, false]);
   // 별을 5개로 표현하기 위한 더미 배열
@@ -16,6 +16,7 @@ export default function ReviewStars() {
       star[i] = i <= index ? true : false;
     }
     setClicked(star);
+    onStarClick(star.filter((element) => element).length);
   };
 
   // 현재 선택한 별점 개수
