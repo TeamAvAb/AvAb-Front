@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import write1 from '../assets/flowwrite/write_1.png';
@@ -6,114 +7,90 @@ import write2 from '../assets/flowwrite/write_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
-import blankImg from "../assets/main/blankImg.png";
-// import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
+import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
 // import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx'
+// import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
 import WriteRecreationInfo from "../components/flowwrite/WriteRecreationInfo.jsx";
 import RecommendRecreation from "../components/flowwrite/RecommendRecreation.jsx";
+import ScrapRecreation from "../components/flowwrite/ScrapRecreation.jsx";
 
 export default function FlowWriteContent() {
   const navigate = useNavigate();
-  const [modal, setModal] = useState(null);
+  const [titleModal, setTitleModal] = useState(null);
+  const [saveModal, setSaveModal] = useState(null);
   const [flowTitle, setFlowTitle] = useState("");
   const [time] = useState(10);
   const [infoBoxes, setInfoBoxes] = useState([1]);
   const [numOfRecreationInfo, setNumOfRecreationInfo] = useState(1);
-
-  const handleNextClick = () => {
-    // Temporary condition to show WithoutSaving modal when Save button is clicked
-    const shouldShowWithoutSaving = true;
+  const [recreationData, setRecreationData] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [playTime, setPlayTime] = useState('');
   
-    if (shouldShowWithoutSaving) {
-      setModal(<NoTitle onClose={() => setModal(null)} />);
+    useEffect(() => {
+      // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
+      const savedPlayTime = localStorage.getItem('playTime');
+      if (savedPlayTime) {
+        setPlayTime(savedPlayTime);
+      }
+    }, []);
+
+    useEffect(() => {
+      const savedKeywords = localStorage.getItem('selectedKeywords');
+      if (savedKeywords) {
+        setSelectedKeywords(JSON.parse(savedKeywords));
+      }
+    }, []);
+
+  const handleNextClick = () => {  
+    if (flowTitle.trim() === "") {
+      setTitleModal(<NoTitle onClose={() => setTitleModal(null)} />);
     } else {
-      // Continue with navigation logic
       navigate('/flow/my');
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const recreationData = [
-    {
-      index: 1,
-      title: "레크레이션 1",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 2,
-      title: "레크레이션 2",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 3,
-      title: "레크레이션 3",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 4,
-      title: "레크레이션 4",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 5,
-      title: "레크레이션 5",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 6,
-      title: "레크레이션 6",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 7,
-      title: "레크레이션 7",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 8,
-      title: "레크레이션 8",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-    {
-      index: 9,
-      title: "레크레이션 9",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      add: "추가하기",
-      rate: "4.5",
-    },
-  ];
-
-  // const handleNextClick = () => {
-  //   navigate('/flow/my');
-  // };
   const handleBeforeClick = () => {
-    navigate('/flow/write/recommend');
+    setSaveModal(<WithoutSaving onClose={() => setSaveModal(null)}  />);
   };
+  
+  const handleSaveClick = () => {
+    handleNextClick();
+  };
+
+  useEffect(() => {
+    // API 호출 함수
+    const fetchRecreationData = async () => {
+      try {
+        const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+          params: {
+            playTime: time,
+            purpose: selectedKeywords.join(','),
+            // keyword: 'ACTIVE',
+            // participants: 20,
+            // gender: 'FEMALE',
+            // age: 'TWENTIES',
+          }
+        });
+        // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
+        setRecreationData(response.data.result.map(item => ({
+          id: item.id,
+          title: item.title,
+          totalStars: item.totalStars,
+          keywordList: item.keywordList,
+          imageUrl: item.imageUrl,
+          summary: item.summary,
+          isFavorite: item.isFavorite
+        })));
+      } catch (error) {
+        console.error('Error fetching recreation data:', error);
+      }
+    };
+
+    // API 호출 함수 호출
+    fetchRecreationData();
+  }, [time, selectedKeywords]);
 
   const handleFlowTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
@@ -121,12 +98,51 @@ export default function FlowWriteContent() {
   };
 
   const handleAddFlow = () => {
-    // Add a new number to the infoBoxes array
+    // 커스텀 플로우 박스 추가
     setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
+    setNumOfRecreationInfo(prevNum => prevNum);
   };
 
+  const handleAddRecommendFlow = async () => {
+    try {
+      // API를 호출하여 데이터 가져오기
+      const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+          params: {
+            playTime: time,
+            purpose: 'WORKSHOP'
+          }
+        });
+      // 데이터에서 필요한 정보 추출
+      const { title, keywordList, playTime } = response.data;
+      console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+      // 추출한 정보를 저장
+      return { title, keywordList, playTime };
+    } catch (error) {
+      // 에러 발생 시 에러 처리
+      console.error('추가 중 오류 발생:', error);
+    }
+  };
+
+  const handleAddScrapFlow = async () => {
+    try {
+      // API를 호출하여 데이터 가져오기
+      const response = await axios.get('https://dev.avab.shop/api/users/me/favorites/recreations')
+      // 데이터에서 필요한 정보 추출
+      const { title, keywordList, playTime } = response.data;
+      console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+      // 추출한 정보를 저장
+      return { title, keywordList, playTime };
+    } catch (error) {
+      // 에러 발생 시 에러 처리
+      console.error('추가 중 오류 발생:', error);
+    }
+  };
+
+  FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
+  FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
+
   const handleDelete = (num) => {
-    // Remove the InfoBox with the corresponding number
+    // 플로우 박스 삭제
     setInfoBoxes((prevInfoBoxes) =>
         prevInfoBoxes.filter((item) => item !== num)
     );
@@ -134,7 +150,8 @@ export default function FlowWriteContent() {
 
     return (
         <FlowWriteWrap>
-          {modal && modal}
+          {saveModal && saveModal}
+          {titleModal && titleModal}
           <ProgressbarStyle>
             <ProgressBarItem>
               <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
@@ -166,11 +183,11 @@ export default function FlowWriteContent() {
                 <ContentSelectDetail>
                     추천 레크레이션
                 </ContentSelectDetail>
-                <RecommendRecreation content={recreationData} />
+                <RecommendRecreation content={recreationData} handleAddRecommendFlow={handleAddRecommendFlow}/>
                 <ContentSelectDetail>
                     즐겨찾는 레크레이션
                 </ContentSelectDetail>
-                <RecommendRecreation content={recreationData} /> {/* 컴포넌트 수정 예정 */}
+                <ScrapRecreation content={recreationData} handleAddScrapFlow={handleAddScrapFlow}/> {/* 콘텐트 수정 예정 */}
               </FlowInfoBox>
             </FlowInfoContainer>
 
@@ -184,13 +201,17 @@ export default function FlowWriteContent() {
                   <div style={{ marginLeft: "20px", marginTop: "56px" }}>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
-                      <div>회사 워크샵</div>
+                      <div style={{ listStyleType: "none" }}>
+                        {selectedKeywords.map((keyword, index) => (
+                        <li key={index}>{keyword}</li>
+                        ))}
+                      </div>
                     </div>
                     <div style={{ display: "flex" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         플레이 시간
                       </div>
-                      <div>90분</div>
+                      <div>{ playTime }분</div>
                     </div>
                   </div>
 
@@ -258,7 +279,7 @@ export default function FlowWriteContent() {
               <LastButton onClick={handleBeforeClick}>
                 이전으로
               </LastButton>
-              <SaveButton onClick={handleNextClick}>
+              <SaveButton onClick={handleSaveClick}>
                 저장하기
               </SaveButton>
 
@@ -387,7 +408,7 @@ const ContentInfoDetail = styled.div`
 `;
 
 const ContentTitleInput = styled.input`
-  width: 608px;
+  width: 590px;
   height: 51px;
   border-radius: 20px;
   border: none;
