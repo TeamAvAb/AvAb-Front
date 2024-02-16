@@ -7,15 +7,19 @@ export default function Footer() {
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
     navigate(`/mypage`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToInstagram = () => {
     window.location.href = 'https://www.instagram.com/avab.ovo/';
