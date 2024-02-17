@@ -13,8 +13,9 @@ import workshopImg from "../assets/main/banner1_workshop.png";
 import mtImg from "../assets/main/banner2_mt.png";
 import gatherImg from "../assets/main/banner3_gather.png";
 
-export default function Main({ searchResult }) {
+export default function Main() {
   const navigator = useNavigate();
+  const [isSearchList, setIsSearchList] = useState();
   const goToSearchList = () => {
     navigator(`/search/list`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -123,7 +124,7 @@ export default function Main({ searchResult }) {
             }}
           />
         </Recommend>
-        <Search searchResult={searchResult} />
+        <Search />
 
         <Popular>
           <PopularHeader>
