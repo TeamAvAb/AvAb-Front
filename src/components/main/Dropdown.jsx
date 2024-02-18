@@ -92,7 +92,8 @@ const Menu = styled.div`
   transform: translate(-50%, -20px);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
   overflow: scroll;
-  scrollbar-width: thin;
+  overflow-x: hidden;
+  scrollbar-width: none;
   scrollbar-color: #464c52;
   -webkit-scrollbar {
     width: 0px;
