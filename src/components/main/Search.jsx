@@ -151,13 +151,15 @@ export default function Search() {
   };
   useEffect(() => {
     const currentURL = new URLSearchParams(window.location.search);
-    setKeyword(currentURL.getAll("keyword"));
-    setParticipants(currentURL.getAll("participants"));
-    setPlayTime(currentURL.getAll("playTime"));
-    setPlace(currentURL.getAll("place"));
-    setPurpose(currentURL.getAll("purpose"));
-    setAge(currentURL.getAll("age"));
-    setGender(currentURL.getAll("gender"));
+    if (currentURL.size !== 0) {
+      setKeyword(currentURL.getAll("keyword"));
+      setParticipants(currentURL.getAll("participants"));
+      setPlayTime(currentURL.getAll("playTime"));
+      setPlace(currentURL.getAll("place"));
+      setPurpose(currentURL.getAll("purpose"));
+      setAge(currentURL.getAll("age"));
+      setGender(currentURL.getAll("gender"));
+    }
   }, [window.location.href]);
 
   return (
