@@ -145,6 +145,7 @@ export default function Search() {
     const param = qs.stringify(params, { arrayFormat: "repeat" });
     try {
       navigator(`/search/list?${param}`, { state: param });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.log(error);
     }
