@@ -1,63 +1,57 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 import styled from "styled-components";
-import none from '../assets/Footer/none.png'
-import LeftButton from "../assets/myflow/moveLeft.png";
-import RightButton from "../assets/myflow/moveRight.png";
-import starIcon from "../assets/mypage/mingcute_star-fill.svg";
-import YellowHeart from "../assets/mypage/YellowHeart.svg";
-import GrayHeart from "../assets/mypage/GrayHeart.svg";
+
 import WarnLogo from "../assets/mypage/WarnLogo.svg"
 import LogoutP from "../assets/mypage/LogoutImg.svg"
 import { privateAPI } from "../apis/user";
 
+const ex = {
+  isSuccess: true,
+  code: "string",
+  message: "string",
+  result: {
+  userId: 0,
+  email: "이메일@",
+  name: "string",
+  username: "닉네임",
+  socialType: "KAKAO"
+  }
+}
+export const exArray = [];
+exArray.push(ex)
+
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
 export default function Mypage({ handleLogin, isLoggedIn }) {
-  const [selectedMenu, setSelectedMenu] = useState("내 정보");
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-  const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
   const [userInfo, setUserInfo] = useState({ email: '이메일', username: '닉네임' });
-  const [recreationData, setRecreationData] = useState([]);
+  const [datas, setDatas] = useState(exArray);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      if (isLoggedIn) {
-        try {
-          const response = await privateAPI.get('/api/users/me');
-          if (response.data.isSuccess) {
-            setUserInfo({ email: response.data.result.email, username: response.data.result.username });
-          }
-        } catch (error) {
-          console.error("사용자 정보 요청 에러 : ", error);
-        }
-      }
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get("/api/users/me");
+      setDatas(response.data);
+      setLoading(false);
+      console.log(datas);
     };
-    fetchUserInfo();
-  }, [isLoggedIn]);
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    const fetchRecreationData = async () => {
-      if (isLoggedIn) {
-        try {
-          const response = await privateAPI.get('/api/users/me/favorites/recreations');
-          if (response.data.isSuccess) {
-            const data = response.data.result.recreationList.map(item => ({
-              title: item.title,
-              keywords: item.keywordList.join(', '),
-              rate: item.totalStars.toString(),
-              imgSrc: item.imageUrl || none,
-              hashtag: item.hashtagList.join(' '),
-            }));
-            setRecreationData(data);
-          }
-        } catch (error) {
-          console.error("레크레이션 정보 요청 에러 : ", error);
-        }
-      }
-    };
-    fetchRecreationData();
-  }, [isLoggedIn]);
+  const handleMyInfoClick = () => {
+    navigate(`/mypage/myinfo`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
+  const handleFavoritesClick = () => {
+    navigate(`/mypage/favorites`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const openLogoutModal = () => {
@@ -78,117 +72,36 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
-  const toggleHeart = (index) => {
-    if (selectedRecreationIndex === index) {
-      setSelectedRecreationIndex(null);
-    } else {
-      setSelectedRecreationIndex(index);
-    }
-  };
-
   return (
     <Container>
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem
-            active={selectedMenu === "내 정보"}
-            onClick={() => handleMenuClick("내 정보")}
-          >
-            내 정보
-          </MenuItem>
-          <MenuItem
-            active={selectedMenu === "레크레이션"}
-            onClick={() => handleMenuClick("레크레이션")}
-          >
-            즐겨 찾는 레크레이션
-          </MenuItem>
+          <MenuItem style={{backgroundColor: "#B1BEFF"}} onClick={handleMyInfoClick}>내 정보</MenuItem>
+          <MenuItem onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
       <Content>
-        {/*내 정보 페이지*/}
-        {selectedMenu === "내 정보" && (
-          <MyInfo>
-            <MyTitle>카카오 계정</MyTitle>
-            <MyInput value={userInfo.email} readOnly/>
-            <MyTitle2>닉네임</MyTitle2>
-            <MyInput placeholder={userInfo.username} maxLength={10}/>
-            <WarnSpace>
-              <WarnImg src={WarnLogo}/>
-              <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
-            </WarnSpace>
-            <ButtonSection>
-              <OutBut>회원탈퇴</OutBut>
-              <SaveBut>저장하기</SaveBut>
-            </ButtonSection>
-          </MyInfo>
-        )}
-        {/*즐겨 찾는 레크레이션 페이지*/}
-        {selectedMenu === "레크레이션" && (
-          <RecreationWrap>
-            <RecreationTitle>레크레이션 찾기</RecreationTitle>
-            <RecreationMain>
-              {recreationData.map((recreation, index) =>
-                Array.from({ length: 1 }).map((_, i) => (
-                  <Categories key={`${index}-${i}`}>
-                    <Hashtag>{recreation.hashtag}</Hashtag>
-                    <RecreationExplain>
-                      <ImgSpace>
-                        <ExImg src={recreation.imgSrc} />
-                        <HeartImg
-                          src={
-                            index === selectedRecreationIndex
-                              ? YellowHeart
-                              : GrayHeart
-                          }
-                          onClick={() => toggleHeart(index)}
-                        />
-                      </ImgSpace>
-                      <Explain>
-                        <Section1>{recreation.title}</Section1>
-                        <SectionWrap>
-                          <Section2>{recreation.keywords}</Section2>
-                          <Section3 src={starIcon} />
-                          <Section4>{recreation.rate}</Section4>
-                        </SectionWrap>
-                      </Explain>
-                    </RecreationExplain>
-                  </Categories>
-                ))
-              )}
-            </RecreationMain>
-            {/*페이지 전환*/}
-            <NextPage>
-              <ImageBox>
-                <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-              </ImageBox>
-              <PageNumber
-                style={{
-                  marginLeft: "14px",
-                  backgroundColor: "#8896DF",
-                  borderRadius: "50%",
-                  color: "white",
-                }}
-              >
-                1
-              </PageNumber>
-              <PageNumber>2</PageNumber>
-              <PageNumber>3</PageNumber>
-              <PageNumber>4</PageNumber>
-              <PageNumber>5</PageNumber>
-              <PageNumber>6</PageNumber>
-              <PageNumber>7</PageNumber>
-              <PageNumber style={{ marginRight: "14px" }}>8</PageNumber>
-              <ImageBox>
-                <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-              </ImageBox>
-            </NextPage>
-          </RecreationWrap>
-        )}
+        <MyInfo>
+          <MyTitle>카카오 계정</MyTitle>
+          <MyInput value={userInfo.email} readOnly/>
+          <MyTitle2>닉네임</MyTitle2>
+          <MyInput placeholder={userInfo.username} maxLength={10}/>
+          <WarnSpace>
+            <WarnImg src={WarnLogo}/>
+            <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
+          </WarnSpace>
+          <ButtonSection>
+            <OutBut>회원탈퇴</OutBut>
+            <SaveBut>저장하기</SaveBut>
+          </ButtonSection>
+        </MyInfo>
       </Content>
+
       {/*우측 바*/}
-      <RightSide />
+      <RightSide/>
+
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
         <LogoutModal>
@@ -211,12 +124,6 @@ const Container = styled.div`
   display: flex;
 `;
 
-const Title = styled.div`
-  width: 260px;
-  padding: 30px;
-  font-size: 22px;
-`;
-
 const SideBar = styled.div`
   width: 320px;
   height: 714px;
@@ -226,6 +133,12 @@ const SideBar = styled.div`
   border-bottom: none;
   border-right: none;
   color: #1b1d1f;
+`;
+
+const Title = styled.div`
+  width: 260px;
+  padding: 30px;
+  font-size: 22px;
 `;
 
 const MenuList = styled.div`
@@ -243,13 +156,6 @@ const MenuItem = styled.div`
   padding: 20px;
   width: 280px;
   border-bottom: solid #cacdd2 1px;
-
-  ${(props) =>
-    props.active &&
-    `
-    background-color: #b1beff;
-    font-weight: 600;
-  `}
 `;
 
 const Content = styled.div`
@@ -323,155 +229,6 @@ const OutBut = styled.div`
 
 const SaveBut = styled(OutBut)`
   background-color: #19297c;
-`;
-
-const RecreationWrap = styled.div`
-  width: 1128px;
-  height: 1203px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const RecreationTitle = styled.div`
-  font-size: 40px;
-  font-weight: 600;
-  margin-bottom: 70px;
-`;
-
-const RecreationMain = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 20px;
-  align-items: center;
-`;
-
-const Categories = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Hashtag = styled.div`
-  font-size: 20px;
-  border-radius: 30px;
-  background-color: #5b6bbe;
-  color: white;
-  width: 151px;
-  height: 57px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const RecreationExplain = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 284px;
-  height: 309px;
-  margin-top: 20px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 8px #abaaae inset;
-  margin-bottom: 20px;
-`;
-
-const ImgSpace = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 284px;
-  height: 197px;
-`;
-
-const ExImg = styled.img`
-  width: 120px;
-  width: 120px;
-  margin-top: 20px;
-`;
-
-const HeartImg = styled.img`
-  width: 28px;
-  margin-left: 200px;
-`;
-
-const Explain = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #b1beff;
-  width: 284px;
-  height: 112px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #a0ddff;
-  }
-`;
-
-const SectionWrap = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Section1 = styled.div`
-  font-size: 17px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
-
-const Section2 = styled.div`
-  font-size: 15px;
-`;
-
-const Section3 = styled.img`
-  margin-left: 30px;
-  width: 13.72px;
-`;
-
-const Section4 = styled.div`
-  margin-left: 5px;
-`;
-
-const NextPage = styled.div`
-  display: flex;
-  margin-top: 52px;
-  margin-bottom: 30px;
-  height: 42px;
-`;
-
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
 `;
 
 const RightSide = styled.div`
