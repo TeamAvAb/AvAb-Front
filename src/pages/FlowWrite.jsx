@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import WriteKeywordModal from '../components/flowwrite/WriteKeywordModal.jsx';
@@ -14,23 +14,37 @@ export default function FlowWrite() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [playTime, setPlayTime] = useState('');
 
-  // const handleKeywordClick = (Keyword) => {
-  //   console.log(`Clicked keyword button with value: ${Keyword}`);
-  //   if (selectedKeywords.includes(Keyword)) {
-  //     // 키워드가 이미 선택되었는지 확인
-  //     setSelectedKeywords(selectedKeywords.filter((selected) => selected !== Keyword));
-  //   } else {
-  //     // 클릭을 기반으로 선택한 키워드 업데이트
-  //     setSelectedKeywords([...selectedKeywords, Keyword]);
+  useEffect(() => {
+    // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
+    const savedPlayTime = localStorage.getItem('playTime');
+    if (savedPlayTime) {
+      setPlayTime(savedPlayTime);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   // 페이지가 로드될 때 localStorage에서 selectedKeywords을 가져와서 상태를 설정합니다.
+  //   const savedSelectedKeywords = localStorage.getItem('selectedKeywords');
+  //   if (savedSelectedKeywords) {
+  //     setSelectedKeywords(savedSelectedKeywords);
   //   }
-  // };
+  // }, []);
+
 
   const handleNextClick = () => {
+    localStorage.setItem('selectedKeywords', JSON.stringify(selectedKeywords));
+    localStorage.setItem('playTime', playTime);
+    console.log("목적키워드가 저장되었습니다:", selectedKeywords);
+    console.log("플레이 시간이 저장되었습니다:", playTime);
     navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
+    console.log("API 호출 시 선택된 키워드:", selectedKeywords);
   };
   const handleBeforeClick = () => {
     navigate('/flow/my');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handlePurposeSearchClick = () => {
@@ -45,6 +59,7 @@ export default function FlowWrite() {
 
   const handleSelectKeywords = (keywords) => {
     setSelectedKeywords(keywords);
+    console.log("Selected keywords:", keywords);
     handleCloseModal();
     setIsModalOpen(true);
   };
@@ -120,7 +135,13 @@ export default function FlowWrite() {
         </PurposeSearch>
         <TextLine>레크레이션의 총 진행 시간을 입력해주세요.</TextLine>
         <PlayTime>
-          <PlayInput type="text" placeholder="시간을 10분 단위로 입력해주세요." style={{ width: '90%', height: '18px'}} />
+        <PlayInput
+          type="text"
+          placeholder="시간을 10분 단위로 입력해주세요."
+          style={{ width: '90%', height: '18px' }}
+          value={playTime}
+          onChange={(e) => setPlayTime(e.target.value)}
+        />
         </PlayTime>
           <OutButton onClick={handleBeforeClick}>
             페이지 나가기

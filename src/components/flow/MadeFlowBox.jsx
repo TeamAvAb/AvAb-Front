@@ -21,9 +21,11 @@ export default function MadeFlowBox({ datas, loading }) {
 
   //더보기 이동
   const navigate = useNavigate();
-  const moveToMoreMyFlow = () => {
-    navigate(`/flow/moremyflow`);
+  const moveToMoreMyFlow = (moreData) => {
+    navigate(`/flow/moremyflow`, { state: { moreData } });
   };
+
+  console.log(datas);
 
   return (
     <div>
@@ -53,7 +55,7 @@ export default function MadeFlowBox({ datas, loading }) {
       )}
 
       <MyFlowBoxParent>
-        {datas.map((data, i) => (
+        {datas.map((data) => (
           <MyFlowBoxChild>
             {/* 수정/삭제 버튼 */}
             <FlowBoxCorDelBox>
@@ -62,10 +64,10 @@ export default function MadeFlowBox({ datas, loading }) {
             </FlowBoxCorDelBox>
 
             {/* 키워드 */}
-            <FlowBoxKeyWord>{data.result.flowList[0].purpose[0]}</FlowBoxKeyWord>
+            <FlowBoxKeyWord>{data.purpose.map((p) => p).join(", ")}</FlowBoxKeyWord>
 
             {/* 플로우 이름 */}
-            <FlowBoxTitle>{data.result.flowList[0].title}</FlowBoxTitle>
+            <FlowBoxTitle>{data.title}</FlowBoxTitle>
 
             {/* 플로우 사진 */}
             <FlowBoxImg src={Blank} alt="플로우 사진" />
@@ -76,22 +78,22 @@ export default function MadeFlowBox({ datas, loading }) {
                 <FlowBoxDetailImg>
                   <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
                 </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.result.flowList[0].totalPlayTime}</FlowBoxDetail>
+                <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
                   <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
                 </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.result.flowList[0].viewCount}</FlowBoxDetail>
+                <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
                   <img src={User} alt="스크랩수" style={{ width: "24px", height: "24px" }} />
                 </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.result.flowList[0].scrapCount}</FlowBoxDetail>
+                <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
             </FlowBoxDetailBox>
-            <MoreBtn onClick={moveToMoreMyFlow}>자세히 보기</MoreBtn>
+            <MoreBtn onClick={() => moveToMoreMyFlow(data)}>자세히 보기</MoreBtn>
           </MyFlowBoxChild>
         ))}
       </MyFlowBoxParent>

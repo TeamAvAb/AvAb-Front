@@ -13,6 +13,12 @@ export async function postRefreshToken() {
   const response = await publicAPI.post("/api/auth/refresh");
   return response;
 }
+
+// 로그인 여부 반환 함수
+export function isLoggedIn() {
+  return !!localStorage.getItem("accessToken");
+}
+
 // 인증이 필요한 요청 인터셉터
 privateAPI.interceptors.request.use(
   (config) => {
