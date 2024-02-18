@@ -14,6 +14,7 @@ import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 export default function FlowWriteRecommend() {
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
+  const [flowData, setFlowData] = useState([]);
 
   const handleNextClick = () => {
     navigate('/flow/write/content');
@@ -33,8 +34,6 @@ export default function FlowWriteRecommend() {
       console.log(`Selected button: ${button}`);
     }
   };
-
-  const [flowData, setFlowData] = useState([]);
 
   useEffect(() => {
     const fetchFlowData = async () => {
@@ -95,17 +94,10 @@ export default function FlowWriteRecommend() {
                   <div style={{ width: "393px", textAlign: "center" }}>
                   <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
                   </div>
+                  
                   <RecreationBox>
-                    {flowData && flowData.map((item, index) => (
-                      <RecreationInfo recreations={item.recreations} key={index} time={item.flowDetail.totalPlayTime}/>
-                    ))}
+                    {flowData.length > 0 && <RecreationInfo recreations={flowData[0].recreations} />}
                   </RecreationBox>
-
-                  {/* <RecreationInfo time={10} num={1} />
-                  <RecreationInfo time={20} num={2} />
-                  <RecreationInfo time={10} num={3} />
-                  <RecreationInfo time={10} num={4} />
-                  <RecreationInfo time={20} num={5} /> */}
 
               </Recommend1>
               <Recommend2 selected={selectedButton === '2안'}>
@@ -116,20 +108,12 @@ export default function FlowWriteRecommend() {
                 2안
                </Select2Button>
                <div style={{ width: "393px", textAlign: "center" }}>
-               <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
+               <FlowTitle>{flowData.length > 0 ? flowData[1].flowDetail.title : "플로우 제목"}</FlowTitle>
                   </div>
 
-                  {/* 추천 플로우 박스 2안*/}
-                  {/* <RecreationInfo time={10} num={1} />
-                  <RecreationInfo time={20} num={2} />
-                  <RecreationInfo time={10} num={3} />
-                  <RecreationInfo time={10} num={4} />
-                  <RecreationInfo time={20} num={5} /> */}
-                 <RecreationBox>
-                    {flowData && flowData.map((item, index) => (
-                      <RecreationInfo recreations={item.recreations} key={index} time={item.flowDetail.totalPlayTime}/>
-                    ))}
-                  </RecreationBox>
+                <RecreationBox>
+                  {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
+                </RecreationBox>
               </Recommend2>
             <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>

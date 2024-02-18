@@ -1,7 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
+const keywordMap = {
+  QUICKNESS: "순발력",
+  SENSIBLE: "센스",
+  COOPERATIVE: "창의력",
+  ACTIVE: "협동",
+  BRAIN: "액티브",
+  PSYCHOLOGICAL: "두뇌",
+  LUCK: "심리",
+  COMMON_SENSE: "행운",
+  PREPARATION: "상식",
+};
+
 export default function RecommendFlowInfo({ recreations }) {
+  const mapKeywordsToKorean = (keywords) => {
+    return keywords.map(keyword => keywordMap[keyword]).filter(Boolean);
+  };
+
     return (
       <div>
         {recreations.map((recreation, index) => (
@@ -15,11 +31,17 @@ export default function RecommendFlowInfo({ recreations }) {
               </RecreationTitle>
       
               {/* 레크레이션 키워드 */}
-              <KeywordBox>
+              {/* <KeywordBox>
                 {recreation.keywordList && recreation.keywordList.map((keyword, keywordIndex) => (
                   <Keyword key={keywordIndex}>{keyword}</Keyword>
                 ))}
-              </KeywordBox>
+              </KeywordBox> */}
+
+              <KeywordBox>
+              {recreation.keywordList && mapKeywordsToKorean(recreation.keywordList).map((keyword, keywordIndex) => (
+                <Keyword key={keywordIndex}>{keyword}</Keyword>
+              ))}
+            </KeywordBox>
       
               {/* 레크레이션 소요 시간 */}
               <PlayTime>
@@ -87,6 +109,7 @@ const Keyword = styled.div`
   align-items: center;
   border-radius: 5px;
   background: #e9ebed;
+  width: 111px;
 `;
 
 const PlayTime = styled.div`
