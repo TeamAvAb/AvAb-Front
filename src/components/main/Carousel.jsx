@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -138,7 +139,11 @@ export default function Carousel({ content }) {
         return "black";
     }
   };
-
+  const navigator = useNavigate();
+  const gotoList = (param) => {
+    navigator(`/search/list?purpose=${param}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   let bannerWidth = "957px";
   return (
     <StyledSlider {...settings} bannerWidth={bannerWidth}>
@@ -154,7 +159,10 @@ export default function Carousel({ content }) {
                   <span style={{ fontWeight: "700" }}>{banner.keyword}</span>{" "}
                   키워드로 작성된 레크레이션을 보러가세요.
                 </Comment>
-                <Button color={getColor(banner.index)}>
+                <Button
+                  color={getColor(banner.index)}
+                  onClick={() => gotoList(banner.param)}
+                >
                   레크레이션 보러가기
                 </Button>
               </Left>
@@ -249,4 +257,5 @@ const Button = styled.button`
   color: ${(props) => props.color[3]};
   font-size: 20px;
   font-weight: 700;
+  cursor: pointer;
 `;

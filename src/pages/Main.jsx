@@ -24,10 +24,11 @@ export default function Main() {
     {
       index: 0,
       keyword: "워크샵",
+      param: "WORKSHOP",
       img: workshopImg,
     },
-    { index: 1, keyword: "MT", img: mtImg },
-    { index: 2, keyword: "모임", img: gatherImg },
+    { index: 1, keyword: "MT", param: "MT", img: mtImg },
+    { index: 2, keyword: "모임", param: "GATHERING", img: gatherImg },
   ];
   const recreationData = [
     {
