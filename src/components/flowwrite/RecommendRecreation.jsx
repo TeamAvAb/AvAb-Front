@@ -10,18 +10,18 @@ import elipseImg from "../../assets/main/elipse.svg";
 import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
 import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
 
-export default function RecommendRecreation({ content }) {
+export default function RecommendRecreation({ content, handleAddRecommendFlow }) {
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
     className: "slider variable-width",
-    infinite: true,
+    infinite: false,
     centerMode: false,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 2,
+    slidesToScroll: 1,
     variableWidth: true,
     arrrow: false,
-    speed: 2000,
+    speed: 500,
     autoplaySpeed: 4000,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -37,8 +37,8 @@ export default function RecommendRecreation({ content }) {
       <StyledSlider ref={slider} {...settings}>
         {content &&
           content.map((banner) => (
-            <div key={banner.index} style={{ width: "284px" }}>
-              <WriteRecreationPrev content={banner} />
+            <div key={banner.id} style={{ width: "284px" }}>
+              <WriteRecreationPrev content={banner} handleAddRecommendFlow={handleAddRecommendFlow} />
             </div>
           ))}
       </StyledSlider>
@@ -82,13 +82,14 @@ function PrevArrow(props) {
         border: "none",
         position: "absolute",
         top: "206px",
-        left: "-10px",
+        left: "25px",
       }}
       className={className}
       onClick={onClick}
     >
       <img
         src={elipseImg}
+        alt="Elipse"
         style={{
           width: "42px",
           height: "42px",
@@ -100,6 +101,7 @@ function PrevArrow(props) {
       />
       <img
         src={prevArrowImg}
+        alt="PrevArrow"
         style={{
           display: "block",
           width: "8px",
@@ -123,13 +125,14 @@ function NextArrow(props) {
         border: "none",
         position: "absolute",
         top: "206px",
-        right: "-10px",
+        right: "10px",
       }}
       className={className}
       onClick={onClick}
     >
       <img
         src={elipseImg}
+        alt="Elipse"
         style={{
           width: "42px",
           height: "42px",
@@ -141,6 +144,7 @@ function NextArrow(props) {
       />
       <img
         src={nextArrowImg}
+        alt="NextArrow"
         style={{
           display: "block",
           width: "8px",

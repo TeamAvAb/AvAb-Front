@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import write1 from '../assets/flowwrite/write_1.png';
@@ -7,9 +7,9 @@ import writeSelect3 from '../assets/flowwrite/write_select_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
 import fast from '../assets/flowwrite/fast.png';
-import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-
-import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
+import RecreationInfo from "../components/flowwrite/RecommendFlowInfo";
+import axios from "axios";
+import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 
 export default function FlowWriteRecommend() {
   const navigate = useNavigate();
@@ -17,15 +17,45 @@ export default function FlowWriteRecommend() {
 
   const handleNextClick = () => {
     navigate('/flow/write/content');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
   const handleBeforeClick = () => {
     navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleButtonClick = (button) => {
-    setSelectedButton(button);
-    console.log(`Selected button: ${button}`);
+    if (selectedButton === button) {
+      setSelectedButton(null);
+      console.log(`Button ${button} deselected`);
+    } else {
+      setSelectedButton(button);
+      console.log(`Selected button: ${button}`);
+    }
   };
+
+  const [flowData, setFlowData] = useState([]);
+
+  useEffect(() => {
+    const fetchFlowData = async () => {
+      try {
+        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
+           params: {
+            playTime: '100',
+            purpose: 'WORKSHOP'
+          }
+        });
+        setFlowData(response.data.result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchFlowData();
+  }, []);
+
+  useEffect(() => {
+    console.log(flowData);
+  }, [flowData]);
 
     return (
         <FlowWriteWrap>
@@ -63,15 +93,20 @@ export default function FlowWriteRecommend() {
                 1안
                 </Select1Button>
                   <div style={{ width: "393px", textAlign: "center" }}>
-                    <FlowTitle>플로우 제목</FlowTitle>
+                  <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
                   </div>
+                  <RecreationBox>
+                    {flowData && flowData.map((item, index) => (
+                      <RecreationInfo recreations={item.recreations} key={index} time={item.flowDetail.totalPlayTime}/>
+                    ))}
+                  </RecreationBox>
 
-                  {/* 레크레이션 박스 */}
-                  <RecreationInfo time={10} num={1} />
+                  {/* <RecreationInfo time={10} num={1} />
                   <RecreationInfo time={20} num={2} />
                   <RecreationInfo time={10} num={3} />
                   <RecreationInfo time={10} num={4} />
-                  <RecreationInfo time={20} num={5} />
+                  <RecreationInfo time={20} num={5} /> */}
+
               </Recommend1>
               <Recommend2 selected={selectedButton === '2안'}>
                <Select2Button
@@ -81,15 +116,20 @@ export default function FlowWriteRecommend() {
                 2안
                </Select2Button>
                <div style={{ width: "393px", textAlign: "center" }}>
-                    <FlowTitle>플로우 제목</FlowTitle>
+               <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
                   </div>
 
-                  {/* 레크레이션 박스 */}
-                  <RecreationInfo time={10} num={1} />
+                  {/* 추천 플로우 박스 2안*/}
+                  {/* <RecreationInfo time={10} num={1} />
                   <RecreationInfo time={20} num={2} />
                   <RecreationInfo time={10} num={3} />
                   <RecreationInfo time={10} num={4} />
-                  <RecreationInfo time={20} num={5} />
+                  <RecreationInfo time={20} num={5} /> */}
+                 <RecreationBox>
+                    {flowData && flowData.map((item, index) => (
+                      <RecreationInfo recreations={item.recreations} key={index} time={item.flowDetail.totalPlayTime}/>
+                    ))}
+                  </RecreationBox>
               </Recommend2>
             <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>
@@ -97,7 +137,7 @@ export default function FlowWriteRecommend() {
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
                 <CardGo4SubText>원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!</CardGo4SubText>
                 </CardGoTextContainer>
-                <img src={writeSelect4} alt="go 4" style={{ width: '120px', height: '120px' }} />
+                <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
                 <img src={fast} alt="Fast" style={{ width: '44px', height: '44px', marginLeft: '225px'}} />
                 </CardGoContainer>
               </CardGoContent>
@@ -185,7 +225,6 @@ const AdditionalExplain = styled.div`
 
 const RecommendBase = styled.div`
   box-sizing: border-box;
-  height: 1092px;
   border-radius: 20px;
   border: ${({ selected }) => (selected ? '2.5px solid #4036ED' : '0.5px solid #9FA4A9')};
   background: #fff;
@@ -193,6 +232,7 @@ const RecommendBase = styled.div`
   align-items: center;
   padding-top: 30px;
   padding-left: 65px;
+  padding-bottom: 30px;
   box-shadow: ${({ selected }) => (selected ? '0px 0px 20px 0px rgba(27, 29, 31, 0.15)' : 'none')};
 `;
 
@@ -250,6 +290,14 @@ const FlowTitle = styled.div`
   margin-bottom: 59px;
   font-size: 24px;
   font-weight: 700;
+`;
+
+const RecreationBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
 `;
 
 const CardGoContent = styled.div`

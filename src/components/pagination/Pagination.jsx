@@ -13,7 +13,7 @@ export default function Pagination({ currentPage, totalDatas, datasPerPage, setC
       <ImageBox
         style={{ marginRight: "14px" }}
         onClick={() => {
-          if (currentPage > 1) setCurrentPage(currentPage - 1);
+          if (currentPage > 0) setCurrentPage(currentPage - 1);
         }}
       >
         <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
@@ -21,7 +21,7 @@ export default function Pagination({ currentPage, totalDatas, datasPerPage, setC
 
       {/* 페이지 번호 */}
       {pageN.map((num) => {
-        if (currentPage === num) return <SelectedPageNumber>{num}</SelectedPageNumber>;
+        if (currentPage + 1 === num) return <SelectedPageNumber>{num}</SelectedPageNumber>;
         else return <PageNumber onClick={() => setCurrentPage(num)}>{num}</PageNumber>;
       })}
 
@@ -29,7 +29,7 @@ export default function Pagination({ currentPage, totalDatas, datasPerPage, setC
       <ImageBox
         style={{ marginLeft: "14px" }}
         onClick={() => {
-          if (currentPage < pageN.length) setCurrentPage(currentPage + 1);
+          if (currentPage < pageN.length - 1) setCurrentPage(currentPage + 1);
         }}
       >
         <ButtonImage src={RightButton} alt="오른쪽 버튼" />
@@ -41,6 +41,7 @@ export default function Pagination({ currentPage, totalDatas, datasPerPage, setC
 // 페이지 번호
 const PageNumberContainer = styled.div`
   display: flex;
+  justify-content: center;
   margin-top: 82px;
   margin-bottom: 113px;
   height: 42px;
