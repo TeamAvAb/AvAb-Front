@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import close from '../../assets/flowwrite/close_modal.png'
 
-const NoTitle = ({ onClose }) => {
+const NoKeyword = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
@@ -10,10 +10,10 @@ const NoTitle = ({ onClose }) => {
         <ModalCloseButton onClick={onClose} src={close} alt="Close" />
       </CloseButtonContainer>
         <ModalTitle>
-        일정 플로우<br/>제목을 입력해주세요!
+        레크레이션의<br/>모든 키워드를<br/>입력해주세요!
         </ModalTitle>
-        <ModalMessage>일정 플로우 제목이 없어요.</ModalMessage>
-        <ModalFixButton onClick={onClose}>제목 입력하기</ModalFixButton>
+        <ModalMessage>입력하지 않은 키워드가 있어요.</ModalMessage>
+        <ModalFixButton onClick={onClose}>키워드 입력하기</ModalFixButton>
       </ModalContent>
     </ModalOverlay>
   );
@@ -91,4 +91,4 @@ const ModalFixButton = styled.button`
   }
 `;
 
-export default NoTitle;
+export default NoKeyword;

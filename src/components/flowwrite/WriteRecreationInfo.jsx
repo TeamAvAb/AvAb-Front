@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import fix from "../../assets/flowwrite/fix_flow_write.png";
+import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
+import DetailKeywordModal from "../flowwrite/DetailKeywordModal";
 
-export default function WriteRecreationInfo({ num }) {
+export default function WriteRecreationInfo({ num, onDelete}) {
     const [title, setTitle] = useState("");
     const [time, setTime] = useState(10);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedKeywords, setSelectedKeywords] = useState([]);
 
   const handleTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 title 상태 업데이트
@@ -16,8 +20,45 @@ export default function WriteRecreationInfo({ num }) {
     setTime(e.target.value);
   };
 
+  const handleDeleteClick = () => {
+    // onDelete 함수를 호출하여 해당 InfoBox를 삭제합니다.
+    onDelete(num);
+  };
+
+  const handleDetailSearchClick = () => {
+    if (!isModalOpen) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectDetailKeywords = (keywords) => {
+    setSelectedKeywords(keywords);
+    handleCloseModal();
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteKeyword = (index, event) => {
+    // Prevent the click event from propagating to the parent container (PurposeSearch)
+    event.stopPropagation();
+  
+    const updatedKeywords = [...selectedKeywords];
+    updatedKeywords.splice(index, 1);
+    setSelectedKeywords(updatedKeywords);
+  };
+
   return (
-    <div style={{ display: "flex", gap: "8px", alignItems: "end",marginBottom:'8px'}}>
+    <div style={{ display: "flex", gap: "8px", alignItems: "end", marginBottom:'8px' }}>
+      {isModalOpen && (
+              <DetailKeywordModal
+                onClose={handleCloseModal}
+                onSelectDetailKeywords={handleSelectDetailKeywords}
+                selectedKeywords={selectedKeywords}
+              />
+            )}
       <Line time={time}></Line>
       <InfoBox time={time}>
         {/* 레크레이션 제목 */}
@@ -30,20 +71,47 @@ export default function WriteRecreationInfo({ num }) {
             placeholder="레크레이션 제목 입력"
             style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700", border: "none", outline: "none" }}
           />
-          <img src={fix} alt="Fix" style={{ width: '24px', height: '24px' }} />
+          <img src={fix} alt="Fix" style={{ width: '24px', height: '24px', cursor: 'pointer' }} onClick={handleDeleteClick} />        
         </RecreationTitle>
         
         {/* 레크레이션 키워드 */}
-        <KeywordBox>
+        {/* <KeywordBox>
           <Keyword>키워드 1</Keyword>
           <Keyword>키워드 2</Keyword>
           <Keyword>키워드 3</Keyword>
+        </KeywordBox> */}
+
+        <KeywordBox onClick={handleDetailSearchClick}>
+          {selectedKeywords.length === 0 ? (
+            <KeywordInput
+              type="text"
+              placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
+              style={{ width: '90%', height: '18px', backgroundColor: '#E9EBED' }}
+            />
+          ) : (
+            <div style={{ width: '90%', display: 'flex' }}>
+              {selectedKeywords.map((keyword, index) => (
+                <React.Fragment key={index}>
+                  <StyledKeyword>
+                    {keyword}
+                    <img
+                      src={deleteIcon}
+                      alt="Delete"
+                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
+                      onClick={(event) => handleDeleteKeyword(index, event)}
+                    />
+                  </StyledKeyword>
+                  {index !== selectedKeywords.length - 1 && ' '}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </KeywordBox>
 
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "400", color: "#9FA4A9" }}>플레이까지</div>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#9FA4A9"}}>
+          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "500", color: "#1B1D1F" }}>플레이까지</div>
+          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#1B1D1F"}}>
           <PlayTimeInput
             type="text"
             value={time}
@@ -63,6 +131,7 @@ const Line = styled.div`
   border: 5px solid #b1beff;
   border-radius: 20px;
   margin-right: 21px;
+  {/*transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);*/} // 이상해짐
 `;
 
 const InfoBox = styled.div`
@@ -70,7 +139,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) => `${Math.min(-(props.time / 10 - 1) * 119.04, 0)}px`};
+  top: ${(props) => (props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`)};
   min-height: 119.004px;
 `;
 
@@ -101,7 +170,6 @@ const PlayTimeInput = styled.input`
   }
 `;
 
-
 const Number = styled.div`
   width: 42px;
   height: 42px;
@@ -117,20 +185,73 @@ const Number = styled.div`
 `;
 
 const KeywordBox = styled.div`
+  width: 371px;
+  height: 37px;
+  border-radius: 5px;
+  background: #E9EBED;
+  color: #9fa4a9;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
   display: flex;
-  align-items: flex-start;
-  gap: 17px;
-  margin-bottom: 21px;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  box-sizing: border-box;
 `;
 
-const Keyword = styled.div`
-  display: flex;
-  padding: 5px 29px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background: #e9ebed;
+const KeywordInput = styled.input`
+  width: 90%;
+  height: 18px;
+  margin-left: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+
+  &::placeholder {
+    color: #9FA4A9;
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
 `;
+
+const StyledKeyword = styled.span`
+  display: flex;
+  height: 25px;
+  padding: 2px 10px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: #D9D9D9;
+  font-size: 16px;
+  color: #1B1D1F;
+  margin-left: 8px;
+  align-items: center;
+
+  img {
+    margin-left: 12px;
+  }
+`;
+
+// const KeywordBox = styled.div`
+//   display: flex;
+//   align-items: flex-start;
+//   gap: 17px;
+//   margin-bottom: 21px;
+// `;
+
+// const Keyword = styled.div`
+//   display: flex;
+//   padding: 5px 29px;
+//   justify-content: center;
+//   align-items: center;
+//   border-radius: 5px;
+//   background: #e9ebed;
+// `;
+
 
 const PlayTime = styled.div`
   display: flex;

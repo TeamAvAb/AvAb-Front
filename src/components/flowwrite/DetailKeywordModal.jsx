@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
 const DetailKeywordModal = ({ onClose, onSelectDetailKeywords, selectedKeywords: propSelectedDetailKeywords }) => {
     console.log("Selected Keywords in DetailKeywordModal:", propSelectedDetailKeywords);
     const [detailSelectedKeywords, setDetailSelectedKeywords] = useState([]);
-    const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
-    
-    const handleKeywordClick = (keyword) => {
-      console.log(`Clicked keyword button with value: ${keyword}`);
+        
+    useEffect(() => {
+      setDetailSelectedKeywords(propSelectedDetailKeywords);
+  }, [propSelectedDetailKeywords]);
+
+  const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
+  
+  const handleKeywordClick = (keyword) => {
       if (detailSelectedKeywords.includes(keyword)) {
-        // 키워드가 이미 선택되었는지 확인
-        setDetailSelectedKeywords(detailSelectedKeywords.filter((selected) => selected !== keyword));
+          setDetailSelectedKeywords(detailSelectedKeywords.filter((selected) => selected !== keyword));
       } else {
-        // 클릭을 기반으로 선택한 키워드 업데이트
-        setDetailSelectedKeywords([...detailSelectedKeywords, keyword]);
+          setDetailSelectedKeywords([...detailSelectedKeywords, keyword]);
       }
   };
+
 
   const handleResetDetailKeywords = () => {
       // 선택된 키워드 리셋

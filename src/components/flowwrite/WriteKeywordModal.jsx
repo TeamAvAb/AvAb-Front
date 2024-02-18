@@ -1,46 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
 const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
-    console.log("Selected Keywords in WriteKeywordModal:", propSelectedKeywords);
-    const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
-    const keywordGroups = ['신년회', 'MT', '워크샵', '이벤트', '축제'];
-    
-    const handleKeywordClick = (keyword) => {
-      console.log(`Clicked keyword button with value: ${keyword}`);
-      if (internalSelectedKeywords.includes(keyword)) {
-        // 키워드가 이미 선택되었는지 확인
-        setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== keyword));
-      } else {
-        // 클릭을 기반으로 선택한 키워드 업데이트
-        setInternalSelectedKeywords([...internalSelectedKeywords, keyword]);
-      }
+  console.log("Selected Keywords in DetailKeywordModal:", propSelectedKeywords);
+  const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
+
+  useEffect(() => {
+      setInternalSelectedKeywords(propSelectedKeywords);
+  }, [propSelectedKeywords]);
+
+  // const purposeGroups = ['워크샵', '체육대회', 'MT', '모임', '수련회'];
+
+  // const purposeGroups = [
+  //   { name: '워크샵', serverValue: 'WORKSHOP' },
+  //   { name: '체육대회', serverValue: 'SPORTS_DAY' },
+  //   { name: 'MT', serverValue: 'MT' },
+  //   { name: '모임', serverValue: 'GATHERING' },
+  //   { name: '수련회', serverValue: 'RETREAT' }
+  // ];
+
+  const keywordMappings = {
+    '워크샵': 'WORKSHOP',
+    '체육대회': 'SPORTS_DAY',
+    'MT': 'MT',
+    '모임': 'GATHERING',
+    '수련회': 'RETREAT'
+  };
+
+  const convertToServerValue = (keyword) => {
+    switch (keyword) {
+      case '워크샵':
+        return 'WORKSHOP';
+      case '체육대회':
+        return 'SPORTS_DAY';
+      case 'MT':
+        return 'MT';
+      case '모임':
+        return 'GATHERING';
+      case '수련회':
+        return 'RETREAT';
+      default:
+        return keyword;
+    }
+  };
+
+  const handleKeywordClick = (keyword) => {
+    const serverValue = convertToServerValue(keyword);
+    console.log(`Keyword: ${keyword}, Server Value: ${serverValue}`);
+    if (internalSelectedKeywords.includes(serverValue)) {
+      setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== serverValue));
+    } else {
+      setInternalSelectedKeywords([...internalSelectedKeywords, serverValue]);
+    }
   };
 
   const handleResetKeywords = () => {
-      // 선택된 키워드 리셋
       setInternalSelectedKeywords([]);
   };
 
   const handleSelectKeywords = () => {
-    console.log("Selected Keywords before update:", internalSelectedKeywords);
-    onSelectKeywords(internalSelectedKeywords);
-    console.log("Selected Keywords after update:", internalSelectedKeywords);
-    setInternalSelectedKeywords([]);
-    onClose();
-};
+      onSelectKeywords(internalSelectedKeywords); // 선택된 키워드를 부모 컴포넌트로 전달
+      onClose();
+  };
 
   return (
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContent>
         <KeywordWrap>
-      {keywordGroups.map((keyword) => (
-              <KeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
-                <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>{keyword}</KeywordSpan>
-              </KeywordButton>
-            ))}
+        {Object.keys(keywordMappings).map((keyword) => (
+            <KeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
+              <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>{keyword}</KeywordSpan>
+            </KeywordButton>
+          ))}
             </KeywordWrap>
         <BottomContainer>
         <CloseButton onClick={onClose}>

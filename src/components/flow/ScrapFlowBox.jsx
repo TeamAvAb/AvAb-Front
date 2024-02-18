@@ -6,78 +6,93 @@ import View from "../../assets/scrapflow/view.png";
 import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
 import Blank from "../../assets/scrapflow/blank.png";
-import { flowN } from "../../pages/ScrapFlow";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function ScrapFlowBox() {
-  // 스크랩 상태
-  const [doScrap, setDoScrap] = useState(false);
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
+export default function ScrapFlowBox({ datas, setScrap }) {
   // 스크랩 상태 변경
-  const scrapping = () => {
-    doScrap ? setDoScrap(false) : setDoScrap(true);
+  const DoScrap = async (id) => {
+    const response = await axios.post(
+      `https://dev.avab.shop/api/flows/${id}/scraps`,
+      {},
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      setScrap(true);
+    } else {
+      // 요청이 실패하면 에러 처리
+      console.log(response.data);
+    }
   };
 
   // 자세히 보기
   const navigate = useNavigate();
-  const moveToMoreInfo = () => {
-    navigate(`/flow/morescrapflow`);
+  const moveToMoreInfo = (moreData) => {
+    navigate(`/flow/morescrapflow`, { state: { moreData } });
   };
 
-  //flowN에 값에 따라 div 추가
-  const divs = [];
-
-  for (let i = 0; i < flowN; i++) {
-    divs.push(
-      <MyFlowBoxChild>
-        {/* 키워드 */}
-        <FlowBoxKeyWord>신년회</FlowBoxKeyWord>
-
-        {/* 스크랩 버튼 */}
-        <FlowBoxScrapBox>
-          <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={scrapping} />
-        </FlowBoxScrapBox>
-
-        {/* 플로우 이름 */}
-        <FlowBoxTitle>플로우 이름</FlowBoxTitle>
-
-        {/* 플로우 사진 */}
-        <FlowBoxImg src={Blank} alt="플로우 사진" />
-
-        {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
-        <FlowBoxDetailBox>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>70분</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>2,232</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>윤카우</FlowBoxDetail>
-          </FlowBoxDetails>
-          <FlowBoxDetails>
-            <FlowBoxDetailImg>
-              <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
-            </FlowBoxDetailImg>
-            <FlowBoxDetail>2,232</FlowBoxDetail>
-          </FlowBoxDetails>
-        </FlowBoxDetailBox>
-        <MoreBtn onClick={moveToMoreInfo}>자세히 보기</MoreBtn>
-      </MyFlowBoxChild>
-    );
-  }
+  console.log(datas);
 
   return (
     <div>
-      <MyFlowBoxParent>{divs}</MyFlowBoxParent>
+      <MyFlowBoxParent>
+        {datas.map((data) => (
+          <MyFlowBoxChild>
+            {/* 키워드 */}
+            <FlowBoxKeyWord>{data.purpose.map((p) => p).join(", ")}</FlowBoxKeyWord>
+
+            {/* 스크랩 버튼 */}
+            <FlowBoxScrapBox>
+              {data.isScraped && <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={() => DoScrap(data.id)} />}
+            </FlowBoxScrapBox>
+
+            {/* 플로우 이름 */}
+            <FlowBoxTitle>{data.title}</FlowBoxTitle>
+
+            {/* 플로우 사진 */}
+            <FlowBoxImg src={Blank} alt="플로우 사진" />
+            {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
+            <FlowBoxDetailBox>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.author.username}</FlowBoxDetail>
+              </FlowBoxDetails>
+              <FlowBoxDetails>
+                <FlowBoxDetailImg>
+                  <img src={User} alt="스크랩수" style={{ width: "24px", height: "24px" }} />
+                </FlowBoxDetailImg>
+                <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
+              </FlowBoxDetails>
+            </FlowBoxDetailBox>
+            <MoreBtn onClick={() => moveToMoreInfo(data)}>자세히 보기</MoreBtn>
+          </MyFlowBoxChild>
+        ))}
+      </MyFlowBoxParent>
     </div>
   );
 }

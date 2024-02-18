@@ -10,8 +10,8 @@ import line from '../assets/flowwrite/line.png';
 import check from '../assets/flowwrite/check.png';
 import deleteIcon from '../assets/flowwrite/deleteIcon.png';
 
-import writeSelect3 from '../assets/flowwrite/write_select_3.png' // 임시 이미지 -> 수정필요
-import writeSelect4 from '../assets/flowwrite/write_select_4.png' // 임시 이미지 -> 수정필요
+import imgGo3 from '../assets/flowwrite/ImgGo3.png'
+import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 
 export default function FlowWriteDetail() {
   const navigate = useNavigate();
@@ -23,14 +23,17 @@ export default function FlowWriteDetail() {
 
   const handleNextClick = () => {
     navigate('/flow/write/recommend');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleBeforeClick = () => {
     navigate('/flow/write');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleGo4Click = () => {
     navigate('/flow/write/content');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleGenderClick = (gender) => {
@@ -174,7 +177,7 @@ export default function FlowWriteDetail() {
             <CardContainer>
               <CardGoRecommend onClick={handleNextClick}>
               <CardGoContainer>
-                <img src={writeSelect3} alt="go 3" style={{ width: '120px', height: '120px' }} />
+                <img src={imgGo3} alt="go 3" style={{ width: '120px', height: '120px' }} />
                 <CardGoTextContainer>
                 <CardGo3Text>추천 플로우 확인하기</CardGo3Text>
                 <CardGo3SubText>입력한 정보를 바탕으로{'\n'}아브아브가 추천한 플로우예요!</CardGo3SubText>
@@ -187,7 +190,7 @@ export default function FlowWriteDetail() {
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
                 <CardGo4SubText>원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!</CardGo4SubText>
                 </CardGoTextContainer>
-                <img src={writeSelect4} alt="go 4" style={{ width: '120px', height: '120px' }} />
+                <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
                 </CardGoContainer>
               </CardGoContent>
             </CardContainer>
