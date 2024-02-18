@@ -10,6 +10,14 @@ import line from '../assets/flowwrite/line.png';
 import check from '../assets/flowwrite/check.png';
 import deleteIcon from '../assets/flowwrite/deleteIcon.png';
 
+const keywordMappings = {
+  '워크샵': 'WORKSHOP',
+  '체육대회': 'SPORTS_DAY',
+  'MT': 'MT',
+  '모임': 'GATHERING',
+  '수련회': 'RETREAT'
+};
+
 export default function FlowWrite() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,15 +42,19 @@ export default function FlowWrite() {
 
 
   const handleNextClick = () => {
-    localStorage.setItem('selectedKeywords', JSON.stringify(selectedKeywords));
+    const englishKeywords = selectedKeywords.map(keyword => keywordMappings[keyword]);
+    localStorage.setItem('selectedKeywords', JSON.stringify(englishKeywords));
     localStorage.setItem('playTime', playTime);
-    console.log("목적키워드가 저장되었습니다:", selectedKeywords);
-    console.log("플레이 시간이 저장되었습니다:", playTime);
+    console.log("Saved keywords:", englishKeywords);
+    console.log("Saved play time:", playTime);
     navigate('/flow/write/detail');
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
-    console.log("API 호출 시 선택된 키워드:", selectedKeywords);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log("Selected keywords for API:", englishKeywords);
   };
+
   const handleBeforeClick = () => {
+    localStorage.removeItem('selectedKeywords');
+  localStorage.removeItem('playTime');
     navigate('/flow/my');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };

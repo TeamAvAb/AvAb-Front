@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
 const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
-  console.log("Selected Keywords in DetailKeywordModal:", propSelectedKeywords);
+  console.log("Selected Keywords in PurposeKeywordModal:", propSelectedKeywords);
   const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
 
   useEffect(() => {
@@ -28,30 +28,12 @@ const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: prop
     '수련회': 'RETREAT'
   };
 
-  const convertToServerValue = (keyword) => {
-    switch (keyword) {
-      case '워크샵':
-        return 'WORKSHOP';
-      case '체육대회':
-        return 'SPORTS_DAY';
-      case 'MT':
-        return 'MT';
-      case '모임':
-        return 'GATHERING';
-      case '수련회':
-        return 'RETREAT';
-      default:
-        return keyword;
-    }
-  };
-
   const handleKeywordClick = (keyword) => {
-    const serverValue = convertToServerValue(keyword);
-    console.log(`Keyword: ${keyword}, Server Value: ${serverValue}`);
-    if (internalSelectedKeywords.includes(serverValue)) {
-      setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== serverValue));
+    console.log(`Keyword: ${keyword}`);
+    if (internalSelectedKeywords.includes(keyword)) {
+      setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== keyword));
     } else {
-      setInternalSelectedKeywords([...internalSelectedKeywords, serverValue]);
+      setInternalSelectedKeywords([...internalSelectedKeywords, keyword]);
     }
   };
 

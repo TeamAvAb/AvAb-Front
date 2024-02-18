@@ -38,9 +38,20 @@ export default function FlowWriteContent() {
     useEffect(() => {
       const savedKeywords = localStorage.getItem('selectedKeywords');
       if (savedKeywords) {
-        setSelectedKeywords(JSON.parse(savedKeywords));
+        const parsedKeywords = JSON.parse(savedKeywords);
+        // 한글 키워드를 영어로 다시 매핑하여 저장
+        const englishKeywords = parsedKeywords.map(keyword => keywordMappings[keyword]);
+        setSelectedKeywords(englishKeywords);
       }
     }, []);
+
+    const keywordMappings = {
+      'WORKSHOP': '워크샵',
+      'SPORTS_DAY': '체육대회',
+      'MT': 'MT',
+      'GATHERING': '모임',
+      'RETREAT': '수련회'
+    };
 
   const handleNextClick = () => {  
     if (flowTitle.trim() === "") {
@@ -63,10 +74,18 @@ export default function FlowWriteContent() {
     // API 호출 함수
     const fetchRecreationData = async () => {
       try {
+        const savedPlayTime = localStorage.getItem('playTime');
+          if (!savedPlayTime) {
+            // playTime이 없는 경우에 대한 처리
+            console.error('playTime이 저장되어 있지 않습니다.');
+            return;
+          }
+        const englishKeywords = selectedKeywords.map(keyword => keywordMappings[keyword]);
+
         const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
           params: {
-            playTime: time,
-            purpose: selectedKeywords.join(','),
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(','),
             // keyword: 'ACTIVE',
             // participants: 20,
             // gender: 'FEMALE',
@@ -90,7 +109,7 @@ export default function FlowWriteContent() {
 
     // API 호출 함수 호출
     fetchRecreationData();
-  }, [time, selectedKeywords]);
+  }, [selectedKeywords]);
 
   const handleFlowTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
@@ -199,14 +218,14 @@ export default function FlowWriteContent() {
                 </ContentInfo>
                 <ContentInfoDetail>
                   <div style={{ marginLeft: "20px", marginTop: "56px" }}>
-                    <div style={{ display: "flex", marginBottom: "8px" }}>
-                      <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
-                      <div style={{ listStyleType: "none" }}>
-                        {selectedKeywords.map((keyword, index) => (
+                  <div style={{ display: "flex", marginBottom: "8px" }}>
+                    <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
+                    <div style={{ listStyleType: "none" }}>
+                      {selectedKeywords.map((keyword, index) => (
                         <li key={index}>{keyword}</li>
-                        ))}
-                      </div>
+                      ))}
                     </div>
+                  </div>
                     <div style={{ display: "flex" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         플레이 시간
