@@ -192,7 +192,7 @@ const StyledSlider = styled(Slider)`
     left: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 27px);
   }
   .slick-next {
-    right: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 22px);
+    right: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 32px);
   }
   .slick-dots {
     position: absolute;
