@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import fix from "../../assets/flowwrite/fix_flow_write.png";
 import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
@@ -9,6 +10,41 @@ export default function WriteRecreationInfo({ num, onDelete}) {
     const [time, setTime] = useState(10);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedKeywords, setSelectedKeywords] = useState([]);
+
+    useEffect(() => {
+      // API를 통해 레크레이션 정보를 가져오는 함수
+      const fetchRecreationData = async () => {
+        try {
+          // API를 호출하여 데이터 가져오기
+          const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+              params: {
+                playTime: time,
+                purpose: 'SPORTS_DAY'
+              }
+            });
+            console.log('API 응답 데이터:', response.data);
+          // 데이터에서 필요한 정보 추출
+          const { title, keywordList, playTime } = response.data;
+          console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+
+          // 추출한 정보를 저장
+          return { title, keywordList, playTime };
+        } catch (error) {
+          // 에러 발생 시 에러 처리
+          console.error('추가 중 오류 발생:', error);
+        }
+      };
+  
+  // fetchRecreationData 함수 호출
+  const fetchData = async () => {
+    const data = await fetchRecreationData();
+    console.log('데이터:', data); // 받은 데이터 출력
+  };
+
+  // fetchData 함수 호출
+  fetchData();
+  fetchRecreationData();
+  }, [time]);
 
   const handleTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 title 상태 업데이트

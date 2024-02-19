@@ -163,29 +163,52 @@ export default function FlowWriteContent() {
     setFlowTitle(e.target.value);
   };
 
-  const handleAddFlow = () => {
+  // const addRecommendationFlowBox = async () => {
+  //   try {
+  //     // handleAddRecommendFlow를 호출하여 데이터 가져오기
+  //     const recommendationData = await handleAddRecommendFlow();
+  //     // 추천 데이터가 있는 경우에만 플로우 박스 추가
+  //     if (recommendationData) {
+  //       // 추천 데이터를 사용하여 새로운 플로우 박스 추가
+  //       setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, recommendationData]);
+  //       // 플로우 박스 추가 시 numOfRecreationInfo 상태 업데이트
+  //       setNumOfRecreationInfo(prevNum => prevNum + 1);
+  //     }
+  //   } catch (error) {
+  //     console.error('추가 중 오류 발생:', error);
+  //   }
+  // };
+
+  const handleAddFlow = async () => {
     // 커스텀 플로우 박스 추가
     setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
     setNumOfRecreationInfo(prevNum => prevNum);
   };
 
-  const handleAddRecommendFlow = async () => {
+  const handleAddRecommendFlow = async (id) => {
     try {
       // API를 호출하여 데이터 가져오기
       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
           params: {
             playTime: time,
-            purpose: 'WORKSHOP'
+            purpose: 'SPORTS_DAY'
           }
         });
       // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
+      const data = response.data.result.find(item => item.id === id);
+      if (data) {
+        const { title, keywordList, playTime } = data;
+        console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+        // 추출한 정보를 저장
+        return { title, keywordList, playTime };
+      } else {
+        console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
+        return null;
+      }
     } catch (error) {
       // 에러 발생 시 에러 처리
       console.error('추가 중 오류 발생:', error);
+      return null;
     }
   };
 
@@ -333,6 +356,17 @@ export default function FlowWriteContent() {
                   {infoBoxes.map((num) => (
                     <WriteRecreationInfo key={num} num={num} onDelete={handleDelete} />
                   ))}
+
+{/* {infoBoxes.map((box, index) => (
+  <WriteRecreationInfo
+    key={index}
+    num={box.id}
+    onDelete={handleDelete}
+    title={box.title}
+    selectedKeywords={box.keywordList}
+    time={box.playTime}
+  />
+))} */}
 
                   {/* 버튼 클릭 시 추가되는 WriteRecreationInfo */}
                   {[...Array(numOfRecreationInfo - 1)].map((_, index) => (
