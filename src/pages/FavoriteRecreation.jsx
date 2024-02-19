@@ -4,38 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 
 import FavoritesBox from "../components/mypage/FavoritesBox";
-import Pagination from "../components/pagination/Pagination.jsx";
+import Pagination from "../components/pagination/Pagination";
 import LogoutP from "../assets/mypage/LogoutImg.svg"
-import NoneImg from "../assets/Footer/none.png"
+import noScrapImg from "../assets/scrapflow/noScrap.png";
 
 import { privateAPI } from "../apis/user";
 
-const ex = {
-    isSuccess: true,
-    code: "string",
-    message: "string",
-    result: {
-      recreationList: [
-        {
-          id: 0,
-          hashtagList: [
-            "해시태그"
-          ],
-          title: "레크레이션 제목",
-          totalStars: 4.1,
-          keywordList: [
-            "순발력", "창의력", "액티브"
-          ],
-          imageUrl: NoneImg,
-          summary: "string",
-          isFavorite: true
-        }
-      ],
-      totalPages: 0
-    }
-};
-export const exArray = [];
-for (let i = 0; i < 46; i++) exArray.push(ex);
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -49,38 +25,6 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
     navigate(`/mypage/favorites`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  // 데이터 가져오기
-  const [datas, setDatas] = useState(exArray);
-  // 데이터 불러오는 동안 로딩
-  const [loading, setLoading] = useState(false);
-  // 현재 페이지 상태
-  const [currentPage, setCurrentPage] = useState(1);
-  // 한 페이지 당 데이터 수
-  const datasPerPage = 6;
-
-  // 처음 렌더링 시에만 데이터 불러오기
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await axios.get("https://dev.avab.shop/api/users/me/favorites/recreations");
-      setDatas(response.data);
-      setLoading(false);
-      console.log(datas);
-    };
-    fetchData();
-  }, []);
-
-  // 현재 페이지에서 마지막 데이터의 인덱스
-  const indexOfLast = currentPage * datasPerPage;
-  // 현재 페이지에서 첫번째 데이터의 인덱스
-  const indexOfFirst = indexOfLast - datasPerPage;
-  const currentDatas = (datas) => {
-    let currentDatas = datas.slice(indexOfFirst, indexOfLast);
-    return currentDatas;
-  };
-
-  // console.log(exArray);
 
   const openLogoutModal = () => {
     setLogoutModalOpen(true);
@@ -101,6 +45,38 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
+  // 데이터 가져오기
+  const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
+  const [loading, setLoading] = useState(false);
+  // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(0);
+  // 한 페이지 당 데이터 수
+  const datasPerPage = 6;
+  // 즐겨찾기 변화 감지 함수
+  const [favorite, setFavorite] = useState(false);
+
+  // 처음 렌더링 시에만 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=${currentPage}`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result.recreationList);
+      setLoading(false);
+    };
+    fetchData();
+    setFavorite(false);
+  }, [currentPage, favorite]);
+
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
+
   return (
     <Container>
     {/*왼쪽 메뉴바*/}
@@ -117,14 +93,19 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
       <Content>
         <RecreationWrap>
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
-          <FavoritesParent>
-            <FavoritesBox datas={currentDatas(exArray)} loading={loading}/>
-          </FavoritesParent>
+          {datas.length !== 0 ?( 
+            <FavoritesParent> {datas && <FavoritesBox datas={datas} setFavorite={setFavorite} />} </FavoritesParent>
+          ) : (
+            <NoneWrap>
+              <MyFlowNoneImg src={noScrapImg} />
+              <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
+            </NoneWrap>
+          )}
           <Pagination
-            currentPage={currentPage}
-            totalDatas={exArray.length}
-            datasPerPage={datasPerPage}
-            setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalDatas={datas.length}
+          datasPerPage={datasPerPage}
+          setCurrentPage={setCurrentPage}
           />
         </RecreationWrap>
       </Content>
@@ -157,7 +138,7 @@ const Container = styled.div`
 //왼쪽 메뉴바
 const SideBar = styled.div`
   width: 320px;
-  height: 714px;
+  height: 713px;
   box-sizing: border-box;
   font-size: 22px;
   border: solid #cacdd2 1px;
@@ -201,7 +182,6 @@ const Content = styled.div`
 
 const RecreationWrap = styled.div`
   width: 1128px;
-  height: 1203px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -209,7 +189,7 @@ const RecreationWrap = styled.div`
 `;
 
 const RecreationTitle = styled.div`
-  margin-top: 50px;
+  margin-top: 100px;
   font-size: 40px;
   font-weight: 600;
 `;
@@ -220,6 +200,26 @@ const FavoritesParent = styled.div`
   row-gap: 20px;
   column-gap: 30px;
   margin-top: 39px;
+`;
+
+const NoneWrap  = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const MyFlowNoneImg = styled.img`
+  margin-top: 150px;
+  width: 150px;
+  height: 150px;
+`;
+
+const NoneFavorite = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  height: 150px;
+  font-size: 30px;
 `;
 
 //오른쪽 바
