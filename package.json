@@ -35,7 +35,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "https://teamavab.github.io/AvAb-Front/",
+  "homepage": "https://teamavab.github.io/AvAb-Front",
   "browserslist": {
     "production": [
       ">0.2%",
