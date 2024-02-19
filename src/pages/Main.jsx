@@ -15,7 +15,6 @@ import gatherImg from "../assets/main/banner3_gather.png";
 
 export default function Main() {
   const navigator = useNavigate();
-  const [isSearchList, setIsSearchList] = useState();
   const goToSearchList = () => {
     navigator(`/search/list`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -151,7 +150,7 @@ const Container = styled.div`
   align-items: center;
   background: var(
     --BG,
-    linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 17.9%)
+    linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 67.9%)
   );
   overflow: hidden;
 `;
