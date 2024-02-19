@@ -3,46 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import styled from "styled-components";
 
-import WarnLogo from "../assets/mypage/WarnLogo.svg"
+import MyInfoBox from "../components/mypage/MyInfoBox";
+
 import LogoutP from "../assets/mypage/LogoutImg.svg"
 import { privateAPI } from "../apis/user";
-
-const ex = {
-  isSuccess: true,
-  code: "string",
-  message: "string",
-  result: {
-  userId: 0,
-  email: "이메일@",
-  name: "string",
-  username: "닉네임",
-  socialType: "KAKAO"
-  }
-}
-export const exArray = [];
-exArray.push(ex)
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function Mypage({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState({ email: '이메일', username: '닉네임' });
-  const [datas, setDatas] = useState(exArray);
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await axios.get("/api/users/me");
-      setDatas(response.data);
-      setLoading(false);
-      console.log(datas);
-    };
-    fetchData();
-  }, []);
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
@@ -72,6 +43,28 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
+  const [datas, setDatas] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const response = await axios.get(`https://dev.avab.shop/api/users/me`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      });
+      setDatas(response.data.result);
+      setLoading(false);
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    console.log(datas);
+  }, [datas]);
+
   return (
     <Container>
       <SideBar>
@@ -83,20 +76,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
         </MenuList>
       </SideBar>
       <Content>
-        <MyInfo>
-          <MyTitle>카카오 계정</MyTitle>
-          <MyInput value={userInfo.email} readOnly/>
-          <MyTitle2>닉네임</MyTitle2>
-          <MyInput placeholder={userInfo.username} maxLength={10}/>
-          <WarnSpace>
-            <WarnImg src={WarnLogo}/>
-            <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
-          </WarnSpace>
-          <ButtonSection>
-            <OutBut>회원탈퇴</OutBut>
-            <SaveBut>저장하기</SaveBut>
-          </ButtonSection>
-        </MyInfo>
+        {datas && <MyInfoBox datas={datas}/>}
       </Content>
 
       {/*우측 바*/}
@@ -126,7 +106,7 @@ const Container = styled.div`
 
 const SideBar = styled.div`
   width: 320px;
-  height: 714px;
+  height: 713px;
   box-sizing: border-box;
   font-size: 22px;
   border: solid #cacdd2 1px;
@@ -165,70 +145,6 @@ const Content = styled.div`
   align-items: center;
   border: solid #cacdd2 1px;
   border-bottom: none;
-`;
-
-const MyInfo = styled.div`
-  width: 687px;
-  height: 434px;
-`;
-
-const MyTitle = styled.div`
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  margin-top: 20px;
-`;
-
-const MyTitle2 = styled(MyTitle)`
-  margin-top: 60px;
-`;
-
-const MyInput = styled.input`
-  width: 657px;
-  height: 70px;
-  border-radius: 20px;
-  border: solid #cacdd2 1px;
-  color: #cacdd2;
-  font-size: 20px;
-  padding-left: 25px;
-`;
-
-const WarnSpace = styled.div`
-  display: flex;
-  margin-top: 10px;
-`;
-
-const WarnImg = styled.img`
-  width: 16px;
-  margin-left: 10px;
-`;
-
-const Warn = styled.div`
-  color: #9fa4a9;
-  margin-left: 10px;
-`;
-
-const ButtonSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  font-size: 20px;
-`;
-
-const OutBut = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-  border-radius: 30px;
-  color: white;
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-`;
-
-const SaveBut = styled(OutBut)`
-  background-color: #19297c;
 `;
 
 const RightSide = styled.div`
