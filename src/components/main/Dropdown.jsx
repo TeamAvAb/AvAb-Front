@@ -5,7 +5,7 @@ import downIconImg from "../../assets/main/downIcon.svg";
 
 export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
-
+  console.log("진행시간 : ", selectedOption);
   return (
     <DropdownContainer>
       <Menu isdropped={dropdownOpen}>
@@ -27,7 +27,8 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
         ref={myPageRef}
         selected={selectedOption}
       >
-        {selectedOption === undefined ? "10" : selectedOption}분
+        {selectedOption.length === 0 ? "10" : selectedOption}
+        분
         <img src={downIconImg} style={{ width: "24px", height: "24px" }} />
       </DropdownButton>
     </DropdownContainer>
@@ -65,7 +66,7 @@ const DropdownButton = styled.button`
   font-style: normal;
   font-weight: 400;
   color: ${(props) =>
-    props.selected === undefined
+    props.selected.length === 0
       ? "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"
       : "var(--gray-scale-464-c-52, #464C52)"};
   &:focus {

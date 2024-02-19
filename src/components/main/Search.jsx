@@ -19,8 +19,8 @@ export default function Search() {
   // 검색어 및 키워드 저장
   const [searchKeyword, setSearchKeyword] = useState();
   const [keyword, setKeyword] = useState([]);
-  const [participants, setParticipants] = useState();
-  const [playTime, setPlayTime] = useState();
+  const [participants, setParticipants] = useState([]);
+  const [playTime, setPlayTime] = useState([]);
   const [place, setPlace] = useState([]);
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
@@ -118,8 +118,8 @@ export default function Search() {
   const reset = () => {
     setSearchKeyword([]);
     setKeyword([]);
-    setParticipants("");
-    setPlayTime();
+    setParticipants([]);
+    setPlayTime([]);
     setPlace([]);
     setPurpose([]);
     setGender([]);
@@ -154,7 +154,7 @@ export default function Search() {
     const currentURL = new URLSearchParams(window.location.search);
     if (currentURL.size !== 0) {
       setKeyword(currentURL.getAll("keyword"));
-      setParticipants(currentURL.getAll("participants"));
+      setParticipants(currentURL.get("participants"));
       setPlayTime(currentURL.getAll("playTime"));
       setPlace(currentURL.getAll("place"));
       setPurpose(currentURL.getAll("purpose"));
