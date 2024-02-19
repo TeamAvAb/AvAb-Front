@@ -4,6 +4,7 @@ import RecreationContentBox from "./RecreationContentBox";
 import viewIcon from "../../assets/recreation/viewIcon.svg";
 
 export default function RecreationTopInfo({ recreationData }) {
+  console.log(recreationData);
   if (!recreationData || !recreationData.imageUrl) {
     return (
       <WarningMessage>
@@ -36,6 +37,7 @@ export default function RecreationTopInfo({ recreationData }) {
       {/* 레크레이션 정보 */}
       <div>
         <RecreationContentBox
+          recreationId={recreationData.recreationId}
           hashtag={recreationData.hashTagList}
           recreationTitle={recreationData.title}
           kewords={kewords}

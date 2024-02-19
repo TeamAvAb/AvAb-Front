@@ -2,19 +2,44 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
+import axios from "axios";
 export default function RecreationContentBox({
+  recreationId,
   hashtag,
   recreationTitle,
   kewords,
   starRate,
   isFavorite,
 }) {
+  const testJWT =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
-  const [isheartToggle, SetIsheartToggle] = useState(false);
-  const onHandleScrap = () => {
-    isheartToggle ? SetIsheartToggle(false) : SetIsheartToggle(true);
+  const [isheartToggle, SetIsheartToggle] = useState(isFavorite);
+
+  const onHandleScrap = async (recreationId) => {
+    try {
+      const response = await axios.post(
+        `https://dev.avab.shop/api/recreations/${recreationId}/favorites`,
+        {},
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${testJWT}`,
+          },
+        }
+      );
+      if (response.data.code === "COMMON200") {
+        console.log("토글", heartIconColor);
+        SetIsheartToggle(!isheartToggle);
+        console.log(response.data);
+      } else {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const heartIconColor = isheartToggle ? "#E54B4B" : "#E9EBED";
@@ -22,7 +47,7 @@ export default function RecreationContentBox({
     <>
       <ContentBox>
         <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
-        <HeartIconWrap onClick={onHandleScrap}>
+        <HeartIconWrap onClick={() => onHandleScrap(recreationId)}>
           <Icon fill={heartIconColor} />
         </HeartIconWrap>
         <TitleStar>

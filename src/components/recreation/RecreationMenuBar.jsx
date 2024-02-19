@@ -65,7 +65,7 @@ const RecreationMenuBarContainer = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 100;
+  z-index: 1;
   display: flex;
   align-items: center;
 `;
