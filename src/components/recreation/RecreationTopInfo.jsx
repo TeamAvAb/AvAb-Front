@@ -1,10 +1,16 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import recreationMainIllustration from "../../assets/recreation/recreationMainIllustration.png";
 import RecreationContentBox from "./RecreationContentBox";
 import viewIcon from "../../assets/recreation/viewIcon.svg";
 
 export default function RecreationTopInfo({ recreationData }) {
+  if (!recreationData || !recreationData.imageUrl) {
+    return (
+      <WarningMessage>
+        잘못된 접근입니다. 해당 레크레이션이 존재하지 않습니다.
+      </WarningMessage>
+    );
+  }
   const matchKeywords = (kewords) => {
     const keywordMap = {
       QUICKNESS: "순발력",
@@ -26,7 +32,7 @@ export default function RecreationTopInfo({ recreationData }) {
     : [];
   return (
     <RecreationTopMenuContainer>
-      <MainImage src={recreationMainIllustration}></MainImage>
+      <MainImage src={recreationData.imageUrl}></MainImage>
       {/* 레크레이션 정보 */}
       <div>
         <RecreationContentBox
@@ -74,4 +80,12 @@ const MainImage = styled.img`
   width: 250px;
   margin-left: 377px;
   margin-right: 251px;
+`;
+
+const WarningMessage = styled.div`
+  color: #26282b;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
 `;

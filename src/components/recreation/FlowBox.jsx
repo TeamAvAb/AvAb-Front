@@ -56,7 +56,6 @@ const TitleWrap = styled.div`
 `;
 const FlowTitle = styled.div`
   color: #1b1d1f;
-  width: 0px;
   text-align: center;
   font-size: 24px;
   font-weight: 700;
