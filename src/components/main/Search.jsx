@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { publicAPI } from "../../apis/user";
 import qs from "qs";
 import { useNavigate } from "react-router";
@@ -16,29 +15,28 @@ import deleteImg from "../../assets/main/deleteIcon.svg";
 import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
 import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
 
-export default function Search({ searchResult }) {
+export default function Search() {
   // 검색어 및 키워드 저장
   const [searchKeyword, setSearchKeyword] = useState();
   const [keyword, setKeyword] = useState([]);
   const [participants, setParticipants] = useState();
-  const [playTime, setPlayTime] = useState("10");
+  const [playTime, setPlayTime] = useState();
   const [place, setPlace] = useState([]);
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
-
   // 더미 데이터
   const keywordOptions = [
-    { id: 0, title: "협동", param: "COOPERATIVE" },
-    { id: 1, title: "순발력", param: "QUICKNESS" },
-    { id: 2, title: "센스", param: "SENSIBLE" },
-    { id: 3, title: "두뇌", param: "BRAIN" },
-    { id: 4, title: "창의력", param: "CREATIVE" },
-    { id: 5, title: "액티브", param: "ACTIVE" },
-    { id: 6, title: "심리", param: "PSYCHOLOGICAL" },
-    { id: 7, title: "행운", param: "LUCK" },
-    { id: 8, title: "상식", param: "COMMON_SENSE" },
-    { id: 9, title: "준비물", param: "PREPARATION" },
+    { id: 0, value: "협동", param: "COOPERATIVE" },
+    { id: 1, value: "순발력", param: "QUICKNESS" },
+    { id: 2, value: "센스", param: "SENSIBLE" },
+    { id: 3, value: "두뇌", param: "BRAIN" },
+    { id: 4, value: "창의력", param: "CREATIVE" },
+    { id: 5, value: "액티브", param: "ACTIVE" },
+    { id: 6, value: "심리", param: "PSYCHOLOGICAL" },
+    { id: 7, value: "행운", param: "LUCK" },
+    { id: 8, value: "상식", param: "COMMON_SENSE" },
+    { id: 9, value: "준비물", param: "PREPARATION" },
   ];
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
   const placeOptions = [
@@ -46,11 +44,11 @@ export default function Search({ searchResult }) {
     { id: 1, value: "실외", param: "OUTDOOR" },
   ];
   const purposeOptions = [
-    { id: 0, title: "워크샵", param: "WORKSHOP" },
-    { id: 1, title: "체육대회", param: "SPORTS_DAY" },
-    { id: 2, title: "MT", param: "MT" },
-    { id: 3, title: "모임", parma: "GATHERING" },
-    { id: 4, title: "수련회", param: "RETREAT" },
+    { id: 0, value: "워크샵", param: "WORKSHOP" },
+    { id: 1, value: "체육대회", param: "SPORTS_DAY" },
+    { id: 2, value: "MT", param: "MT" },
+    { id: 3, value: "모임", param: "GATHERING" },
+    { id: 4, value: "수련회", param: "RETREAT" },
   ];
   const genderOptions = [
     { id: 0, value: "여성", param: "FEMALE" },
@@ -70,6 +68,12 @@ export default function Search({ searchResult }) {
   const openMenu = () => {
     setMenu(!menu);
   };
+  useEffect(() => {
+    if (window.location.pathname === "/search/list") {
+      // 검색 리스트 페이지일 때는 열린 상태 유지
+      setMenu(true);
+    }
+  }, []);
 
   const onRemove = (category, id) => {
     if (category === keywordOptions) {
@@ -95,7 +99,7 @@ export default function Search({ searchResult }) {
     return selected.map((el) => (
       <>
         <SelectedKeyword key={el}>
-          '{label[el].title}' 포함
+          '{label[label.findIndex((i) => i.param === el)].value}' 포함
           <img
             src={deleteImg}
             id={el}
@@ -115,7 +119,7 @@ export default function Search({ searchResult }) {
     setSearchKeyword([]);
     setKeyword([]);
     setParticipants("");
-    setPlayTime(10);
+    setPlayTime();
     setPlace([]);
     setPurpose([]);
     setGender([]);
@@ -123,36 +127,41 @@ export default function Search({ searchResult }) {
   };
 
   // 필터 적용
+  const navigator = useNavigate();
   publicAPI.defaults.paramsSerializer = (params) => {
     return qs.stringify(params, { arrayFormat: "repeat" });
   };
   const submit = async () => {
-    const requestURL = `/api/recreations/search`;
-    let keywordParam = keyword.map((el) => keywordOptions[el].param);
-    let purposeParam = purpose.map((el) => purposeOptions[el].param);
+    const params = {
+      keyword: keyword,
+      participants: participants,
+      playTime: playTime,
+      place: place,
+      purpose: purpose,
+      gender: gender,
+      age: age,
+    };
 
+    const param = qs.stringify(params, { arrayFormat: "repeat" });
     try {
-      const response = await publicAPI.get(requestURL, {
-        params: {
-          keyword: keywordParam,
-          participants: participants,
-          playTime: playTime,
-          place: place,
-          purpose: purposeParam,
-          gender: gender,
-          age: age,
-        },
-      });
-      localStorage.removeItem("searchResult");
-      localStorage.setItem("searchResult", JSON.stringify(response));
-      console.log(response);
+      navigator(`/search/list?${param}`, { state: param });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.log(error);
     }
-    // if (window.location.href !== "/search/list") {
-    //   window.location.href = "/search/list";
-    // }
   };
+  useEffect(() => {
+    const currentURL = new URLSearchParams(window.location.search);
+    if (currentURL.size !== 0) {
+      setKeyword(currentURL.getAll("keyword"));
+      setParticipants(currentURL.getAll("participants"));
+      setPlayTime(currentURL.getAll("playTime"));
+      setPlace(currentURL.getAll("place"));
+      setPurpose(currentURL.getAll("purpose"));
+      setAge(currentURL.getAll("age"));
+      setGender(currentURL.getAll("gender"));
+    }
+  }, [window.location.href]);
 
   return (
     <SearchEngine>
@@ -267,22 +276,27 @@ export default function Search({ searchResult }) {
             </Filter>
           </More>
         </Filters>
-        <Menu onClick={openMenu}>
-          {menu ? (
-            <>
-              필터 접기
-              <img style={{ width: "24px", height: "24px" }} src={arrowUpImg} />
-            </>
-          ) : (
-            <>
-              필터 더보기
-              <img
-                style={{ width: "24px", height: "24px" }}
-                src={arrowDownImg}
-              />
-            </>
-          )}
-        </Menu>
+        {window.location.pathname === "/search/list" ? null : (
+          <Menu onClick={openMenu}>
+            {menu ? (
+              <>
+                필터 접기
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src={arrowUpImg}
+                />
+              </>
+            ) : (
+              <>
+                필터 더보기
+                <img
+                  style={{ width: "24px", height: "24px" }}
+                  src={arrowDownImg}
+                />
+              </>
+            )}
+          </Menu>
+        )}
       </SearchBox>
       <SearchBtns>
         <ResetBtn onClick={reset}>초기화</ResetBtn>
@@ -447,8 +461,8 @@ const More = styled.div`
   align-items: flex-start;
   gap: 22px;
   overflow: hidden;
-  opacity: ${(props) => (props.isopen ? "1" : "0")};
-  visibility: ${(props) => (props.isopen ? "visible" : "hidden")};
+  opacity: ${({ isopen }) => (isopen ? "1" : "0")};
+  visibility: ${({ isopen }) => (isopen ? "visible" : "hidden")};
   max-height: ${({ isopen }) => (isopen ? "1000px" : "0")};
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 `;
