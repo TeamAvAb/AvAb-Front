@@ -26,6 +26,10 @@ export default function FlowWriteContent() {
   const [recreationData, setRecreationData] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [playTime, setPlayTime] = useState('');
+  const [selectedDetailKeywords, setSelectedDetailKeywords] = useState([]);
+  const [selectedGenders, setSelectedGenders] = useState([]);
+  const [selectedAges, setSelectedAges] = useState([]);
+  const [selectedGroupSize, setSelectedGroupSize] = useState('');
   
     useEffect(() => {
       // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
@@ -45,12 +49,55 @@ export default function FlowWriteContent() {
       }
     }, []);
 
+    useEffect(() => {
+      // 로컬 스토리지에서 저장된 디테일 키워드 가져오기
+      const storedDetailKeywords = localStorage.getItem('selectedDetailKeywords');
+      if (storedDetailKeywords) {
+        const parsedKeywords = JSON.parse(storedDetailKeywords);
+        setSelectedDetailKeywords(parsedKeywords);
+      }
+
+      // 로컬 스토리지에서 저장된 성별 정보 가져오기
+      const storedGenders = localStorage.getItem('selectedGenders');
+      if (storedGenders) {
+        const parsedGenders = JSON.parse(storedGenders);
+        setSelectedGenders(parsedGenders);
+      }
+
+      // 로컬 스토리지에서 저장된 나이 정보 가져오기
+      const storedAges = localStorage.getItem('selectedAges');
+      if (storedAges) {
+        const parsedAges = JSON.parse(storedAges);
+        setSelectedAges(parsedAges);
+      }
+
+      // 로컬 스토리지에서 저장된 인원 정보 가져오기
+      const storedGroupSize = localStorage.getItem('selectedGroupSize');
+      if (storedGroupSize) {
+        const parsedGroupSize = JSON.parse(storedGroupSize);
+        setSelectedGroupSize(parsedGroupSize);
+      }
+    }, []);
+
     const keywordMappings = {
       'WORKSHOP': '워크샵',
       'SPORTS_DAY': '체육대회',
       'MT': 'MT',
       'GATHERING': '모임',
       'RETREAT': '수련회'
+    };
+
+    const DetailMappings = {
+      'COOPERATIVE': '협동',
+      'QUICKNESS': '순발력',
+      'SENSIBLE' : '센스', 
+      'BRAIN': '두뇌', 
+      'CREATIVE' : '창의력', 
+      'ACTIVE' : '액티브', 
+      'PSYCHOLOGICAL' : '심리', 
+      'LUCK' : '행운', 
+      'COMMON_SENSE' : '상식', 
+      'PREPARATION' : '준비물'
     };
 
   const handleNextClick = () => {  
@@ -241,23 +288,25 @@ export default function FlowWriteContent() {
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         키워드
                       </div>
-                      <div style={{ marginRight: "8px" }}>키워드 1</div>
-                      <div style={{ marginRight: "8px" }}>키워드 2</div>
-                      <div>키워드 3</div>
+                      {selectedDetailKeywords.map((keyword, index) => (
+                        <div key={index} style={{ marginRight: "8px" }}>
+                          {DetailMappings[keyword]}
+                        </div>
+                      ))}
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>성별</div>
-                      <div>여성, 남성</div>
+                      <div>{selectedGenders.map(gender => gender === 'F' ? '여성' : '남성').join(', ')}</div>
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         연령대
                       </div>
-                      <div>30대, 40대</div>
+                      <div>{selectedAges.map(age => age === '10대 미만' ? '10대 미만' : age === '10대' ? '10대' : age === '20대' ? '20대' : age === '30대' ? '30대' : age === '40대' ? '40대' : '50대 이상').join(', ')}</div>
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>인원</div>
-                      <div>40명</div>
+                      <div>{localStorage.getItem('selectedGroupSize')}명</div>
                     </div>
                   </div>
                 </ContentInfoDetail>
