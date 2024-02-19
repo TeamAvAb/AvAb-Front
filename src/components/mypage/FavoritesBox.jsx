@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -9,43 +9,53 @@ import GrayHeart from "../../assets/mypage/GrayHeart.svg";
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function FavoritesBox({ datas}) {
-  const [recreationId, setRecreationId] = useState(0);
-
-  const DoFavorite = async (Id) => {
-    setRecreationId(Id);
-    //즐겨찾기 상태를 서버에 업데이트하는 POST 요청
-    const response = await axios.post(`https://dev.avab.shop/api/recreations/${recreationId}/favorities`, {
-      headers: { Authorization: `Bearer ${JWT_TOKEN}` },
-    });
+export default function FavoritesBox({ datas, setFavorite}) {
+  const DoFavorite = async (id) => {
+    const response = await axios.post(
+      `https://dev.avab.shop/api/recreations/${id}/favorites`,
+      {},
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }
+    );
 
     if (response.status === 200) {
-      //요청이 성공하면 상태 업데이트
-      console.log("스크랩 업데이트 성공");
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      setFavorite(true);
     } else {
-      //요청이 실패하면 에러 처리
-      console.log("스크랩 업데이트 실패");
+      // 요청이 실패하면 에러 처리
+      console.log(response.data);
     }
   };
 
+  console.log(datas);
+
   return (
     <RecreationWrapper>
-        {datas.map((data, i) => (
+        {datas.map((data) => (
         <Category>
-            <Hashtagging>{data.result.recreationList[0].hashtagList}</Hashtagging>
+            <Hashtagging>{data.hashtagList}</Hashtagging>
             <RecreationExplain>
                 <ImgSpace>
-                  <ExImg src={data.result.recreationList[0].imageUrl}/>
-                  {data.isFavorite ? (<HeartImg src={YellowHeart}  onClick={() => DoFavorite(data.id)}/>)
-                  : (<HeartImg src={GrayHeart} onClick={() => DoFavorite(data.id)}/>)
-                  }
+                  <ExImg src={data.imageUrl}/>
+                  <HeartBox>
+                    {data.isFavorite ? (
+                    <HeartImg src={YellowHeart} onClick={() => DoFavorite(data.id)}/>
+                    ) : (
+                    <HeartImg src={GrayHeart} onClick={() => DoFavorite(data.id)}/>
+                    )}
+                  </HeartBox>
                 </ImgSpace>
                 <Explain>
-                    <Section1>{data.result.recreationList[0].title}</Section1>
+                    <Section1>{data.title}</Section1>
                     <SectionWrap>
-                        <Section2>{data.result.recreationList[0].keywordList.join(', ')}</Section2>
+                        <Section2>{data.keywordList.join(', ')}</Section2>
                         <Section3 src={starIcon} />
-                        <Section4>{data.result.recreationList[0].totalStars}</Section4>
+                        <Section4>{data.totalStars}</Section4>
                     </SectionWrap>
                 </Explain>
             </RecreationExplain>
@@ -108,9 +118,18 @@ const ExImg = styled.img`
   margin-top: 20px;
 `;
 
-const HeartImg = styled.img`
-  width: 28px;
+const HeartBox = styled.div`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  margin-top: 137px;
   margin-left: 200px;
+`;
+
+const HeartImg = styled.img`
+  position: absolute;
+  width: 28px;
+  cursor: pointer;
 `;
 
 const Explain = styled.div`
@@ -146,45 +165,12 @@ const Section2 = styled.div`
 `;
 
 const Section3 = styled.img`
-  margin-left: 30px;
+  position: absolute;
+  margin-left: 210px;
   width: 13.72px;
 `;
 
 const Section4 = styled.div`
-  margin-left: 5px;
-`;
-
-const NextPage = styled.div`
-  display: flex;
-  margin-top: 52px;
-  margin-bottom: 30px;
-  height: 42px;
-`;
-
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
+  position: absolute;
+  margin-left: 230px;
 `;
