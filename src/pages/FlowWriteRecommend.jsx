@@ -57,7 +57,7 @@ export default function FlowWriteRecommend() {
   }, [flowData]);
 
     return (
-        <FlowWriteWrap>
+        <FlowWriteRecommendWrap>
           <ProgressbarStyle>
             <ProgressBarItem>
               <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
@@ -84,6 +84,7 @@ export default function FlowWriteRecommend() {
             <AdditionalExplain>
               <span>입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를 <strong>클릭</strong>하여 저장해주세요.</span>
             </AdditionalExplain>
+            <RecommendWrapper>
               <Recommend1 selected={selectedButton === '1안'}>
                 <Select1Button
                   onClick={() => handleButtonClick('1안')}
@@ -115,6 +116,8 @@ export default function FlowWriteRecommend() {
                   {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
                 </RecreationBox>
               </Recommend2>
+            </RecommendWrapper>
+
             <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>
                 <CardGoTextContainer>
@@ -133,11 +136,11 @@ export default function FlowWriteRecommend() {
             </NextButton>
             </div>
           </FlowwriteRecommend>
-        </FlowWriteWrap>
+        </FlowWriteRecommendWrap>
       );
 }
 
-const FlowWriteWrap = styled.div`
+const FlowWriteRecommendWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -199,6 +202,7 @@ const AdditionalExplain = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 40px;
+  margin-bottom: 100px;
 
   span {
     color: #fff;
@@ -234,11 +238,16 @@ const Select1Button = styled.button`
   cursor: pointer;
 `;
 
+const RecommendWrapper = styled.div`
+  display: flex;
+  gap: 25px; /* 1안과 2안 사이의 간격 설정 */
+`;
+
 const Recommend1 = styled(RecommendBase)`
   width: 552px;
   margin-left: 113px;
-  margin-top: 100px;
   position: relative;
+  margin-bottom: 0; 
 
   ${Select1Button} {
     position: absolute;
@@ -263,6 +272,7 @@ const Recommend2 = styled(RecommendBase)`
   width: 552px;
   margin-left: 25px;
   position: relative;
+  margin-bottom: 0; 
 
   ${Select2Button} {
     position: absolute;
