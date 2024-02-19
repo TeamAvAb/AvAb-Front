@@ -1,11 +1,9 @@
 {
   "files": {
     "main.css": "/AvAb-Front/static/css/main.615be41f.css",
-    "main.js": "/AvAb-Front/static/js/main.815ad8df.js",
-    "static/media/ImgGo3.png": "/AvAb-Front/static/media/ImgGo3.56168aa424b248b62ae1.png",
+    "main.js": "/AvAb-Front/static/js/main.c125ea69.js",
     "static/media/banner1_workshop.png": "/AvAb-Front/static/media/banner1_workshop.9c8a9bd9a97b72774920.png",
     "static/media/banner2_mt.png": "/AvAb-Front/static/media/banner2_mt.e03ad99a22feee53df36.png",
-    "static/media/ImgGo4.png": "/AvAb-Front/static/media/ImgGo4.53acecc0cfaba4a9fb28.png",
     "static/media/banner3_gather.png": "/AvAb-Front/static/media/banner3_gather.c7267a2d9ef612b7214e.png",
     "static/media/Pretendard-Regular.woff": "/AvAb-Front/static/media/Pretendard-Regular.303253288b0ba99db532.woff",
     "static/media/loginCharacter.png": "/AvAb-Front/static/media/loginCharacter.7cf6b52d582156b4f434.png",
@@ -34,6 +32,7 @@
     "static/media/arrowDownIcon.svg": "/AvAb-Front/static/media/arrowDownIcon.7a334ff24ef5b8c769236c4eaff63baf.svg",
     "static/media/arrowUpIcon.svg": "/AvAb-Front/static/media/arrowUpIcon.c6f953cde65987442f2ea7b074187d41.svg",
     "static/media/viewIcon.svg": "/AvAb-Front/static/media/viewIcon.523b963a33f807a7b6480757533ddd37.svg",
+    "static/media/scrapIcon.svg": "/AvAb-Front/static/media/scrapIcon.70eab4c8a2c44dfec86e5f17bca8d662.svg",
     "static/media/plusIcon.svg": "/AvAb-Front/static/media/plusIcon.8c2c5689526846b388a8d10a23665389.svg",
     "static/media/timeIcon.svg": "/AvAb-Front/static/media/timeIcon.c46cf8d0c18b10b14cac54de2e7ca694.svg",
     "static/media/checkIcon.svg": "/AvAb-Front/static/media/checkIcon.99837cff31ef0a1f75753883a991f46b.svg",
@@ -53,10 +52,10 @@
     "static/media/Logout.svg": "/AvAb-Front/static/media/Logout.eaecd0a1a14a608f278180685f541e8d.svg",
     "static/media/bannerDotDefault.svg": "/AvAb-Front/static/media/bannerDotDefault.8a810befa16cb698a48f0f51615c6dc6.svg",
     "main.615be41f.css.map": "/AvAb-Front/static/css/main.615be41f.css.map",
-    "main.815ad8df.js.map": "/AvAb-Front/static/js/main.815ad8df.js.map"
+    "main.c125ea69.js.map": "/AvAb-Front/static/js/main.c125ea69.js.map"
   },
   "entrypoints": [
     "static/css/main.615be41f.css",
-    "static/js/main.815ad8df.js"
+    "static/js/main.c125ea69.js"
   ]
 }
