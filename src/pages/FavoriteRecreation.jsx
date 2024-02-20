@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { privateAPI } from "../apis/user";
 
 import FavoritesBox from "../components/mypage/FavoritesBox";
 import Pagination from "../components/pagination/Pagination";
 import LogoutP from "../assets/mypage/LogoutImg.svg"
 import noScrapImg from "../assets/scrapflow/noScrap.png";
-
-import { privateAPI } from "../apis/user";
-
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -51,31 +46,25 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
+  //전체 페이지 수
+  const [pages, setPages] = useState(1);
   // 한 페이지 당 데이터 수
   const datasPerPage = 6;
-  // 즐겨찾기 변화 감지 함수
-  const [favorite, setFavorite] = useState(false);
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
-    const fetchData = async () => {
+    const call = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=${currentPage}`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      });
-      setDatas(response.data.result.recreationList);
-      setLoading(false);
+      try {
+        const response = await privateAPI.get(`/api/users/me/favorites/recreations`);
+        setDatas(response.data.result.recreationList);
+        setLoading(false);
+      } catch (error) {
+        console.log("레크레이션 로드 요청 에러 : ", error);
+      }
     };
-    fetchData();
-    setFavorite(false);
-  }, [currentPage, favorite]);
-
-  useEffect(() => {
-    console.log(datas);
-  }, [datas]);
+    call();
+  });
 
   return (
     <Container>
@@ -94,19 +83,16 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
         <RecreationWrap>
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
           {datas.length !== 0 ?( 
-            <FavoritesParent> {datas && <FavoritesBox datas={datas} setFavorite={setFavorite} />} </FavoritesParent>
+            <FavoritesParent> 
+              {datas && datas.map((data) => <FavoritesBox content={data}/>)} 
+            </FavoritesParent>
           ) : (
             <NoneWrap>
               <MyFlowNoneImg src={noScrapImg} />
               <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
             </NoneWrap>
           )}
-          <Pagination
-          currentPage={currentPage}
-          totalDatas={datas.length}
-          datasPerPage={datasPerPage}
-          setCurrentPage={setCurrentPage}
-          />
+          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
         </RecreationWrap>
       </Content>
 
@@ -196,7 +182,7 @@ const RecreationTitle = styled.div`
 
 const FavoritesParent = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 370px);
+  grid-template-columns: repeat(3, 284px);
   row-gap: 20px;
   column-gap: 30px;
   margin-top: 39px;
