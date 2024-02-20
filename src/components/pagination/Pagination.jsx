@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import LeftButton from "../../assets/watchflow/moveLeft.png";
 import RightButton from "../../assets/watchflow/moveRight.png";
 
-export default function Pagination({ currentPage, totalDatas, datasPerPage, setCurrentPage }) {
+export default function Pagination({ currentPage, pageNum, setCurrentPage }) {
   const pageN = [];
-  for (let i = 1; i <= Math.ceil(totalDatas / datasPerPage); i++) pageN.push(i);
+  for (let i = 1; i <= pageNum; i++) pageN.push(i);
 
   return (
     <PageNumberContainer>
@@ -21,8 +21,9 @@ export default function Pagination({ currentPage, totalDatas, datasPerPage, setC
 
       {/* 페이지 번호 */}
       {pageN.map((num) => {
-        if (currentPage + 1 === num) return <SelectedPageNumber>{num}</SelectedPageNumber>;
-        else return <PageNumber onClick={() => setCurrentPage(num)}>{num}</PageNumber>;
+        if (currentPage + 1 === num)
+          return <SelectedPageNumber onClick={() => setCurrentPage(num - 1)}>{num}</SelectedPageNumber>;
+        else return <PageNumber onClick={() => setCurrentPage(num - 1)}>{num}</PageNumber>;
       })}
 
       {/* 오른쪽 버튼 */}

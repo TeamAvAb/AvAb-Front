@@ -1,4 +1,5 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer1 from "./components/Footer/Footer1";

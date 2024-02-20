@@ -10,6 +10,41 @@ import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+const PurposeList = {
+  MT: "MT",
+  GATHERING: "모임",
+  WORKSHOP: "워크샵",
+  RETREAT: "수련회",
+  SPORTS_DAY: "체육대회",
+};
+
+const KeywordList = {
+  COOPERATIVE: "협동",
+  QUICKNESS: "순발력",
+  SENSIBLE: "센스",
+  BRAIN: "두뇌",
+  CREATIVE: "창의력",
+  ACTIVE: "액티브",
+  PSYCHOLOGICAL: "심리",
+  LUCK: "행운",
+  COMMON_SENSE: "상식",
+  PREPARATION: "준비물",
+};
+
+const GenderList = {
+  MALE: "남성",
+  FEMALE: "여성",
+};
+
+const AgeList = {
+  UNDER_TEENAGER: "10대 미만",
+  TEENAGER: "10대",
+  TWENTIES: "20대",
+  THIRTIES: "30대",
+  FORTIES: "40대",
+  OVER_FIFTIES: "50대 이상",
+};
+
 export default function MoreMyFlow() {
   // 삭제 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
@@ -88,10 +123,14 @@ export default function MoreMyFlow() {
         )}
 
         <TitleContainer>
-          <img src={Blank} alt="플로우사진" style={{ width: "250px", height: "250px", marginTop: "86px" }} />
+          <img
+            src={data.flowDetail.imageUrl}
+            alt="플로우사진"
+            style={{ width: "250px", height: "250px", marginTop: "86px" }}
+          />
           <TitleBox>
             <DetailTitleBox>
-              <KeyWord>{data.flowDetail.keywordList.map((key) => key).join(", ")}</KeyWord>
+              <KeyWord>{PurposeList[data.flowDetail.purposeList[0]]}</KeyWord>
             </DetailTitleBox>
             <FlowName>{data.flowDetail.title}</FlowName>
 
@@ -135,9 +174,9 @@ export default function MoreMyFlow() {
               <div style={{ width: "284px" }}>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
-                  <FlowInfo style={{ fontWeight: "400" }}>
-                    {data.flowDetail.purposeList.map((p) => p).join(", ")}
-                  </FlowInfo>
+                  <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
+                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(", ")}
+                  </FlowInfo2>
                 </div>
                 <div style={{ display: "flex" }}>
                   <FlowInfo>플레이 시간</FlowInfo>
@@ -147,12 +186,12 @@ export default function MoreMyFlow() {
 
               <Line />
 
-              <div>
+              <div style={{ marginLeft: "29px" }}>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo>키워드</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.keywordList.map((keyword) => (
-                      <div>{keyword}</div>
+                      <div>{KeywordList[keyword]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
@@ -160,15 +199,15 @@ export default function MoreMyFlow() {
                   <FlowInfo>성별</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.gender.map((gender) => (
-                      <div>{gender}</div>
+                      <div>{GenderList[gender]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo>연령대</FlowInfo>
                   <FlowInfo2>
-                    {data.flowDetail.age.map((gender) => (
-                      <div>{gender}</div>
+                    {data.flowDetail.age.map((age) => (
+                      <div>{AgeList[age]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
@@ -414,6 +453,7 @@ const FlowInfoDetail = styled.div`
   padding: 29px 20px;
   display: flex;
   align-items: center;
+  position: relative;
   flex: 1;
 `;
 
@@ -422,6 +462,7 @@ const FlowInfo = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
+  line-height: normal;
 `;
 
 const FlowInfo2 = styled.div`
@@ -429,6 +470,10 @@ const FlowInfo2 = styled.div`
   gap: 8px;
   max-width: 190px;
   flex-wrap: wrap;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 `;
 
 const FlowContainer = styled.div`
@@ -443,10 +488,14 @@ const FlowContainer = styled.div`
 `;
 
 const Line = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
   border: 0.5px solid #cacdd2;
   width: 0.5px;
-  height: 11vh;
-  margin-right: 20px;
+  margin-top: 29px;
+  margin-bottom: 29px;
 `;
 
 const FlowTitle = styled.div`

@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Scrap2 from "../../assets/scrapflow/scrap2.png";
 import Time from "../../assets/scrapflow/time.png";
 import View from "../../assets/scrapflow/view.png";
 import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
-import Blank from "../../assets/scrapflow/blank.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
+const PurposeList = {
+  MT: "MT",
+  GATHERING: "모임",
+  WORKSHOP: "워크샵",
+  RETREAT: "수련회",
+  SPORTS_DAY: "체육대회",
+};
 
 export default function ScrapFlowBox({ datas, setScrap }) {
   // 스크랩 상태 변경
@@ -50,7 +57,7 @@ export default function ScrapFlowBox({ datas, setScrap }) {
         {datas.map((data) => (
           <MyFlowBoxChild>
             {/* 키워드 */}
-            <FlowBoxKeyWord>{data.purpose.map((p) => p).join(", ")}</FlowBoxKeyWord>
+            <FlowBoxKeyWord>{PurposeList[data.purpose[0]]}</FlowBoxKeyWord>
 
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
@@ -61,7 +68,7 @@ export default function ScrapFlowBox({ datas, setScrap }) {
             <FlowBoxTitle>{data.title}</FlowBoxTitle>
 
             {/* 플로우 사진 */}
-            <FlowBoxImg src={Blank} alt="플로우 사진" />
+            <FlowBoxImg src={data.imageUrl} alt="플로우 사진" />
             {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
             <FlowBoxDetailBox>
               <FlowBoxDetails>
