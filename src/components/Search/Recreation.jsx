@@ -107,12 +107,12 @@ const SectionWrap = styled.div`
 const Section2 = styled.div`
   font-size: 20px;
   font-weight: 600;
-  width: 200px;
+  width: 250px;
   height: 29px;
 `;
 
 const Section3 = styled.img`
-  margin-left: 130px;
+  margin-left: 90px;
   width: 13.72px;
 `;
 

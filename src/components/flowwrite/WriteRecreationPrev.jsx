@@ -33,8 +33,13 @@ export default function WriteRecreationPrev({ content, handleAddRecommendFlow, h
     }
 
     if (handleAddScrapFlow) {
-      // handleAddScrapFlow 함수가 정의되어 있다면 호출
-      handleAddScrapFlow();
+      try {
+        // handleAddScrapFlow 함수가 정의되어 있다면 호출
+        const result = await handleAddRecommendFlow(content.id); // handleAddScrapFlow 함수가 완료될 때까지 기다림
+        console.log('추가된 레크레이션 데이터:', result);
+      } catch (error) {
+        console.error('handleAddScrapFlow 함수 호출 중 에러 발생:', error);
+      }
     } else {
       console.error('handleAddScrapFlow 함수가 정의되지 않았습니다.');
     }
