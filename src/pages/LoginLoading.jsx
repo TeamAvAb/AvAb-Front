@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { publicAPI } from "../apis/user";
-import { FadeLoader } from "react-spinners";
+import { PacmanLoader } from "react-spinners";
 
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -31,8 +31,10 @@ export default function LoginLoading({ handleLogin }) {
 
   return (
     <Loading>
-      <FadeLoader />
-      <div>잠시만 기다려주세요.</div>
+      <PacmanLoader />
+      <div style={{ fontSize: "22px", textAlign: "center" }}>
+        로그인 중입니다 <br /> 잠시만 기다려주세요
+      </div>
     </Loading>
   );
 }

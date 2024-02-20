@@ -1,25 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { privateAPI } from "../../apis/user";
 import styled from "styled-components";
 import arrow from "../../assets/main/nextSlide.svg";
-import heartImg from "../../assets/main/heart.svg";
+import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 import starImg from "../../assets/main/starIcon.svg";
-
+import Login from "../Login.jsx";
 export default function RecreationPrev({ content }) {
+  const keywordParam = {
+    COOPERATIVE: "협동",
+    QUICKNESS: "순발력",
+    SENSIBLE: "센스",
+    BRAIN: "두뇌",
+    CREATIVE: "창의력",
+    ACTIVE: "액티브",
+    PSYCHOLOGICAL: "심리",
+    LUCK: "행운",
+    COMMON_SENSE: "상식",
+    PREPARATION: "준비물",
+  };
+  const [isFav, setIsFav] = useState(content.isFavorite);
+  const navigator = useNavigate();
+  const gotoDetail = (id) => {
+    navigator(`/recreation/detail/${id}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const addToFavorite = (e, id) => {
+    e.stopPropagation();
+    const call = async () => {
+      try {
+        const response = await privateAPI.post(
+          `/api/recreations/${id}/favorites`
+        );
+        console.log("즐겨찾기 추가/해제 응답 : ", response);
+        if (response.data.result.isFavorite === true) {
+          setIsFav(true);
+        } else if (response.data.result.isFavorite === false) {
+          setIsFav(false);
+        }
+      } catch (error) {
+        console.log("즐겨찾기 추가/해제 에러 : ", error);
+      }
+    };
+    call();
+  };
   return (
     <Categories>
-      <Hashtag>{content.hashtag}</Hashtag>
-      <RecreationExplain>
+      <Hashtag>#{content.hashtagList}</Hashtag>
+      <RecreationExplain onClick={() => gotoDetail(content.id)}>
         <ImgSpace>
-          <ExImg src={content.imgSrc}></ExImg>
-          <img
-            src={heartImg}
-            style={{
-              width: "42px",
-              height: "42px",
-              position: "absolute",
-              top: "150px",
-              right: "20px",
-            }}
+          <ExImg src={content.imageUrl}></ExImg>
+          <Favorite
+            isFav={isFav}
+            onClick={(e) => addToFavorite(e, content.id)}
           />
         </ImgSpace>
         <Explain>
@@ -28,10 +61,17 @@ export default function RecreationPrev({ content }) {
             <img src={arrow} style={{ width: "24px", height: "24px" }} />
           </Section1>
           <Section2>
-            <Keywords>{content.keywords}</Keywords>
+            <div style={{ display: "flex", gap: "5px" }}>
+              {content.keywordList.map((keyword) => (
+                <Keyword key={keyword}>
+                  {keywordParam[keyword]}
+                  {content.keywordList.indexOf(keyword) === 2 ? null : ","}
+                </Keyword>
+              ))}
+            </div>
             <Rate>
               <img src={starImg} style={{ width: "16px", height: "16px" }} />
-              {content.rate}
+              {content.totalStars.toFixed(1)}
             </Rate>
           </Section2>
         </Explain>
@@ -86,6 +126,14 @@ const ExImg = styled.img`
   width: 120px;
   margin-top: 35px;
 `;
+const Favorite = styled(HeartImg)`
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  top: 150px;
+  right: 20px;
+  fill: ${(props) => (props.isFav === true ? "#FFAA29" : "#E9EBED")};
+`;
 
 const Explain = styled.div`
   display: flex;
@@ -110,17 +158,15 @@ const Section1 = styled.div`
 `;
 
 const Section2 = styled.div`
+  width: 80%;
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const Keywords = styled.div`
-  display: flex;
-  width: 197px;
-  height: 24px;
-  flex-direction: column;
-  justify-content: center;
+const Keyword = styled.div`
   color: var(--gray-scale-26282-b, #26282b);
   font-size: 16px;
   font-weight: 400;
