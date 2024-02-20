@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import styled from "styled-components";
 
-import MyInfoBox from "../components/mypage/MyInfoBox";
-
+import FavoritesBox from "../components/mypage/FavoritesBox";
+import Pagination from "../components/pagination/Pagination";
 import LogoutP from "../assets/mypage/LogoutImg.svg"
+import noScrapImg from "../assets/scrapflow/noScrap.png";
+
 import { privateAPI } from "../apis/user";
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function Mypage({ handleLogin, isLoggedIn }) {
+export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -19,7 +21,6 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     navigate(`/mypage/myinfo`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -32,6 +33,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
   const closeLogoutModal = () => {
     setLogoutModalOpen(false);
   };
+  
   const handleLogout = async () => {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
@@ -43,23 +45,33 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
+  // 데이터 가져오기
   const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
   const [loading, setLoading] = useState(false);
+  // 현재 페이지 상태
+  const [currentPage, setCurrentPage] = useState(0);
+  // 한 페이지 당 데이터 수
+  const datasPerPage = 6;
+  // 즐겨찾기 변화 감지 함수
+  const [favorite, setFavorite] = useState(false);
 
+  // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/users/me`, {
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=${currentPage}`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
       });
-      setDatas(response.data.result);
+      setDatas(response.data.result.recreationList);
       setLoading(false);
     };
     fetchData();
-  }, []);
+    setFavorite(false);
+  }, [currentPage, favorite]);
 
   useEffect(() => {
     console.log(datas);
@@ -67,15 +79,36 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
 
   return (
     <Container>
+    {/*왼쪽 메뉴바*/}
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem style={{backgroundColor: "#B1BEFF"}} onClick={handleMyInfoClick}>내 정보</MenuItem>
-          <MenuItem onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
-          <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
+            <MenuItem onClick={handleMyInfoClick}>내 정보</MenuItem>
+            <MenuItem style={{backgroundColor: "#B1BEFF"}} onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
+            <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
-      <Content> {datas && <MyInfoBox datas={datas}/>} </Content>
+
+      {/*중앙 부분*/}
+      <Content>
+        <RecreationWrap>
+          <RecreationTitle>레크레이션 찾기</RecreationTitle>
+          {datas.length !== 0 ?( 
+            <FavoritesParent> {datas && <FavoritesBox datas={datas} setFavorite={setFavorite} />} </FavoritesParent>
+          ) : (
+            <NoneWrap>
+              <MyFlowNoneImg src={noScrapImg} />
+              <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
+            </NoneWrap>
+          )}
+          <Pagination
+          currentPage={currentPage}
+          totalDatas={datas.length}
+          datasPerPage={datasPerPage}
+          setCurrentPage={setCurrentPage}
+          />
+        </RecreationWrap>
+      </Content>
 
       {/*우측 바*/}
       <RightSide/>
@@ -102,6 +135,7 @@ const Container = styled.div`
   display: flex;
 `;
 
+//왼쪽 메뉴바
 const SideBar = styled.div`
   width: 320px;
   height: 713px;
@@ -136,6 +170,7 @@ const MenuItem = styled.div`
   border-bottom: solid #cacdd2 1px;
 `;
 
+//중앙 부분
 const Content = styled.div`
   display: flex;
   flex: 1;
@@ -145,11 +180,56 @@ const Content = styled.div`
   border-bottom: none;
 `;
 
+const RecreationWrap = styled.div`
+  width: 1128px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RecreationTitle = styled.div`
+  margin-top: 100px;
+  font-size: 40px;
+  font-weight: 600;
+`;
+
+const FavoritesParent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 370px);
+  row-gap: 20px;
+  column-gap: 30px;
+  margin-top: 39px;
+`;
+
+const NoneWrap  = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const MyFlowNoneImg = styled.img`
+  margin-top: 150px;
+  width: 150px;
+  height: 150px;
+`;
+
+const NoneFavorite = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  height: 150px;
+  font-size: 30px;
+`;
+
+//오른쪽 바
 const RightSide = styled.div`
   width: 5.7325%;
   background-color: #f7f8f9;
 `;
 
+
+//로그아웃 모달
 const LogoutModal = styled.div`
   position: fixed;
   top: 0;
