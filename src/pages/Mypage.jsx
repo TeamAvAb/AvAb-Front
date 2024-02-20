@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
 import styled from "styled-components";
 
 import MyInfoBox from "../components/mypage/MyInfoBox";
-
 import LogoutP from "../assets/mypage/LogoutImg.svg"
 import { privateAPI } from "../apis/user";
-
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function Mypage({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -32,6 +27,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
   const closeLogoutModal = () => {
     setLogoutModalOpen(false);
   };
+
   const handleLogout = async () => {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
@@ -43,27 +39,24 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
+  // 데이터 가져오기
   const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const call = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/users/me`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      });
-      setDatas(response.data.result);
-      setLoading(false);
+      try{
+        const response = await privateAPI.get(`/api/users/me`);
+        setDatas(response.data.result);
+        setLoading(false);
+      } catch (error) {
+        console.log("내 정보 로드 요청 에러 : ", error);
+      }
     };
-    fetchData();
+    call();
   }, []);
-
-  useEffect(() => {
-    console.log(datas);
-  }, [datas]);
 
   return (
     <Container>
@@ -75,7 +68,9 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
-      <Content> {datas && <MyInfoBox datas={datas}/>} </Content>
+      <Content> 
+        {datas && <MyInfoBox content={datas}/>} 
+      </Content>
 
       {/*우측 바*/}
       <RightSide/>

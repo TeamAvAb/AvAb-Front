@@ -4,11 +4,12 @@ import styled from "styled-components";
 
 import LogoutP from "../../assets/mypage/LogoutImg.svg"
 import WarnLogo from "../../assets/mypage/WarnLogo.svg"
+import { privateAPI } from "../../apis/user";
 
 const JWT_TOKEN =
 "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function MyInfoBox({datas}) {
+export default function MyInfoBox({content}) {
     const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
 
@@ -25,17 +26,9 @@ export default function MyInfoBox({datas}) {
     };
 
     const ChangeName = async () => {
-      const response = await axios.patch(
-        `https://dev.avab.shop/api/users/me`,
-        {username: nickname},
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
+      const response = await privateAPI.patch(`/api/users/me`,
+        {username: nickname}
       );
-  
       if (response.status === 200) {
         // 요청이 성공하면 상태 업데이트
         console.log(response.data);
@@ -45,14 +38,12 @@ export default function MyInfoBox({datas}) {
       }
     };
 
-    console.log(datas);
-
     return (
     <MyInfo>
         <MyTitle>카카오 계정</MyTitle>
-        <MyInput value={datas.email} readOnly/>
+        <MyInput value={content.email} readOnly/>
         <MyTitle2>닉네임</MyTitle2>
-        <MyInput placeholder={datas.username} maxLength={10} onChange={handleNickname}/>
+        <MyInput placeholder={content.username} maxLength={10} onChange={handleNickname}/>
         <WarnSpace>
             <WarnImg src={WarnLogo}/>
             <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
