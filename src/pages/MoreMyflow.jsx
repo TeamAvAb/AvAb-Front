@@ -295,8 +295,6 @@ const ModalContainer = styled.div`
   top: 0;
   left: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
   background: rgba(70, 76, 82, 0.5);
   z-index: 999;
 `;
@@ -306,15 +304,20 @@ const ModalBox = styled.div`
   height: 435px;
   border-radius: 20px;
   background: white;
-  position: relative;
+  position: fixed;
+  top: 215px;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ModalBoxDetail = styled.div`
-  margin-left: 57.5px;
-  margin-top: 55px;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 60px;
 `;
 
 const CloseBtn = styled.div`
