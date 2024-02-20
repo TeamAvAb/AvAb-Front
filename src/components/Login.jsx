@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
-// import character from "../assets/main/character4.png";
-import character from "../assets/main/loginCharacter.png";
-// import character from "../assets/main/character2.png";
+import character from "../assets/main/login_character.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
 import x from "../assets/main/x.svg";
@@ -36,7 +34,10 @@ export default function Login({ handleLoginStatus, handleLoginModal }) {
             </Comment>
             <Button onClick={toKakaoLogin}>간편 로그인하기</Button>
           </Text>
-          <img src={character} style={{ width: "249px", height: "286px" }} />
+          <img
+            src={character}
+            style={{ width: "249px", height: "286px", objectFit: "cover" }}
+          />
         </Content>
         <Controls>
           <Control onClick={() => setTemporaryClose((prev) => !prev)}>
