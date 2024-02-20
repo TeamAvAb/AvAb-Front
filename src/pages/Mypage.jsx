@@ -59,7 +59,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
       setLoading(false);
     };
     fetchData();
-  });
+  }, []);
 
   useEffect(() => {
     console.log(datas);
@@ -75,9 +75,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
-      <Content>
-        {datas && <MyInfoBox datas={datas}/>}
-      </Content>
+      <Content> {datas && <MyInfoBox datas={datas}/>} </Content>
 
       {/*우측 바*/}
       <RightSide/>
