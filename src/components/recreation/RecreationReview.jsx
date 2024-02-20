@@ -17,30 +17,25 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   // const testJWT = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const itemsPerPage = 2;
   // 리뷰 목록 받아오기
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(
-          `https://dev.avab.shop/api/recreations/${recreationId}/reviews?page=${
-            currentPage - 1
-          }`
-        );
-        setReviewListData(response.data.result.reviewList);
-        setReviewData(response.data.result);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchReviews();
-  }, [currentPage, recreationId]);
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `https://dev.avab.shop/api/recreations/${recreationId}/reviews?page=${
+          currentPage - 1
+        }`
+      );
+      setReviewListData(response.data.result.reviewList);
+      setReviewData(response.data.result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // 리뷰 작성
   const handleReviewSubmit = async () => {
     if (isLoggedIn()) {
       try {
         const accessToken = localStorage.getItem("accessToken");
-        // const accessToken = testJWT;
         const response = await privateAPI.post(
           `/api/recreations/${recreationId}/reviews`,
           {
@@ -55,9 +50,17 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           }
         );
 
-        console.log(response);
+        // 리뷰 목록 업데이트
+        await fetchReviews();
+
+        alert("리뷰가 등록되었습니다");
+
+        setReviewInput("");
+        setSelectedStars(0);
       } catch (error) {
         console.error(error);
+
+        alert("리뷰 등록에 실패했습니다");
       }
     }
   };
