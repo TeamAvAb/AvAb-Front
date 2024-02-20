@@ -8,15 +8,15 @@ import KeywordModal from "../components/main/KeywordModal";
 import SearchRecreation from '../components/Search/Recreation';
 import Pagination from "../components/pagination/Pagination";
 import { publicAPI } from "../apis/user";
-
 import qs from "qs";
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 export default function Main({ handleSearchQuery }) {
-  const [keywordModal, setKeywordModal] = useState(false);
-  const [purposeModal, setPurposeModal] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const param = location.search;
 
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
@@ -29,10 +29,6 @@ export default function Main({ handleSearchQuery }) {
   // 즐겨찾기 변화 감지 함수
   const [favorite, setFavorite] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const param = location.search;
-
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +40,10 @@ export default function Main({ handleSearchQuery }) {
         },
       });
       setDatas(response.data.result.recreationList);
+      setFavorite(response.data.result.recreationList.isFavorite);
       setLoading(false);
     };
     fetchData();
-    setFavorite(false);
   }, [currentPage, favorite]);
 
   useEffect(() => {
