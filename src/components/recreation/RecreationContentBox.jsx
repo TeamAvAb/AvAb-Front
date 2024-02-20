@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
 import axios from "axios";
+import { privateAPI } from "../../apis/user";
+
 export default function RecreationContentBox({
   recreationId,
   hashtag,
@@ -11,8 +13,7 @@ export default function RecreationContentBox({
   starRate,
   isFavorite,
 }) {
-  const testJWT =
-    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+  // const testJWT = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
@@ -20,15 +21,9 @@ export default function RecreationContentBox({
 
   const onHandleScrap = async (recreationId) => {
     try {
-      const response = await axios.post(
-        `https://dev.avab.shop/api/recreations/${recreationId}/favorites`,
-        {},
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${testJWT}`,
-          },
-        }
+      const response = await privateAPI.post(
+        `/api/recreations/${recreationId}/favorites`,
+        {}
       );
       if (response.data.code === "COMMON200") {
         SetIsheartToggle(!isheartToggle);

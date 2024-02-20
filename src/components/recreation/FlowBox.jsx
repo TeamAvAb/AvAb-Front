@@ -3,29 +3,24 @@ import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
 import { ReactComponent as ScrapIcon } from "../../assets/recreation/scrapIcon.svg";
 import axios from "axios";
+import { privateAPI } from "../../apis/user";
+
 export default function FlowBox({
   num,
   marginRight,
   flowData,
   flowRecreations,
 }) {
-  const testJWT =
-    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+  // const testJWT = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const [isScrapToggle, SetIsScrapToggle] = useState(
     flowData?.isFavorite || false
   );
 
   const onHandleScrap = async (recreationId) => {
     try {
-      const response = await axios.post(
-        `https://dev.avab.shop/api/recreations/${recreationId}/favorites`,
-        {},
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${testJWT}`,
-          },
-        }
+      const response = await privateAPI.post(
+        `/api/recreations/${recreationId}/favorites`,
+        {}
       );
       if (response.data.code === "COMMON200") {
         SetIsScrapToggle(!isScrapToggle);
@@ -36,16 +31,19 @@ export default function FlowBox({
       console.error(error);
     }
   };
+
   const scrapIconColor = isScrapToggle ? "#ffd446" : "#E9EBED";
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
         <FlowTitle>{flowData?.title}</FlowTitle>
-        <ScrapIcon
-          fill={scrapIconColor}
-          onClick={() => onHandleScrap(flowData.id)}
-        />
+        <IconWrap>
+          <ScrapIcon
+            fill={scrapIconColor}
+            onClick={() => onHandleScrap(flowData.id)}
+          />
+        </IconWrap>
       </TitleWrap>
       {flowRecreations ? (
         flowRecreations.map((recreations, index) => (
@@ -101,4 +99,7 @@ const SubText = styled.div`
   font-weight: 400;
   margin-bottom: 31px;
   line-height: 30px;
+`;
+const IconWrap = styled.div`
+  cursor: pointer;
 `;

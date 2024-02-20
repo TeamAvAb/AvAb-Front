@@ -89,7 +89,7 @@ const RecreationInformation = forwardRef(({ recreationData }, ref) => {
       )}
     </div>
   ));
-
+  console.log(recreationData);
   return (
     <RecreationInformationContainer ref={ref}>
       <ContentBox>
@@ -127,7 +127,11 @@ const RecreationInformation = forwardRef(({ recreationData }, ref) => {
         <Circle>
           <img src={fixIcon}></img>
           <CircleText>준비물</CircleText>
-          <CircleSubText>{recreationData.preparationList}</CircleSubText>
+          <CircleSubText>
+            {recreationData.preparationList.length === 0
+              ? "없음"
+              : recreationData.preparationList}
+          </CircleSubText>
         </Circle>
         <Circle>
           <img src={genderIcon}></img>
