@@ -29,7 +29,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://teamavab.github.io",
+  "homepage": "https://teamavab.github.io/AvAb-Front/",
   "eslintConfig": {
     "extends": [
       "react-app",
