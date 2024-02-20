@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Blank from "../assets/moreflow/blank.png";
 import Share from "../assets/moreflow/share.png";
 import Time from "../assets/moreflow/time.png";
 import User from "../assets/moreflow/user.png";
@@ -47,13 +46,23 @@ const AgeList = {
 
 export default function MoreMyFlow() {
   // 삭제 버튼 모달창을 위한 상태
+  const [del, setDel] = useState(false);
+  // 삭제 버튼 누를 시 상태 변화 함수
+  const deleteBtn = () => {
+    setDel(true);
+  };
+  // 삭제 모달 창 닫기 위한 상태 변화 함수
+  const closeDel = () => {
+    setDel(false);
+  };
+  // 공유 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
   const [modal, setModal] = useState(false);
   // 모달 창 열기 위한 상태 변화 함수
   const OpenModal = () => {
     setModal(true);
   };
-  // 삭제 버튼 누를 시 상태 변화 함수
+  // 공유 버튼 누를 시 상태 변화 함수
   const ShareBtn = () => {
     setShare(true);
     navigator.clipboard
@@ -65,7 +74,7 @@ export default function MoreMyFlow() {
         console.error("Could not copy text: ", err);
       });
   };
-  // 삭제 모달 창 닫기 위한 상태 변화 함수
+  // 공유 모달 창 닫기 위한 상태 변화 함수
   const close = () => {
     setModal(false);
     setShare(false);
@@ -228,9 +237,34 @@ export default function MoreMyFlow() {
                 ))}
               </RecreationBox>
             </FlowContainer>
+
             {/* 삭제 수정 버튼 */}
+            {/* 모달창 */}
+            {del ? (
+              <ModalContainer>
+                <ModalBox>
+                  <CloseBtn onClick={closeDel}>
+                    <img src={Close} alt="닫기" />
+                  </CloseBtn>
+                  <ModalBoxDetail>
+                    <div>
+                      <ModalTitle>
+                        일정 플로우를
+                        <br />
+                        삭제하시겠습니까?
+                      </ModalTitle>
+                      <ModalDetail>삭제한 플로우를 다시 복구할 수 없습니다.</ModalDetail>
+                    </div>
+                    <ModalStoreBtn>저장하기</ModalStoreBtn>
+                    <ModalNotStoreBtn>저장하지 않기</ModalNotStoreBtn>
+                  </ModalBoxDetail>
+                </ModalBox>
+              </ModalContainer>
+            ) : (
+              <></>
+            )}
             <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", marginBottom: "131px" }}>
-              <Delete>삭제</Delete>
+              <Delete onClick={deleteBtn}>삭제</Delete>
               <Change>수정</Change>
             </div>
           </FlowInfoBox>
@@ -259,20 +293,15 @@ const ModalBox = styled.div`
   height: 435px;
   border-radius: 20px;
   background: white;
-  position: fixed;
-  top: 215px;
-  left: 50%;
-  transform: translate(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
 `;
 
 const ModalBoxDetail = styled.div`
-  display: flex;
+  margin-left: 57.5px;
+  margin-top: 55px;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
 `;
 
 const CloseBtn = styled.div`
@@ -293,6 +322,46 @@ const ModalTitle = styled.div`
   font-weight: 700;
   text-align: center;
   margin-bottom: 8px;
+`;
+
+const ModalDetail = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+`;
+
+const ModalStoreBtn = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  background-color: #4036ed;
+  color: white;
+  width: 223px;
+  padding: 15px 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  margin-top: 60px;
+  cursor: pointer;
+`;
+
+const ModalNotStoreBtn = styled.div`
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  background-color: white;
+  color: #464c52;
+  width: 223px;
+  padding: 15px 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #464c52;
+  border-radius: 50px;
+  margin-top: 40px;
+  cursor: pointer;
 `;
 
 const BeforeCopyBtn = styled.div`
