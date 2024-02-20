@@ -1,93 +1,80 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-
 import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
-import YellowHeart from "../../assets/mypage/YellowHeart.svg";
-import GrayHeart from "../../assets/mypage/GrayHeart.svg";
 
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+import { privateAPI } from "../../apis/user";
+import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 
-export default function SearchRecreation({datas, setFavorite}) {
+export default function Recreation({ content }) {
   const navigate = useNavigate();
   const ToRecreationDetail = (recreationId) => {
     navigate(`/recreation/detail/${recreationId}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };  
-
-  //즐겨찾기 등록, 취소
-  const DoFavorite = async (id) => {
-    try {
-      const response = await axios.post(
-        `https://dev.avab.shop/api/recreations/${id}/favorites`,
-        {},
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      );
-
-      if (response.data.isSuccess === true) {
-        // 요청이 성공하면 상태 업데이트
-        console.log("POST 성공", response.data);
-        // 상태를 업데이트하여 화면이 다시 렌더링되도록 함
-        setFavorite(!datas.isFavorite);
-      } else {
-        // 요청이 실패하면 에러 처리
-        console.log("POST 실패", response.data);
-      }
-    } catch (error) {
-      // 요청이 실패한 경우 에러 처리
-      console.error(error);
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  console.log(datas);
+  const keywordParam = {
+    COOPERATIVE: "협동",
+    QUICKNESS: "순발력",
+    SENSIBLE: "센스",
+    BRAIN: "두뇌",
+    CREATIVE: "창의력",
+    ACTIVE: "액티브",
+    PSYCHOLOGICAL: "심리",
+    LUCK: "행운",
+    COMMON_SENSE: "상식",
+    PREPARATION: "준비물",
+  };
+
+  //즐겨찾기 등록, 취소
+  const [isFav, setIsFav] = useState(content.isFavorite);
+  const addToFavorite = (id) => {
+    const call = async () => {
+      try {
+        const response = await privateAPI.post(
+          `/api/recreations/${id}/favorites`
+        );
+        console.log("즐겨찾기 추가/해제 응답 : ", response);
+        if (response.data.result.isFavorite === true) {
+          setIsFav(true);
+        } else if (response.data.result.isFavorite === false) {
+          setIsFav(false);
+        }
+      } catch (error) {
+        console.log("즐겨찾기 추가/해제 에러 : ", error);
+      }
+    };
+    call();
+  };
 
   return (
-    <RecreationWrapper>
-        {datas.map((data) => (
-            <Categories>
-                <RecreationExplain>
-                  <Hashtag>{data.hashtagList}</Hashtag>
-                  <SectionWrap>
-                    <Section2>{data.title}</Section2>
-                    <Section3 src={starIcon}/>
-                    <Section4>{data.totalStars}</Section4>
-                  </SectionWrap>
-                  <KeyWords>
-                    <KeyWord>{data.keywordList[0]}</KeyWord>
-                    <KeyWord>{data.keywordList[1]}</KeyWord>
-                    <KeyWord>{data.keywordList[2]}</KeyWord>
-                  </KeyWords>
-                  <ImgSpace>
-                    <ExImg src={data.imageUrl} onClick={() => ToRecreationDetail(data.id)}/>
-                    {data.isFavorite ? (
-                    <HeartImg src={YellowHeart} onClick={() => DoFavorite(data.id)}/>
-                    ) : (
-                    <HeartImg src={GrayHeart} onClick={() => DoFavorite(data.id)}/>
-                    )}
-                  </ImgSpace>
-                  <Explain onClick={() => ToRecreationDetail(data.id)}>
-                    <Section>자세히보기</Section>
-                  </Explain>
-                </RecreationExplain>
-            </Categories>
-    ))}
-    </RecreationWrapper>
+    <Categories>
+      <RecreationExplain>
+        <Hashtag>#{content.hashtagList}</Hashtag>
+        <SectionWrap>
+          <Section2>{content.title}</Section2>
+          <Section3 src={starIcon} />
+          <Section4>{content.totalStars}</Section4>
+        </SectionWrap>
+        <KeyWords>
+          <KeyWord>{keywordParam[content.keywordList[0]]}</KeyWord>
+          <KeyWord>{keywordParam[content.keywordList[1]]}</KeyWord>
+          <KeyWord>{keywordParam[content.keywordList[2]]}</KeyWord>
+        </KeyWords>
+        <ImgSpace>
+          <ExImg
+            src={content.imageUrl}
+            onClick={() => ToRecreationDetail(content.id)}
+          />
+          <Favorite isFav={isFav} onClick={() => addToFavorite(content.id)} />
+        </ImgSpace>
+        <Explain onClick={() => ToRecreationDetail(content.id)}>
+          <Section>자세히보기</Section>
+        </Explain>
+      </RecreationExplain>
+    </Categories>
   );
 }
-
-const RecreationWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 440px);
-  row-gap: 20px;
-  column-gap: 30px;
-`;
 
 const Categories = styled.div`
   display: flex;
@@ -106,7 +93,7 @@ const Hashtag = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 221px;
-  margin-top: 25px
+  margin-top: 25px;
 `;
 
 const SectionWrap = styled.div`
@@ -126,7 +113,7 @@ const Section2 = styled.div`
 
 const Section3 = styled.img`
   margin-left: 180px;
-  width: 13.72px
+  width: 13.72px;
 `;
 
 const Section4 = styled.div`
@@ -178,11 +165,12 @@ const ExImg = styled.img`
   cursor: pointer;
 `;
 
-const HeartImg = styled.img`
-  width: 28px;
+const Favorite = styled(HeartImg)`
+  width: 42px;
   margin-left: 50px;
   margin-top: 120px;
   cursor: pointer;
+  fill: ${(props) => (props.isFav === true ? "#FFAA29" : "#E9EBED")};
 `;
 
 const Explain = styled.div`
