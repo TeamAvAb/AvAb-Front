@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { publicAPI, privateAPI } from "../apis/user";
 import styled from "styled-components";
 import Share from "../assets/moreflow/share.png";
 import Time from "../assets/moreflow/time.png";
@@ -9,11 +10,6 @@ import Scrap from "../assets/moreflow/scrap.png";
 import Scrap2 from "../assets/moreflow/scrap2.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 const PurposeList = {
   MT: "MT",
@@ -54,25 +50,17 @@ export default function MoreWatchFlow() {
   const [scrap, setScrap] = useState(false);
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
-    const response = await axios.post(
-      `https://dev.avab.shop/api/flows/${id}/scraps`,
-      {},
-      {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
+    if (localStorage.getItem("accessToken")) {
+      const response = await privateAPI.post(`/api/flows/${id}/scraps`);
+      if (response.status === 200) {
+        // 요청이 성공하면 상태 업데이트
+        console.log(response.data);
+        setScrap(true);
+      } else {
+        // 요청이 실패하면 에러 처리
+        console.log(response.data);
       }
-    );
-
-    if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
-      console.log(response.data);
-      setScrap(true);
-    } else {
-      // 요청이 실패하면 에러 처리
-      console.log(response.data);
-    }
+    } else alert("로그인이 필요한 기능입니다.");
   };
 
   // 삭제 버튼 모달창을 위한 상태
@@ -102,16 +90,19 @@ export default function MoreWatchFlow() {
 
   // moreData 가져오기
   const [data, setData] = useState([]);
-  const location = useLocation();
-  const id = location.state.moreData.id;
+  const moreData = JSON.parse(localStorage.getItem("moreData"));
+  const id = moreData.id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`, {
-          headers: { Authorization: `Bearer ${JWT_TOKEN}` },
-        });
-        setData(response.data.result);
+        if (localStorage.getItem("accessToken")) {
+          const response = await privateAPI.get(`/api/flows/${id}`);
+          setData(response.data.result);
+        } else {
+          const response = await publicAPI.get(`/api/flows/${id}`);
+          setData(response.data.result);
+        }
       } catch (error) {
         console.error(error);
       }
