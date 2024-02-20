@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/AvAb-Front/static/css/main.615be41f.css",
-    "main.js": "/AvAb-Front/static/js/main.44154c79.js",
+    "main.js": "/AvAb-Front/static/js/main.fd5e90fd.js",
     "static/media/ImgGo3.png": "/AvAb-Front/static/media/ImgGo3.56168aa424b248b62ae1.png",
     "static/media/banner1_workshop.png": "/AvAb-Front/static/media/banner1_workshop.9c8a9bd9a97b72774920.png",
     "static/media/banner2_mt.png": "/AvAb-Front/static/media/banner2_mt.e03ad99a22feee53df36.png",
@@ -43,8 +43,6 @@
     "static/media/checkIcon.svg": "/AvAb-Front/static/media/checkIcon.99837cff31ef0a1f75753883a991f46b.svg",
     "index.html": "/AvAb-Front/index.html",
     "static/media/heart.svg": "/AvAb-Front/static/media/heart.d48b9ef8bb2c97c2fbe0d83ce62d25ea.svg",
-    "static/media/GrayHeart.svg": "/AvAb-Front/static/media/GrayHeart.8c025b54007ef0e15823ad466188f651.svg",
-    "static/media/YellowHeart.svg": "/AvAb-Front/static/media/YellowHeart.0a44795e26ef7f722aa4469f352c3a29.svg",
     "static/media/heartIcon.svg": "/AvAb-Front/static/media/heartIcon.1ee9369bc7129b42efe493a98294bdc0.svg",
     "static/media/deleteIcon.svg": "/AvAb-Front/static/media/deleteIcon.111c18aeb558f782a248a28321871dcb.svg",
     "static/media/downIcon.svg": "/AvAb-Front/static/media/downIcon.11c8e9a09c142699f8ce63a0ae0999ed.svg",
@@ -57,10 +55,10 @@
     "static/media/Logout.svg": "/AvAb-Front/static/media/Logout.eaecd0a1a14a608f278180685f541e8d.svg",
     "static/media/bannerDotDefault.svg": "/AvAb-Front/static/media/bannerDotDefault.8a810befa16cb698a48f0f51615c6dc6.svg",
     "main.615be41f.css.map": "/AvAb-Front/static/css/main.615be41f.css.map",
-    "main.44154c79.js.map": "/AvAb-Front/static/js/main.44154c79.js.map"
+    "main.fd5e90fd.js.map": "/AvAb-Front/static/js/main.fd5e90fd.js.map"
   },
   "entrypoints": [
     "static/css/main.615be41f.css",
-    "static/js/main.44154c79.js"
+    "static/js/main.fd5e90fd.js"
   ]
 }
