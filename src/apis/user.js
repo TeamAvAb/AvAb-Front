@@ -12,11 +12,10 @@ export async function postRefreshToken() {
   try {
     const response = await publicAPI.post("/api/auth/refresh");
     if (response.status === 401) {
-      console.log("aaaa");
       return response;
     }
   } catch (error) {
-    console.log("dfdddd : ", error);
+    console.log(error);
   }
 }
 
