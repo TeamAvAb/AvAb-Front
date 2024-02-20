@@ -12,6 +12,7 @@ import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx'
 // import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
 import WriteRecreationInfo from "../components/flowwrite/WriteRecreationInfo.jsx";
+import AddRecreationInfo from "../components/flowwrite/AddRecreationInfo.jsx";
 import RecommendRecreation from "../components/flowwrite/RecommendRecreation.jsx";
 import ScrapRecreation from "../components/flowwrite/ScrapRecreation.jsx";
 
@@ -133,10 +134,6 @@ export default function FlowWriteContent() {
           params: {
             playTime: savedPlayTime,
             purpose: englishKeywords.join(','),
-            // keyword: 'ACTIVE',
-            // participants: 20,
-            // gender: 'FEMALE',
-            // age: 'TWENTIES',
           }
         });
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
@@ -187,11 +184,18 @@ export default function FlowWriteContent() {
 
   const handleAddRecommendFlow = async (id) => {
     try {
+      const savedPlayTime = localStorage.getItem('playTime');
+          if (!savedPlayTime) {
+            // playTime이 없는 경우에 대한 처리
+            console.error('playTime이 저장되어 있지 않습니다.');
+            return;
+          }
+        const englishKeywords = selectedKeywords.map(keyword => keywordMappings[keyword]);
       // API를 호출하여 데이터 가져오기
       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
           params: {
-            playTime: time,
-            purpose: 'SPORTS_DAY'
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(','),
           }
         });
       // 데이터에서 필요한 정보 추출
@@ -200,7 +204,24 @@ export default function FlowWriteContent() {
         const { title, keywordList, playTime } = data;
         console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
         // 추출한 정보를 저장
-        return { title, keywordList, playTime };
+        // return { title, keywordList, playTime };
+        // 플로우 박스를 추가하는 로직 추가
+        // 커스텀 플로우 박스 추가
+        // setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
+        // setNumOfRecreationInfo(prevNum => prevNum);
+
+        // 데이터를 AddRecreationInfo 컴포넌트로 전달
+        setInfoBoxes(prevInfoBoxes => [
+          ...prevInfoBoxes,
+          <AddRecreationInfo
+            num={prevInfoBoxes.length + 1} 
+            id={id}
+            title={title}
+            keywordList={keywordList}
+            playTime={playTime}
+          />
+        ]);
+        setNumOfRecreationInfo(prevNum => prevNum);
       } else {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
         return null;
