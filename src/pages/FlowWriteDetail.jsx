@@ -13,15 +13,35 @@ import deleteIcon from '../assets/flowwrite/deleteIcon.png';
 import imgGo3 from '../assets/flowwrite/ImgGo3.png'
 import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 
+const DetailMappings = {
+  'COOPERATIVE': '협동',
+  'QUICKNESS': '순발력',
+  'SENSIBLE' : '센스', 
+  'BRAIN': '두뇌', 
+  'CREATIVE' : '창의력', 
+  'ACTIVE' : '액티브', 
+  'PSYCHOLOGICAL' : '심리', 
+  'LUCK' : '행운', 
+  'COMMON_SENSE' : '상식', 
+  'PREPARATION' : '준비물'
+};
+
 export default function FlowWriteDetail() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [selectedDetailKeywords, setSelectedDetailKeywords] = useState([]);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAges, setSelectedAges] = useState([]);
-  const ageGroups = ['10대 미만', '10대', '20대', '30대', '40대', '50대 이상'];
+  const [selectedGroupSize, setSelectedGroupSize] = useState('');
+  const ageGroups = ['10대 미만', '10대', '20대', '30대', '40대', '50대 이상'];  
 
   const handleNextClick = () => {
+    localStorage.setItem('selectedGenders', JSON.stringify(selectedGenders));
+    localStorage.setItem('selectedAges', JSON.stringify(selectedAges));
+    localStorage.setItem('selectedGroupSize', selectedGroupSize);
+    const englishDetailKeywords = selectedDetailKeywords.map(keyword => DetailMappings[keyword]);
+    localStorage.setItem('selectedDetailKeywords', JSON.stringify(englishDetailKeywords));
+    console.log("Saved detail keywords:", selectedDetailKeywords);
     navigate('/flow/write/recommend');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
@@ -62,6 +82,10 @@ export default function FlowWriteDetail() {
     // checkAllFields();
   };
 
+  const handleGroupSizeChange = (event) => {
+    setSelectedGroupSize(event.target.value);
+  };
+
   const handleDetailSearchClick = () => {
     if (!isModalOpen) {
       setIsModalOpen(true);
@@ -73,7 +97,7 @@ export default function FlowWriteDetail() {
   };
 
   const handleSelectDetailKeywords = (keywords) => {
-    setSelectedKeywords(keywords);
+    setSelectedDetailKeywords(keywords);
     handleCloseModal();
     setIsModalOpen(true);
   };
@@ -82,9 +106,9 @@ export default function FlowWriteDetail() {
     // Prevent the click event from propagating to the parent container (PurposeSearch)
     event.stopPropagation();
   
-    const updatedKeywords = [...selectedKeywords];
+    const updatedKeywords = [...selectedDetailKeywords];
     updatedKeywords.splice(index, 1);
-    setSelectedKeywords(updatedKeywords);
+    setSelectedDetailKeywords(updatedKeywords);
   };
 
     return (
@@ -93,7 +117,7 @@ export default function FlowWriteDetail() {
               <DetailKeywordModal
                 onClose={handleCloseModal}
                 onSelectDetailKeywords={handleSelectDetailKeywords}
-                selectedKeywords={selectedKeywords}
+                selectedKeywords={selectedDetailKeywords}
               />
             )}
           <ProgressbarStyle>
@@ -124,32 +148,32 @@ export default function FlowWriteDetail() {
             </AdditionalExplain>
             <TextLine>원하는 키워드를 입력해주세요.</TextLine>
             <KeywordSearch onClick={handleDetailSearchClick}>
-        <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
-          {selectedKeywords.length === 0 ? (
-            <KeywordInput
-              type="text"
-              placeholder="클릭하면 키워드 선택창이 나와요!"
-              style={{ width: '90%', height: '18px' }}
-            />
-          ) : (
-            <div style={{ width: '90%', display: 'flex' }}>
-              {selectedKeywords.map((keyword, index) => (
-                <React.Fragment key={index}>
-                  <StyledKeyword>
-                    {keyword}
-                    <img
-                      src={deleteIcon}
-                      alt="Delete"
-                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
-                      onClick={(event) => handleDeleteKeyword(index, event)}
-                    />
-                  </StyledKeyword>
-                  {index !== selectedKeywords.length - 1 && ' '}
-                </React.Fragment>
-              ))}
-            </div>
-          )}
-        </KeywordSearch>
+              <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
+                {selectedDetailKeywords.length === 0 ? (
+                  <KeywordInput
+                    type="text"
+                    placeholder="클릭하면 키워드 선택창이 나와요!"
+                    style={{ width: '90%', height: '18px' }}
+                  />
+                ) : (
+                  <div style={{ width: '90%', display: 'flex' }}>
+                    {selectedDetailKeywords.map((keyword, index) => (
+                      <React.Fragment key={index}>
+                        <StyledKeyword>
+                          {keyword}
+                          <img
+                            src={deleteIcon}
+                            alt="Delete"
+                            style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
+                            onClick={(event) => handleDeleteKeyword(index, event)}
+                          />
+                        </StyledKeyword>
+                        {index !== selectedDetailKeywords.length - 1 && ' '}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
+            </KeywordSearch>
             <TextLine>레크레이션에 참여하는 인원의 성별과 연령대를 선택해주세요.</TextLine>
             <SubTextLine>성별</SubTextLine>
             <GenderButton clicked={selectedGenders.includes('F')} onClick={() => handleGenderClick('F')}>
@@ -172,7 +196,13 @@ export default function FlowWriteDetail() {
             </div>
             <TextLine>레크레이션에 참여하는 조별 인원을 선택해주세요.</TextLine>
             <JoinPeople>
-              <JoinPeopleInput type="text" placeholder="조별 인원을 입력해주세요." style={{ width: '90%', height: '18px'}} />
+              <JoinPeopleInput
+                type="text"
+                placeholder="조별 인원을 입력해주세요."
+                style={{ width: '90%', height: '18px' }}
+                value={selectedGroupSize}
+                onChange={handleGroupSizeChange}
+              />            
             </JoinPeople>
             <CardContainer>
               <CardGoRecommend onClick={handleNextClick}>
