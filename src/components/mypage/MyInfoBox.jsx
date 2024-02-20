@@ -1,17 +1,14 @@
 import React, {useState} from "react";
-import axios from 'axios'
 import styled from "styled-components";
 
 import LogoutP from "../../assets/mypage/LogoutImg.svg"
 import WarnLogo from "../../assets/mypage/WarnLogo.svg"
 import { privateAPI } from "../../apis/user";
 
-const JWT_TOKEN =
-"eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
-
 export default function MyInfoBox({content}) {
     const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
     const [nickname, setNickname] = useState("");
+    localStorage.setItem("userimage", content.profileImage);
 
     const openGoOututModal = () => {
       setGoOutModalOpen(true);
