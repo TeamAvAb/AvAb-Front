@@ -10,7 +10,7 @@ import Pagination from "../components/pagination/Pagination";
 export default function ScrapFlow() {
   const navigate = useNavigate();
   const moveToWatch = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/watch`);
     else alert("로그인이 필요한 페이지입니다.");
   };
   const moveToMy = () => {
