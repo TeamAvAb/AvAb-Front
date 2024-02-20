@@ -18,10 +18,16 @@ const keywordMapping = {
 }
 
 export default function WriteRecreationPrev({ content, handleAddRecommendFlow, handleAddScrapFlow }) {
-  const handleAddButtonClick = () => {
+  const handleAddButtonClick = async (id) => {
+    console.log('추가하기 버튼을 눌렀을 때 id 값:', content.id);
     if (handleAddRecommendFlow) {
-      // handleAddRecommendFlow 함수가 정의되어 있다면 호출
-      handleAddRecommendFlow();
+      try {
+        // handleAddRecommendFlow 함수가 정의되어 있다면 호출
+        const result = await handleAddRecommendFlow(content.id); // handleAddRecommendFlow 함수가 완료될 때까지 기다림
+        console.log('추가된 레크레이션 데이터:', result);
+      } catch (error) {
+        console.error('handleAddRecommendFlow 함수 호출 중 에러 발생:', error);
+      }
     } else {
       console.error('handleAddRecommendFlow 함수가 정의되지 않았습니다.');
     }
@@ -70,7 +76,7 @@ export default function WriteRecreationPrev({ content, handleAddRecommendFlow, h
         <Content>{content.summary}</Content>
         </Summary>
       </RecreationExplain>
-      <AddButton onClick={handleAddButtonClick}>추가하기</AddButton>
+      <AddButton onClick={() => handleAddButtonClick(content.id)}>추가하기</AddButton>
     </Categories>
   );
 }

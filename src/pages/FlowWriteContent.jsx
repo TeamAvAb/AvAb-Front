@@ -26,6 +26,10 @@ export default function FlowWriteContent() {
   const [recreationData, setRecreationData] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [playTime, setPlayTime] = useState('');
+  const [selectedDetailKeywords, setSelectedDetailKeywords] = useState([]);
+  const [selectedGenders, setSelectedGenders] = useState([]);
+  const [selectedAges, setSelectedAges] = useState([]);
+  const [selectedGroupSize, setSelectedGroupSize] = useState('');
   
     useEffect(() => {
       // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
@@ -38,9 +42,63 @@ export default function FlowWriteContent() {
     useEffect(() => {
       const savedKeywords = localStorage.getItem('selectedKeywords');
       if (savedKeywords) {
-        setSelectedKeywords(JSON.parse(savedKeywords));
+        const parsedKeywords = JSON.parse(savedKeywords);
+        // 한글 키워드를 영어로 다시 매핑하여 저장
+        const englishKeywords = parsedKeywords.map(keyword => keywordMappings[keyword]);
+        setSelectedKeywords(englishKeywords);
       }
     }, []);
+
+    useEffect(() => {
+      // 로컬 스토리지에서 저장된 디테일 키워드 가져오기
+      const storedDetailKeywords = localStorage.getItem('selectedDetailKeywords');
+      if (storedDetailKeywords) {
+        const parsedKeywords = JSON.parse(storedDetailKeywords);
+        setSelectedDetailKeywords(parsedKeywords);
+      }
+
+      // 로컬 스토리지에서 저장된 성별 정보 가져오기
+      const storedGenders = localStorage.getItem('selectedGenders');
+      if (storedGenders) {
+        const parsedGenders = JSON.parse(storedGenders);
+        setSelectedGenders(parsedGenders);
+      }
+
+      // 로컬 스토리지에서 저장된 나이 정보 가져오기
+      const storedAges = localStorage.getItem('selectedAges');
+      if (storedAges) {
+        const parsedAges = JSON.parse(storedAges);
+        setSelectedAges(parsedAges);
+      }
+
+      // 로컬 스토리지에서 저장된 인원 정보 가져오기
+      const storedGroupSize = localStorage.getItem('selectedGroupSize');
+      if (storedGroupSize) {
+        const parsedGroupSize = JSON.parse(storedGroupSize);
+        setSelectedGroupSize(parsedGroupSize);
+      }
+    }, []);
+
+    const keywordMappings = {
+      'WORKSHOP': '워크샵',
+      'SPORTS_DAY': '체육대회',
+      'MT': 'MT',
+      'GATHERING': '모임',
+      'RETREAT': '수련회'
+    };
+
+    const DetailMappings = {
+      'COOPERATIVE': '협동',
+      'QUICKNESS': '순발력',
+      'SENSIBLE' : '센스', 
+      'BRAIN': '두뇌', 
+      'CREATIVE' : '창의력', 
+      'ACTIVE' : '액티브', 
+      'PSYCHOLOGICAL' : '심리', 
+      'LUCK' : '행운', 
+      'COMMON_SENSE' : '상식', 
+      'PREPARATION' : '준비물'
+    };
 
   const handleNextClick = () => {  
     if (flowTitle.trim() === "") {
@@ -63,10 +121,18 @@ export default function FlowWriteContent() {
     // API 호출 함수
     const fetchRecreationData = async () => {
       try {
+        const savedPlayTime = localStorage.getItem('playTime');
+          if (!savedPlayTime) {
+            // playTime이 없는 경우에 대한 처리
+            console.error('playTime이 저장되어 있지 않습니다.');
+            return;
+          }
+        const englishKeywords = selectedKeywords.map(keyword => keywordMappings[keyword]);
+
         const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
           params: {
-            playTime: time,
-            purpose: selectedKeywords.join(','),
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(','),
             // keyword: 'ACTIVE',
             // participants: 20,
             // gender: 'FEMALE',
@@ -90,36 +156,59 @@ export default function FlowWriteContent() {
 
     // API 호출 함수 호출
     fetchRecreationData();
-  }, [time, selectedKeywords]);
+  }, [selectedKeywords]);
 
   const handleFlowTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
     setFlowTitle(e.target.value);
   };
 
-  const handleAddFlow = () => {
+  // const addRecommendationFlowBox = async () => {
+  //   try {
+  //     // handleAddRecommendFlow를 호출하여 데이터 가져오기
+  //     const recommendationData = await handleAddRecommendFlow();
+  //     // 추천 데이터가 있는 경우에만 플로우 박스 추가
+  //     if (recommendationData) {
+  //       // 추천 데이터를 사용하여 새로운 플로우 박스 추가
+  //       setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, recommendationData]);
+  //       // 플로우 박스 추가 시 numOfRecreationInfo 상태 업데이트
+  //       setNumOfRecreationInfo(prevNum => prevNum + 1);
+  //     }
+  //   } catch (error) {
+  //     console.error('추가 중 오류 발생:', error);
+  //   }
+  // };
+
+  const handleAddFlow = async () => {
     // 커스텀 플로우 박스 추가
     setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
     setNumOfRecreationInfo(prevNum => prevNum);
   };
 
-  const handleAddRecommendFlow = async () => {
+  const handleAddRecommendFlow = async (id) => {
     try {
       // API를 호출하여 데이터 가져오기
       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
           params: {
             playTime: time,
-            purpose: 'WORKSHOP'
+            purpose: 'SPORTS_DAY'
           }
         });
       // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
+      const data = response.data.result.find(item => item.id === id);
+      if (data) {
+        const { title, keywordList, playTime } = data;
+        console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+        // 추출한 정보를 저장
+        return { title, keywordList, playTime };
+      } else {
+        console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
+        return null;
+      }
     } catch (error) {
       // 에러 발생 시 에러 처리
       console.error('추가 중 오류 발생:', error);
+      return null;
     }
   };
 
@@ -199,14 +288,14 @@ export default function FlowWriteContent() {
                 </ContentInfo>
                 <ContentInfoDetail>
                   <div style={{ marginLeft: "20px", marginTop: "56px" }}>
-                    <div style={{ display: "flex", marginBottom: "8px" }}>
-                      <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
-                      <div style={{ listStyleType: "none" }}>
-                        {selectedKeywords.map((keyword, index) => (
+                  <div style={{ display: "flex", marginBottom: "8px" }}>
+                    <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>목적</div>
+                    <div style={{ listStyleType: "none" }}>
+                      {selectedKeywords.map((keyword, index) => (
                         <li key={index}>{keyword}</li>
-                        ))}
-                      </div>
+                      ))}
                     </div>
+                  </div>
                     <div style={{ display: "flex" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         플레이 시간
@@ -222,23 +311,25 @@ export default function FlowWriteContent() {
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         키워드
                       </div>
-                      <div style={{ marginRight: "8px" }}>키워드 1</div>
-                      <div style={{ marginRight: "8px" }}>키워드 2</div>
-                      <div>키워드 3</div>
+                      {selectedDetailKeywords.map((keyword, index) => (
+                        <div key={index} style={{ marginRight: "8px" }}>
+                          {DetailMappings[keyword]}
+                        </div>
+                      ))}
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>성별</div>
-                      <div>여성, 남성</div>
+                      <div>{selectedGenders.map(gender => gender === 'F' ? '여성' : '남성').join(', ')}</div>
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>
                         연령대
                       </div>
-                      <div>30대, 40대</div>
+                      <div>{selectedAges.map(age => age === '10대 미만' ? '10대 미만' : age === '10대' ? '10대' : age === '20대' ? '20대' : age === '30대' ? '30대' : age === '40대' ? '40대' : '50대 이상').join(', ')}</div>
                     </div>
                     <div style={{ display: "flex", marginBottom: "8px" }}>
                       <div style={{ marginRight: "8px", fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>인원</div>
-                      <div>40명</div>
+                      <div>{localStorage.getItem('selectedGroupSize')}명</div>
                     </div>
                   </div>
                 </ContentInfoDetail>
@@ -265,6 +356,17 @@ export default function FlowWriteContent() {
                   {infoBoxes.map((num) => (
                     <WriteRecreationInfo key={num} num={num} onDelete={handleDelete} />
                   ))}
+
+{/* {infoBoxes.map((box, index) => (
+  <WriteRecreationInfo
+    key={index}
+    num={box.id}
+    onDelete={handleDelete}
+    title={box.title}
+    selectedKeywords={box.keywordList}
+    time={box.playTime}
+  />
+))} */}
 
                   {/* 버튼 클릭 시 추가되는 WriteRecreationInfo */}
                   {[...Array(numOfRecreationInfo - 1)].map((_, index) => (
