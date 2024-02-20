@@ -12,32 +12,41 @@ const JWT_TOKEN =
 
 export default function SearchRecreation({datas, setFavorite}) {
   const navigate = useNavigate();
-  const ToRecreationDetail = () => {
-        navigate(`/recreation/detail`);
-     window.scrollTo({ top: 0, behavior: 'smooth' });
+  const ToRecreationDetail = (recreationId) => {
+    navigate(`/recreation/detail/${recreationId}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };  
 
+  //즐겨찾기 등록, 취소
   const DoFavorite = async (id) => {
-    const response = await axios.post(
-      `https://dev.avab.shop/api/recreations/${id}/favorites`,
-      {},
-      {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      }
-    );
+    try {
+        const response = await axios.post(
+            `https://dev.avab.shop/api/recreations/${id}/favorites`,
+            {},
+            {
+                headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+            }
+        );
 
-    if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
-      console.log(response.data);
-      setFavorite(true);
-    } else {
-      // 요청이 실패하면 에러 처리
-      console.log(response.data);
+        if (response.status === 200) {
+            // 요청이 성공하면 상태 업데이트
+            console.log(response.data);
+            // 상태를 업데이트하여 화면이 다시 렌더링되도록 함
+            setFavorite(!datas.isFavorite);
+        } else {
+            // 요청이 실패하면 에러 처리
+            console.log(response.data);
+        }
+    } catch (error) {
+        // 요청이 실패한 경우 에러 처리
+        console.error(error);
     }
   };
+
+  const HeartColor = datas.isFavorite ?  GrayHeart : YellowHeart;
 
   console.log(datas);
 
@@ -54,18 +63,14 @@ export default function SearchRecreation({datas, setFavorite}) {
                   </SectionWrap>
                   <KeyWords>
                     <KeyWord>{data.keywordList[0]}</KeyWord>
-                    <KeyWord>{data.keywordList[0]}</KeyWord>
-                    <KeyWord>{data.keywordList[0]}</KeyWord>
+                    <KeyWord>{data.keywordList[1]}</KeyWord>
+                    <KeyWord>{data.keywordList[2]}</KeyWord>
                   </KeyWords>
                   <ImgSpace>
-                    <ExImg src={data.imageUrl} onClick={ToRecreationDetail}/>
-                    {data.isFavorite ? (
-                      <HeartImg src={YellowHeart} onClick={() => DoFavorite(data.id)}/>
-                    ) : (
-                      <HeartImg src={GrayHeart} onClick={() => DoFavorite(data.id)}/>
-                    )}
+                    <ExImg src={data.imageUrl} onClick={() => ToRecreationDetail(data.id)}/>
+                    <HeartImg src={HeartColor} onClick={() => DoFavorite(data.id)}/>
                   </ImgSpace>
-                  <Explain onClick={ToRecreationDetail}>
+                  <Explain onClick={() => ToRecreationDetail(data.id)}>
                     <Section>자세히보기</Section>
                   </Explain>
                 </RecreationExplain>
