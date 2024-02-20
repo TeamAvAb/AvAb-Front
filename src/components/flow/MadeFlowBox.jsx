@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { privateAPI } from "../../apis/user";
 import styled from "styled-components";
 import Time from "../../assets/myflow/time.png";
 import View from "../../assets/myflow/view.png";
 import User from "../../assets/myflow/user.png";
-import Blank from "../../assets/myflow/blank.png";
 import Close from "../../assets/myflow/close.png";
 import { useNavigate } from "react-router-dom";
 
@@ -15,13 +15,29 @@ const PurposeList = {
   SPORTS_DAY: "체육대회",
 };
 
-export default function MadeFlowBox({ datas, loading }) {
+export default function MadeFlowBox({ datas, setDoDel }) {
+  // 삭제할 플로우의 ID
+  const [deleteId, setDeleteId] = useState();
+
   // 삭제 버튼 모달창을 위한 상태
   const [del, setDel] = useState(false);
+
   // 삭제 버튼 누를 시 상태 변화 함수
-  const deleteBtn = () => {
-    setDel(true);
+  const deleteBtn = async () => {
+    const response = await privateAPI.delete(`https://dev.avab.shop/api/flows/delete/${deleteId}`);
+    if (response.status === 200) {
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      setDel(false);
+      setDoDel(true);
+    } else {
+      // 요청이 실패하면 에러 처리
+      console.log(response.data);
+      alert("삭제 실패");
+      setDoDel(true);
+    }
   };
+
   // 삭제 모달 창 닫기 위한 상태 변화 함수
   const close = () => {
     setDel(false);
@@ -30,7 +46,8 @@ export default function MadeFlowBox({ datas, loading }) {
   //더보기 이동
   const navigate = useNavigate();
   const moveToMoreMyFlow = (moreData) => {
-    navigate(`/flow/moremyflow`, { state: { moreData } });
+    localStorage.setItem("moreData", JSON.stringify(moreData));
+    navigate(`/flow/moremyflow/${moreData.title}`, { state: { moreData } });
   };
 
   console.log(datas);
@@ -53,8 +70,8 @@ export default function MadeFlowBox({ datas, loading }) {
                 </ModalTitle>
                 <ModalDetail>삭제한 플로우를 다시 복구할 수 없습니다.</ModalDetail>
               </div>
-              <ModalStoreBtn>저장하기</ModalStoreBtn>
-              <ModalNotStoreBtn>저장하지 않기</ModalNotStoreBtn>
+              <ModalStoreBtn onClick={deleteBtn}>삭제하기</ModalStoreBtn>
+              <ModalNotStoreBtn onClick={() => setDel(false)}>삭제하지 않기</ModalNotStoreBtn>
             </ModalBoxDetail>
           </ModalBox>
         </ModalContainer>
@@ -68,7 +85,14 @@ export default function MadeFlowBox({ datas, loading }) {
             {/* 수정/삭제 버튼 */}
             <FlowBoxCorDelBox>
               <FlowBoxCor>수정</FlowBoxCor>
-              <FlowBoxDel onClick={deleteBtn}>삭제</FlowBoxDel>
+              <FlowBoxDel
+                onClick={() => {
+                  setDel(true);
+                  setDeleteId(data.id);
+                }}
+              >
+                삭제
+              </FlowBoxDel>
             </FlowBoxCorDelBox>
 
             {/* 키워드 */}

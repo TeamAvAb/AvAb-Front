@@ -6,8 +6,8 @@ import User from "../assets/moreflow/user.png";
 import View from "../assets/moreflow/view.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { privateAPI } from "../apis/user";
 
 const PurposeList = {
   MT: "MT",
@@ -45,16 +45,29 @@ const AgeList = {
 };
 
 export default function MoreMyFlow() {
+  const navigate = useNavigate();
   // 삭제 버튼 모달창을 위한 상태
   const [del, setDel] = useState(false);
-  // 삭제 버튼 누를 시 상태 변화 함수
-  const deleteBtn = () => {
-    setDel(true);
-  };
+
   // 삭제 모달 창 닫기 위한 상태 변화 함수
   const closeDel = () => {
     setDel(false);
   };
+
+  // 삭제 버튼 누를 시 상태 변화 함수
+  const deleteBtn = async () => {
+    const response = await privateAPI.delete(`https://dev.avab.shop/api/flows/delete/${id}`);
+    if (response.status === 200) {
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      alert("플로우가 성공적으로 삭제되었습니다.");
+      navigate(`/flow/my`);
+    } else {
+      // 요청이 실패하면 에러 처리
+      alert("삭제 실패");
+    }
+  };
+
   // 공유 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
   const [modal, setModal] = useState(false);
@@ -82,13 +95,13 @@ export default function MoreMyFlow() {
 
   // moreData 가져오기
   const [data, setData] = useState([]);
-  const location = useLocation();
-  const id = location.state.moreData.id;
+  const moreData = JSON.parse(localStorage.getItem("moreData"));
+  const id = moreData.id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`);
+        const response = await privateAPI.get(`https://dev.avab.shop/api/flows/${id}`);
         setData(response.data.result);
       } catch (error) {
         console.error(error);
@@ -255,8 +268,8 @@ export default function MoreMyFlow() {
                       </ModalTitle>
                       <ModalDetail>삭제한 플로우를 다시 복구할 수 없습니다.</ModalDetail>
                     </div>
-                    <ModalStoreBtn>저장하기</ModalStoreBtn>
-                    <ModalNotStoreBtn>저장하지 않기</ModalNotStoreBtn>
+                    <ModalStoreBtn onClick={deleteBtn}>삭제하기</ModalStoreBtn>
+                    <ModalNotStoreBtn onClick={() => setDel(false)}>삭제하지 않기</ModalNotStoreBtn>
                   </ModalBoxDetail>
                 </ModalBox>
               </ModalContainer>
@@ -264,7 +277,7 @@ export default function MoreMyFlow() {
               <></>
             )}
             <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", marginBottom: "131px" }}>
-              <Delete onClick={deleteBtn}>삭제</Delete>
+              <Delete onClick={() => setDel(true)}>삭제</Delete>
               <Change>수정</Change>
             </div>
           </FlowInfoBox>

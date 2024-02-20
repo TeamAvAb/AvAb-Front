@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import { privateAPI } from "../../apis/user";
 import styled from "styled-components";
 import Scrap from "../../assets/watchflow/scrap.png";
 import Scrap2 from "../../assets/watchflow/scrap2.png";
@@ -8,9 +8,6 @@ import View from "../../assets/watchflow/view.png";
 import Write from "../../assets/watchflow/write.png";
 import User from "../../assets/watchflow/user.png";
 import { useNavigate } from "react-router-dom";
-
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
 const PurposeList = {
   MT: "MT",
@@ -23,31 +20,24 @@ const PurposeList = {
 export default function FlowBox({ datas, setScrap }) {
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
-    const response = await axios.post(
-      `https://dev.avab.shop/api/flows/${id}/scraps`,
-      {},
-      {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
+    if (localStorage.getItem("accessToken")) {
+      const response = await privateAPI.post(`/api/flows/${id}/scraps`);
+      if (response.status === 200) {
+        // 요청이 성공하면 상태 업데이트
+        console.log(response.data);
+        setScrap(true);
+      } else {
+        // 요청이 실패하면 에러 처리
+        console.log(response.data);
       }
-    );
-
-    if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
-      console.log(response.data);
-      setScrap(true);
-    } else {
-      // 요청이 실패하면 에러 처리
-      console.log(response.data);
-    }
+    } else alert("로그인이 필요한 기능입니다.");
   };
 
   // 더보기 이동
   const navigate = useNavigate();
   const moveToMoreWatchFlow = (moreData) => {
-    navigate(`/flow/morewatchflow`, { state: { moreData } });
+    localStorage.setItem("moreData", JSON.stringify(moreData));
+    navigate(`/flow/morewatchflow/${moreData.title}`);
   };
 
   return (
