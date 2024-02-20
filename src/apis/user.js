@@ -11,11 +11,14 @@ export const privateAPI = axios.create({
 export async function postRefreshToken() {
   try {
     const response = await publicAPI.post("/api/auth/refresh");
-    if (response.status === 401) {
+    if (response.data.status === 200) {
+      // 토큰 재발급 성공
       return response;
     }
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 401) {
+      localStorage.clear(); // 리프레시 토큰 만료 = 로컬스토리지 토큰 삭제
+    }
   }
 }
 
@@ -53,8 +56,9 @@ privateAPI.interceptors.response.use(
       if (localStorage.getItem("refreshToken")) {
         //리프레시 토큰 api
         const response = await postRefreshToken();
+        console.log("리프레시 토큰 요청 응답 : ", response);
         //리프레시 토큰 요청이 성공할 때
-        if (response.status === 200) {
+        if (response.data.status === 200) {
           const newAccessToken = response.data.result.accessToken;
           localStorage.setItem("accessToken", response.data.result.accessToken);
           localStorage.setItem(
@@ -66,7 +70,7 @@ privateAPI.interceptors.response.use(
           originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return axios(originRequest);
           //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
-        } else if (response.status === 401) {
+        } else if (response.data.status === 401) {
           alert("세션이 만료되었습니다. 재로그인 해주세요.");
         } else {
           console.log("인터셉터 내부 기타 에러 : ", error);
