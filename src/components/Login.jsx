@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
+// import character from "../assets/main/character4.png";
 import character from "../assets/main/loginCharacter.png";
+// import character from "../assets/main/character2.png";
 import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
+import x from "../assets/main/x.svg";
 
 export default function Login({ handleLoginStatus, handleLoginModal }) {
   const { pathname } = useLocation();
@@ -38,7 +41,7 @@ export default function Login({ handleLoginStatus, handleLoginModal }) {
         <Controls>
           <Control onClick={() => setTemporaryClose((prev) => !prev)}>
             {temporaryClose ? (
-              "X"
+              <img src={x} />
             ) : (
               <img src={elipseImg} style={{ width: "38px", height: "38px" }} />
             )}
