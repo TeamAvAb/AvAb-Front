@@ -35,7 +35,7 @@ export default function FlowRecreationBox({
       <LeftTimeBar height={height}></LeftTimeBar>
       <div>
         <TitleBox>
-          <NumCircle>{index}</NumCircle> {/* 번호 */}
+          <NumCircle>{index + 1}</NumCircle> {/* 번호 */}
           <Title>{recreationTitle}</Title> {/* 레크레이션 제목 */}
         </TitleBox>
         {kewordList} {/* 키워드 리스트 */}
