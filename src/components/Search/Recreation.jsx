@@ -35,7 +35,7 @@ export default function SearchRecreation({datas, setFavorite}) {
             // 요청이 성공하면 상태 업데이트
             console.log(response.data);
             // 상태를 업데이트하여 화면이 다시 렌더링되도록 함
-            setFavorite(!datas.isFavorite);
+            setFavorite(!datas.isFavorite)
         } else {
             // 요청이 실패하면 에러 처리
             console.log(response.data);
@@ -45,8 +45,6 @@ export default function SearchRecreation({datas, setFavorite}) {
         console.error(error);
     }
   };
-
-  const HeartColor = datas.isFavorite ?  GrayHeart : YellowHeart;
 
   console.log(datas);
 
@@ -68,7 +66,11 @@ export default function SearchRecreation({datas, setFavorite}) {
                   </KeyWords>
                   <ImgSpace>
                     <ExImg src={data.imageUrl} onClick={() => ToRecreationDetail(data.id)}/>
-                    <HeartImg src={HeartColor} onClick={() => DoFavorite(data.id)}/>
+                    {data.isFavorite ? (
+                    <HeartImg src={YellowHeart} onClick={() => DoFavorite(data.id)}/>
+                    ) : (
+                    <HeartImg src={GrayHeart} onClick={() => DoFavorite(data.id)}/>
+                    )}
                   </ImgSpace>
                   <Explain onClick={() => ToRecreationDetail(data.id)}>
                     <Section>자세히보기</Section>
