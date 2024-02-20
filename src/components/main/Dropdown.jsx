@@ -5,7 +5,6 @@ import downIconImg from "../../assets/main/downIcon.svg";
 
 export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
-  console.log("진행시간 : ", selectedOption);
   return (
     <DropdownContainer>
       <Menu isdropped={dropdownOpen}>
@@ -92,9 +91,10 @@ const Menu = styled.div`
   visibility: hidden;
   transform: translate(-50%, -20px);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-  overflow: scroll;
+  overflow: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   scrollbar-color: #464c52;
   -webkit-scrollbar {
     width: 0px;
