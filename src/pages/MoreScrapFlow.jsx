@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Blank from "../assets/moreflow/blank.png";
 import Share from "../assets/moreflow/share.png";
 import Time from "../assets/moreflow/time.png";
 import User from "../assets/moreflow/user.png";
@@ -13,11 +12,67 @@ import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+const JWT_TOKEN =
+  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
+const PurposeList = {
+  MT: "MT",
+  GATHERING: "모임",
+  WORKSHOP: "워크샵",
+  RETREAT: "수련회",
+  SPORTS_DAY: "체육대회",
+};
+
+const KeywordList = {
+  COOPERATIVE: "협동",
+  QUICKNESS: "순발력",
+  SENSIBLE: "센스",
+  BRAIN: "두뇌",
+  CREATIVE: "창의력",
+  ACTIVE: "액티브",
+  PSYCHOLOGICAL: "심리",
+  LUCK: "행운",
+  COMMON_SENSE: "상식",
+  PREPARATION: "준비물",
+};
+
+const GenderList = {
+  MALE: "남성",
+  FEMALE: "여성",
+};
+
+const AgeList = {
+  UNDER_TEENAGER: "10대 미만",
+  TEENAGER: "10대",
+  TWENTIES: "20대",
+  THIRTIES: "30대",
+  FORTIES: "40대",
+  OVER_FIFTIES: "50대 이상",
+};
+
 export default function MoreWatchFlow() {
-  // scrap 상태
   const [scrap, setScrap] = useState(false);
-  const ScrapFunc = () => {
-    scrap ? setScrap(false) : setScrap(true);
+  // 스크랩 상태 변경
+  const DoScrap = async (id) => {
+    const response = await axios.post(
+      `https://dev.avab.shop/api/flows/${id}/scraps`,
+      {},
+      {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      // 요청이 성공하면 상태 업데이트
+      console.log(response.data);
+      setScrap(true);
+    } else {
+      // 요청이 실패하면 에러 처리
+      console.log(response.data);
+    }
   };
 
   // 삭제 버튼 모달창을 위한 상태
@@ -53,14 +108,17 @@ export default function MoreWatchFlow() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`);
+        const response = await axios.get(`https://dev.avab.shop/api/flows/${id}`, {
+          headers: { Authorization: `Bearer ${JWT_TOKEN}` },
+        });
         setData(response.data.result);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [id]);
+    setScrap(false);
+  }, [id, scrap]);
 
   useEffect(() => {
     console.log(data);
@@ -97,12 +155,16 @@ export default function MoreWatchFlow() {
         )}
 
         <TitleContainer>
-          <img src={Blank} alt="플로우사진" style={{ width: "250px", height: "250px", marginTop: "86px" }} />
+          <img
+            src={data.flowDetail.imageUrl}
+            alt="플로우사진"
+            style={{ width: "250px", height: "250px", marginTop: "86px" }}
+          />
           <TitleBox>
             <DetailTitleBox>
-              <KeyWord>{data.flowDetail.purposeList.map((p) => p).join(", ")}</KeyWord>
-              <ScrapImg onClick={ScrapFunc}>
-                {scrap ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
+              <KeyWord>{PurposeList[data.flowDetail.purposeList[0]]}</KeyWord>
+              <ScrapImg onClick={() => DoScrap(id)}>
+                {data.flowDetail.isFavorite ? <img src={Scrap2} alt="스크랩O" /> : <img src={Scrap} alt="스크랩X" />}
               </ScrapImg>
             </DetailTitleBox>
             <FlowName>{data.flowDetail.title}</FlowName>
@@ -153,9 +215,9 @@ export default function MoreWatchFlow() {
               <div style={{ width: "284px" }}>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
-                  <FlowInfo style={{ fontWeight: "400" }}>
-                    {data.flowDetail.purposeList.map((p) => p).join(", ")}
-                  </FlowInfo>
+                  <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
+                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(", ")}
+                  </FlowInfo2>
                 </div>
                 <div style={{ display: "flex" }}>
                   <FlowInfo>플레이 시간</FlowInfo>
@@ -165,12 +227,12 @@ export default function MoreWatchFlow() {
 
               <Line />
 
-              <div>
+              <div style={{ marginLeft: "29px" }}>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo>키워드</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.keywordList.map((keyword) => (
-                      <div>{keyword}</div>
+                      <div>{KeywordList[keyword]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
@@ -178,15 +240,15 @@ export default function MoreWatchFlow() {
                   <FlowInfo>성별</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.gender.map((gender) => (
-                      <div>{gender}</div>
+                      <div>{GenderList[gender]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo>연령대</FlowInfo>
                   <FlowInfo2>
-                    {data.flowDetail.age.map((gender) => (
-                      <div>{gender}</div>
+                    {data.flowDetail.age.map((age) => (
+                      <div>{AgeList[age]}</div>
                     ))}
                   </FlowInfo2>
                 </div>
@@ -433,6 +495,7 @@ const FlowInfoDetail = styled.div`
   padding: 29px 20px;
   display: flex;
   align-items: center;
+  position: relative;
   flex: 1;
 `;
 
@@ -462,10 +525,14 @@ const FlowContainer = styled.div`
 `;
 
 const Line = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
   border: 0.5px solid #cacdd2;
   width: 0.5px;
-  height: 11vh;
-  margin-right: 20px;
+  margin-top: 29px;
+  margin-bottom: 29px;
 `;
 
 const FlowTitle = styled.div`
