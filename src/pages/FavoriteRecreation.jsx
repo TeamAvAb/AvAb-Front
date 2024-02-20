@@ -48,8 +48,6 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [currentPage, setCurrentPage] = useState(0);
   //전체 페이지 수
   const [pages, setPages] = useState(1);
-  // 한 페이지 당 데이터 수
-  const datasPerPage = 6;
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
@@ -58,6 +56,7 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
       try {
         const response = await privateAPI.get(`/api/users/me/favorites/recreations`);
         setDatas(response.data.result.recreationList);
+        setPages(response.data.result.totalPages);
         setLoading(false);
       } catch (error) {
         console.log("레크레이션 로드 요청 에러 : ", error);
