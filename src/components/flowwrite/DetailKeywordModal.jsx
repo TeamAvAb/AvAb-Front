@@ -10,9 +10,23 @@ const DetailKeywordModal = ({ onClose, onSelectDetailKeywords, selectedKeywords:
       setDetailSelectedKeywords(propSelectedDetailKeywords);
   }, [propSelectedDetailKeywords]);
 
-  const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
+  // const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
+
+  const DetailMappings = {
+    '협동': 'COOPERATIVE',
+    '순발력': 'QUICKNESS',
+    '센스': 'SENSIBLE',
+    '두뇌': 'BRAIN',
+    '창의력': 'CREATIVE',
+    '액티브': 'ACTIVE',
+    '심리': 'PSYCHOLOGICAL',
+    '행운': 'LUCK',
+    '상식': 'COMMON_SENSE',
+    '준비물': 'PREPARATION'
+  };
   
   const handleKeywordClick = (keyword) => {
+      console.log(`Keyword: ${keyword}`);
       if (detailSelectedKeywords.includes(keyword)) {
           setDetailSelectedKeywords(detailSelectedKeywords.filter((selected) => selected !== keyword));
       } else {
@@ -27,23 +41,31 @@ const DetailKeywordModal = ({ onClose, onSelectDetailKeywords, selectedKeywords:
   };
 
   const handleSelectDetailKeywords = () => {
-    console.log("Selected Keywords before update:", detailSelectedKeywords);
-    onSelectDetailKeywords(detailSelectedKeywords);
-    console.log("Selected Keywords after update:", detailSelectedKeywords);
-    setDetailSelectedKeywords([]);
+    onSelectDetailKeywords(detailSelectedKeywords); // 선택된 키워드를 부모 컴포넌트로 전달
     onClose();
 };
+
+  // const handleSelectDetailKeywords = (keyword) => {
+  //   const englishKeywords = keyword.map(keyword => DetailMappings[keyword]);
+  //   onSelectDetailKeywords(englishKeywords);
+  //   onClose();
+  // };
 
   return (
     <>
       <ModalOverlay onClick={onClose} />
       <ModalContent>
         <DetailKeywordWrap>
-      {keywordGroups.map((keyword) => (
+        {Object.keys(DetailMappings).map((keyword) => (
+            <DetailKeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
+              <DetailKeywordSpan clicked={detailSelectedKeywords.includes(keyword)}>{keyword}</DetailKeywordSpan>
+            </DetailKeywordButton>
+          ))}
+      {/* {keywordGroups.map((keyword) => (
               <DetailKeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
                 <DetailKeywordSpan clicked={detailSelectedKeywords.includes(keyword)}>{keyword}</DetailKeywordSpan>
               </DetailKeywordButton>
-            ))}
+            ))} */}
             </DetailKeywordWrap>
         <BottomContainer>
         <CloseButton onClick={onClose}>

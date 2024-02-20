@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import DetailKeywordModal from '../components/flowwrite/DetailKeywordModal.jsx';
@@ -14,16 +14,16 @@ import imgGo3 from '../assets/flowwrite/ImgGo3.png'
 import imgGo4 from '../assets/flowwrite/ImgGo4.png'
 
 const DetailMappings = {
-  'COOPERATIVE': '협동',
-  'QUICKNESS': '순발력',
-  'SENSIBLE' : '센스', 
-  'BRAIN': '두뇌', 
-  'CREATIVE' : '창의력', 
-  'ACTIVE' : '액티브', 
-  'PSYCHOLOGICAL' : '심리', 
-  'LUCK' : '행운', 
-  'COMMON_SENSE' : '상식', 
-  'PREPARATION' : '준비물'
+  '협동': 'COOPERATIVE',
+  '순발력': 'QUICKNESS',
+  '센스': 'SENSIBLE',
+  '두뇌': 'BRAIN',
+  '창의력': 'CREATIVE',
+  '액티브': 'ACTIVE',
+  '심리': 'PSYCHOLOGICAL',
+  '행운': 'LUCK',
+  '상식': 'COMMON_SENSE',
+  '준비물': 'PREPARATION'
 };
 
 export default function FlowWriteDetail() {
@@ -35,18 +35,27 @@ export default function FlowWriteDetail() {
   const [selectedGroupSize, setSelectedGroupSize] = useState('');
   const ageGroups = ['10대 미만', '10대', '20대', '30대', '40대', '50대 이상'];  
 
+    // 로컬 스토리지에 selectedDetailKeywords 상태를 저장
+    useEffect(() => {
+      localStorage.setItem('selectedDetailKeywords', JSON.stringify(selectedDetailKeywords));
+    }, [selectedDetailKeywords]);
+
   const handleNextClick = () => {
     localStorage.setItem('selectedGenders', JSON.stringify(selectedGenders));
     localStorage.setItem('selectedAges', JSON.stringify(selectedAges));
     localStorage.setItem('selectedGroupSize', selectedGroupSize);
     const englishDetailKeywords = selectedDetailKeywords.map(keyword => DetailMappings[keyword]);
     localStorage.setItem('selectedDetailKeywords', JSON.stringify(englishDetailKeywords));
-    console.log("Saved detail keywords:", selectedDetailKeywords);
+    console.log("Saved detail keywords:", englishDetailKeywords);
     navigate('/flow/write/recommend');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handleBeforeClick = () => {
+    localStorage.removeItem('selectedGenders');
+    localStorage.removeItem('selectedAges');
+    localStorage.removeItem('selectedGroupSize');
+    localStorage.removeItem('selectedDetailKeywords');
     navigate('/flow/write');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };

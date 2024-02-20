@@ -2,30 +2,33 @@ import React, {useState} from "react";
 import axios from 'axios'
 import styled from "styled-components";
 
+import LogoutP from "../../assets/mypage/LogoutImg.svg"
 import WarnLogo from "../../assets/mypage/WarnLogo.svg"
+import { privateAPI } from "../../apis/user";
 
 const JWT_TOKEN =
 "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function MyInfoBox({datas}) {
-   const [nickname, setNickname] = useState("");
+export default function MyInfoBox({content}) {
+    const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
+    const [nickname, setNickname] = useState("");
+
+    const openGoOututModal = () => {
+      setGoOutModalOpen(true);
+    };
+
+    const closeGoOutModal = () => {
+      setGoOutModalOpen(false);
+    };
 
     const handleNickname = (e) => {
       setNickname(e.target.value);
     };
 
     const ChangeName = async () => {
-      const response = await axios.patch(
-        `https://dev.avab.shop/api/users/me`,
-        {username: nickname},
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
+      const response = await privateAPI.patch(`/api/users/me`,
+        {username: nickname}
       );
-  
       if (response.status === 200) {
         // 요청이 성공하면 상태 업데이트
         console.log(response.data);
@@ -35,24 +38,35 @@ export default function MyInfoBox({datas}) {
       }
     };
 
-    console.log(datas);
-
     return (
     <MyInfo>
         <MyTitle>카카오 계정</MyTitle>
-        <MyInput value={datas.email} readOnly/>
+        <MyInput value={content.email} readOnly/>
         <MyTitle2>닉네임</MyTitle2>
-        <MyInput placeholder={datas.username} maxLength={10} onChange={handleNickname}/>
+        <MyInput placeholder={content.username} maxLength={10} onChange={handleNickname}/>
         <WarnSpace>
             <WarnImg src={WarnLogo}/>
             <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
         </WarnSpace>
         <ButtonSection>
-            <OutBut>회원탈퇴</OutBut>
+            <OutBut onClick={openGoOututModal}>회원탈퇴</OutBut>
             <SaveBut onClick={ChangeName}>저장하기</SaveBut>
         </ButtonSection>
+        {isGoOutModalOpen && (
+        <LogoutModal>
+          <ModalContent>
+            <ModalTitle>회원탈퇴 하시게요?</ModalTitle>
+            <SemiTitle>한번 탈퇴하면 되돌릴 수 없습니다.</SemiTitle>
+            <LogoutImg src={LogoutP}/>
+            <ModalBut>
+              <LogoutButton onClick={closeGoOutModal}>회원탈퇴</LogoutButton>
+              <CloseButton onClick={closeGoOutModal}>닫기</CloseButton>
+            </ModalBut>
+          </ModalContent>
+        </LogoutModal>
+      )}
     </MyInfo>
-    )
+  )
 }
 
 const MyInfo = styled.div`
@@ -117,4 +131,75 @@ const OutBut = styled.div`
 
 const SaveBut = styled(OutBut)`
   background-color: #19297c;
+`;
+
+//회원탈퇴 모달
+const LogoutModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  z-index: 999;
+`;
+
+const ModalContent = styled.div`
+  background-color: #f7f8f9;
+  width: 400px;
+  height: 395px;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 230px;
+`;
+
+const ModalTitle = styled.div`
+  font-size: 30px;
+  font-weight: 600;
+`;
+
+const SemiTitle = styled.div`
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 10px;
+`;
+
+const LogoutImg = styled.img`
+  width: 200px;
+  height: 210px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+const ModalBut = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  border-top: solid gray 1px;
+  width: 440px;
+`;
+
+const LogoutButton = styled.div`
+  display: flex;
+  justify-content: center;
+  border: solid black 1px;
+  padding: 12px 10px;
+  border-radius: 30px;
+  width: 110px;
+  font-weight: 600;
+  cursor: pointer;
+`;
+
+const CloseButton = styled(LogoutButton)`
+  background-color: #4036ed;
+  color: white;
+  border: none;
+  margin-left: 80px;
 `;

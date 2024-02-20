@@ -7,6 +7,8 @@ import Search from "../components/main/Search";
 import Recreation from "../components/Search/Recreation";
 import Pagination from "../components/pagination/Pagination";
 
+import noScrapImg from "../assets/scrapflow/noScrap.png";
+
 export default function Main({}) {
   const location = useLocation();
   const param = location.search;
@@ -17,11 +19,10 @@ export default function Main({}) {
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
-  // 한 페이지 당 데이터 수
-  const datasPerPage = 9;
+  //전체 페이지 수
+  const [pages, setPages] = useState(1);
 
   // 처음 렌더링 시에만 데이터 불러오기
-
   useEffect(() => {
     const requestURL = `/api/recreations/search`;
     const call = async () => {
@@ -29,20 +30,24 @@ export default function Main({}) {
       try {
         if (location.search === "") {
           if (localStorage.getItem("accessToken")) {
-            const response = await privateAPI.get(`/api/recreations`);
+            const response = await privateAPI.get(`/api/recreations?page=${currentPage}`);
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
+            setPages(response.data.result.totalPages);
           } else {
-            const response = await publicAPI.get(`/api/recreations`);
+            const response = await publicAPI.get(`/api/recreations?page=${currentPage}`);
             setDatas(response.data.result.recreationList);
+            setPages(response.data.result.totalPages);
           }
         } else {
           if (localStorage.getItem("accessToken")) {
             const response = await privateAPI.get(requestURL + param);
             setDatas(response.data.result.recreationList);
+            setPages(response.data.result.totalPages);
           } else {
             const response = await publicAPI.get(requestURL + param);
             setDatas(response.data.result.recreationList);
+            setPages(response.data.result.totalPages);
           }
         }
         setLoading(false);
@@ -51,7 +56,7 @@ export default function Main({}) {
       }
     };
     call();
-  }, [location]);
+  }, [location, currentPage]);
 
   return (
     <>
@@ -61,21 +66,29 @@ export default function Main({}) {
         <Popular>
           <PopularHeader>레크레이션 찾기</PopularHeader>
           {/* <RecreationMain> */}
-          <RecreationWrapper>
-            {datas && datas.map((data) => <Recreation content={data} />)}
-          </RecreationWrapper>
+          {datas.length !== 0 ? (
+            <RecreationWrapper>
+              {datas && datas.map((data) => <Recreation content={data} />)}
+            </RecreationWrapper>
+            ) : (
+            <MyFlowNoneBox>
+              <MyFlowNoneImg src={noScrapImg} />
+              <MyFlowNoneDetail>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>검색결과가 없습니다!</div>
+                <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                  다시 검색해보세요.
+                </div>
+              </MyFlowNoneDetail>
+            </MyFlowNoneBox>
+          )}
           {/* </RecreationMain> */}
-          <Pagination
-            currentPage={currentPage}
-            totalDatas={datas.length}
-            datasPerPage={datasPerPage}
-            setCurrentPage={setCurrentPage}
-          />
+          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
         </Popular>
       </Container>
     </>
   );
 }
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -117,4 +130,22 @@ const RecreationWrapper = styled.div`
   grid-template-columns: repeat(3, 440px);
   row-gap: 20px;
   column-gap: 30px;
+`;
+
+
+//검색 결과가 없는 경우
+const MyFlowNoneBox = styled.div`
+  width: 100%;
+  text-align: center;
+`;
+
+const MyFlowNoneImg = styled.img`
+  width: 120px;
+  height: 120px;
+`;
+
+const MyFlowNoneDetail = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  text-align: center;
 `;
