@@ -9,30 +9,35 @@ import GrayHeart from "../../assets/mypage/GrayHeart.svg";
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-export default function FavoritesBox({ datas, setFavorite}) {
+export default function FavoritesBox({datas, setFavorite}) {
+  //즐겨찾기 등록, 취소
   const DoFavorite = async (id) => {
-    const response = await axios.post(
-      `https://dev.avab.shop/api/recreations/${id}/favorites`,
-      {},
-      {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      }
-    );
+    try {
+        const response = await axios.post(
+            `https://dev.avab.shop/api/recreations/${id}/favorites`,
+            {},
+            {
+                headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+            }
+        );
 
-    if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
-      console.log(response.data);
-      setFavorite(true);
-    } else {
-      // 요청이 실패하면 에러 처리
-      console.log(response.data);
+        if (response.status === 200) {
+            // 요청이 성공하면 상태 업데이트
+            console.log(response.data);
+            // 상태를 업데이트하여 화면이 다시 렌더링되도록 함
+            setFavorite(true);
+        } else {
+            // 요청이 실패하면 에러 처리
+            console.log(response.data);
+        }
+    } catch (error) {
+        // 요청이 실패한 경우 에러 처리
+        console.error(error);
     }
   };
-
-  console.log(datas);
 
   return (
     <RecreationWrapper>
