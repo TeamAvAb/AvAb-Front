@@ -6,6 +6,13 @@ const GlobalStyle = createGlobalStyle`
 @font-face { 
   font-family: "Pretendard";
   src: local('Pretendard Regular') url(${Pretendard}) format("woff");
+<<<<<<< HEAD
+}
+@font-face {
+	font-family: 'Pretendard Bold';
+	src: local('Pretendard Bold'), url(${PretendardSubset}) format('woff');
+=======
+>>>>>>> dev
 }
 
 @font-face { 

@@ -94,6 +94,7 @@ const Hashtag = styled.div`
   justify-content: center;
   margin-right: 221px;
   margin-top: 25px;
+  font-weight: bold;
 `;
 
 const SectionWrap = styled.div`

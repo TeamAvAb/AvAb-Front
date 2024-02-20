@@ -18,7 +18,7 @@ export default function RecreationContentBox({
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
   const [isheartToggle, SetIsheartToggle] = useState(isFavorite);
-
+  const formattedStarRate = parseFloat(starRate).toFixed(1);
   const onHandleScrap = async (recreationId) => {
     try {
       const response = await privateAPI.post(
@@ -35,7 +35,7 @@ export default function RecreationContentBox({
     }
   };
 
-  const heartIconColor = isheartToggle ? "#E54B4B" : "#E9EBED";
+  const heartIconColor = isheartToggle ? "#ffd446" : "#E9EBED";
   return (
     <>
       <ContentBox>
@@ -47,7 +47,8 @@ export default function RecreationContentBox({
           <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
           {/* 레크레이션 제목 */}
           <Star>
-            <img src={yellowStar}></img> <StarRating>{starRate}</StarRating>
+            <img src={yellowStar}></img>{" "}
+            <StarRating>{formattedStarRate}</StarRating>
           </Star>
           {/* 별점*/}
         </TitleStar>
