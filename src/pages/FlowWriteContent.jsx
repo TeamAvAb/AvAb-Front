@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { isLoggedIn, publicAPI, privateAPI } from "../apis/user.js";
+
 import styled from 'styled-components';
 import write1 from '../assets/flowwrite/write_1.png';
 import write2 from '../assets/flowwrite/write_2.png';
@@ -25,12 +27,16 @@ export default function FlowWriteContent() {
   const [infoBoxes, setInfoBoxes] = useState([1]);
   const [numOfRecreationInfo, setNumOfRecreationInfo] = useState(1);
   const [recreationData, setRecreationData] = useState([]);
+  const [scrapRecreationData, setScrapRecreationData] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [playTime, setPlayTime] = useState('');
   const [selectedDetailKeywords, setSelectedDetailKeywords] = useState([]);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAges, setSelectedAges] = useState([]);
   const [selectedGroupSize, setSelectedGroupSize] = useState('');
+
+  const testJWT =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   
     useEffect(() => {
       // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
@@ -160,22 +166,6 @@ export default function FlowWriteContent() {
     setFlowTitle(e.target.value);
   };
 
-  // const addRecommendationFlowBox = async () => {
-  //   try {
-  //     // handleAddRecommendFlow를 호출하여 데이터 가져오기
-  //     const recommendationData = await handleAddRecommendFlow();
-  //     // 추천 데이터가 있는 경우에만 플로우 박스 추가
-  //     if (recommendationData) {
-  //       // 추천 데이터를 사용하여 새로운 플로우 박스 추가
-  //       setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, recommendationData]);
-  //       // 플로우 박스 추가 시 numOfRecreationInfo 상태 업데이트
-  //       setNumOfRecreationInfo(prevNum => prevNum + 1);
-  //     }
-  //   } catch (error) {
-  //     console.error('추가 중 오류 발생:', error);
-  //   }
-  // };
-
   const handleAddFlow = async () => {
     // 커스텀 플로우 박스 추가
     setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
@@ -202,7 +192,7 @@ export default function FlowWriteContent() {
       const data = response.data.result.find(item => item.id === id);
       if (data) {
         const { title, keywordList, playTime } = data;
-        console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+        console.log('추가된 추천 레크레이션 데이터:', { title, keywordList, playTime });
         // 추출한 정보를 저장
         // return { title, keywordList, playTime };
         // 플로우 박스를 추가하는 로직 추가
@@ -234,19 +224,52 @@ export default function FlowWriteContent() {
   };
 
   const handleAddScrapFlow = async () => {
-    try {
-      // API를 호출하여 데이터 가져오기
-      const response = await axios.get('https://dev.avab.shop/api/users/me/favorites/recreations')
-      // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
-    } catch (error) {
-      // 에러 발생 시 에러 처리
-      console.error('추가 중 오류 발생:', error);
-    }
+      try {
+        console.log('API 호출 전');
+        const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${testJWT}`,
+        },
+      });
+          console.log("API 응답 데이터:", response.data);
+
+          setScrapRecreationData(response.data.result.map(item => ({
+            id: item.id,
+            title: item.title,
+            totalStars: item.totalStars,
+            keywordList: item.keywordList,
+            imageUrl: item.imageUrl,
+            summary: item.summary,
+            isFavorite: item.isFavorite
+          })));
+
+        // 데이터에서 필요한 정보 추출
+        const { title, keywordList, playTime } = response.data;
+        console.log('추가된 즐겨찾는 레크레이션 데이터:', { title, keywordList, playTime });
+        // 추출한 정보를 저장
+        return { title, keywordList, playTime };
+      } catch (error) {
+        // 에러 발생 시 에러 처리
+        console.error('추가 중 오류 발생:', error);
+      }
   };
+
+  // const handleAddScrapFlow = async () => {
+  //   try {
+  //     // privateAPI를 사용하여 인증이 필요한 요청 보내기
+  //     const response = await privateAPI.get('/api/users/me/favorites/recreations');
+  //     // 데이터에서 필요한 정보 추출
+  //     const { title, keywordList, playTime } = response.data;
+  //     console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+  //     // 추출한 정보를 저장
+  //     return { title, keywordList, playTime };
+  //   } catch (error) {
+  //     // 에러 발생 시 에러 처리
+  //     console.error('추가 중 오류 발생:', error);
+  //     throw error; // 에러를 상위로 전파하여 처리 가능하도록 함
+  //   }
+  // };
 
   FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
   FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
@@ -297,7 +320,7 @@ export default function FlowWriteContent() {
                 <ContentSelectDetail>
                     즐겨찾는 레크레이션
                 </ContentSelectDetail>
-                <ScrapRecreation content={recreationData} handleAddScrapFlow={handleAddScrapFlow}/> {/* 콘텐트 수정 예정 */}
+                <ScrapRecreation content={scrapRecreationData} handleAddScrapFlow={handleAddScrapFlow}/>
               </FlowInfoBox>
             </FlowInfoContainer>
 
