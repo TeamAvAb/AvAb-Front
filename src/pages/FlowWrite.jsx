@@ -55,6 +55,10 @@ export default function FlowWrite() {
   const handleBeforeClick = () => {
     localStorage.removeItem('selectedKeywords');
    localStorage.removeItem('playTime');
+   localStorage.removeItem('selectedGenders');
+   localStorage.removeItem('selectedAges');
+   localStorage.removeItem('selectedGroupSize');
+   localStorage.removeItem('selectedDetailKeywords');
     navigate('/flow/my');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
