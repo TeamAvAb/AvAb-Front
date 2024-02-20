@@ -1,8 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import close from '../../assets/flowwrite/close_modal.png'
 
 const WithoutSaving = ({ onClose }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    onClose(); // 모달 닫기
+    navigate('/flow/my'); // 다른 페이지로 이동
+  };
+
   return (
     <ModalOverlay>
       <ModalContent>
@@ -14,7 +22,7 @@ const WithoutSaving = ({ onClose }) => {
         </ModalTitle>
         <ModalMessage>저장한 플로우를 수정할 수 있어요.</ModalMessage>
         <ModalSaveButton onClick={onClose}>저장하기</ModalSaveButton>
-        <ModalNoSaveButton onClick={onClose}>저장하지 않고 나가기</ModalNoSaveButton>
+        <ModalNoSaveButton onClick={handleNavigate}>저장하지 않고 나가기</ModalNoSaveButton>
       </ModalContent>
     </ModalOverlay>
   );
