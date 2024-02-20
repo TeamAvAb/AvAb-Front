@@ -59,9 +59,9 @@ function App() {
       {/* 다른 사람이 만든 일정플로우 더보기 */}
       <Route path="/flow/morewatchflow/:title" element={<MoreWatchFlow />} />
       {/* 내가 만든 일정플로우 더보기 */}
-      <Route path="/flow/moremyflow:title" element={<MoreMyflow />} />
+      <Route path="/flow/moremyflow/:title" element={<MoreMyflow />} />
       {/* 스크랩 한 일정플로우 더보기 */}
-      <Route path="/flow/morescrapflow:title" element={<MoreScrapFlow />} />
+      <Route path="/flow/morescrapflow/:title" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
       <Route path="/recreation/detail/:recreationId" element={<RecreationDetail />} />
       {/* 로그인 리다이렉트 페이지 */}
