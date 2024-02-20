@@ -31,9 +31,7 @@ export default function RecreationContentBox({
         }
       );
       if (response.data.code === "COMMON200") {
-        console.log("토글", heartIconColor);
         SetIsheartToggle(!isheartToggle);
-        console.log(response.data);
       } else {
         console.log(response.data);
       }
