@@ -7,6 +7,14 @@ import Blank from "../../assets/myflow/blank.png";
 import Close from "../../assets/myflow/close.png";
 import { useNavigate } from "react-router-dom";
 
+const PurposeList = {
+  MT: "MT",
+  GATHERING: "모임",
+  WORKSHOP: "워크샵",
+  RETREAT: "수련회",
+  SPORTS_DAY: "체육대회",
+};
+
 export default function MadeFlowBox({ datas, loading }) {
   // 삭제 버튼 모달창을 위한 상태
   const [del, setDel] = useState(false);
@@ -64,13 +72,13 @@ export default function MadeFlowBox({ datas, loading }) {
             </FlowBoxCorDelBox>
 
             {/* 키워드 */}
-            <FlowBoxKeyWord>{data.purpose.map((p) => p).join(", ")}</FlowBoxKeyWord>
+            <FlowBoxKeyWord>{PurposeList[data.purpose[0]]}</FlowBoxKeyWord>
 
             {/* 플로우 이름 */}
             <FlowBoxTitle>{data.title}</FlowBoxTitle>
 
             {/* 플로우 사진 */}
-            <FlowBoxImg src={Blank} alt="플로우 사진" />
+            <FlowBoxImg src={data.imageUrl} alt="플로우 사진" />
 
             {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
             <FlowBoxDetailBox>
@@ -227,6 +235,10 @@ const FlowBoxTitle = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const FlowBoxCorDelBox = styled.div`
