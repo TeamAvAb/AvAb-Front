@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/AvAb-Front/static/css/main.615be41f.css",
-    "main.js": "/AvAb-Front/static/js/main.daafc18c.js",
+    "main.js": "/AvAb-Front/static/js/main.b5c410bc.js",
     "static/media/ImgGo3.png": "/AvAb-Front/static/media/ImgGo3.56168aa424b248b62ae1.png",
     "static/media/banner1_workshop.png": "/AvAb-Front/static/media/banner1_workshop.9c8a9bd9a97b72774920.png",
     "static/media/banner2_mt.png": "/AvAb-Front/static/media/banner2_mt.e03ad99a22feee53df36.png",
@@ -10,9 +10,9 @@
     "static/media/Pretendard-Regular.woff": "/AvAb-Front/static/media/Pretendard-Regular.303253288b0ba99db532.woff",
     "static/media/Pretendard-Bold.subset.woff": "/AvAb-Front/static/media/Pretendard-Bold.subset.1c1244339e3f1de8db68.woff",
     "static/media/FooterP.svg": "/AvAb-Front/static/media/FooterP.6f18dad17869aff7d9848a79ac23bc4f.svg",
+    "static/media/login_character.png": "/AvAb-Front/static/media/login_character.7cf6b52d582156b4f434.png",
     "static/media/LogoutImg.svg": "/AvAb-Front/static/media/LogoutImg.aba6b07e2ab1ac34dc0ad021af71bcee.svg",
     "static/media/character.png": "/AvAb-Front/static/media/character.52ad9b5cc3a90e4a30a6.png",
-    "static/media/loginCharacter.png": "/AvAb-Front/static/media/loginCharacter.a4664105aaae2ea87443.png",
     "static/media/penguin.png": "/AvAb-Front/static/media/penguin.604f2d8e4e6a699a5fdf.png",
     "static/media/genderIcon.svg": "/AvAb-Front/static/media/genderIcon.7c638d96d429765270a52242f1efec66.svg",
     "static/media/slick.svg": "/AvAb-Front/static/media/slick.2630a3e3eab21c607e21.svg",
@@ -56,10 +56,10 @@
     "static/media/bannerDotCurrent.svg": "/AvAb-Front/static/media/bannerDotCurrent.a1cb90001f63d962b7b03a3d01b1750f.svg",
     "static/media/bannerDotDefault.svg": "/AvAb-Front/static/media/bannerDotDefault.8a810befa16cb698a48f0f51615c6dc6.svg",
     "main.615be41f.css.map": "/AvAb-Front/static/css/main.615be41f.css.map",
-    "main.daafc18c.js.map": "/AvAb-Front/static/js/main.daafc18c.js.map"
+    "main.b5c410bc.js.map": "/AvAb-Front/static/js/main.b5c410bc.js.map"
   },
   "entrypoints": [
     "static/css/main.615be41f.css",
-    "static/js/main.daafc18c.js"
+    "static/js/main.b5c410bc.js"
   ]
 }
