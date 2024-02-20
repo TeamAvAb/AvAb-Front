@@ -69,7 +69,7 @@ export default function Search() {
     setMenu(!menu);
   };
   useEffect(() => {
-    if (window.location.pathname === "/search/list") {
+    if (window.location.pathname === "/AvAb-Front/search/list") {
       // 검색 리스트 페이지일 때는 열린 상태 유지
       setMenu(true);
     }
@@ -177,6 +177,7 @@ export default function Search() {
         <img
           src={searchIconImg}
           style={{ width: "42.399px", height: "42.399px" }}
+          onClick={submit}
         />
       </SearchWordBox>
       <SearchBox>
@@ -278,7 +279,7 @@ export default function Search() {
             </Filter>
           </More>
         </Filters>
-        {window.location.pathname === "/search/list" ? null : (
+        {window.location.pathname === "/AvAb-Front/search/list" ? null : (
           <Menu onClick={openMenu}>
             {menu ? (
               <>
