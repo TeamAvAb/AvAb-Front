@@ -8,6 +8,7 @@ import Carousel from "../components/main/Carousel";
 import character from "../assets/main/character.png";
 import blankImg from "../assets/main/blankImg.png";
 import plusIconImg from "../assets/main/plusIcon.svg";
+import intro from "../assets/main/introImg.png";
 
 import workshopImg from "../assets/main/banner1_workshop.png";
 import mtImg from "../assets/main/banner2_mt.png";
@@ -141,6 +142,9 @@ export default function Main() {
         </Popular>
       </Container>
       <Carousel content={banner} />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img src={intro} />
+      </div>
     </>
   );
 }
