@@ -35,7 +35,7 @@ export default function RecreationContentBox({
     }
   };
 
-  const heartIconColor = isheartToggle ? "#E54B4B" : "#E9EBED";
+  const heartIconColor = isheartToggle ? "#ffd446" : "#E9EBED";
   return (
     <>
       <ContentBox>
