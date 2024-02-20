@@ -1,40 +1,40 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import styled from "styled-components";
 import fix from "../../assets/flowwrite/fix_flow_write.png";
-import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
+import deleteIcon from "../../assets/flowwrite/deleteIcon.png";
 import DetailKeywordModal from "../flowwrite/DetailKeywordModal";
 
-export default function WriteRecreationInfo({ num, onDelete}) {
-    const [title, setTitle] = useState("");
-    const [time, setTime] = useState(10);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedKeywords, setSelectedKeywords] = useState([]);
+export default function WriteRecreationInfo({ num, onDelete }) {
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState(10);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
 
-    // useEffect(() => {
-    //   // API를 통해 레크레이션 정보를 가져오는 함수
-    //   const fetchRecreationData = async () => {
-    //     try {
-    //       // API를 호출하여 데이터 가져오기
-    //       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
-    //           params: {
-    //             playTime: time,
-    //             purpose: 'SPORTS_DAY'
-    //           }
-    //         });
-    //         console.log('API 응답 데이터:', response.data);
-    //       // 데이터에서 필요한 정보 추출
-    //       const { title, keywordList, playTime } = response.data;
-    //       console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
+  // useEffect(() => {
+  //   // API를 통해 레크레이션 정보를 가져오는 함수
+  //   const fetchRecreationData = async () => {
+  //     try {
+  //       // API를 호출하여 데이터 가져오기
+  //       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+  //           params: {
+  //             playTime: time,
+  //             purpose: 'SPORTS_DAY'
+  //           }
+  //         });
+  //         console.log('API 응답 데이터:', response.data);
+  //       // 데이터에서 필요한 정보 추출
+  //       const { title, keywordList, playTime } = response.data;
+  //       console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
 
-    //       // 추출한 정보를 저장
-    //       return { title, keywordList, playTime };
-    //     } catch (error) {
-    //       // 에러 발생 시 에러 처리
-    //       console.error('추가 중 오류 발생:', error);
-    //     }
-    //   };
-  
+  //       // 추출한 정보를 저장
+  //       return { title, keywordList, playTime };
+  //     } catch (error) {
+  //       // 에러 발생 시 에러 처리
+  //       console.error('추가 중 오류 발생:', error);
+  //     }
+  //   };
+
   // // fetchRecreationData 함수 호출
   // const fetchData = async () => {
   //   const data = await fetchRecreationData();
@@ -80,21 +80,28 @@ export default function WriteRecreationInfo({ num, onDelete}) {
   const handleDeleteKeyword = (index, event) => {
     // Prevent the click event from propagating to the parent container (PurposeSearch)
     event.stopPropagation();
-  
+
     const updatedKeywords = [...selectedKeywords];
     updatedKeywords.splice(index, 1);
     setSelectedKeywords(updatedKeywords);
   };
 
   return (
-    <div style={{ display: "flex", gap: "8px", alignItems: "end", marginBottom:'8px' }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "8px",
+        alignItems: "end",
+        marginBottom: "8px",
+      }}
+    >
       {isModalOpen && (
-              <DetailKeywordModal
-                onClose={handleCloseModal}
-                onSelectDetailKeywords={handleSelectDetailKeywords}
-                selectedKeywords={selectedKeywords}
-              />
-            )}
+        <DetailKeywordModal
+          onClose={handleCloseModal}
+          onSelectDetailKeywords={handleSelectDetailKeywords}
+          selectedKeywords={selectedKeywords}
+        />
+      )}
       <Line time={time}></Line>
       <InfoBox time={time}>
         {/* 레크레이션 제목 */}
@@ -105,11 +112,22 @@ export default function WriteRecreationInfo({ num, onDelete}) {
             value={title}
             onChange={handleTitleChange}
             placeholder="레크레이션 제목 입력"
-            style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700", border: "none", outline: "none" }}
+            style={{
+              fontSize: "20px",
+              fontStyle: "normal",
+              fontWeight: "700",
+              border: "none",
+              outline: "none",
+            }}
           />
-          <img src={fix} alt="Fix" style={{ width: '24px', height: '24px', cursor: 'pointer' }} onClick={handleDeleteClick} />        
+          <img
+            src={fix}
+            alt="Fix"
+            style={{ width: "24px", height: "24px", cursor: "pointer" }}
+            onClick={handleDeleteClick}
+          />
         </RecreationTitle>
-        
+
         {/* 레크레이션 키워드 */}
         {/* <KeywordBox>
           <Keyword>키워드 1</Keyword>
@@ -122,10 +140,14 @@ export default function WriteRecreationInfo({ num, onDelete}) {
             <KeywordInput
               type="text"
               placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
-              style={{ width: '90%', height: '18px', backgroundColor: '#E9EBED' }}
+              style={{
+                width: "90%",
+                height: "18px",
+                backgroundColor: "#E9EBED",
+              }}
             />
           ) : (
-            <div style={{ width: '90%', display: 'flex' }}>
+            <div style={{ width: "90%", display: "flex" }}>
               {selectedKeywords.map((keyword, index) => (
                 <React.Fragment key={index}>
                   <StyledKeyword>
@@ -133,11 +155,16 @@ export default function WriteRecreationInfo({ num, onDelete}) {
                     <img
                       src={deleteIcon}
                       alt="Delete"
-                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                      }}
                       onClick={(event) => handleDeleteKeyword(index, event)}
                     />
                   </StyledKeyword>
-                  {index !== selectedKeywords.length - 1 && ' '}
+                  {index !== selectedKeywords.length - 1 && " "}
                 </React.Fragment>
               ))}
             </div>
@@ -146,15 +173,39 @@ export default function WriteRecreationInfo({ num, onDelete}) {
 
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "500", color: "#1B1D1F" }}>플레이까지</div>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#1B1D1F"}}>
-          <PlayTimeInput
-            type="text"
-            value={time}
-            onChange={handleTimeChange}
-            style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600", color: "#9FA4A9", border: "none", outline: "none" }}
-            />분
-        </div>
+          <div
+            style={{
+              fontSize: "16px",
+              fontStyle: "normal",
+              fontWeight: "500",
+              color: "#1B1D1F",
+            }}
+          >
+            플레이까지
+          </div>
+          <div
+            style={{
+              fontSize: "16px",
+              fontStyle: "normal",
+              fontWeight: "600",
+              color: "#1B1D1F",
+            }}
+          >
+            <PlayTimeInput
+              type="text"
+              value={time}
+              onChange={handleTimeChange}
+              style={{
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "600",
+                color: "#9FA4A9",
+                border: "none",
+                outline: "none",
+              }}
+            />
+            분
+          </div>
         </PlayTime>
       </InfoBox>
     </div>
@@ -167,7 +218,9 @@ const Line = styled.div`
   border: 5px solid #b1beff;
   border-radius: 20px;
   margin-right: 21px;
-  {/*transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);*/} // 이상해짐
+
+  /*transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);*/
+  // 이상해짐
 `;
 
 const InfoBox = styled.div`
@@ -175,7 +228,8 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) => (props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`)};
+  top: ${(props) =>
+    props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`};
   min-height: 119.004px;
 `;
 
@@ -187,7 +241,7 @@ const RecreationTitle = styled.div`
 
 const RecreationTitleInput = styled.input`
   &::placeholder {
-    color: #9FA4A9;
+    color: #9fa4a9;
   }
 
   &:focus::placeholder {
@@ -198,7 +252,7 @@ const RecreationTitleInput = styled.input`
 const PlayTimeInput = styled.input`
   width: 20px;
   &::placeholder {
-    color: #9FA4A9;
+    color: #9fa4a9;
   }
 
   &:focus::placeholder {
@@ -224,7 +278,7 @@ const KeywordBox = styled.div`
   width: 371px;
   height: 37px;
   border-radius: 5px;
-  background: #E9EBED;
+  background: #e9ebed;
   color: #9fa4a9;
   font-size: 16px;
   font-style: normal;
@@ -247,7 +301,7 @@ const KeywordInput = styled.input`
   font-size: 16px;
 
   &::placeholder {
-    color: #9FA4A9;
+    color: #9fa4a9;
   }
 
   &:focus::placeholder {
@@ -261,9 +315,9 @@ const StyledKeyword = styled.span`
   padding: 2px 10px;
   box-sizing: border-box;
   border-radius: 20px;
-  background: #D9D9D9;
+  background: #d9d9d9;
   font-size: 16px;
-  color: #1B1D1F;
+  color: #1b1d1f;
   margin-left: 8px;
   align-items: center;
 
@@ -287,7 +341,6 @@ const StyledKeyword = styled.span`
 //   border-radius: 5px;
 //   background: #e9ebed;
 // `;
-
 
 const PlayTime = styled.div`
   display: flex;
