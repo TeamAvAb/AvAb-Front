@@ -31,7 +31,7 @@ function App() {
   const routes = (
     <Routes>
       {/* 메인 */}
-      <Route path="/" element={<Main />} />
+      <Route path={`${process.env.PUBLIC_URL}/`} element={<Main />} />
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 */}

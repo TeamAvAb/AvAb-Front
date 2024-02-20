@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import plus from '../assets/header/Icon.svg'
-import circle from '../assets/header/Logout.svg'
-import none from '../assets/Footer/none.png'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import plus from "../assets/header/Icon.svg";
+import circle from "../assets/header/Logout.svg";
+import none from "../assets/Footer/none.png";
 
 export default function Header({
   isLoggedIn,
@@ -39,10 +39,14 @@ export default function Header({
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      {isLoggedIn ? 
-      ( <> <LogoutImg src={circle} onClick={ToMypage}/> </> ) : 
-      ( <>
-          <PlusImg src={plus}/>
+      {isLoggedIn ? (
+        <>
+          {" "}
+          <LogoutImg src={circle} onClick={ToMypage} />{" "}
+        </>
+      ) : (
+        <>
+          <PlusImg src={plus} />
           <Login onClick={handleLogin}>로그인</Login>
         </>
       )}
