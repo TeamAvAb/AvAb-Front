@@ -37,15 +37,9 @@ function App() {
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 내 정보 */}
-      <Route
-        path="/mypage/myinfo"
-        element={<MyPage handleLogin={setIsLoggedIn} />}
-      />
+      <Route path="/mypage/myinfo" element={<MyPage handleLogin={setIsLoggedIn} />} />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
-      <Route
-        path="/mypage/favorites"
-        element={<FavoriteRecreation handleLogin={setIsLoggedIn} />}
-      />
+      <Route path="/mypage/favorites" element={<FavoriteRecreation handleLogin={setIsLoggedIn} />} />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
@@ -62,22 +56,16 @@ function App() {
       <Route path="/flow/my" element={<MyFlow />} />
       {/* 스크랩 한 플로우 보기 */}
       <Route path="/flow/scrap" element={<ScrapFlow />} />
-      {/* 내가 만든 일정플로우 더보기 */}
-      <Route path="/flow/moremyflow" element={<MoreMyflow />} />
       {/* 다른 사람이 만든 일정플로우 더보기 */}
-      <Route path="/flow/morewatchflow" element={<MoreWatchFlow />} />
+      <Route path="/flow/morewatchflow/:title" element={<MoreWatchFlow />} />
+      {/* 내가 만든 일정플로우 더보기 */}
+      <Route path="/flow/moremyflow:title" element={<MoreMyflow />} />
       {/* 스크랩 한 일정플로우 더보기 */}
-      <Route path="/flow/morescrapflow" element={<MoreScrapFlow />} />
+      <Route path="/flow/morescrapflow:title" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
-      <Route
-        path="/recreation/detail/:recreationId"
-        element={<RecreationDetail />}
-      />
+      <Route path="/recreation/detail/:recreationId" element={<RecreationDetail />} />
       {/* 로그인 리다이렉트 페이지 */}
-      <Route
-        path="/api/auth/login/kakao"
-        element={<LoginLoading handleLogin={setIsLoggedIn} />}
-      />
+      <Route path="/api/auth/login/kakao" element={<LoginLoading handleLogin={setIsLoggedIn} />} />
     </Routes>
   );
 
@@ -91,11 +79,7 @@ function App() {
   }, [isLoggedIn]);
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (
-      currentPath === "/flow/watch" ||
-      currentPath === "/flow/my" ||
-      currentPath === "/recreation/detail"
-    ) {
+    if (currentPath === "/flow/watch" || currentPath === "/flow/my" || currentPath === "/recreation/detail") {
       setSelectedFooter(<Footer2 />);
     } else if (currentPath === "/" || currentPath.startsWith("/search")) {
       setSelectedFooter(<Footer1 />);
@@ -107,17 +91,8 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header
-        isLoggedIn={isLoggedIn}
-        handleLoginStatus={setIsLoggedIn}
-        handleLoginModal={setLoginModal}
-      />
-      {loginModal ? (
-        <Login
-          handleLoginStatus={setIsLoggedIn}
-          handleLoginModal={setLoginModal}
-        />
-      ) : null}
+      <Header isLoggedIn={isLoggedIn} handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} />
+      {loginModal ? <Login handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} /> : null}
       {routes}
       {selectedFooter}
     </div>

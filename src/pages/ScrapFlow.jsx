@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { publicAPI, privateAPI } from "../apis/user";
 import styled from "styled-components";
 import penguinImg from "../assets/scrapflow/penguin.png";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
@@ -7,19 +7,19 @@ import { useNavigate } from "react-router-dom";
 import ScrapFlowBox from "../components/flow/ScrapFlowBox";
 import Pagination from "../components/pagination/Pagination";
 
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
-
 export default function ScrapFlow() {
   const navigate = useNavigate();
   const moveToWatch = () => {
-    navigate(`/flow/watch`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
   const moveToMy = () => {
-    navigate(`/flow/my`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
   const moveToMakeFlow = () => {
-    navigate(`/flow/write`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/write`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
 
   // 데이터 가져오기
@@ -37,13 +37,15 @@ export default function ScrapFlow() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/scraps/flows?page=${currentPage}`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      });
-      setDatas(response.data.result.flowList);
+      if (localStorage.getItem("accessToken")) {
+        const response = await privateAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
+        setDatas(response.data.result.flowList);
+        setPages(response.data.result.totalPages);
+      } else {
+        const response = await publicAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
+        setDatas(response.data.result.flowList);
+        setPages(response.data.result.totalPages);
+      }
       setLoading(false);
     };
     fetchData();

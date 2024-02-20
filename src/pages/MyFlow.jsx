@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { publicAPI, privateAPI } from "../apis/user";
 import styled from "styled-components";
 import penguinImg from "../assets/myflow/penguin.png";
 import noFlowImg from "../assets/myflow/noFlow.png";
@@ -7,19 +7,19 @@ import MadeFlowBox from "../components/flow/MadeFlowBox";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
 
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
-
 export default function MyFlow() {
   const navigate = useNavigate();
   const moveToWatch = () => {
-    navigate(`/flow/watch`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/watch`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
   const moveToScrap = () => {
-    navigate(`/flow/scrap`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/scrap`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
   const moveToMakeFlow = () => {
-    navigate(`/flow/write`);
+    if (localStorage.getItem("accessToken")) navigate(`/flow/write`);
+    else alert("로그인이 필요한 페이지입니다.");
   };
 
   // 데이터 가져오기
@@ -30,23 +30,28 @@ export default function MyFlow() {
   const [currentPage, setCurrentPage] = useState(0);
   // 전체 페이지 수
   const [pages, setPages] = useState(1);
+  // 삭제 시 렌더링을 위한 상태
+  const [doDel, setDoDel] = useState(false);
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/flows?page=${currentPage}`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      });
-      setDatas(response.data.result.flowList);
-      setPages(response.data.result.totalPages);
+      if (localStorage.getItem("accessToken")) {
+        const response = await privateAPI.get(`/api/users/me/flows?page=${currentPage}`);
+        console.log("전체 레크:", response);
+        setDatas(response.data.result.flowList);
+        setPages(response.data.result.totalPages);
+      } else {
+        const response = await publicAPI.get(`/api/users/me/flows?page=${currentPage}`);
+        setDatas(response.data.result.flowList);
+        setPages(response.data.result.totalPages);
+      }
       setLoading(false);
     };
     fetchData();
-  }, [currentPage]);
+    setDoDel(false);
+  }, [currentPage, doDel]);
 
   useEffect(() => {
     console.log(datas);
@@ -74,7 +79,7 @@ export default function MyFlow() {
           {/* 내가 만든 일정플로우 - Grid */}
           {datas.length !== 0 ? (
             <div>
-              <MyFlowBoxParent>{datas && <MadeFlowBox datas={datas} loading={loading} />}</MyFlowBoxParent>
+              <MyFlowBoxParent>{datas && <MadeFlowBox datas={datas} setDoDel={setDoDel} />}</MyFlowBoxParent>
               {/* 페이지번호 */}
               <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
             </div>
