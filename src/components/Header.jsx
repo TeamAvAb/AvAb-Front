@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { privateAPI } from "../apis/user";
 
 import plus from '../assets/header/Icon.svg'
-import circle from '../assets/header/Logout.svg'
 import AvAb from '../assets/header/AvAb.png'
 
 export default function Header({
@@ -36,6 +36,25 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // 데이터 가져오기
+  const [datas, setDatas] = useState([]);
+  // 데이터 불러오는 동안 로딩
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const call = async () => {
+      setLoading(true);
+      try{
+        const response = await privateAPI.get(`/api/users/me`);
+        setDatas(response.data.result);
+        setLoading(false);
+      } catch (error) {
+        console.log("내 정보 로드 요청 에러 : ", error);
+      }
+    };
+    call();
+  }, []);
+
   return (
     <HeaderWrap>
       <LogoImg src={AvAb} />
@@ -46,7 +65,7 @@ export default function Header({
       {isLoggedIn ? (
         <>
           {" "}
-          <LogoutImg src={circle} onClick={ToMypage} />{" "}
+          <LogoutImg src={datas.profileImage} onClick={ToMypage} />{" "}
         </>
       ) : (
         <>

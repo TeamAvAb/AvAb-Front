@@ -42,7 +42,7 @@ export default function FavoritesBox({content}) {
 
   return (
     <Category>
-      <Hashtagging>{content.hashtagList}</Hashtagging>
+      <Hashtagging>#{content.hashtagList}</Hashtagging>
       <RecreationExplain>
           <ImgSpace>
             <ExImg src={content.imageUrl}/>
