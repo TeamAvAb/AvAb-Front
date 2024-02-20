@@ -36,6 +36,8 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const UserImg = localStorage.getItem("userimage");
+
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
   // 데이터 불러오는 동안 로딩
@@ -63,10 +65,7 @@ export default function Header({
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
       {isLoggedIn ? (
-        <>
-          {" "}
-          <LogoutImg src={datas.profileImage} onClick={ToMypage} />{" "}
-        </>
+        <LogoutImg src={UserImg} onClick={ToMypage} />
       ) : (
         <>
           <PlusImg src={plus} />
