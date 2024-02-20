@@ -4,7 +4,6 @@ import RecreationContentBox from "./RecreationContentBox";
 import viewIcon from "../../assets/recreation/viewIcon.svg";
 
 export default function RecreationTopInfo({ recreationData }) {
-  console.log(recreationData);
   if (!recreationData || !recreationData.imageUrl) {
     return (
       <WarningMessage>
