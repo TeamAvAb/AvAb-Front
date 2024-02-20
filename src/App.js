@@ -32,13 +32,19 @@ function App() {
   const routes = (
     <Routes>
       {/* 메인 */}
-      <Route path={`${process.env.PUBLIC_URL}/`} element={<Main />} />
+      <Route path="/" element={<Main />} />
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 내 정보 */}
-      <Route path="/mypage/myinfo" element={<MyPage handleLogin={setIsLoggedIn} />} />
+      <Route
+        path="/mypage/myinfo"
+        element={<MyPage handleLogin={setIsLoggedIn} />}
+      />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
-      <Route path="/mypage/favorites" element={<FavoriteRecreation handleLogin={setIsLoggedIn} />} />
+      <Route
+        path="/mypage/favorites"
+        element={<FavoriteRecreation handleLogin={setIsLoggedIn} />}
+      />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
