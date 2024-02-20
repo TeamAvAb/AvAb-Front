@@ -133,6 +133,7 @@ export default function Search() {
   };
   const submit = async () => {
     const params = {
+      searchKeyword: searchKeyword,
       keyword: keyword,
       participants: participants,
       playTime: playTime,
@@ -153,6 +154,7 @@ export default function Search() {
   useEffect(() => {
     const currentURL = new URLSearchParams(window.location.search);
     if (currentURL.size !== 0) {
+      setSearchKeyword(currentURL.get("searchKeyword"));
       setKeyword(currentURL.getAll("keyword"));
       setParticipants(currentURL.get("participants"));
       setPlayTime(currentURL.getAll("playTime"));
