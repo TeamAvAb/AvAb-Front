@@ -46,6 +46,8 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
+  //전체 페이지 수
+  const [pages, setPages] = useState(1);
   // 한 페이지 당 데이터 수
   const datasPerPage = 6;
 
@@ -90,12 +92,7 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
               <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
             </NoneWrap>
           )}
-          <Pagination
-          currentPage={currentPage}
-          totalDatas={datas.length}
-          datasPerPage={datasPerPage}
-          setCurrentPage={setCurrentPage}
-          />
+          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
         </RecreationWrap>
       </Content>
 

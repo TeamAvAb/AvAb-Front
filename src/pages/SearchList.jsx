@@ -17,6 +17,8 @@ export default function Main({}) {
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
+  //전체 페이지 수
+  const [pages, setPages] = useState(1);
   // 한 페이지 당 데이터 수
   const datasPerPage = 9;
 
@@ -65,12 +67,7 @@ export default function Main({}) {
             {datas && datas.map((data) => <Recreation content={data} />)}
           </RecreationWrapper>
           {/* </RecreationMain> */}
-          <Pagination
-            currentPage={currentPage}
-            totalDatas={datas.length}
-            datasPerPage={datasPerPage}
-            setCurrentPage={setCurrentPage}
-          />
+          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
         </Popular>
       </Container>
     </>
