@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import axios from 'axios'
 
+import { privateAPI, publicAPI } from "../apis/user";
 import Search from "../components/main/Search";
-import KeywordModal from "../components/main/KeywordModal";
-import SearchRecreation from '../components/Search/Recreation';
+import Recreation from "../components/Search/Recreation";
 import Pagination from "../components/pagination/Pagination";
-import { publicAPI } from "../apis/user";
-import qs from "qs";
 
-const JWT_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
-
-export default function Main({ handleSearchQuery }) {
-  const navigate = useNavigate();
+export default function Main({}) {
   const location = useLocation();
   const param = location.search;
 
@@ -26,30 +19,40 @@ export default function Main({ handleSearchQuery }) {
   const [currentPage, setCurrentPage] = useState(0);
   // 한 페이지 당 데이터 수
   const datasPerPage = 9;
-  // 즐겨찾기 변화 감지 함수
-  const [favorite, setFavorite] = useState(false);
 
   // 처음 렌더링 시에만 데이터 불러오기
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await axios.get(`https://dev.avab.shop/api/recreations`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      });
-      setDatas(response.data.result.recreationList);
-      setFavorite(response.data.result.recreationList.isFavorite);
-      setLoading(false);
-    };
-    fetchData();
-  }, [currentPage, favorite]);
 
   useEffect(() => {
-    console.log(datas);
-  }, [datas]);
-  
+    const requestURL = `/api/recreations/search`;
+    const call = async () => {
+      setLoading(true);
+      try {
+        if (location.search === "") {
+          if (localStorage.getItem("accessToken")) {
+            const response = await privateAPI.get(`/api/recreations`);
+            console.log("전체 레크:", response);
+            setDatas(response.data.result.recreationList);
+          } else {
+            const response = await publicAPI.get(`/api/recreations`);
+            setDatas(response.data.result.recreationList);
+          }
+        } else {
+          if (localStorage.getItem("accessToken")) {
+            const response = await privateAPI.get(requestURL + param);
+            setDatas(response.data.result.recreationList);
+          } else {
+            const response = await publicAPI.get(requestURL + param);
+            setDatas(response.data.result.recreationList);
+          }
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log("레크레이션 로드 요청 에러 : ", error);
+      }
+    };
+    call();
+  }, [location]);
+
   return (
     <>
       <Container>
@@ -57,12 +60,16 @@ export default function Main({ handleSearchQuery }) {
         <Search />
         <Popular>
           <PopularHeader>레크레이션 찾기</PopularHeader>
-          <RecreationMain>{datas && <SearchRecreation datas={datas} setFavorite={setFavorite}/>}</RecreationMain>
+          {/* <RecreationMain> */}
+          <RecreationWrapper>
+            {datas && datas.map((data) => <Recreation content={data} />)}
+          </RecreationWrapper>
+          {/* </RecreationMain> */}
           <Pagination
-          currentPage={currentPage}
-          totalDatas={datas.length}
-          datasPerPage={datasPerPage}
-          setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+            totalDatas={datas.length}
+            datasPerPage={datasPerPage}
+            setCurrentPage={setCurrentPage}
           />
         </Popular>
       </Container>
@@ -105,9 +112,9 @@ const PopularHeader = styled.div`
 `;
 
 //레크레이션 찾기
-const RecreationMain = styled.div`
+const RecreationWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  align-items: center;
+  grid-template-columns: repeat(3, 440px);
+  row-gap: 20px;
+  column-gap: 30px;
 `;
