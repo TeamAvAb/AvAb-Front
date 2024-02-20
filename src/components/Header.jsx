@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import plus from "../assets/header/Icon.svg";
-import circle from "../assets/header/Logout.svg";
-import none from "../assets/Footer/none.png";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import plus from '../assets/header/Icon.svg'
+import circle from '../assets/header/Logout.svg'
+import AvAb from '../assets/header/AvAb.png'
 
 export default function Header({
   isLoggedIn,
@@ -20,21 +21,24 @@ export default function Header({
   };
   const ToMainpage = () => {
     navigate(`/`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
-    navigate(`/mypage`);
+    navigate(`/mypage/myinfo`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <HeaderWrap>
-      <LogoImg src={none} />
-      <Logo>Avab</Logo>
+      <LogoImg src={AvAb} />
       <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
@@ -65,17 +69,9 @@ const HeaderWrap = styled.header`
 `;
 
 const LogoImg = styled.img`
-  width: 40px;
+  width: 200px;
   height: 40px;
-`;
-
-const Logo = styled.div`
-  padding: 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 150px;
-  font-size: 22px;
-  font-weight: 600;
+  margin-right: 55px;
 `;
 
 const PlusImg = styled.img`
@@ -95,8 +91,7 @@ const Login = styled.div`
 
 const LogoutImg = styled.img`
   width: 42px;
-  margin-left: 150px;
-  margin-right: 20px;
+  margin-left: 130px;
   cursor: pointer;
 `;
 

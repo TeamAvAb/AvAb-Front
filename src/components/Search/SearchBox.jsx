@@ -8,7 +8,7 @@ import RadioInput from "./RadioInput";
 import searchIconImg from "../../assets/main/searchIcon.svg";
 import keywordImg from "../../assets/main/checkIcon.svg";
 import deleteImg from "../../assets/main/deleteIcon.svg";
-import none from '../../assets/Footer/none.png'
+import SearchP from "../../assets/searchlist/SearchP.svg"
 
 export default function Search({}) {
   // 검색어 및 키워드 저장
@@ -52,11 +52,11 @@ export default function Search({}) {
     { id: 10, title: "준비물" },
   ];
   const purposeOptions = [
-    { id: 1, title: "신년회" },
-    { id: 2, title: "MT" },
-    { id: 3, title: "워크샵" },
-    { id: 4, title: "이벤트" },
-    { id: 5, title: "축제" },
+    { id: 1, title: "워크샵" },
+    { id: 2, title: "체육대회" },
+    { id: 3, title: "MT" },
+    { id: 4, title: "모임" },
+    { id: 5, title: "수련회" },
   ];
 
   // 필터 더보기 메뉴
@@ -208,7 +208,7 @@ export default function Search({}) {
             </Filter>
         </Filters>
       </SearchBox>
-      <ImgBox src={none}/>
+      <ImgBox src={SearchP}/>
       <SearchBtns>
         <ResetBtn onClick={reset}>초기화</ResetBtn>
         <SearchBtn>필터 적용</SearchBtn>
@@ -237,9 +237,9 @@ export default function Search({}) {
 
 const ImgBox = styled.img`
   position: absolute;
-  width: 235px;
-  margin-top: 120px;
-  margin-left: 1120px;
+  width: 283px;
+  margin-top: 30px;
+  margin-left: 1117px;
 `;
 
 const MiddleLine = styled.hr`
