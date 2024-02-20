@@ -28,8 +28,8 @@ export default function ScrapFlow() {
   const [loading, setLoading] = useState(false);
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
-  // 한 페이지 당 데이터 수
-  const datasPerPage = 6;
+  // 전체 페이지 수
+  const [pages, setPages] = useState(1);
   // 스크랩 변화 감지 함수
   const [scrap, setScrap] = useState(false);
 
@@ -91,12 +91,7 @@ export default function ScrapFlow() {
         </div>
 
         {/* 페이지번호 */}
-        <Pagination
-          currentPage={currentPage}
-          totalDatas={datas.length}
-          datasPerPage={datasPerPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>

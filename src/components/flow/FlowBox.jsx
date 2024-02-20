@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Scrap from "../../assets/watchflow/scrap.png";
@@ -7,11 +7,18 @@ import Time from "../../assets/watchflow/time.png";
 import View from "../../assets/watchflow/view.png";
 import Write from "../../assets/watchflow/write.png";
 import User from "../../assets/watchflow/user.png";
-import Blank from "../../assets/watchflow/blank.png";
 import { useNavigate } from "react-router-dom";
 
 const JWT_TOKEN =
   "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
+
+const PurposeList = {
+  MT: "MT",
+  GATHERING: "모임",
+  WORKSHOP: "워크샵",
+  RETREAT: "수련회",
+  SPORTS_DAY: "체육대회",
+};
 
 export default function FlowBox({ datas, setScrap }) {
   // 스크랩 상태 변경
@@ -49,7 +56,7 @@ export default function FlowBox({ datas, setScrap }) {
         {datas.map((data, i) => (
           <MyFlowBoxChild key={i}>
             {/* 키워드 */}
-            <FlowBoxKeyWord>{data.purpose.map((kw) => kw).join(", ")}</FlowBoxKeyWord>
+            <FlowBoxKeyWord>{PurposeList[data.purpose[0]]}</FlowBoxKeyWord>
 
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
@@ -64,7 +71,7 @@ export default function FlowBox({ datas, setScrap }) {
             <FlowBoxTitle>{data.title}</FlowBoxTitle>
 
             {/* 플로우 사진 */}
-            <FlowBoxImg src={Blank} alt="플로우 사진" />
+            <FlowBoxImg src={data.imageUrl} alt="플로우 사진" />
 
             {/* 플로우 세부사항 - 시간,조회수,작성자,스크랩수 */}
             <FlowBoxDetailBox>

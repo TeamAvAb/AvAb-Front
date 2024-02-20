@@ -72,7 +72,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       </StarBox>
 
       <ReviewInputWrap>
-        {isLoggedIn() ? (
+        {true ? (
           <>
             <ReviewInputBox
               placeholder="리뷰를 작성하세요."
