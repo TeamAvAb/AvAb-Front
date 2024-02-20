@@ -22,16 +22,16 @@ import MoreScrapFlow from "./pages/MoreScrapFlow"; // 스크랩 한 일정플로
 import Login from "./components/Login";
 import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
+
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
-
   const routes = (
     <Routes>
       {/* 메인 */}
-      <Route path="/" element={<Main />} />
+      <Route path={`${process.env.PUBLIC_URL}/`} element={<Main />} />
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 */}

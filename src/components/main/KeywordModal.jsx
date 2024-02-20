@@ -10,14 +10,14 @@ export default function KeywordModal({
   selectedOption,
 }) {
   const [result, setResult] = useState(selectedOption);
-  const handleSingleSelect = (id) => {
-    const isSelected = selectedOption.includes(id) || result.includes(id);
+  const handleSingleSelect = (param) => {
+    const isSelected = selectedOption.includes(param) || result.includes(param);
     if (isSelected) {
       // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-      setResult(result.filter((el) => el !== id));
+      setResult(result.filter((el) => el !== param));
     } else {
       // 단일 선택 시 체크된 아이템을 배열에 추가
-      setResult((prev) => [...prev, id]);
+      setResult((prev) => [...prev, param]);
     }
   };
   const handleReset = () => {
@@ -36,11 +36,11 @@ export default function KeywordModal({
           {content.map((el) => (
             <Keyword
               category={category}
-              key={el.id}
-              onClick={() => handleSingleSelect(el.id)}
-              selected={result.includes(el.id)}
+              key={el.param}
+              onClick={() => handleSingleSelect(el.param)}
+              selected={result.includes(el.param)}
             >
-              {el.title}
+              {el.value}
             </Keyword>
           ))}
         </Keywords>

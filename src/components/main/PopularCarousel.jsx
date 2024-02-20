@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { publicAPI, privateAPI } from "../../apis/user";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,6 +16,7 @@ import wholeSlide from "../../assets/main/wholeSlide.svg";
 import currentSlide from "../../assets/main/currentSlide.svg";
 
 export default function PopularCarousel({ content }) {
+  const [data, setData] = useState();
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
@@ -34,13 +36,30 @@ export default function PopularCarousel({ content }) {
     },
   };
 
+  useEffect(() => {
+    const call = async () => {
+      try {
+        if (localStorage.getItem("accessToken")) {
+          const response = await privateAPI.get("/api/recreations/popular");
+          setData(response.data.result.recreationList);
+        } else {
+          const response = await publicAPI.get("/api/recreations/popular");
+          setData(response.data.result.recreationList);
+        }
+      } catch (error) {
+        console.log("인기 레크 로드 요청 에러 : ", error);
+      }
+    };
+    call();
+  }, []);
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <StyledSlider ref={slider} {...settings}>
-        {content &&
-          content.map((banner) => (
+        {data &&
+          data.map((banner) => (
             <div key={banner.index} style={{ width: "284px" }}>
               <RecreationPrev content={banner} />
             </div>

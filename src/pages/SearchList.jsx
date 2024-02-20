@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import Search from '../components/Search/SearchBox';
-import recreationData from '../components/Search/RecreationData';
-import KeywordModal from '../components/main/KeywordModal';
-
-import YellowHeart from "../assets/mypage/YellowHeart.svg"
-import GrayHeart from "../assets/mypage/GrayHeart.svg"
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import Search from "../components/main/Search";
+import recreationData from "../components/Search/RecreationData";
+import KeywordModal from "../components/main/KeywordModal";
+import starIcon from "../assets/mypage/mingcute_star-fill.svg";
+import YellowHeart from "../assets/mypage/YellowHeart.svg";
+import GrayHeart from "../assets/mypage/GrayHeart.svg";
+import none from "../assets/Footer/none.png";
 import LeftButton from "../assets/myflow/moveLeft.png";
 import RightButton from "../assets/myflow/moveRight.png";
+import { publicAPI } from "../apis/user";
+import qs from "qs";
 
-export default function Main() {
-  const [keywordModal, setKeywordModal] = useState(false);
-  const [purposeModal, setPurposeModal] = useState(false);
+export default function Main({ handleSearchQuery }) {
   const [selectedRecreationIndex, setSelectedRecreationIndex] = useState(null);
   const navigate = useNavigate();
-  
+  const location = useLocation();
+  const param = location.search;
+  useEffect(() => {
+    const requestURL = `/api/recreations/search`;
+    const call = async () => {
+      try {
+        const response = await publicAPI.get(requestURL + param);
+        console.log("api 응답 : ", response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    call();
+  }, [location]);
   const ToRecreationDetail = () => {
     navigate(`/recreation/detail`);
   };
@@ -26,24 +40,23 @@ export default function Main() {
       setSelectedRecreationIndex(index);
     }
   };
-  
+
   return (
     <>
       <Container>
-        <Recommend/>
-        <Search keywordModal={setKeywordModal} purposeModal={setPurposeModal} />
-        {keywordModal ? <KeywordModal closeModal={setKeywordModal} /> : null}
+        <Recommend />
+        <Search />
         <Popular>
           <PopularHeader>레크레이션 찾기</PopularHeader>
           <RecreationMain>
-            {recreationData.map((recreation, index) => 
-              Array.from({length: 1}).map((_, i) => 
+            {recreationData.map((recreation, index) =>
+              Array.from({ length: 1 }).map((_, i) => (
                 <Categories key={`${index}-${i}`}>
                   <RecreationExplain>
                     <Hashtag>{recreation.hashtag}</Hashtag>
                     <SectionWrap>
                       <Section2>{recreation.title}</Section2>
-                      <Section3 src={recreation.starSrc}/>
+                      <Section3 src={recreation.starSrc} />
                       <Section4>{recreation.rate}</Section4>
                     </SectionWrap>
                     <KeyWords>
@@ -54,7 +67,11 @@ export default function Main() {
                     <ImgSpace>
                       <ExImg src={recreation.imgSrc} onClick={ToRecreationDetail}/>
                       <HeartImg
-                        src={index === selectedRecreationIndex ? YellowHeart : GrayHeart}
+                        src={
+                          index === selectedRecreationIndex
+                            ? YellowHeart
+                            : GrayHeart
+                        }
                         onClick={() => toggleHeart(index)}
                       />
                     </ImgSpace>
@@ -63,14 +80,21 @@ export default function Main() {
                     </Explain>
                   </RecreationExplain>
                 </Categories>
-              )
+              ))
             )}
           </RecreationMain>
           <NextPage>
             <ImageBox>
               <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
             </ImageBox>
-            <PageNumber style={{ marginLeft: "14px", backgroundColor: "#8896DF", borderRadius: "50%", color: "white" }}>
+            <PageNumber
+              style={{
+                marginLeft: "14px",
+                backgroundColor: "#8896DF",
+                borderRadius: "50%",
+                color: "white",
+              }}
+            >
               1
             </PageNumber>
             <PageNumber>2</PageNumber>
@@ -152,7 +176,7 @@ const Hashtag = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 221px;
-  margin-top: 25px
+  margin-top: 25px;
 `;
 
 const SectionWrap = styled.div`
@@ -172,7 +196,7 @@ const Section2 = styled.div`
 
 const Section3 = styled.img`
   margin-left: 180px;
-  width: 13.72px
+  width: 13.72px;
 `;
 
 const Section4 = styled.div`
@@ -250,8 +274,7 @@ const Section = styled.div`
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-`
-
+`;
 
 //페이지 넘기기
 const NextPage = styled.div`
