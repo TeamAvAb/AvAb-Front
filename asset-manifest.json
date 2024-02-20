@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/AvAb-Front/static/css/main.615be41f.css",
-    "main.js": "/AvAb-Front/static/js/main.c15385a1.js",
+    "main.js": "/AvAb-Front/static/js/main.06f48670.js",
     "static/media/ImgGo3.png": "/AvAb-Front/static/media/ImgGo3.56168aa424b248b62ae1.png",
     "static/media/banner1_workshop.png": "/AvAb-Front/static/media/banner1_workshop.9c8a9bd9a97b72774920.png",
     "static/media/banner2_mt.png": "/AvAb-Front/static/media/banner2_mt.e03ad99a22feee53df36.png",
@@ -54,13 +54,12 @@
     "static/media/wholeSlide.svg": "/AvAb-Front/static/media/wholeSlide.7fb9d5d47489bcb046cb328a5532d653.svg",
     "static/media/elipse.svg": "/AvAb-Front/static/media/elipse.d91f6be1d20f0589b128cc1ae01ec0ef.svg",
     "static/media/bannerDotCurrent.svg": "/AvAb-Front/static/media/bannerDotCurrent.a1cb90001f63d962b7b03a3d01b1750f.svg",
-    "static/media/Logout.svg": "/AvAb-Front/static/media/Logout.eaecd0a1a14a608f278180685f541e8d.svg",
     "static/media/bannerDotDefault.svg": "/AvAb-Front/static/media/bannerDotDefault.8a810befa16cb698a48f0f51615c6dc6.svg",
     "main.615be41f.css.map": "/AvAb-Front/static/css/main.615be41f.css.map",
-    "main.c15385a1.js.map": "/AvAb-Front/static/js/main.c15385a1.js.map"
+    "main.06f48670.js.map": "/AvAb-Front/static/js/main.06f48670.js.map"
   },
   "entrypoints": [
     "static/css/main.615be41f.css",
-    "static/js/main.c15385a1.js"
+    "static/js/main.06f48670.js"
   ]
 }
