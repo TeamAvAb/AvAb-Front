@@ -31,6 +31,7 @@ export default function RelatedRecreationBox({
     <RelatedRecreationContainer>
       <BoxWrap>
         <RecreationContentBox
+          recreationId={relatedId}
           hashtag={hashtag}
           recreationTitle={recreationTitle}
           kewords={translatedKewords}

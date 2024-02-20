@@ -2,27 +2,50 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
 import { ReactComponent as ScrapIcon } from "../../assets/recreation/scrapIcon.svg";
+import axios from "axios";
 export default function FlowBox({
   num,
   marginRight,
   flowData,
   flowRecreations,
 }) {
+  const testJWT =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const [isScrapToggle, SetIsScrapToggle] = useState(
     flowData?.isFavorite || false
   );
 
-  const onHandleScrap = () => {
-    SetIsScrapToggle((prev) => !prev);
+  const onHandleScrap = async (recreationId) => {
+    try {
+      const response = await axios.post(
+        `https://dev.avab.shop/api/recreations/${recreationId}/favorites`,
+        {},
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${testJWT}`,
+          },
+        }
+      );
+      if (response.data.code === "COMMON200") {
+        SetIsScrapToggle(!isScrapToggle);
+      } else {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const scrapIconColor = isScrapToggle ? "#FFAA29" : "#E9EBED";
+  const scrapIconColor = isScrapToggle ? "#ffd446" : "#E9EBED";
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
         <FlowTitle>{flowData?.title}</FlowTitle>
-        <ScrapIcon fill={scrapIconColor} />
+        <ScrapIcon
+          fill={scrapIconColor}
+          onClick={() => onHandleScrap(flowData.id)}
+        />
       </TitleWrap>
       {flowRecreations ? (
         flowRecreations.map((recreations, index) => (
@@ -61,9 +84,9 @@ const FlowTitle = styled.div`
 
 const NumberBox = styled.div`
   display: inline-flex;
-  width: 30px;
+  width: 38px;
   height: 29px;
-  padding: 2px 31px;
+  padding: 2px 28px;
   justify-content: center;
   align-items: center;
   border-radius: 50px;
