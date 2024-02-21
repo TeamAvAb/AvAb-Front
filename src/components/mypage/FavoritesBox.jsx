@@ -71,6 +71,7 @@ const Category = styled.div`
 
 const Hashtagging = styled.div`
   font-size: 20px;
+  font-weight: bold;
   border-radius: 30px;
   background-color: #5b6bbe;
   color: white;
