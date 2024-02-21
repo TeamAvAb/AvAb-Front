@@ -30,12 +30,16 @@ export default function Main({}) {
       try {
         if (location.search === "") {
           if (localStorage.getItem("accessToken")) {
-            const response = await privateAPI.get(`/api/recreations?page=${currentPage}`);
+            const response = await privateAPI.get(
+              `/api/recreations?page=${currentPage}`
+            );
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
-            const response = await publicAPI.get(`/api/recreations?page=${currentPage}`);
+            const response = await publicAPI.get(
+              `/api/recreations?page=${currentPage}`
+            );
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           }
@@ -57,7 +61,6 @@ export default function Main({}) {
     };
     call();
   }, [location, currentPage]);
-
   return (
     <>
       <Container>
@@ -70,11 +73,13 @@ export default function Main({}) {
             <RecreationWrapper>
               {datas && datas.map((data) => <Recreation content={data} />)}
             </RecreationWrapper>
-            ) : (
+          ) : (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
-                <div style={{ fontSize: "24px", fontWeight: "bold" }}>검색결과가 없습니다!</div>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                  검색결과가 없습니다!
+                </div>
                 <div style={{ fontSize: "20px", marginTop: "8px" }}>
                   다시 검색해보세요.
                 </div>
@@ -82,7 +87,11 @@ export default function Main({}) {
             </MyFlowNoneBox>
           )}
           {/* </RecreationMain> */}
-          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
+          <Pagination
+            currentPage={currentPage}
+            pageNum={pages}
+            setCurrentPage={setCurrentPage}
+          />
         </Popular>
       </Container>
     </>
@@ -131,7 +140,6 @@ const RecreationWrapper = styled.div`
   row-gap: 20px;
   column-gap: 30px;
 `;
-
 
 //검색 결과가 없는 경우
 const MyFlowNoneBox = styled.div`
