@@ -50,7 +50,11 @@ export default function FlowWriteContent() {
 
     if (savedKeywords) {
       const parsedKeywords = JSON.parse(savedKeywords);
-      setSelectedKeywords(parsedKeywords);
+      // 한글 키워드를 영어로 다시 매핑하여 저장
+      const englishKeywords = parsedKeywords.map(
+        (keyword) => keywordMappings[keyword]
+      );
+      setSelectedKeywords(englishKeywords);
     }
     // 로컬 스토리지에서 저장된 디테일 키워드 가져오기
     const storedDetailKeywords = localStorage.getItem("selectedDetailKeywords");
@@ -152,21 +156,25 @@ export default function FlowWriteContent() {
     // API 호출 함수
     const fetchRecreationData = async () => {
       try {
-        const params = {
-          keyword: selectedDetailKeywords,
-          participants: selectedGroupSize,
-          playTime: playTime,
-          purpose: selectedKeywords,
-          gender: selectedGenders,
-          age: selectedAges,
-        };
-        const param = qs.stringify(params, { arrayFormat: "repeat" });
+        const savedPlayTime = localStorage.getItem("playTime");
+        if (!savedPlayTime) {
+          // playTime이 없는 경우에 대한 처리
+          console.error("playTime이 저장되어 있지 않습니다.");
+          return;
+        }
+        const englishKeywords = selectedKeywords.map(
+          (keyword) => keywordMappings[keyword]
+        );
 
         const response = await axios.get(
-          `https://dev.avab.shop/api/recreations/recommended?
-          ${param}`
+          "https://dev.avab.shop/api/recreations/recommended",
+          {
+            params: {
+              playTime: savedPlayTime,
+              purpose: englishKeywords.join(","),
+            },
+          }
         );
-        console.log("추천레크 요청 응답 : ", response);
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
           response.data.result.map((item) => ({
@@ -234,16 +242,16 @@ export default function FlowWriteContent() {
         console.error("playTime이 저장되어 있지 않습니다.");
         return;
       }
-      // const englishKeywords = selectedKeywords.map(
-      //   (keyword) => keywordMappings[keyword]
-      // );
+      const englishKeywords = selectedKeywords.map(
+        (keyword) => keywordMappings[keyword]
+      );
       // API를 호출하여 데이터 가져오기
       const response = await axios.get(
         "https://dev.avab.shop/api/recreations/recommended",
         {
           params: {
             playTime: savedPlayTime,
-            purpose: selectedKeywords,
+            purpose: englishKeywords.join(","),
           },
         }
       );
@@ -293,7 +301,7 @@ export default function FlowWriteContent() {
     try {
       console.log("API 호출 전");
       const response = await axios.get(
-        `https://dev.avab.shop/api/users/me/favorites/recreations`,
+        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
         {
           headers: {
             Accept: "*/*",
@@ -302,9 +310,8 @@ export default function FlowWriteContent() {
         }
       );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
-
       setScrapRecreationData(
-        response.data.result.map((item) => ({
+        response.data.result.recreationList.map((item) => ({
           id: item.id,
           title: item.title,
           totalStars: item.totalStars,
@@ -314,21 +321,26 @@ export default function FlowWriteContent() {
           isFavorite: item.isFavorite,
         }))
       );
-
-      // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log("추가된 즐겨찾는 레크레이션 데이터:", {
-        title,
-        keywordList,
-        playTime,
-      });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
     } catch (error) {
       // 에러 발생 시 에러 처리
       console.error("추가 중 오류 발생:", error);
     }
   };
+
+  useEffect(() => {
+    handleAddScrapFlow();
+    console.log(scrapRecreationData);
+  }, []);
+
+  useEffect(() => {
+    // 데이터에서 필요한 정보 추출
+    const { title, keywordList, playTime } = scrapRecreationData;
+    console.log("추가된 즐겨찾는 레크레이션 데이터:", {
+      title,
+      keywordList,
+      playTime,
+    });
+  }, [scrapRecreationData]);
 
   // const handleAddScrapFlow = async () => {
   //   try {
@@ -490,9 +502,7 @@ export default function FlowWriteContent() {
                     </div>
                     <div>
                       {selectedGenders
-                        .map((gender) =>
-                          gender === "FEMALE" ? "여성" : "남성"
-                        )
+                        .map((gender) => (gender === "F" ? "여성" : "남성"))
                         .join(", ")}
                     </div>
                   </div>
