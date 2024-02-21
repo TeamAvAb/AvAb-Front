@@ -106,7 +106,7 @@ export default function WriteRecreationInfo({ num, onDelete }) {
       <InfoBox time={time}>
         {/* 레크레이션 제목 */}
         <RecreationTitle>
-          <Number>{num}</Number>
+          <Number>{num + 1}</Number>
           <RecreationTitleInput
             type="text"
             value={title}
