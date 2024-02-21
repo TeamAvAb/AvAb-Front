@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn, publicAPI, privateAPI } from "../apis/user.js";
-
+import qs from "qs";
 import styled from "styled-components";
 import write1 from "../assets/flowwrite/write_1.png";
 import write2 from "../assets/flowwrite/write_2.png";
@@ -38,26 +38,24 @@ export default function FlowWriteContent() {
   const testJWT =
     "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-  localStorage.setItem("accessToken", testJWT);
   useEffect(() => {
     // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
+    localStorage.setItem("accessToken", testJWT);
     const savedPlayTime = localStorage.getItem("playTime");
     if (savedPlayTime) {
       setPlayTime(savedPlayTime);
     }
-  }, []);
-
-  useEffect(() => {
+    // 로컬 스토리지에서 저장된 키워드(목적) 가져오기
     const savedKeywords = localStorage.getItem("selectedKeywords");
+
     if (savedKeywords) {
       const parsedKeywords = JSON.parse(savedKeywords);
       // 한글 키워드를 영어로 다시 매핑하여 저장
-      const englishKeywords = parsedKeywords.map((keyword) => keywordMappings[keyword]);
+      const englishKeywords = parsedKeywords.map(
+        (keyword) => keywordMappings[keyword]
+      );
       setSelectedKeywords(englishKeywords);
     }
-  }, []);
-
-  useEffect(() => {
     // 로컬 스토리지에서 저장된 디테일 키워드 가져오기
     const storedDetailKeywords = localStorage.getItem("selectedDetailKeywords");
     if (storedDetailKeywords) {
@@ -112,7 +110,6 @@ export default function FlowWriteContent() {
     if (flowTitle.trim() === "") {
       setTitleModal(<NoTitle onClose={() => setTitleModal(null)} />);
     } else {
-      console.log("kdjfka");
       try {
         const submit = async () => {
           const response = await privateAPI.post("/api/flows", {
@@ -126,13 +123,14 @@ export default function FlowWriteContent() {
                 customKeywordList: ["QUICKNESS"],
               },
             ],
-            totalPlayTime: 30,
-            participants: 10,
-            ageList: ["UNDER_TEENAGER"],
-            purposeList: ["WORKSHOP"],
-            keywordList: ["QUICKNESS"],
-            genderList: ["MALE"],
+            totalPlayTime: playTime,
+            participants: selectedGroupSize,
+            ageList: selectedAges,
+            purposeList: selectedKeywords,
+            keywordList: selectedDetailKeywords,
+            genderList: selectedGenders,
           });
+          console.log(response);
         };
         submit();
       } catch (error) {
@@ -151,6 +149,9 @@ export default function FlowWriteContent() {
     handleNextClick();
   };
 
+  publicAPI.defaults.paramsSerializer = (params) => {
+    return qs.stringify(params, { arrayFormat: "repeat" });
+  };
   useEffect(() => {
     // API 호출 함수
     const fetchRecreationData = async () => {
@@ -161,14 +162,19 @@ export default function FlowWriteContent() {
           console.error("playTime이 저장되어 있지 않습니다.");
           return;
         }
-        const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
+        const englishKeywords = selectedKeywords.map(
+          (keyword) => keywordMappings[keyword]
+        );
 
-        const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
-          params: {
-            playTime: savedPlayTime,
-            purpose: englishKeywords.join(","),
-          },
-        });
+        const response = await axios.get(
+          "https://dev.avab.shop/api/recreations/recommended",
+          {
+            params: {
+              playTime: savedPlayTime,
+              purpose: englishKeywords.join(","),
+            },
+          }
+        );
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
           response.data.result.map((item) => ({
@@ -188,7 +194,31 @@ export default function FlowWriteContent() {
 
     // API 호출 함수 호출
     fetchRecreationData();
-  }, [selectedKeywords]);
+  }, []);
+
+  useEffect(() => {
+    const getFavRec = async () => {
+      try {
+        const response = await axios.get(
+          `https://dev.avab.shop/api/users/me/favorites/recreations?page=1`
+        );
+        console.log("추천레크 요청 응답 : ", response);
+        setScrapRecreationData(
+          response.data.result.map((item) => ({
+            id: item.id,
+            title: item.title,
+            totalStars: item.totalStars,
+            keywordList: item.keywordList,
+            imageUrl: item.imageUrl,
+            summary: item.summary,
+            isFavorite: item.isFavorite,
+          }))
+        );
+      } catch (error) {
+        console.log("즐겨찾는 레크 받아오기 에러", error);
+      }
+    };
+  });
 
   const handleFlowTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
@@ -197,7 +227,10 @@ export default function FlowWriteContent() {
 
   const handleAddFlow = async () => {
     // 커스텀 플로우 박스 추가
-    setInfoBoxes((prevInfoBoxes) => [...prevInfoBoxes, <WriteRecreationInfo />]);
+    setInfoBoxes((prevInfoBoxes) => [
+      ...prevInfoBoxes,
+      <WriteRecreationInfo />,
+    ]);
     setNumOfRecreationInfo(numOfRecreationInfo + 1);
   };
 
@@ -209,14 +242,19 @@ export default function FlowWriteContent() {
         console.error("playTime이 저장되어 있지 않습니다.");
         return;
       }
-      const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
+      const englishKeywords = selectedKeywords.map(
+        (keyword) => keywordMappings[keyword]
+      );
       // API를 호출하여 데이터 가져오기
-      const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
-        params: {
-          playTime: savedPlayTime,
-          purpose: englishKeywords.join(","),
-        },
-      });
+      const response = await axios.get(
+        "https://dev.avab.shop/api/recreations/recommended",
+        {
+          params: {
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(","),
+          },
+        }
+      );
       // 데이터에서 필요한 정보 추출
       const data = response.data.result.find((item) => item.id === id);
       if (data) {
@@ -227,24 +265,27 @@ export default function FlowWriteContent() {
           playTime,
         });
         // 추출한 정보를 저장
-        // return { title, keywordList, playTime };
+        return { title, keywordList, playTime };
         // 플로우 박스를 추가하는 로직 추가
         // 커스텀 플로우 박스 추가
-        // setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
-        // setNumOfRecreationInfo(prevNum => prevNum);
+        // setInfoBoxes((prevInfoBoxes) => [
+        //   ...prevInfoBoxes,
+        //   infoBoxes.length + 1,
+        // ]);
+        // setNumOfRecreationInfo((prevNum) => prevNum);
 
         // 데이터를 AddRecreationInfo 컴포넌트로 전달
-        setInfoBoxes((prevInfoBoxes) => [
-          ...prevInfoBoxes,
-          <AddRecreationInfo
-            num={prevInfoBoxes.length + 1}
-            id={id}
-            title={title}
-            keywordList={keywordList}
-            playTime={playTime}
-          />,
-        ]);
-        setNumOfRecreationInfo(numOfRecreationInfo + 1);
+        // setInfoBoxes((prevInfoBoxes) => [
+        //   ...prevInfoBoxes,
+        //   <AddRecreationInfo
+        //     num={prevInfoBoxes.length + 1}
+        //     id={id}
+        //     title={title}
+        //     keywordList={keywordList}
+        //     playTime={playTime}
+        //   />,
+        // ]);
+        // setNumOfRecreationInfo(numOfRecreationInfo + 1);
       } else {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
         return null;
@@ -259,12 +300,15 @@ export default function FlowWriteContent() {
   const handleAddScrapFlow = async () => {
     try {
       console.log("API 호출 전");
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=0`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${testJWT}`,
-        },
-      });
+      const response = await axios.get(
+        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${testJWT}`,
+          },
+        }
+      );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
       setScrapRecreationData(
         response.data.result.recreationList.map((item) => ({
@@ -319,7 +363,9 @@ export default function FlowWriteContent() {
 
   const handleDelete = (num) => {
     // 플로우 박스 삭제
-    setInfoBoxes((prevInfoBoxes) => prevInfoBoxes.filter((item) => item !== num));
+    setInfoBoxes((prevInfoBoxes) =>
+      prevInfoBoxes.filter((item) => item !== num)
+    );
   };
 
   return (
@@ -328,22 +374,38 @@ export default function FlowWriteContent() {
       {titleModal && titleModal}
       <ProgressbarStyle>
         <ProgressBarItem>
-          <img src={write1} alt="Write 1" style={{ width: "50px", height: "50px" }} />
+          <img
+            src={write1}
+            alt="Write 1"
+            style={{ width: "50px", height: "50px" }}
+          />
           <span>기본정보</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={write2} alt="Write 2" style={{ width: "50px", height: "50px" }} />
+          <img
+            src={write2}
+            alt="Write 2"
+            style={{ width: "50px", height: "50px" }}
+          />
           <span>세부정보</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={write3} alt="Write 3" style={{ width: "50px", height: "50px" }} />
+          <img
+            src={write3}
+            alt="Write 3"
+            style={{ width: "50px", height: "50px" }}
+          />
           <span>추천 플로우</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={writeSelect4} alt="Write Select 4" style={{ width: "50px", height: "50px" }} />
+          <img
+            src={writeSelect4}
+            alt="Write Select 4"
+            style={{ width: "50px", height: "50px" }}
+          />
           <span style={{ color: "#19297C" }}>플로우 내용</span>
         </ProgressBarItem>
       </ProgressbarStyle>
@@ -355,9 +417,15 @@ export default function FlowWriteContent() {
                 <div style={{ marginLeft: "38px" }}>레크레이션 선택</div>
               </ContentSelect>
               <ContentSelectDetail>추천 레크레이션</ContentSelectDetail>
-              <RecommendRecreation content={recreationData} handleAddRecommendFlow={handleAddRecommendFlow} />
+              <RecommendRecreation
+                content={recreationData}
+                handleAddRecommendFlow={handleAddRecommendFlow}
+              />
               <ContentSelectDetail>즐겨찾는 레크레이션</ContentSelectDetail>
-              <ScrapRecreation content={scrapRecreationData} handleAddScrapFlow={handleAddScrapFlow} />
+              <ScrapRecreation
+                content={scrapRecreationData}
+                handleAddScrapFlow={handleAddScrapFlow}
+              />
             </FlowInfoBox>
           </FlowInfoContainer>
 
@@ -382,7 +450,7 @@ export default function FlowWriteContent() {
                     </div>
                     <div style={{ listStyleType: "none" }}>
                       {selectedKeywords.map((keyword, index) => (
-                        <li key={index}>{keyword}</li>
+                        <li key={index}>{keywordMappings[keyword]}</li>
                       ))}
                     </div>
                   </div>
@@ -432,7 +500,11 @@ export default function FlowWriteContent() {
                     >
                       성별
                     </div>
-                    <div>{selectedGenders.map((gender) => (gender === "F" ? "여성" : "남성")).join(", ")}</div>
+                    <div>
+                      {selectedGenders
+                        .map((gender) => (gender === "F" ? "여성" : "남성"))
+                        .join(", ")}
+                    </div>
                   </div>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
                     <div
@@ -448,15 +520,15 @@ export default function FlowWriteContent() {
                     <div>
                       {selectedAges
                         .map((age) =>
-                          age === "10대 미만"
+                          age === "UNDER_TEENAGER"
                             ? "10대 미만"
-                            : age === "10대"
+                            : age === "TEENAGER"
                             ? "10대"
-                            : age === "20대"
+                            : age === "TWENTIES"
                             ? "20대"
-                            : age === "30대"
+                            : age === "THIRITES"
                             ? "30대"
-                            : age === "40대"
+                            : age === "FORTIES"
                             ? "40대"
                             : "50대 이상"
                         )
@@ -494,7 +566,9 @@ export default function FlowWriteContent() {
               <FlowContainer>
                 <div style={{ width: "393px", textAlign: "center" }}>
                   {/* FlowTitle에 상태로부터 받은 값을 전달 */}
-                  <FlowTitle hasTitle={!!flowTitle}>{flowTitle || "플로우 제목"}</FlowTitle>
+                  <FlowTitle hasTitle={!!flowTitle}>
+                    {flowTitle || "플로우 제목"}
+                  </FlowTitle>
                 </div>
 
                 <div>

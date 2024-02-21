@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { privateAPI } from "../apis/user";
-
-import plus from '../assets/header/Icon.svg'
-import AvAb from '../assets/header/AvAb.png'
-
+import plus from "../assets/header/Icon.svg";
+import AvAb from "../assets/header/AvAb.png";
+import ProfileImg from "../assets/header/profileImg.png";
 export default function Header({
   isLoggedIn,
   handleLoginStatus,
@@ -21,22 +20,22 @@ export default function Header({
   };
   const ToMainpage = () => {
     navigate(`/`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const UserImg = localStorage.getItem("userimage");
+  // const UserImg = localStorage.getItem("userimage");
 
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
@@ -46,7 +45,7 @@ export default function Header({
   useEffect(() => {
     const call = async () => {
       setLoading(true);
-      try{
+      try {
         const response = await privateAPI.get(`/api/users/me`);
         setDatas(response.data.result);
         setLoading(false);
@@ -65,7 +64,7 @@ export default function Header({
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
       {isLoggedIn ? (
-        <LogoutImg src={UserImg} onClick={ToMypage} />
+        <LogoutImg src={ProfileImg} onClick={ToMypage} />
       ) : (
         <>
           <PlusImg src={plus} />
