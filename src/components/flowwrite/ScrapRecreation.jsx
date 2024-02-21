@@ -31,9 +31,7 @@ export default function ScrapRecreation({ content, handleAddScrapFlow }) {
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <StyledSlider ref={slider} {...settings}>
         {content &&
           content.map((banner) => (
@@ -42,8 +40,7 @@ export default function ScrapRecreation({ content, handleAddScrapFlow }) {
             </div>
           ))}
       </StyledSlider>
-      <SlideIndex index={slideIndex / 3 + 1}>
-      </SlideIndex>
+      <SlideIndex index={slideIndex / 3 + 1}></SlideIndex>
     </div>
   );
 }

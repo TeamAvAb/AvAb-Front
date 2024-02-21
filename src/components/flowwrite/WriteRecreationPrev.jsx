@@ -3,6 +3,7 @@ import styled from "styled-components";
 import arrow from "../../assets/main/nextSlide.svg";
 import heartImg from "../../assets/main/heart.svg";
 import starImg from "../../assets/main/starIcon.svg";
+import AddRecreationInfo from "./AddRecreationInfo";
 
 const keywordMapping = {
   QUICKNESS: "순발력",
@@ -14,34 +15,34 @@ const keywordMapping = {
   PSYCHOLOGICAL: "심리",
   LUCK: "행운",
   COMMON_SENSE: "상식",
-  PREPARATION: "준비물"
-}
+  PREPARATION: "준비물",
+};
 
 export default function WriteRecreationPrev({ content, handleAddRecommendFlow, handleAddScrapFlow }) {
-  const handleAddButtonClick = async (id) => {
-    console.log('추가하기 버튼을 눌렀을 때 id 값:', content.id);
+  const handleAddButtonClick = async () => {
+    console.log("추가하기 버튼을 눌렀을 때 id 값:", content.id);
     if (handleAddRecommendFlow) {
       try {
         // handleAddRecommendFlow 함수가 정의되어 있다면 호출
         const result = await handleAddRecommendFlow(content.id); // handleAddRecommendFlow 함수가 완료될 때까지 기다림
-        console.log('추가된 레크레이션 데이터:', result);
+        console.log("추가된 레크레이션 데이터:", result);
       } catch (error) {
-        console.error('handleAddRecommendFlow 함수 호출 중 에러 발생:', error);
+        console.error("handleAddRecommendFlow 함수 호출 중 에러 발생:", error);
       }
     } else {
-      console.error('handleAddRecommendFlow 함수가 정의되지 않았습니다.');
+      console.error("handleAddRecommendFlow 함수가 정의되지 않았습니다.");
     }
 
     if (handleAddScrapFlow) {
       try {
         // handleAddScrapFlow 함수가 정의되어 있다면 호출
-        const result = await handleAddRecommendFlow(content.id); // handleAddScrapFlow 함수가 완료될 때까지 기다림
-        console.log('추가된 레크레이션 데이터:', result);
+        const result = await handleAddScrapFlow(content.id); // handleAddScrapFlow 함수가 완료될 때까지 기다림
+        console.log("추가된 레크레이션 데이터:", result);
       } catch (error) {
-        console.error('handleAddScrapFlow 함수 호출 중 에러 발생:', error);
+        console.error("handleAddScrapFlow 함수 호출 중 에러 발생:", error);
       }
     } else {
-      console.error('handleAddScrapFlow 함수가 정의되지 않았습니다.');
+      console.error("handleAddScrapFlow 함수가 정의되지 않았습니다.");
     }
   };
 
@@ -68,7 +69,7 @@ export default function WriteRecreationPrev({ content, handleAddRecommendFlow, h
             <img src={arrow} alt="Arrow" style={{ width: "24px", height: "24px" }} />
           </Section1>
           <Section2>
-            <Keywords> {content.keywordList.map(keyword => keywordMapping[keyword]).join(', ')}</Keywords>
+            <Keywords> {content.keywordList.map((keyword) => keywordMapping[keyword]).join(", ")}</Keywords>
             <Rate>
               <img src={starImg} alt="Star" style={{ width: "16px", height: "16px" }} />
               {content.totalStars}
@@ -76,12 +77,12 @@ export default function WriteRecreationPrev({ content, handleAddRecommendFlow, h
           </Section2>
         </Explain>
         <Summary>
-        <Title>레크레이션 소개</Title>
-        <Subtitle>{content.title}</Subtitle>
-        <Content>{content.summary}</Content>
+          <Title>레크레이션 소개</Title>
+          <Subtitle>{content.title}</Subtitle>
+          <Content>{content.summary}</Content>
         </Summary>
       </RecreationExplain>
-      <AddButton onClick={() => handleAddButtonClick(content.id)}>추가하기</AddButton>
+      <AddButton onClick={handleAddButtonClick}>추가하기</AddButton>
     </Categories>
   );
 }
@@ -132,7 +133,7 @@ const Summary = styled.div`
   height: 269px;
   color: white;
   padding: 20px 40px;
-  background: var(--Cshadow, rgba(27, 29, 31, 0.80)); /* 배경색 변경 */
+  background: var(--Cshadow, rgba(27, 29, 31, 0.8)); /* 배경색 변경 */
   border-radius: 20px; /* 테두리를 둥글게 만듦 */
   opacity: 0; /* 초기에는 숨김 */
   transition: opacity 0.3s ease; /* 페이드 인/아웃 효과를 위한 트랜지션 */
