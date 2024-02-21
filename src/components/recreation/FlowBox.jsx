@@ -11,6 +11,9 @@ export default function FlowBox({
   flowData,
   flowRecreations,
 }) {
+  console.log(flowData);
+  console.log(flowRecreations);
+
   // const testJWT = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const [isScrapToggle, SetIsScrapToggle] = useState(
     flowData?.isFavorite || false

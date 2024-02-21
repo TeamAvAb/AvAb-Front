@@ -4,6 +4,7 @@ import FlowBox from "./FlowBox";
 import axios from "axios";
 const RecreationFlow = forwardRef(({ recreationId }, ref) => {
   const [flowData, setFlowData] = useState(null); // 플로우 정보
+  const [flowSecondData, setFlowSecondData] = useState(null);
   const [flowFirstRecreations, setFlowFirstRecreations] = useState(null); // 추천 플로우 1안 리스트
   const [flowSecondRecreations, setFlowSecondRecreations] = useState(null); // 추천 플로우 2안 리스트
 
@@ -15,7 +16,10 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
         );
 
         setFlowData(response.data.result[0].flowDetail);
-        // console.log("setFlowData", response.data.result[0].flowDetail);
+        console.log("setFlowData", response.data.result[0].flowDetail);
+
+        setFlowSecondData(response.data.result[1].flowDetail);
+        console.log(response.data.result[1].flowDetail);
 
         setFlowFirstRecreations(response.data.result[0].recreations);
         //console.log("response.data.result[0]",response.data.result[0].recreations);
@@ -43,7 +47,7 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
         <FlowBox
           num={2}
           marginRight="0px"
-          flowData={flowData}
+          flowData={flowSecondData}
           flowRecreations={flowSecondRecreations}
         ></FlowBox>
       </FlowBoxWrap>
