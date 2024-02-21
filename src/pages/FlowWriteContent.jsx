@@ -52,9 +52,7 @@ export default function FlowWriteContent() {
     if (savedKeywords) {
       const parsedKeywords = JSON.parse(savedKeywords);
       // 한글 키워드를 영어로 다시 매핑하여 저장
-      const englishKeywords = parsedKeywords.map(
-        (keyword) => keywordMappings[keyword]
-      );
+      const englishKeywords = parsedKeywords.map((keyword) => keywordMappings[keyword]);
       setSelectedKeywords(englishKeywords);
     }
   }, []);
@@ -163,19 +161,14 @@ export default function FlowWriteContent() {
           console.error("playTime이 저장되어 있지 않습니다.");
           return;
         }
-        const englishKeywords = selectedKeywords.map(
-          (keyword) => keywordMappings[keyword]
-        );
+        const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
 
-        const response = await axios.get(
-          "https://dev.avab.shop/api/recreations/recommended",
-          {
-            params: {
-              playTime: savedPlayTime,
-              purpose: englishKeywords.join(","),
-            },
-          }
-        );
+        const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
+          params: {
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(","),
+          },
+        });
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
           response.data.result.map((item) => ({
@@ -204,10 +197,7 @@ export default function FlowWriteContent() {
 
   const handleAddFlow = async () => {
     // 커스텀 플로우 박스 추가
-    setInfoBoxes((prevInfoBoxes) => [
-      ...prevInfoBoxes,
-      <WriteRecreationInfo />,
-    ]);
+    setInfoBoxes((prevInfoBoxes) => [...prevInfoBoxes, <WriteRecreationInfo />]);
     setNumOfRecreationInfo(numOfRecreationInfo + 1);
   };
 
@@ -219,19 +209,14 @@ export default function FlowWriteContent() {
         console.error("playTime이 저장되어 있지 않습니다.");
         return;
       }
-      const englishKeywords = selectedKeywords.map(
-        (keyword) => keywordMappings[keyword]
-      );
+      const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
       // API를 호출하여 데이터 가져오기
-      const response = await axios.get(
-        "https://dev.avab.shop/api/recreations/recommended",
-        {
-          params: {
-            playTime: savedPlayTime,
-            purpose: englishKeywords.join(","),
-          },
-        }
-      );
+      const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
+        params: {
+          playTime: savedPlayTime,
+          purpose: englishKeywords.join(","),
+        },
+      });
       // 데이터에서 필요한 정보 추출
       const data = response.data.result.find((item) => item.id === id);
       if (data) {
@@ -274,19 +259,15 @@ export default function FlowWriteContent() {
   const handleAddScrapFlow = async () => {
     try {
       console.log("API 호출 전");
-      const response = await axios.get(
-        `https://dev.avab.shop/api/users/me/favorites/recreations`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${testJWT}`,
-          },
-        }
-      );
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=0`, {
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${testJWT}`,
+        },
+      });
       console.log(" 스크랩 레크 응답 데이터:", response.data);
-
       setScrapRecreationData(
-        response.data.result.map((item) => ({
+        response.data.result.recreationList.map((item) => ({
           id: item.id,
           title: item.title,
           totalStars: item.totalStars,
@@ -296,21 +277,26 @@ export default function FlowWriteContent() {
           isFavorite: item.isFavorite,
         }))
       );
-
-      // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log("추가된 즐겨찾는 레크레이션 데이터:", {
-        title,
-        keywordList,
-        playTime,
-      });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
     } catch (error) {
       // 에러 발생 시 에러 처리
       console.error("추가 중 오류 발생:", error);
     }
   };
+
+  useEffect(() => {
+    handleAddScrapFlow();
+    console.log(scrapRecreationData);
+  }, []);
+
+  useEffect(() => {
+    // 데이터에서 필요한 정보 추출
+    const { title, keywordList, playTime } = scrapRecreationData;
+    console.log("추가된 즐겨찾는 레크레이션 데이터:", {
+      title,
+      keywordList,
+      playTime,
+    });
+  }, [scrapRecreationData]);
 
   // const handleAddScrapFlow = async () => {
   //   try {
@@ -333,9 +319,7 @@ export default function FlowWriteContent() {
 
   const handleDelete = (num) => {
     // 플로우 박스 삭제
-    setInfoBoxes((prevInfoBoxes) =>
-      prevInfoBoxes.filter((item) => item !== num)
-    );
+    setInfoBoxes((prevInfoBoxes) => prevInfoBoxes.filter((item) => item !== num));
   };
 
   return (
@@ -344,38 +328,22 @@ export default function FlowWriteContent() {
       {titleModal && titleModal}
       <ProgressbarStyle>
         <ProgressBarItem>
-          <img
-            src={write1}
-            alt="Write 1"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write1} alt="Write 1" style={{ width: "50px", height: "50px" }} />
           <span>기본정보</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={write2}
-            alt="Write 2"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write2} alt="Write 2" style={{ width: "50px", height: "50px" }} />
           <span>세부정보</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={write3}
-            alt="Write 3"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write3} alt="Write 3" style={{ width: "50px", height: "50px" }} />
           <span>추천 플로우</span>
           <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={writeSelect4}
-            alt="Write Select 4"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={writeSelect4} alt="Write Select 4" style={{ width: "50px", height: "50px" }} />
           <span style={{ color: "#19297C" }}>플로우 내용</span>
         </ProgressBarItem>
       </ProgressbarStyle>
@@ -387,15 +355,9 @@ export default function FlowWriteContent() {
                 <div style={{ marginLeft: "38px" }}>레크레이션 선택</div>
               </ContentSelect>
               <ContentSelectDetail>추천 레크레이션</ContentSelectDetail>
-              <RecommendRecreation
-                content={recreationData}
-                handleAddRecommendFlow={handleAddRecommendFlow}
-              />
+              <RecommendRecreation content={recreationData} handleAddRecommendFlow={handleAddRecommendFlow} />
               <ContentSelectDetail>즐겨찾는 레크레이션</ContentSelectDetail>
-              <ScrapRecreation
-                content={scrapRecreationData}
-                handleAddScrapFlow={handleAddScrapFlow}
-              />
+              <ScrapRecreation content={scrapRecreationData} handleAddScrapFlow={handleAddScrapFlow} />
             </FlowInfoBox>
           </FlowInfoContainer>
 
@@ -470,11 +432,7 @@ export default function FlowWriteContent() {
                     >
                       성별
                     </div>
-                    <div>
-                      {selectedGenders
-                        .map((gender) => (gender === "F" ? "여성" : "남성"))
-                        .join(", ")}
-                    </div>
+                    <div>{selectedGenders.map((gender) => (gender === "F" ? "여성" : "남성")).join(", ")}</div>
                   </div>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
                     <div
@@ -536,9 +494,7 @@ export default function FlowWriteContent() {
               <FlowContainer>
                 <div style={{ width: "393px", textAlign: "center" }}>
                   {/* FlowTitle에 상태로부터 받은 값을 전달 */}
-                  <FlowTitle hasTitle={!!flowTitle}>
-                    {flowTitle || "플로우 제목"}
-                  </FlowTitle>
+                  <FlowTitle hasTitle={!!flowTitle}>{flowTitle || "플로우 제목"}</FlowTitle>
                 </div>
 
                 <div>
