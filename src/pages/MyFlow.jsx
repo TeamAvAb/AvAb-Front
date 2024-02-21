@@ -63,7 +63,7 @@ export default function MyFlow() {
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
         <MyFlowMenuBox onClick={moveToWatch}>플로우 구경하기</MyFlowMenuBox>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF", fontWeight: "bold" }}>내가 만든 일정플로우</MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
