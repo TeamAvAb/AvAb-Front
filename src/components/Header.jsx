@@ -38,27 +38,31 @@ export default function Header({
   // const UserImg = localStorage.getItem("userimage");
 
   // 데이터 가져오기
-  const [datas, setDatas] = useState([]);
+  // const [datas, setDatas] = useState([]);
   // 데이터 불러오는 동안 로딩
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      try {
-        const response = await privateAPI.get(`/api/users/me`);
-        setDatas(response.data.result);
-        setLoading(false);
-      } catch (error) {
-        console.log("내 정보 로드 요청 에러 : ", error);
-      }
-    };
-    call();
-  }, []);
+  // useEffect(() => {
+  //   const call = async () => {
+  //     setLoading(true);
+  //     try {
+  //       if (isLoggedIn) {
+  //         const response = await privateAPI.get(`/api/users/me`);
+  //         setDatas(response.data.result);
+  //         setLoading(false);
+  //       } else {
+
+  //       }
+  //     } catch (error) {
+  //       console.log("내 정보 로드 요청 에러 : ", error);
+  //     }
+  //   };
+  //   call();
+  // }, []);
 
   return (
     <HeaderWrap>
-      <LogoImg src={AvAb} />
+      <LogoImg src={AvAb} onClick={ToMainpage} />
       <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
