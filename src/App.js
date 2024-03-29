@@ -14,7 +14,7 @@ import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
 import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 상세 페이지
 import FlowWriteRecommend from "./pages/FlowWriteRecommend"; // 플로우 만들기 추천 페이지
 import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 내용 페이지
-import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
+import RecreationDetail from "./pages/RecreationDetail"; // 레크레이션 상세정보 페이지
 import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
 import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
 import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기

@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
-import RecreationTopInfo from "../../components/recreation/RecreationTopInfo";
-import RecreationMenuBar from "../../components/recreation/RecreationMenuBar";
-import RecreationInformation from "../../components/recreation/RecreationInformation";
-import RecreationReview from "../../components/recreation/RecreationReview";
-import RecreationRelated from "../../components/recreation/RecreationRelated";
-import RecreationFlow from "../../components/recreation/RecreationFlow";
+import RecreationTopInfo from "../components/recreation/RecreationTopInfo";
+import RecreationMenuBar from "../components/recreation/RecreationMenuBar";
+import RecreationInformation from "../components/recreation/RecreationInformation";
+import RecreationReview from "../components/recreation/RecreationReview";
+import RecreationRelated from "../components/recreation/RecreationRelated";
+import RecreationFlow from "../components/recreation/RecreationFlow";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
