@@ -60,7 +60,9 @@ export default function WatchFlow() {
       {/* 플로우 왼쪽 메뉴바 */}
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF"}}>플로우 구경하기</MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>
+          플로우 구경하기
+        </MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
@@ -71,16 +73,24 @@ export default function WatchFlow() {
           <MyFlowBoxContainer>
             <MyFlowBoxImage src={PenguinImg} />
             <TitleBox>
-              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>
+                일정플로우 만들기
+              </MyFlowBoxTitle>
             </TitleBox>
           </MyFlowBoxContainer>
 
           {/* 플로우 데이터 불러온 부분 - Component */}
-          <WatchFlowBoxParent>{datas && <Flow datas={datas} setScrap={setScrap} />}</WatchFlowBoxParent>
+          <WatchFlowBoxParent>
+            {datas && <Flow datas={datas} setScrap={setScrap} />}
+          </WatchFlowBoxParent>
         </div>
 
         {/* 페이지번호 */}
-        <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
+        <Pagination
+          currentPage={currentPage}
+          pageNum={pages}
+          setCurrentPage={setCurrentPage}
+        />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>
@@ -99,24 +109,29 @@ const RightSide = styled.div`
 
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
 const MyFlowMenuContainer = styled.div`
-  box-sizing: border-box;
-  background-color: white;
-  border: 0.5px solid #cacdd2;
-  border-bottom: 0;
   width: 320px;
-  font-size: 24px;
+  height: 713px;
+  box-sizing: border-box;
+  font-size: 22px;
+  border: solid #cacdd2 1px;
+  border-bottom: none;
+  border-right: solid #cacdd2 1px;
+  color: #1b1d1f;
+  background-color: white;
 `;
 
 const MyFlowMenuTitle = styled.div`
-  padding: 2.5vh 0vh 2.5vh 3vh;
+  width: 260px;
+  padding: 30px;
+  font-size: 22px;
 `;
 
 const MyFlowMenuBox = styled.div`
-  border: 0.5px solid #cacdd2;
   text-align: center;
-  justify-content: center;
-  padding: 1.5vh 3vh;
   cursor: pointer;
+  padding: 20px;
+  width: 280px;
+  border-bottom: solid #cacdd2 1px;
 `;
 
 const MyFlowContainer = styled.div`

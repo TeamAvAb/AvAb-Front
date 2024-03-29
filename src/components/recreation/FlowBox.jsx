@@ -65,6 +65,9 @@ export default function FlowBox({
 }
 
 const FlowBoxWrap = styled.div`
+  align-items: center;
+  justify-content: center;
+  width: 510px;
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   padding: 30px 34px;
@@ -72,6 +75,7 @@ const FlowBoxWrap = styled.div`
 `;
 const TitleWrap = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   margin-bottom: 60px;
 `;
