@@ -52,6 +52,9 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           const response = await privateAPI.get(`/api/users/me`);
           setDatas(response.data.result);
           setLoading(false);
+        } else {
+          setDatas([]);
+          setLoading(false);
         }
       } catch (error) {
         console.log("내 정보 로드 요청 에러 : ", error);

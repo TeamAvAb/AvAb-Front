@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import LogoutP from "../../assets/mypage/LogoutImg.svg";
@@ -8,6 +8,16 @@ import { privateAPI } from "../../apis/user";
 export default function MyInfoBox({ content }) {
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    if (content.email) {
+      setNickname(content.nickname);
+      setEmail(content.email);
+    } else {
+      setEmail("");
+      setNickname("");
+    }
+  }, []);
   localStorage.setItem("userimage", content.profileImage);
 
   const openGoOututModal = () => {
@@ -29,6 +39,7 @@ export default function MyInfoBox({ content }) {
     if (response.status === 200) {
       // 요청이 성공하면 상태 업데이트
       console.log(response.data);
+      setNickname(response.data.result.username);
       alert("저장되었습니다.");
     } else {
       // 요청이 실패하면 에러 처리
@@ -39,10 +50,10 @@ export default function MyInfoBox({ content }) {
   return (
     <MyInfo>
       <MyTitle>카카오 계정</MyTitle>
-      <MyInput value={content.email} placeholder="이메일" readOnly />
+      <MyInput value={email} placeholder="이메일" readOnly />
       <MyTitle2>닉네임</MyTitle2>
       <MyInput
-        value={content.nickname}
+        value={nickname}
         placeholder="닉네임"
         maxLength={10}
         onChange={handleNickname}
