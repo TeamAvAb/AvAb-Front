@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { privateAPI } from "../../apis/user";
+import { Link, useNavigate } from "react-router-dom";
 
 import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
 import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 
-export default function FavoritesBox({content}) {
+export default function FavoritesBox({ content }) {
+  const navigate = useNavigate();
+
   const keywordParam = {
     COOPERATIVE: "협동",
     QUICKNESS: "순발력",
@@ -44,20 +47,28 @@ export default function FavoritesBox({content}) {
     <Category>
       <Hashtagging>#{content.hashtagList}</Hashtagging>
       <RecreationExplain>
-          <ImgSpace>
-            <ExImg src={content.imageUrl}/>
-            <Favorite isFav={isFav} onClick={() => addToFavorite(content.id)}/>
-          </ImgSpace>
-          <Explain>
-            <Section1>{content.title}</Section1>
-            <SectionWrap>
-              <Section2>
-                {keywordParam[content.keywordList[0]]}, {keywordParam[content.keywordList[1]]}, {keywordParam[content.keywordList[2]]}
-              </Section2>
-              <Section3 src={starIcon}/>
-              <Section4>{content.totalStars}</Section4>
-            </SectionWrap>
-          </Explain>
+        <ImgSpace>
+          <ExImg src={content.imageUrl} />
+          <Favorite isFav={isFav} onClick={() => addToFavorite(content.id)} />
+        </ImgSpace>
+        <Explain
+          to={"/recreation/detail/" + content.id}
+          onClick={() => {
+            window.scrollTo(0, 0); // 페이지 이동 전에 스크롤을 맨 위로 이동
+            navigate("/recreation/detail/" + content.id);
+          }}
+        >
+          <Section1>{content.title}</Section1>
+          <SectionWrap>
+            <Section2>
+              {keywordParam[content.keywordList[0]]},{" "}
+              {keywordParam[content.keywordList[1]]},{" "}
+              {keywordParam[content.keywordList[2]]}
+            </Section2>
+            <Section3 src={starIcon} />
+            <Section4>{content.totalStars}</Section4>
+          </SectionWrap>
+        </Explain>
       </RecreationExplain>
     </Category>
   );
@@ -82,7 +93,8 @@ const Hashtagging = styled.div`
   justify-content: center;
 `;
 
-const RecreationExplain = styled.div`
+const RecreationExplain = styled(Link)`
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,7 +127,7 @@ const Favorite = styled(HeartImg)`
   margin-top: 140px;
   width: 42px;
   cursor: pointer;
-  fill: ${(props) => (props.favorite === true ?  "#E9EBED" : "#FFAA29")};
+  fill: ${(props) => (props.favorite === true ? "#E9EBED" : "#FFAA29")};
 `;
 
 const Explain = styled.div`
