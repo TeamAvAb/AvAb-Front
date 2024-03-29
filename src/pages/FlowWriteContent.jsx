@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn, publicAPI, privateAPI } from "../apis/user.js";
-
+import qs from "qs";
 import styled from "styled-components";
 import write1 from "../assets/flowwrite/write_1.png";
 import write2 from "../assets/flowwrite/write_2.png";
@@ -38,17 +38,16 @@ export default function FlowWriteContent() {
   const testJWT =
     "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
 
-  localStorage.setItem("accessToken", testJWT);
   useEffect(() => {
     // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
+    localStorage.setItem("accessToken", testJWT);
     const savedPlayTime = localStorage.getItem("playTime");
     if (savedPlayTime) {
       setPlayTime(savedPlayTime);
     }
-  }, []);
-
-  useEffect(() => {
+    // 로컬 스토리지에서 저장된 키워드(목적) 가져오기
     const savedKeywords = localStorage.getItem("selectedKeywords");
+
     if (savedKeywords) {
       const parsedKeywords = JSON.parse(savedKeywords);
       // 한글 키워드를 영어로 다시 매핑하여 저장
@@ -57,9 +56,6 @@ export default function FlowWriteContent() {
       );
       setSelectedKeywords(englishKeywords);
     }
-  }, []);
-
-  useEffect(() => {
     // 로컬 스토리지에서 저장된 디테일 키워드 가져오기
     const storedDetailKeywords = localStorage.getItem("selectedDetailKeywords");
     if (storedDetailKeywords) {
@@ -114,7 +110,6 @@ export default function FlowWriteContent() {
     if (flowTitle.trim() === "") {
       setTitleModal(<NoTitle onClose={() => setTitleModal(null)} />);
     } else {
-      console.log("kdjfka");
       try {
         const submit = async () => {
           const response = await privateAPI.post("/api/flows", {
@@ -128,13 +123,14 @@ export default function FlowWriteContent() {
                 customKeywordList: ["QUICKNESS"],
               },
             ],
-            totalPlayTime: 30,
-            participants: 10,
-            ageList: ["UNDER_TEENAGER"],
-            purposeList: ["WORKSHOP"],
-            keywordList: ["QUICKNESS"],
-            genderList: ["MALE"],
+            totalPlayTime: playTime,
+            participants: selectedGroupSize,
+            ageList: selectedAges,
+            purposeList: selectedKeywords,
+            keywordList: selectedDetailKeywords,
+            genderList: selectedGenders,
           });
+          console.log(response);
         };
         submit();
       } catch (error) {
@@ -153,6 +149,9 @@ export default function FlowWriteContent() {
     handleNextClick();
   };
 
+  publicAPI.defaults.paramsSerializer = (params) => {
+    return qs.stringify(params, { arrayFormat: "repeat" });
+  };
   useEffect(() => {
     // API 호출 함수
     const fetchRecreationData = async () => {
@@ -195,7 +194,31 @@ export default function FlowWriteContent() {
 
     // API 호출 함수 호출
     fetchRecreationData();
-  }, [selectedKeywords]);
+  }, []);
+
+  useEffect(() => {
+    const getFavRec = async () => {
+      try {
+        const response = await axios.get(
+          `https://dev.avab.shop/api/users/me/favorites/recreations?page=1`
+        );
+        console.log("추천레크 요청 응답 : ", response);
+        setScrapRecreationData(
+          response.data.result.map((item) => ({
+            id: item.id,
+            title: item.title,
+            totalStars: item.totalStars,
+            keywordList: item.keywordList,
+            imageUrl: item.imageUrl,
+            summary: item.summary,
+            isFavorite: item.isFavorite,
+          }))
+        );
+      } catch (error) {
+        console.log("즐겨찾는 레크 받아오기 에러", error);
+      }
+    };
+  });
 
   const handleFlowTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 flowTitle 상태 업데이트
@@ -242,24 +265,27 @@ export default function FlowWriteContent() {
           playTime,
         });
         // 추출한 정보를 저장
-        // return { title, keywordList, playTime };
+        return { title, keywordList, playTime };
         // 플로우 박스를 추가하는 로직 추가
         // 커스텀 플로우 박스 추가
-        // setInfoBoxes(prevInfoBoxes => [...prevInfoBoxes, infoBoxes.length + 1]);
-        // setNumOfRecreationInfo(prevNum => prevNum);
+        // setInfoBoxes((prevInfoBoxes) => [
+        //   ...prevInfoBoxes,
+        //   infoBoxes.length + 1,
+        // ]);
+        // setNumOfRecreationInfo((prevNum) => prevNum);
 
         // 데이터를 AddRecreationInfo 컴포넌트로 전달
-        setInfoBoxes((prevInfoBoxes) => [
-          ...prevInfoBoxes,
-          <AddRecreationInfo
-            num={prevInfoBoxes.length + 1}
-            id={id}
-            title={title}
-            keywordList={keywordList}
-            playTime={playTime}
-          />,
-        ]);
-        setNumOfRecreationInfo(numOfRecreationInfo + 1);
+        // setInfoBoxes((prevInfoBoxes) => [
+        //   ...prevInfoBoxes,
+        //   <AddRecreationInfo
+        //     num={prevInfoBoxes.length + 1}
+        //     id={id}
+        //     title={title}
+        //     keywordList={keywordList}
+        //     playTime={playTime}
+        //   />,
+        // ]);
+        // setNumOfRecreationInfo(numOfRecreationInfo + 1);
       } else {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
         return null;
@@ -275,7 +301,7 @@ export default function FlowWriteContent() {
     try {
       console.log("API 호출 전");
       const response = await axios.get(
-        `https://dev.avab.shop/api/users/me/favorites/recreations`,
+        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
         {
           headers: {
             Accept: "*/*",
@@ -284,9 +310,8 @@ export default function FlowWriteContent() {
         }
       );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
-
       setScrapRecreationData(
-        response.data.result.map((item) => ({
+        response.data.result.recreationList.map((item) => ({
           id: item.id,
           title: item.title,
           totalStars: item.totalStars,
@@ -296,21 +321,26 @@ export default function FlowWriteContent() {
           isFavorite: item.isFavorite,
         }))
       );
-
-      // 데이터에서 필요한 정보 추출
-      const { title, keywordList, playTime } = response.data;
-      console.log("추가된 즐겨찾는 레크레이션 데이터:", {
-        title,
-        keywordList,
-        playTime,
-      });
-      // 추출한 정보를 저장
-      return { title, keywordList, playTime };
     } catch (error) {
       // 에러 발생 시 에러 처리
       console.error("추가 중 오류 발생:", error);
     }
   };
+
+  useEffect(() => {
+    handleAddScrapFlow();
+    console.log(scrapRecreationData);
+  }, []);
+
+  useEffect(() => {
+    // 데이터에서 필요한 정보 추출
+    const { title, keywordList, playTime } = scrapRecreationData;
+    console.log("추가된 즐겨찾는 레크레이션 데이터:", {
+      title,
+      keywordList,
+      playTime,
+    });
+  }, [scrapRecreationData]);
 
   // const handleAddScrapFlow = async () => {
   //   try {
@@ -420,7 +450,7 @@ export default function FlowWriteContent() {
                     </div>
                     <div style={{ listStyleType: "none" }}>
                       {selectedKeywords.map((keyword, index) => (
-                        <li key={index}>{keyword}</li>
+                        <li key={index}>{keywordMappings[keyword]}</li>
                       ))}
                     </div>
                   </div>
@@ -490,15 +520,15 @@ export default function FlowWriteContent() {
                     <div>
                       {selectedAges
                         .map((age) =>
-                          age === "10대 미만"
+                          age === "UNDER_TEENAGER"
                             ? "10대 미만"
-                            : age === "10대"
+                            : age === "TEENAGER"
                             ? "10대"
-                            : age === "20대"
+                            : age === "TWENTIES"
                             ? "20대"
-                            : age === "30대"
+                            : age === "THIRITES"
                             ? "30대"
-                            : age === "40대"
+                            : age === "FORTIES"
                             ? "40대"
                             : "50대 이상"
                         )

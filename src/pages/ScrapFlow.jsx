@@ -94,10 +94,10 @@ export default function ScrapFlow() {
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
                 <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-                  내가 만든 일정플로우가 없습니다!
+                  스크랩한 일정플로우가 없습니다!
                 </div>
                 <div style={{ fontSize: "20px", marginTop: "8px" }}>
-                  위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
+                  지금 바로 플로우를 구경해보세요.
                 </div>
               </MyFlowNoneDetail>
             </MyFlowNoneBox>
