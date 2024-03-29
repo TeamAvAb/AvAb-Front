@@ -66,7 +66,7 @@ export default function FavoritesBox({ content }) {
               {keywordParam[content.keywordList[2]]}
             </Section2>
             <Section3 src={starIcon} />
-            <Section4>{content.totalStars}</Section4>
+            <Section4>{parseFloat(content.totalStars).toFixed(1)}</Section4>
           </SectionWrap>
         </Explain>
       </RecreationExplain>
