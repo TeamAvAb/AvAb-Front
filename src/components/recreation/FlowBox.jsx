@@ -65,6 +65,7 @@ export default function FlowBox({
 }
 
 const FlowBoxWrap = styled.div`
+  width: 510px;
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   padding: 30px 34px;

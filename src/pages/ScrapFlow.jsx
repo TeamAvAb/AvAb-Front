@@ -129,24 +129,29 @@ const RightSide = styled.div`
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
 const MyFlowMenuContainer = styled.div`
   background-color: white;
-  border: 0.5px solid #cacdd2;
-  border-bottom: 0;
   width: 320px;
-  font-size: 24px;
+  height: 713px;
+  box-sizing: border-box;
+  font-size: 22px;
+  border: solid #cacdd2 1px;
+  border-bottom: none;
+  border-right: 0.5px solid #cacdd2;
+  color: #1b1d1f;
 `;
 
 const MyFlowMenuTitle = styled.div`
-  padding: 2.5vh 0vh 2.5vh 3vh;
+  width: 260px;
+  padding: 30px;
+  font-size: 22px;
+  border-bottom: solid #cacdd2 1px;
 `;
 
 const MyFlowMenuBox = styled.div`
-  border: 0.5px solid #cacdd2;
-  border-right: 0px;
-  border-left: 0px;
   text-align: center;
-  justify-content: center;
-  padding: 1.5vh 3vh;
   cursor: pointer;
+  padding: 20px;
+  width: 280px;
+  border-bottom: solid #cacdd2 1px;
 `;
 
 const MyFlowContainer = styled.div`

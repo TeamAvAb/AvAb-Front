@@ -71,7 +71,7 @@ export default function RecreationPrev({ content }) {
             </div>
             <Rate>
               <img src={starImg} style={{ width: "16px", height: "16px" }} />
-              {content.totalStars.toFixed(1)}
+              {parseFloat(content.totalStars).toFixed(1)}
             </Rate>
           </Section2>
         </Explain>

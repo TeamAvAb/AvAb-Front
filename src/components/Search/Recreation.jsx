@@ -54,7 +54,7 @@ export default function Recreation({ content }) {
         <SectionWrap>
           <Section2>{content.title}</Section2>
           <Section3 src={starIcon} />
-          <Section4>{content.totalStars}</Section4>
+          <Section4>{parseFloat(content.totalStars).toFixed(1)}</Section4>
         </SectionWrap>
         <KeyWords>
           <KeyWord>{keywordParam[content.keywordList[0]]}</KeyWord>
