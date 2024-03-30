@@ -9,15 +9,7 @@ export default function MyInfoBox({ content }) {
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  useEffect(() => {
-    if (content.email) {
-      setNickname(content.nickname);
-      setEmail(content.email);
-    } else {
-      setEmail("");
-      setNickname("");
-    }
-  }, []);
+
   localStorage.setItem("userimage", content.profileImage);
 
   const openGoOututModal = () => {
@@ -50,11 +42,10 @@ export default function MyInfoBox({ content }) {
   return (
     <MyInfo>
       <MyTitle>카카오 계정</MyTitle>
-      <MyInput value={email} placeholder="이메일" readOnly />
+      <MyInput value={content.email} readOnly />
       <MyTitle2>닉네임</MyTitle2>
       <MyInput
-        value={nickname}
-        placeholder="닉네임"
+        value={content.nickname}
         maxLength={10}
         onChange={handleNickname}
       />
