@@ -31,34 +31,11 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
-    navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (localStorage.getItem("accessToken")) {
+      navigate(`/mypage/myinfo`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else alert("로그인이 필요한 페이지입니다.");
   };
-
-  // const UserImg = localStorage.getItem("userimage");
-
-  // 데이터 가져오기
-  // const [datas, setDatas] = useState([]);
-  // 데이터 불러오는 동안 로딩
-  // const [loading, setLoading] = useState(false);
-
-  // useEffect(() => {
-  //   const call = async () => {
-  //     setLoading(true);
-  //     try {
-  //       if (isLoggedIn) {
-  //         const response = await privateAPI.get(`/api/users/me`);
-  //         setDatas(response.data.result);
-  //         setLoading(false);
-  //       } else {
-
-  //       }
-  //     } catch (error) {
-  //       console.log("내 정보 로드 요청 에러 : ", error);
-  //     }
-  //   };
-  //   call();
-  // }, []);
 
   return (
     <HeaderWrap>

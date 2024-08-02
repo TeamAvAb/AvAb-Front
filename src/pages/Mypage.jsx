@@ -32,6 +32,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
       localStorage.clear();
+      navigate("/");
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
