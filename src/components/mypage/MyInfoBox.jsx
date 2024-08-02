@@ -8,7 +8,6 @@ import { privateAPI } from "../../apis/user";
 export default function MyInfoBox({ content }) {
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
   const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
 
   localStorage.setItem("userimage", content.profileImage);
 
@@ -39,16 +38,16 @@ export default function MyInfoBox({ content }) {
     }
   };
 
+  useEffect(() => {
+    setNickname(content.username);
+  }, [content.username]);
+
   return (
     <MyInfo>
       <MyTitle>카카오 계정</MyTitle>
       <MyInput value={content.email} readOnly />
       <MyTitle2>닉네임</MyTitle2>
-      <MyInput
-        value={content.nickname}
-        maxLength={10}
-        onChange={handleNickname}
-      />
+      <MyInput value={nickname} maxLength={10} onChange={handleNickname} />
       <WarnSpace>
         <WarnImg src={WarnLogo} />
         <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
