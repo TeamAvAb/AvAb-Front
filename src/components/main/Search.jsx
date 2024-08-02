@@ -418,6 +418,7 @@ const KeywordBox = styled.div`
   align-items: center;
   padding-left: 20.5px;
   box-sizing: border-box;
+  overflow: scroll;
 `;
 
 const SelectedKeywords = styled.div`
@@ -427,6 +428,7 @@ const SelectedKeywords = styled.div`
 `;
 
 const SelectedKeyword = styled.div`
+  width: max-content;
   display: inline-flex;
   padding: 2px 10px;
   flex-direction: row;
