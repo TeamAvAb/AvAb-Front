@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { privateAPI } from "../apis/user";
 import plus from "../assets/header/Icon.svg";
 import AvAb from "../assets/header/AvAb.png";
 import ProfileImg from "../assets/header/profileImg.png";
@@ -44,7 +43,7 @@ export default function Header({
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      {isLoggedIn ? (
+      {localStorage.getItem("accessToken") ? (
         <LogoutImg src={ProfileImg} onClick={ToMypage} />
       ) : (
         <>
