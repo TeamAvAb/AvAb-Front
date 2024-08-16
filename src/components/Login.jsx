@@ -65,7 +65,7 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: var(--shadow, rgba(70, 76, 82, 0.5));
-  z-index: 10;
+  z-index: 999;
 `;
 const Modal = styled.div`
   display: flex;
