@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import NicknameChangeModal from "../modal/NicknameChangeModal";
 import LogoutP from "../../assets/mypage/LogoutImg.svg";
 import WarnLogo from "../../assets/mypage/WarnLogo.svg";
 import { privateAPI } from "../../apis/user";
 
 export default function MyInfoBox({ content }) {
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
+  const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
   const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  useEffect(() => {
-    if (content.email) {
-      setNickname(content.nickname);
-      setEmail(content.email);
-    } else {
-      setEmail("");
-      setNickname("");
-    }
-  }, []);
+
   localStorage.setItem("userimage", content.profileImage);
 
   const openGoOututModal = () => {
@@ -37,27 +30,24 @@ export default function MyInfoBox({ content }) {
       username: nickname,
     });
     if (response.status === 200) {
-      // 요청이 성공하면 상태 업데이트
       console.log(response.data);
       setNickname(response.data.result.username);
-      alert("저장되었습니다.");
+      setIsNicknameChangeModal(true);
     } else {
-      // 요청이 실패하면 에러 처리
       console.log(response.data);
     }
   };
 
+  useEffect(() => {
+    setNickname(content.username);
+  }, [content.username]);
+
   return (
     <MyInfo>
       <MyTitle>카카오 계정</MyTitle>
-      <MyInput value={email} placeholder="이메일" readOnly />
+      <MyInput value={content.email} readOnly />
       <MyTitle2>닉네임</MyTitle2>
-      <MyInput
-        value={nickname}
-        placeholder="닉네임"
-        maxLength={10}
-        onChange={handleNickname}
-      />
+      <MyInput value={nickname} maxLength={10} onChange={handleNickname} />
       <WarnSpace>
         <WarnImg src={WarnLogo} />
         <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
@@ -78,6 +68,9 @@ export default function MyInfoBox({ content }) {
             </ModalBut>
           </ModalContent>
         </LogoutModal>
+      )}
+      {isNicknameChangeModalOpen && (
+        <NicknameChangeModal handleModal={setIsNicknameChangeModal} />
       )}
     </MyInfo>
   );

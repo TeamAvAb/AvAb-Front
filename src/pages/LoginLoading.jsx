@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { publicAPI } from "../apis/user";
-import { PacmanLoader } from "react-spinners";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -30,20 +29,14 @@ export default function LoginLoading({ handleLogin }) {
   };
 
   return (
-    <Loading>
-      <PacmanLoader />
-      <div style={{ fontSize: "22px", textAlign: "center" }}>
-        로그인 중입니다 <br /> 잠시만 기다려주세요
-      </div>
-    </Loading>
+    <LoadingSpinner
+      comment={
+        <span>
+          로그인 중입니다.
+          <br />
+          잠시만 기다려주세요.
+        </span>
+      }
+    />
   );
 }
-
-const Loading = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-`;

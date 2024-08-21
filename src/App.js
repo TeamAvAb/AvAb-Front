@@ -39,7 +39,7 @@ function App() {
       {/* 마이 페이지 내 정보 */}
       <Route
         path="/mypage/myinfo"
-        element={<MyPage handleLogin={setIsLoggedIn} />}
+        element={<MyPage handleLogin={setIsLoggedIn} isLoggedIn={isLoggedIn} />}
       />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
       <Route
