@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 import { privateAPI, publicAPI } from "../apis/user";
 import Search from "../components/main/Search";
-import Recreation from "../components/Search/Recreation";
+import Recreation from "../components/main/Recreation";
 import Pagination from "../components/pagination/Pagination";
-
+import SortControl from "../components/SortControl";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
 
 export default function Main({}) {
   const location = useLocation();
-  const param = location.search;
+  const param = location.search + "&";
 
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
@@ -21,35 +21,47 @@ export default function Main({}) {
   const [currentPage, setCurrentPage] = useState(0);
   //전체 페이지 수
   const [pages, setPages] = useState(1);
+  // 정렬 옵션
+  const [order, setOrder] = useState("RECENT");
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const requestURL = `/api/recreations/search`;
+
     const call = async () => {
       setLoading(true);
       try {
         if (location.search === "") {
           if (localStorage.getItem("accessToken")) {
             const response = await privateAPI.get(
-              `/api/recreations?page=${currentPage}`
+              `/api/recreations?page=${currentPage}&sortBy=${order}`
             );
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
             const response = await publicAPI.get(
-              `/api/recreations?page=${currentPage}`
+              `/api/recreations?page=${currentPage}&sortBy=${order}`
             );
+            console.log("a");
+            console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           }
         } else {
           if (localStorage.getItem("accessToken")) {
-            const response = await privateAPI.get(requestURL + param);
+            const response = await privateAPI.get(
+              requestURL + param + `sortBy=${order}`
+            );
+            console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
-            const response = await publicAPI.get(requestURL + param);
+            const response = await publicAPI.get(
+              requestURL + param + `sortBy=${order}`
+            );
+            console.log("b");
+            console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           }
@@ -60,20 +72,20 @@ export default function Main({}) {
       }
     };
     call();
-  }, [location, currentPage]);
+  }, [location, currentPage, order]);
   return (
     <>
       <Container>
         <Recommend />
         <Search />
         <Popular>
-          <PopularHeader>레크레이션 찾기</PopularHeader>
-          {/* <RecreationMain> */}
-          {datas.length !== 0 ? (
-            <RecreationWrapper>
-              {datas && datas.map((data) => <Recreation content={data} />)}
-            </RecreationWrapper>
-          ) : (
+          <ResultHeaderContainer>
+            <ResultHeader>레크레이션 찾기</ResultHeader>
+            <SortControl setOption={setOrder} selectedOption={order} />
+          </ResultHeaderContainer>
+          {loading ? (
+            <Loading>로딩중</Loading>
+          ) : datas.length === 0 ? (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
@@ -85,7 +97,12 @@ export default function Main({}) {
                 </div>
               </MyFlowNoneDetail>
             </MyFlowNoneBox>
-          )}
+          ) : null}
+          {datas.length !== 0 ? (
+            <RecreationWrapper>
+              {datas && datas.map((data) => <Recreation content={data} />)}
+            </RecreationWrapper>
+          ) : null}
           {/* </RecreationMain> */}
           <Pagination
             currentPage={currentPage}
@@ -114,13 +131,20 @@ const Recommend = styled.div`
 `;
 
 const Popular = styled.div`
-  width: 957px;
+  width: 1363px;
   margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-const PopularHeader = styled.div`
+const ResultHeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 55px;
+`;
+const ResultHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -156,4 +180,10 @@ const MyFlowNoneDetail = styled.div`
   width: 100%;
   margin-top: 40px;
   text-align: center;
+`;
+
+const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
