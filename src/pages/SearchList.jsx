@@ -8,6 +8,7 @@ import Recreation from "../components/main/Recreation";
 import Pagination from "../components/pagination/Pagination";
 import SortControl from "../components/SortControl";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Main({}) {
   const location = useLocation();
@@ -84,7 +85,15 @@ export default function Main({}) {
             <SortControl setOption={setOrder} selectedOption={order} />
           </ResultHeaderContainer>
           {loading ? (
-            <Loading>로딩중</Loading>
+            <LoadingSpinner
+              comment={
+                <span>
+                  레크레이션을 불러오고 있습니다.
+                  <br />
+                  잠시만 기다려주세요.
+                </span>
+              }
+            />
           ) : datas.length === 0 ? (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
