@@ -10,7 +10,7 @@ import Scrap from "../assets/moreflow/scrap.png";
 import Scrap2 from "../assets/moreflow/scrap2.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-
+import { Helmet } from "react-helmet";
 const PurposeList = {
   MT: "MT",
   GATHERING: "모임",
@@ -118,6 +118,13 @@ export default function MoreWatchFlow() {
   return (
     data.length !== 0 && (
       <div style={{ backgroundColor: "#E9EBED" }}>
+        <Helmet>
+          <title>{`${data.flowDetail.title} - AvAb | 레크레이션 플로우 공유`}</title>
+          <meta
+            name="description"
+            content={`${data.flowDetail.title} 플로우에 대한 상세 정보입니다. AvAb에서 다양한 레크레이션 정보를 확인하고, 자신만의 플로우를 만들어 공유하세요.`}
+          />
+        </Helmet>
         {/* 모달창 */}
         {modal ? (
           <ModalContainer>
@@ -136,7 +143,9 @@ export default function MoreWatchFlow() {
                 {share ? (
                   <AfterCopyBtn>복사 완료</AfterCopyBtn>
                 ) : (
-                  <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
+                  <BeforeCopyBtn onClick={ShareBtn}>
+                    링크 복사하기
+                  </BeforeCopyBtn>
                 )}
               </ModalBoxDetail>
             </ModalBox>
@@ -155,7 +164,11 @@ export default function MoreWatchFlow() {
             <DetailTitleBox>
               <KeyWord>{PurposeList[data.flowDetail.purposeList[0]]}</KeyWord>
               <ScrapImg onClick={() => DoScrap(id)}>
-                {data.flowDetail.isFavorite ? <img src={Scrap2} alt="스크랩" /> : <img src={Scrap} alt="스크랩" />}
+                {data.flowDetail.isFavorite ? (
+                  <img src={Scrap2} alt="스크랩" />
+                ) : (
+                  <img src={Scrap} alt="스크랩" />
+                )}
               </ScrapImg>
             </DetailTitleBox>
             <FlowName>{data.flowDetail.title}</FlowName>
@@ -164,25 +177,41 @@ export default function MoreWatchFlow() {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={Time}
+                    alt="시간"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={View}
+                    alt="조회수"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                  <img
+                    src={Write}
+                    alt="작성자"
+                    style={{ width: "35px", height: "35px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
+                  <img
+                    src={User}
+                    alt="사용자수"
+                    style={{ width: "24px", height: "24px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
@@ -207,7 +236,9 @@ export default function MoreWatchFlow() {
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
                   <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
-                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(", ")}
+                    {data.flowDetail.purposeList
+                      .map((p) => PurposeList[p])
+                      .join(", ")}
                   </FlowInfo2>
                 </div>
                 <div style={{ display: "flex" }}>

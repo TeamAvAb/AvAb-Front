@@ -46,10 +46,73 @@ export default function RecreationDetail() {
   return (
     <>
       <Helmet>
-        <title>{recreationData.title} - 레크리에이션 상세정보</title>
-        <meta name="description" content={recreationData.description} />
-        <meta property="og:title" content={recreationData.title} />
-        <meta property="og:description" content={recreationData.description} />
+        <title>{recreationData.title} - 레크레이션 상세정보</title>
+        <meta
+          name="description"
+          content={`레크레이션 정보: ${
+            recreationData.summary
+          }. ${recreationData.purposeList
+            .map((purpose) => {
+              const purposeMap = {
+                WORKSHOP: "워크샵",
+                SPORTS_DAY: "체육대회",
+                MT: "MT",
+                GATHERING: "모임",
+                RETREAT: "수련회",
+              };
+              return purposeMap[purpose] || purpose;
+            })
+            .join(", ")} 진행 시간: ${recreationData.playTime}분`}
+        />
+        <meta
+          name="keywords"
+          content={`레크레이션, ${
+            recreationData.title
+          }, ${recreationData.keywordList
+            .map((keyword) => {
+              const keywordMap = {
+                QUICKNESS: "순발력",
+                SENSIBLE: "센스",
+                COOPERATIVE: "창의력",
+                ACTIVE: "협동",
+                BRAIN: "액티브",
+                PSYCHOLOGICAL: "두뇌",
+                LUCK: "심리",
+                COMMON_SENSE: "행운",
+                PREPARATION: "상식",
+              };
+              return keywordMap[keyword] || keyword;
+            })
+            .join(", ")}`}
+        />
+        <meta
+          property="og:title"
+          content={`${recreationData.title} - 레크레이션 상세정보`}
+        />
+        <meta
+          property="og:description"
+          content={`레크레이션 정보: ${
+            recreationData.summary
+          }. ${recreationData.purposeList
+            .map((purpose) => {
+              const purposeMap = {
+                WORKSHOP: "워크샵",
+                SPORTS_DAY: "체육대회",
+                MT: "MT",
+                GATHERING: "모임",
+                RETREAT: "수련회",
+              };
+              return purposeMap[purpose] || purpose;
+            })
+            .join(", ")} 진행 시간: ${recreationData.playTime}분`}
+        />
+        <meta property="og:image" content={recreationData.imageUrl} />
+        <meta
+          property="og:url"
+          content={`https://teamavab.github.io/AvAb-Front/recreation/${recreationData.recreationId}`}
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="AvAb 아브아브" />
       </Helmet>
       <RecreationTopInfo recreationData={recreationData} />
       <RecreationMenuBar scrollRefs={scrollRefs} />
