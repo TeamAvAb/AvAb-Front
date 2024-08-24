@@ -5,6 +5,7 @@ import styled from "styled-components";
 import MyInfoBox from "../components/mypage/MyInfoBox";
 import LogoutP from "../assets/mypage/LogoutImg.svg";
 import { privateAPI } from "../apis/user";
+import { Helmet } from "react-helmet";
 
 export default function Mypage({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -57,6 +58,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           setDatas([]);
           setLoading(false);
         }
+
       } catch (error) {
         console.log("내 정보 로드 요청 에러 : ", error);
       }
@@ -66,6 +68,18 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
 
   return (
     <Container>
+      <Helmet>
+        <title>AvAb | 마이페이지 - 내 정보 관리</title>
+        <meta
+          name="description"
+          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
+        />
+        <meta property="og:title" content="마이페이지 - 내 정보 관리" />
+        <meta
+          property="og:description"
+          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
+        />
+      </Helmet>
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>

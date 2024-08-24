@@ -8,9 +8,13 @@ import Recreation from "../components/main/Recreation";
 import Pagination from "../components/pagination/Pagination";
 import SortControl from "../components/SortControl";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
+
+import { Helmet } from "react-helmet";
+
 import LoadingSpinner from "../components/LoadingSpinner";
 
-export default function Main({}) {
+
+export default function SearchList({}) {
   const location = useLocation();
   const param = location.search + "&";
 
@@ -76,6 +80,18 @@ export default function Main({}) {
   }, [location, currentPage, order]);
   return (
     <>
+      <Helmet>
+        <title>AvAb | 레크레이션 검색 결과</title>
+        <meta
+          name="description"
+          content="다양한 레크레이션을 검색하고 찾을 수 있습니다. 원하는 레크레이션을 찾아보세요."
+        />
+        <meta property="og:title" content="레크레이션 검색 결과" />
+        <meta
+          property="og:description"
+          content="다양한 레크레이션을 검색하고 찾을 수 있습니다. 원하는 레크레이션을 찾아보세요."
+        />
+      </Helmet>
       <Container>
         <Recommend />
         <Search />
