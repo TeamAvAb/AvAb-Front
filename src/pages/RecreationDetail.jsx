@@ -8,6 +8,7 @@ import RecreationFlow from "../components/recreation/RecreationFlow";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Helmet } from "react-helmet"; // react-helmet 임포트
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -44,6 +45,12 @@ export default function RecreationDetail() {
 
   return (
     <>
+      <Helmet>
+        <title>{recreationData.title} - 레크리에이션 상세정보</title>
+        <meta name="description" content={recreationData.description} />
+        <meta property="og:title" content={recreationData.title} />
+        <meta property="og:description" content={recreationData.description} />
+      </Helmet>
       <RecreationTopInfo recreationData={recreationData} />
       <RecreationMenuBar scrollRefs={scrollRefs} />
       <RecreationDetailContainer>
