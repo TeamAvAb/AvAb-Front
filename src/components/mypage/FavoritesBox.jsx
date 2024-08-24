@@ -66,7 +66,7 @@ export default function FavoritesBox({ content }) {
               {keywordParam[content.keywordList[2]]}
             </Section2>
             <Section3 src={starIcon} />
-            <Section4>{content.totalStars}</Section4>
+            <Section4>{parseFloat(content.totalStars).toFixed(1)}</Section4>
           </SectionWrap>
         </Explain>
       </RecreationExplain>
@@ -93,7 +93,7 @@ const Hashtagging = styled.div`
   justify-content: center;
 `;
 
-const RecreationExplain = styled(Link)`
+const RecreationExplain = styled.div`
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -105,6 +105,7 @@ const RecreationExplain = styled(Link)`
   border-radius: 15px;
   box-shadow: 1px 1px 8px #abaaae inset;
   margin-bottom: 20px;
+  color: #1b1d1f;
 `;
 
 const ImgSpace = styled.div`
@@ -130,7 +131,8 @@ const Favorite = styled(HeartImg)`
   fill: ${(props) => (props.favorite === true ? "#E9EBED" : "#FFAA29")};
 `;
 
-const Explain = styled.div`
+const Explain = styled(Link)`
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   justify-content: center;

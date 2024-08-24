@@ -8,7 +8,11 @@ import RecreationFlow from "../components/recreation/RecreationFlow";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 import { Helmet } from "react-helmet"; // react-helmet 임포트
+
+import { publicAPI } from "../apis/user";
+
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -24,8 +28,8 @@ export default function RecreationDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://dev.avab.shop/api/recreations/${recreationId}`
+        const response = await publicAPI.get(
+          `/api/recreations/${recreationId}`
         );
         setRecreationData(response.data.result);
 

@@ -25,7 +25,8 @@ export default function Search() {
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
-  // 더미 데이터
+
+  // 검색 옵션
   const keywordOptions = [
     { id: 0, value: "협동", param: "COOPERATIVE" },
     { id: 1, value: "순발력", param: "QUICKNESS" },
@@ -60,7 +61,7 @@ export default function Search() {
     { id: 2, value: "20대", param: "TWENTIES" },
     { id: 3, value: "30대", param: "THIRTIES" },
     { id: 4, value: "40대", param: "FORTIES" },
-    { id: 5, value: "50대 이상", param: "FIFTIES" },
+    { id: 5, value: "50대 이상", param: "OVER_FIFTIES" },
   ];
 
   // 필터 더보기 메뉴
@@ -418,6 +419,10 @@ const KeywordBox = styled.div`
   align-items: center;
   padding-left: 20.5px;
   box-sizing: border-box;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SelectedKeywords = styled.div`
@@ -427,6 +432,7 @@ const SelectedKeywords = styled.div`
 `;
 
 const SelectedKeyword = styled.div`
+  width: max-content;
   display: inline-flex;
   padding: 2px 10px;
   flex-direction: row;

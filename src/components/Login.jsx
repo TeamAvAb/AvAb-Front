@@ -11,7 +11,7 @@ export default function Login({ handleLoginStatus, handleLoginModal }) {
   const [temporaryClose, setTemporaryClose] = useState(false);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=https://teamavab.github.io/AvAb-Front/api/auth/login/kakao&response_type=code&state=${pathname}`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
@@ -65,7 +65,7 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: var(--shadow, rgba(70, 76, 82, 0.5));
-  z-index: 10;
+  z-index: 999;
 `;
 const Modal = styled.div`
   display: flex;

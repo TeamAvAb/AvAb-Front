@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { privateAPI } from "../apis/user";
 import plus from "../assets/header/Icon.svg";
 import AvAb from "../assets/header/AvAb.png";
 import ProfileImg from "../assets/header/profileImg.png";
@@ -31,39 +30,20 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
-    navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (localStorage.getItem("accessToken")) {
+      navigate(`/mypage/myinfo`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else alert("로그인이 필요한 페이지입니다.");
   };
-
-  // const UserImg = localStorage.getItem("userimage");
-
-  // 데이터 가져오기
-  const [datas, setDatas] = useState([]);
-  // 데이터 불러오는 동안 로딩
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      try {
-        const response = await privateAPI.get(`/api/users/me`);
-        setDatas(response.data.result);
-        setLoading(false);
-      } catch (error) {
-        console.log("내 정보 로드 요청 에러 : ", error);
-      }
-    };
-    call();
-  }, []);
 
   return (
     <HeaderWrap>
-      <LogoImg src={AvAb} />
+      <LogoImg src={AvAb} onClick={ToMainpage} />
       <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      {isLoggedIn ? (
+      {localStorage.getItem("accessToken") ? (
         <LogoutImg src={ProfileImg} onClick={ToMypage} />
       ) : (
         <>

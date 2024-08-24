@@ -33,6 +33,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
       localStorage.clear();
+      navigate("/");
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
@@ -49,9 +50,15 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     const call = async () => {
       setLoading(true);
       try {
-        const response = await privateAPI.get(`/api/users/me`);
-        setDatas(response.data.result);
-        setLoading(false);
+        if (isLoggedIn) {
+          const response = await privateAPI.get(`/api/users/me`);
+          setDatas(response.data.result);
+          setLoading(false);
+        } else {
+          setDatas([]);
+          setLoading(false);
+        }
+
       } catch (error) {
         console.log("내 정보 로드 요청 에러 : ", error);
       }

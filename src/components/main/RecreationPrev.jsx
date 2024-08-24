@@ -85,6 +85,7 @@ const Categories = styled.div`
   flex-direction: column;
   align-items: center;
   padding-bottom: 69px;
+  cursor: pointer;
 `;
 
 const Hashtag = styled.div`
