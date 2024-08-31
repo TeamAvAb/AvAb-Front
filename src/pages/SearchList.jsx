@@ -13,7 +13,6 @@ import { Helmet } from "react-helmet";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 
-
 export default function SearchList({}) {
   const location = useLocation();
   const param = location.search + "&";
@@ -98,7 +97,11 @@ export default function SearchList({}) {
         <Popular>
           <ResultHeaderContainer>
             <ResultHeader>레크레이션 찾기</ResultHeader>
-            <SortControl setOption={setOrder} selectedOption={order} />
+            <SortControl
+              setOption={setOrder}
+              selectedOption={order}
+              marginright="43px"
+            />
           </ResultHeaderContainer>
           {loading ? (
             <LoadingSpinner

@@ -2,35 +2,26 @@ import React from "react";
 import useDetectClose from "../hooks/main/useDetectClose";
 import arrow from "../assets/searchlist/dropdownArrow.svg";
 import styled, { css } from "styled-components";
-export default function SortControl({ setOption, selectedOption }) {
+export default function SortControl({
+  setOption,
+  selectedOption,
+  marginright,
+}) {
   const [dropdownOpen, containerRef, containerHandler] = useDetectClose(false);
   const optionConverter = (option) => {
     if (option === "LIKE") return "인기순";
     else if (option === "VIEW") return "조회 많은순";
     else if (option === "RECENT") return "최신순";
+    else if (option === "SCRAP") return "스크랩순";
   };
   return (
-    <DropdownContainer>
+    <DropdownContainer marginright={marginright}>
       <Menu isdropped={dropdownOpen}>
         <Ul>
-          <Li
-            onClick={() => setOption("LIKE")}
-            selected={selectedOption === "LIKE"}
-          >
-            인기순
-          </Li>
-          <Li
-            onClick={() => setOption("VIEW")}
-            selected={selectedOption === "VIEW"}
-          >
-            조회 많은순
-          </Li>
-          <Li
-            onClick={() => setOption("RECENT")}
-            selected={selectedOption === "RECENT"}
-          >
-            최신순
-          </Li>
+          <Li onClick={() => setOption("LIKE")}>인기순</Li>
+          <Li onClick={() => setOption("VIEW")}>조회 많은순</Li>
+          <Li onClick={() => setOption("RECENT")}>최신순</Li>
+          <Li onClick={() => setOption("SCRAP")}>스크랩순</Li>
         </Ul>
       </Menu>
       <DropdownButton ref={containerRef} onClick={containerHandler}>
@@ -48,7 +39,8 @@ const DropdownContainer = styled.div`
   font-style: normal;
   font-weight: 400;
   margin-left: auto;
-  margin-right: 43px;
+  margin-right: ${(props) => (props.marginright ? props.marginright : "43px")};
+  z-index: 1;
 `;
 
 const DropdownButton = styled.button`
@@ -122,10 +114,7 @@ const Ul = styled.ul`
 
 const Li = styled.button`
   width: 100%;
-  color: ${(props) =>
-    props.selected
-      ? "var(--gray-scale-464-c-52, #1B1D1F)"
-      : "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"};
+  color: #9fa4a9;
   border: none;
   background: #fff;
 
@@ -135,4 +124,13 @@ const Li = styled.button`
   font-style: normal;
   font-weight: ${(props) => (props.selected ? 700 : 500)};
   line-height: normal;
+
+  &:hover {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #1b1d1f;
+  }
 `;
