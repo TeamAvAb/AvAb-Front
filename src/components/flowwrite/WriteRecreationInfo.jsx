@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import fix from "../../assets/flowwrite/fix_flow_write.png";
 import deleteIcon from "../../assets/flowwrite/deleteIcon.png";

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
-import axios from "axios";
 import { privateAPI } from "../../apis/user";
 
 export default function RecreationContentBox({

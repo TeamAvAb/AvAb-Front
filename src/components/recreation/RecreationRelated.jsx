@@ -1,15 +1,14 @@
 import styled from "styled-components";
 import React, { forwardRef, useState, useEffect } from "react";
 import RelatedRecreationBox from "./RelatedRecreationBox";
-import axios from "axios";
-
+import { publicAPI } from "../../apis/user";
 const RecreationRelated = forwardRef(({ recreationId }, ref) => {
   const [relatedData, setRelatedData] = useState([]);
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(
-          `https://dev.avab.shop/api/recreations/${recreationId}/related/recreations`
+        const response = await publicAPI.get(
+          `/api/recreations/${recreationId}/related/recreations`
         );
         setRelatedData(response.data.result);
       } catch (error) {
@@ -19,7 +18,6 @@ const RecreationRelated = forwardRef(({ recreationId }, ref) => {
 
     fetchReviews();
   }, [recreationId]);
-
   return (
     <RecreationRelatedContainer ref={ref}>
       <TitleText>연관 레크레이션</TitleText>

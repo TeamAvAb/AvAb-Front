@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { forwardRef, useEffect, useState } from "react";
 import FlowBox from "./FlowBox";
-import axios from "axios";
+import { publicAPI } from "../../apis/user";
 const RecreationFlow = forwardRef(({ recreationId }, ref) => {
   const [flowData, setFlowData] = useState(null); // 플로우 정보
   const [flowSecondData, setFlowSecondData] = useState(null);
@@ -11,8 +11,8 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
   useEffect(() => {
     const fetchFlows = async () => {
       try {
-        const response = await axios.get(
-          `https://dev.avab.shop/api/recreations/${recreationId}/related/flows`
+        const response = await publicAPI.get(
+          `/api/recreations/${recreationId}/related/flows`
         );
 
         setFlowData(response.data.result[0].flowDetail);
@@ -22,7 +22,7 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
         console.log(response.data.result[1].flowDetail);
 
         setFlowFirstRecreations(response.data.result[0].recreations);
-        //console.log("response.data.result[0]",response.data.result[0].recreations);
+        // console.log("response.data.result[0]", response.data.result[0].recreations);
 
         setFlowSecondRecreations(response.data.result[1].recreations);
         // console.log("response.data.result[1].recreations", response.data);
@@ -33,6 +33,7 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
 
     fetchFlows();
   }, [recreationId]);
+
   return (
     <RecreationFlowContainer ref={ref}>
       <TitleText>연관 플로우</TitleText>
