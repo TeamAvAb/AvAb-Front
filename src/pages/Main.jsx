@@ -128,10 +128,7 @@ export default function Main() {
           content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
         />
         <meta property="og:image" content={characterImg} />
-        <meta
-          property="og:url"
-          content="https://teamavab.github.io/AvAb-Front"
-        />
+        <meta property="og:url" content="http://avab.site" />
         <meta property="og:type" content="website" />
       </Helmet>
       <Container>
