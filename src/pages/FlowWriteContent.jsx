@@ -259,7 +259,7 @@ export default function FlowWriteContent() {
   const handleAddScrapFlow = async () => {
     try {
       console.log("API 호출 전");
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=0`, {
+      const response = await axios.get(`http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/users/me/favorites/recreations?page=0`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${testJWT}`,
