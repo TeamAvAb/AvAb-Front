@@ -13,7 +13,6 @@ import { Helmet } from "react-helmet"; // react-helmet 임포트
 
 import { publicAPI } from "../apis/user";
 
-
 export default function RecreationDetail() {
   const { recreationId } = useParams();
   const infoRef = useRef(null);
@@ -113,7 +112,7 @@ export default function RecreationDetail() {
         <meta property="og:image" content={recreationData.imageUrl} />
         <meta
           property="og:url"
-          content={`https://teamavab.github.io/AvAb-Front/recreation/${recreationData.recreationId}`}
+          content={`http://avab.site/recreation/${recreationData.recreationId}`}
         />
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="AvAb 아브아브" />
