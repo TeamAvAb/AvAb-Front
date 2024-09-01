@@ -108,6 +108,29 @@ export default function FlowWriteContent() {
     PREPARATION: "준비물",
   };
 
+  // 정렬을 위한 함수
+  const ageOrder = (age) => {
+    switch (age) {
+      case "10대 미만":
+        return 0;
+      case "10대":
+        return 1;
+      case "20대":
+        return 2;
+      case "30대":
+        return 3;
+      case "40대":
+        return 4;
+      case "50대 이상":
+        return 5;
+      default:
+        return 6;
+    }
+  };
+
+  // 연령대 정렬
+  const sortedAges = selectedAges.slice().sort((a, b) => ageOrder(a) - ageOrder(b));
+
   const handleNextClick = () => {
     if (flowTitle.trim() === "") {
       setTitleModal(<NoTitle onClose={() => setTitleModal(null)} />);
@@ -163,7 +186,7 @@ export default function FlowWriteContent() {
         }
         const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
 
-        const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
+        const response = await axios.get("http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended", {
           params: {
             playTime: savedPlayTime,
             purpose: englishKeywords.join(","),
@@ -211,7 +234,7 @@ export default function FlowWriteContent() {
       }
       const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
       // API를 호출하여 데이터 가져오기
-      const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
+      const response = await axios.get("http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended", {
         params: {
           playTime: savedPlayTime,
           purpose: englishKeywords.join(","),
@@ -380,10 +403,8 @@ export default function FlowWriteContent() {
                     >
                       목적
                     </div>
-                    <div style={{ listStyleType: "none" }}>
-                      {selectedKeywords.map((keyword, index) => (
-                        <li key={index}>{keyword}</li>
-                      ))}
+                    <div>
+                      {selectedKeywords.join(", ")}
                     </div>
                   </div>
                   <div style={{ display: "flex" }}>
@@ -415,11 +436,11 @@ export default function FlowWriteContent() {
                     >
                       키워드
                     </div>
-                    {selectedDetailKeywords.map((keyword, index) => (
-                      <div key={index} style={{ marginRight: "8px" }}>
-                        {DetailMappings[keyword]}
-                      </div>
-                    ))}
+                    <div>
+                      {selectedDetailKeywords
+                        .map((keyword) => DetailMappings[keyword])
+                        .join(", ")}
+                    </div>
                   </div>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
                     <div
@@ -446,21 +467,7 @@ export default function FlowWriteContent() {
                       연령대
                     </div>
                     <div>
-                      {selectedAges
-                        .map((age) =>
-                          age === "10대 미만"
-                            ? "10대 미만"
-                            : age === "10대"
-                            ? "10대"
-                            : age === "20대"
-                            ? "20대"
-                            : age === "30대"
-                            ? "30대"
-                            : age === "40대"
-                            ? "40대"
-                            : "50대 이상"
-                        )
-                        .join(", ")}
+                      {sortedAges.join(", ")}
                     </div>
                   </div>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
