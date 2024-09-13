@@ -6,22 +6,21 @@ export default function SortControl({
   setOption,
   selectedOption,
   marginright,
+  isFlow,
 }) {
   const [dropdownOpen, containerRef, containerHandler] = useDetectClose(false);
   const optionConverter = (option) => {
-    if (option === "LIKE") return "인기순";
+    if (option === "LIKE" || option === "SCRAP") return "인기순";
     else if (option === "VIEW") return "조회 많은순";
     else if (option === "RECENT") return "최신순";
-    else if (option === "SCRAP") return "스크랩순";
   };
   return (
     <DropdownContainer marginright={marginright}>
       <Menu isdropped={dropdownOpen}>
         <Ul>
-          <Li onClick={() => setOption("LIKE")}>인기순</Li>
+          <Li onClick={() => setOption(isFlow ? "SCRAP" : "LIKE")}>인기순</Li>
           <Li onClick={() => setOption("VIEW")}>조회 많은순</Li>
           <Li onClick={() => setOption("RECENT")}>최신순</Li>
-          <Li onClick={() => setOption("SCRAP")}>스크랩순</Li>
         </Ul>
       </Menu>
       <DropdownButton ref={containerRef} onClick={containerHandler}>

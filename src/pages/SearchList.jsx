@@ -101,6 +101,7 @@ export default function SearchList({}) {
               setOption={setOrder}
               selectedOption={order}
               marginright="43px"
+              isFlow={false}
             />
           </ResultHeaderContainer>
           {loading ? (

@@ -89,6 +89,7 @@ export default function WatchFlow() {
               setOption={setOrder}
               selectedOption={order}
               marginright="24px"
+              isFlow={true}
             />
           </ContainerHeader>
           {/* 플로우 데이터 불러온 부분 - Component */}
