@@ -12,7 +12,7 @@ export default function Login({ handleLoginModal }) {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   let REDIRECT_URI = null;
 
-  if (window.location == "http://localhost:3000/")
+  if (window.location.href.startsWith("http://localhost:3000/"))
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
   else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
 

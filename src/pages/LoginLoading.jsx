@@ -16,7 +16,7 @@ export default function LoginLoading({ handleLogin }) {
   const kakaoLogin = async () => {
     try {
       let response;
-      if (window.location.origin == "http://localhost:3000") {
+      if (window.location.href.startsWith("http://localhost:3000")) {
         response = await publicAPI.get(
           `/api/auth/login/kakao/local?code=${code}`
         );
