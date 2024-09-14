@@ -11,7 +11,7 @@ export default function SortControl({ setOption, selectedOption }) {
   };
   return (
     <DropdownContainer>
-      <Menu isdropped={dropdownOpen}>
+      <Menu $isdropped={dropdownOpen}>
         <Ul>
           <Li
             onClick={() => setOption("LIKE")}

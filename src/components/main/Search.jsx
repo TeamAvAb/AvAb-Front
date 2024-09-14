@@ -182,7 +182,7 @@ export default function Search() {
         />
       </SearchWordBox>
       <SearchBox>
-        <Filters menu={menu.toString()}>
+        <Filters $menu={menu.toString()}>
           {/* 키워드 */}
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
@@ -230,7 +230,7 @@ export default function Search() {
           </Filter>
         </Filters>
         <Filters>
-          <More isopen={menu}>
+          <More $isopen={menu}>
             <div
               style={{
                 width: "100%",
@@ -270,7 +270,7 @@ export default function Search() {
             </Filter>
 
             {/* 연령대 */}
-            <Filter last="true">
+            <Filter $last="true">
               <LabelName htmlFor="age">연령대</LabelName>
               <RadioInput
                 content={ageOptions}

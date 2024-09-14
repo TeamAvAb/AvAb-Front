@@ -13,7 +13,6 @@ import { Helmet } from "react-helmet";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 
-
 export default function SearchList({}) {
   const location = useLocation();
   const param = location.search + "&";
@@ -125,7 +124,10 @@ export default function SearchList({}) {
           ) : null}
           {datas.length !== 0 ? (
             <RecreationWrapper>
-              {datas && datas.map((data) => <Recreation content={data} />)}
+              {datas &&
+                datas.map((data) => (
+                  <Recreation content={data} key={data.id} />
+                ))}
             </RecreationWrapper>
           ) : null}
           {/* </RecreationMain> */}

@@ -22,8 +22,20 @@ export default function Pagination({ currentPage, pageNum, setCurrentPage }) {
       {/* 페이지 번호 */}
       {pageN.map((num) => {
         if (currentPage + 1 === num)
-          return <SelectedPageNumber onClick={() => setCurrentPage(num - 1)}>{num}</SelectedPageNumber>;
-        else return <PageNumber onClick={() => setCurrentPage(num - 1)}>{num}</PageNumber>;
+          return (
+            <SelectedPageNumber
+              key={num}
+              onClick={() => setCurrentPage(num - 1)}
+            >
+              {num}
+            </SelectedPageNumber>
+          );
+        else
+          return (
+            <PageNumber key={num} onClick={() => setCurrentPage(num - 1)}>
+              {num}
+            </PageNumber>
+          );
       })}
 
       {/* 오른쪽 버튼 */}
