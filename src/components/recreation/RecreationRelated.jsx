@@ -11,8 +11,9 @@ const RecreationRelated = forwardRef(({ recreationId }, ref) => {
           `/api/recreations/${recreationId}/related/recreations`
         );
         setRelatedData(response.data.result);
+        console.log("연관 레크레이션: ", response);
       } catch (error) {
-        console.error(error);
+        console.error("연관 레크레이션 오류: ", error);
       }
     };
 

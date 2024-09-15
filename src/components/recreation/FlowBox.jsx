@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
 import { ReactComponent as ScrapIcon } from "../../assets/recreation/scrapIcon.svg";
-import axios from "axios";
 import { privateAPI } from "../../apis/user";
 
 export default function FlowBox({
@@ -85,13 +84,15 @@ const FlowTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
   margin: 0px 150px 0px 85px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 `;
 
 const NumberBox = styled.div`
   display: inline-flex;
   width: 38px;
   height: 29px;
-  padding: 2px 28px;
+  padding: 2px 0px;
   justify-content: center;
   align-items: center;
   border-radius: 50px;
