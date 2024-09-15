@@ -5,6 +5,7 @@ import Flow from "../components/flow/FlowBox.jsx";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination.jsx";
 import { publicAPI, privateAPI } from "../apis/user.js";
+import SortControl from "../components/SortControl.jsx";
 
 export default function WatchFlow() {
   const navigate = useNavigate();
@@ -31,17 +32,22 @@ export default function WatchFlow() {
   const [pages, setPages] = useState(1);
   // 스크랩 변화 감지 함수
   const [scrap, setScrap] = useState(false);
-
+  // 필터링 옵션
+  const [order, setOrder] = useState("RECENT");
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       if (localStorage.getItem("accessToken")) {
-        const response = await privateAPI.get(`/api/flows?page=${currentPage}`);
+        const response = await privateAPI.get(
+          `/api/flows?page=${currentPage}&sortBy=${order}`
+        );
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       } else {
-        const response = await publicAPI.get(`/api/flows?page=${currentPage}`);
+        const response = await publicAPI.get(
+          `/api/flows?page=${currentPage}&sortBy=${order}`
+        );
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       }
@@ -49,7 +55,7 @@ export default function WatchFlow() {
     };
     fetchData();
     setScrap(false);
-  }, [currentPage, scrap]);
+  }, [currentPage, scrap, order]);
 
   useEffect(() => {
     console.log(datas);
@@ -70,15 +76,22 @@ export default function WatchFlow() {
       {/* 플로우 구경하기 */}
       <MyFlowContainer>
         <div>
-          <MyFlowBoxContainer>
-            <MyFlowBoxImage src={PenguinImg} />
-            <TitleBox>
-              <MyFlowBoxTitle onClick={moveToMakeFlow}>
-                일정플로우 만들기
-              </MyFlowBoxTitle>
-            </TitleBox>
-          </MyFlowBoxContainer>
-
+          <ContainerHeader>
+            <MyFlowBoxContainer>
+              <MyFlowBoxImage src={PenguinImg} />
+              <TitleBox>
+                <MyFlowBoxTitle onClick={moveToMakeFlow}>
+                  일정플로우 만들기
+                </MyFlowBoxTitle>
+              </TitleBox>
+            </MyFlowBoxContainer>
+            <SortControl
+              setOption={setOrder}
+              selectedOption={order}
+              marginright="24px"
+              isFlow={true}
+            />
+          </ContainerHeader>
           {/* 플로우 데이터 불러온 부분 - Component */}
           <WatchFlowBoxParent>
             {datas && <Flow datas={datas} setScrap={setScrap} />}
@@ -142,6 +155,11 @@ const MyFlowContainer = styled.div`
   flex-direction: column;
   align-items: center;
   border-right: 0.5px solid #cacdd2;
+`;
+const ContainerHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 // 일정플로우 만들기 부분
