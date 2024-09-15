@@ -15,9 +15,15 @@ export default function LoginLoading({ handleLogin }) {
 
   const kakaoLogin = async () => {
     try {
-      const response = await publicAPI.get(
-        `/api/auth/login/kakao?code=${code}`
-      );
+      let response;
+      if (window.location.href.startsWith("http://localhost:3000")) {
+        response = await publicAPI.get(
+          `/api/auth/login/kakao/local?code=${code}`
+        );
+      } else {
+        response = await publicAPI.get(`/api/auth/login/kakao?code=${code}`);
+      }
+
       localStorage.setItem("accessToken", response.data.result.accessToken);
       localStorage.setItem("refreshToken", response.data.result.refreshToken);
       localStorage.setItem("userId", response.data.result.userId);

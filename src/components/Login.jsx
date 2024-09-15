@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/login_character.png";
@@ -6,12 +6,17 @@ import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
 import x from "../assets/main/x.svg";
 
-export default function Login({ handleLoginStatus, handleLoginModal }) {
+export default function Login({ handleLoginModal }) {
   const { pathname } = useLocation();
   const [temporaryClose, setTemporaryClose] = useState(false);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
+  let REDIRECT_URI = null;
+
+  if (window.location.href.startsWith("http://localhost:3000/"))
+    REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
+  else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+
+  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };

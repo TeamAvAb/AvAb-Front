@@ -15,7 +15,7 @@ import nextSlide from "../../assets/main/nextSlide.svg";
 import wholeSlide from "../../assets/main/wholeSlide.svg";
 import currentSlide from "../../assets/main/currentSlide.svg";
 
-export default function PopularCarousel({ content }) {
+export default function PopularCarousel() {
   const [data, setData] = useState();
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
@@ -60,15 +60,15 @@ export default function PopularCarousel({ content }) {
       <StyledSlider ref={slider} {...settings}>
         {data &&
           data.map((banner) => (
-            <div key={banner.index} style={{ width: "284px" }}>
+            <div key={banner.id} style={{ width: "284px" }}>
               <RecreationPrev content={banner} />
             </div>
           ))}
       </StyledSlider>
-      <SlideIndex index={slideIndex / 3 + 1}>
+      <SlideIndex $index={slideIndex / 3 + 1}>
         <ProgressBar>
           <WholeSlide src={wholeSlide} />
-          <CurrentSlide src={currentSlide} index={slideIndex / 3 + 1} />
+          <CurrentSlide src={currentSlide} $index={slideIndex / 3 + 1} />
         </ProgressBar>
         <SlideControl>
           <img

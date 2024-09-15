@@ -129,7 +129,10 @@ export default function SearchList({}) {
           ) : null}
           {datas.length !== 0 ? (
             <RecreationWrapper>
-              {datas && datas.map((data) => <Recreation content={data} />)}
+              {datas &&
+                datas.map((data) => (
+                  <Recreation content={data} key={data.id} />
+                ))}
             </RecreationWrapper>
           ) : null}
           {/* </RecreationMain> */}

@@ -66,7 +66,7 @@ export default function Recreation({ content }) {
             src={content.imageUrl}
             onClick={() => ToRecreationDetail(content.id)}
           />
-          <Favorite isFav={isFav} onClick={() => addToFavorite(content.id)} />
+          <Favorite $isfav={isFav} onClick={() => addToFavorite(content.id)} />
         </ImgSpace>
         <Explain onClick={() => ToRecreationDetail(content.id)}>
           <Section>자세히보기</Section>

@@ -51,7 +51,7 @@ export default function RecreationPrev({ content }) {
         <ImgSpace>
           <ExImg src={content.imageUrl}></ExImg>
           <Favorite
-            isFav={isFav}
+            $isfav={isFav}
             onClick={(e) => addToFavorite(e, content.id)}
           />
         </ImgSpace>

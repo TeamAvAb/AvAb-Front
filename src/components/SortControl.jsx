@@ -16,7 +16,8 @@ export default function SortControl({
   };
   return (
     <DropdownContainer marginright={marginright}>
-      <Menu isdropped={dropdownOpen}>
+      <Menu $isdropped={dropdownOpen}>
+
         <Ul>
           <Li onClick={() => setOption(isFlow ? "SCRAP" : "LIKE")}>인기순</Li>
           <Li onClick={() => setOption("VIEW")}>조회 많은순</Li>

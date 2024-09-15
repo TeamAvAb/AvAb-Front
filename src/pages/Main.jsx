@@ -163,7 +163,7 @@ export default function Main() {
               />
             </More>
           </PopularHeader>
-          <PopularCarousel content={recreationData} />
+          <PopularCarousel />
         </Popular>
       </Container>
       <Carousel content={banner} />
