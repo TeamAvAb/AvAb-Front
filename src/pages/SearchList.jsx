@@ -97,7 +97,12 @@ export default function SearchList({}) {
         <Popular>
           <ResultHeaderContainer>
             <ResultHeader>레크레이션 찾기</ResultHeader>
-            <SortControl setOption={setOrder} selectedOption={order} />
+            <SortControl
+              setOption={setOrder}
+              selectedOption={order}
+              marginright="43px"
+              isFlow={false}
+            />
           </ResultHeaderContainer>
           {loading ? (
             <LoadingSpinner
