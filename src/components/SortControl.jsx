@@ -15,9 +15,8 @@ export default function SortControl({
     else if (option === "RECENT") return "최신순";
   };
   return (
-    <DropdownContainer marginright={marginright}>
+    <DropdownContainer $marginright={marginright}>
       <Menu $isdropped={dropdownOpen}>
-
         <Ul>
           <Li onClick={() => setOption(isFlow ? "SCRAP" : "LIKE")}>인기순</Li>
           <Li onClick={() => setOption("VIEW")}>조회 많은순</Li>
@@ -85,8 +84,8 @@ const Menu = styled.div`
   border: 0.7px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   background: var(--main-ffffff, #fff);
 
-  ${({ isdropped }) =>
-    isdropped &&
+  ${({ $isdropped }) =>
+    $isdropped &&
     css`
       opacity: 1;
       visibility: visible;
