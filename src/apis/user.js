@@ -1,14 +1,12 @@
 import axios from "axios";
 // 인증이 필요없는 요청
 export const publicAPI = axios.create({
-  baseURL:
-    "http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/",
+  baseURL: "https://dev.avab.shop/",
 });
 
 //인증이 필요한 요청
 export const privateAPI = axios.create({
-  baseURL:
-    "http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/",
+  baseURL: "https://dev.avab.shop/",
 });
 
 // 리프레시 토큰 요청 함수
