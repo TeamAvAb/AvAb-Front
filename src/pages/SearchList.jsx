@@ -47,7 +47,6 @@ export default function SearchList({}) {
             const response = await publicAPI.get(
               `/api/recreations?page=${currentPage}&sortBy=${order}`
             );
-            console.log("a");
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
@@ -64,7 +63,6 @@ export default function SearchList({}) {
             const response = await publicAPI.get(
               requestURL + param + `sortBy=${order}`
             );
-            console.log("b");
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
