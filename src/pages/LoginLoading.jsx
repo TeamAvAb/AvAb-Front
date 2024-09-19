@@ -6,7 +6,8 @@ import LoadingSpinner from "../components/LoadingSpinner";
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
   const redirectURL = new URL(window.location.href).searchParams.get("state");
-
+  console.log(code);
+  console.log(redirectURL);
   const navigator = useNavigate();
 
   useEffect(() => {
