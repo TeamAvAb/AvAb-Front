@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { publicAPI } from "../apis/user";
 import LoadingSpinner from "../components/LoadingSpinner";
+import axios from "axios";
 
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -22,7 +23,9 @@ export default function LoginLoading({ handleLogin }) {
           `/api/auth/login/kakao/local?code=${code}`
         );
       } else {
-        response = await publicAPI.get(`/api/auth/login/kakao?code=${code}`);
+        response = await axios.get(
+          `https://avab.site/api/auth/login/kakao?code=${code}`
+        );
       }
 
       localStorage.setItem("accessToken", response.data.result.accessToken);
