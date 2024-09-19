@@ -36,7 +36,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "http://avab.site",
+  "homepage": "https://avab.site",
   "browserslist": {
     "production": [
       ">0.2%",
