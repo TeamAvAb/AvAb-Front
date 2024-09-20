@@ -103,8 +103,8 @@ const Menu = styled.div`
   -webkit-scrollbar-thumb {
     background-color: #2f3542;
   }
-  ${({ isdropped }) =>
-    isdropped &&
+  ${({ $isdropped }) =>
+    $isdropped &&
     css`
       opacity: 1;
       visibility: visible;

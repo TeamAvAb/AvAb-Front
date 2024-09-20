@@ -70,7 +70,7 @@ export default function Search() {
     setMenu(!menu);
   };
   useEffect(() => {
-    if (window.location.pathname === "/AvAb-Front/search/list") {
+    if (window.location.pathname === "/search/list") {
       // 검색 리스트 페이지일 때는 열린 상태 유지
       setMenu(true);
     }
@@ -280,7 +280,7 @@ export default function Search() {
             </Filter>
           </More>
         </Filters>
-        {window.location.pathname === "/AvAb-Front/search/list" ? null : (
+        {window.location.pathname === "/search/list" ? null : (
           <Menu onClick={openMenu}>
             {menu ? (
               <>
@@ -394,7 +394,7 @@ const Filter = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${(props) => (props.last ? "46px" : 0)};
+  margin-bottom: ${(props) => (props.$last ? "26px" : 0)};
   color: #fff;
   font-size: 20px;
   font-weight: 700;
@@ -470,9 +470,9 @@ const More = styled.div`
   align-items: flex-start;
   gap: 22px;
   overflow: hidden;
-  opacity: ${({ isopen }) => (isopen ? "1" : "0")};
-  visibility: ${({ isopen }) => (isopen ? "visible" : "hidden")};
-  max-height: ${({ isopen }) => (isopen ? "1000px" : "0")};
+  opacity: ${({ $isopen }) => ($isopen ? "1" : "0")};
+  visibility: ${({ $isopen }) => ($isopen ? "visible" : "hidden")};
+  max-height: ${({ $isopen }) => ($isopen ? "1000px" : "0")};
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 `;
 
