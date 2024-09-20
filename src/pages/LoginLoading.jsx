@@ -6,9 +6,7 @@ import axios from "axios";
 
 export default function LoginLoading({ handleLogin }) {
   const code = new URL(window.location.href).searchParams.get("code");
-  const redirectURL = sessionStorage.getItem("redirectPath") || "/";
-  console.log(code);
-  console.log(redirectURL);
+  const redirectURL = new URL(window.location.href).searchParams.get("state");
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -23,9 +21,7 @@ export default function LoginLoading({ handleLogin }) {
           `/api/auth/login/kakao/local?code=${code}`
         );
       } else {
-        response = await axios.get(
-          `https://avab.site/api/auth/login/kakao?code=${code}`
-        );
+        response = await publicAPI.get(`/api/auth/login/kakao?code=${code}`);
       }
 
       localStorage.setItem("accessToken", response.data.result.accessToken);
