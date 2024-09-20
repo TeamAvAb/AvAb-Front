@@ -101,7 +101,7 @@ const Keyword = styled.div`
     props.category == "keyword"
       ? "none"
       : props.selected
-      ? "none"
+      ? "1px solid transparent"
       : "1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"};
   border-radius: ${(props) => (props.category == "keyword" ? "5px" : "50px")};
   background: ${(props) =>

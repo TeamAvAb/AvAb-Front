@@ -49,5 +49,5 @@ const Option = styled.button`
       : "var(--gray-scale-9-fa-4-a-9, #9fa4a9)"};
   font-size: 16px;
   font-style: normal;
-  font-weight: ${(props) => (props.selected ? "600" : "400")};
+  font-weight: 600;
 `;
