@@ -68,6 +68,7 @@ const RecreationMenuBarContainer = styled.div`
   z-index: 1;
   display: flex;
   align-items: center;
+  border-bottom: 0.5px solid var(--gray-scale-cacdd-2, #cacdd2);
 `;
 
 const NavBtn = styled.button`
