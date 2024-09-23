@@ -57,8 +57,6 @@ export default function RecreationTopInfo({ recreationData }) {
 const RecreationTopMenuContainer = styled.div`
   height: 403px;
   background-color: #a0ddff;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
