@@ -38,11 +38,15 @@ export default function ScrapFlow() {
     const fetchData = async () => {
       setLoading(true);
       if (localStorage.getItem("accessToken")) {
-        const response = await privateAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
+        const response = await privateAPI.get(
+          `/api/users/me/scraps/flows?page=${currentPage}`
+        );
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       } else {
-        const response = await publicAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
+        const response = await publicAPI.get(
+          `/api/users/me/scraps/flows?page=${currentPage}`
+        );
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       }
@@ -63,7 +67,9 @@ export default function ScrapFlow() {
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
         <MyFlowMenuBox onClick={moveToWatch}>플로우 구경하기</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>스크랩 일정 플로우</MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>
+          스크랩 일정 플로우
+        </MyFlowMenuBox>
       </MyFlowMenuContainer>
 
       {/* 내가 만든 일정플로우 - Title */}
@@ -72,20 +78,26 @@ export default function ScrapFlow() {
           <MyFlowBoxContainer>
             <MyFlowBoxImage src={penguinImg} />
             <TitleBox>
-              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>
+                일정플로우 만들기
+              </MyFlowBoxTitle>
             </TitleBox>
           </MyFlowBoxContainer>
 
           {/* 내가 만든 일정플로우 - Grid */}
           {datas.length !== 0 ? (
-            <ScrapFlowBoxParent>{datas && <ScrapFlowBox datas={datas} setScrap={setScrap} />}</ScrapFlowBoxParent>
+            <ScrapFlowBoxParent>
+              {datas && <ScrapFlowBox datas={datas} setScrap={setScrap} />}
+            </ScrapFlowBoxParent>
           ) : (
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
-                <div style={{ fontSize: "24px", fontWeight: "bold" }}>내가 만든 일정플로우가 없습니다!</div>
+                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                  스크랩한 일정플로우가 없습니다!
+                </div>
                 <div style={{ fontSize: "20px", marginTop: "8px" }}>
-                  위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
+                  지금 바로 플로우를 구경해보세요.
                 </div>
               </MyFlowNoneDetail>
             </MyFlowNoneBox>
@@ -93,7 +105,11 @@ export default function ScrapFlow() {
         </div>
 
         {/* 페이지번호 */}
-        <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
+        <Pagination
+          currentPage={currentPage}
+          pageNum={pages}
+          setCurrentPage={setCurrentPage}
+        />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>
@@ -113,24 +129,29 @@ const RightSide = styled.div`
 // 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
 const MyFlowMenuContainer = styled.div`
   background-color: white;
-  border: 0.5px solid #cacdd2;
-  border-bottom: 0;
   width: 320px;
-  font-size: 24px;
+  height: 713px;
+  box-sizing: border-box;
+  font-size: 22px;
+  border: solid #cacdd2 1px;
+  border-bottom: none;
+  border-right: 0.5px solid #cacdd2;
+  color: #1b1d1f;
 `;
 
 const MyFlowMenuTitle = styled.div`
-  padding: 2.5vh 0vh 2.5vh 3vh;
+  width: 260px;
+  padding: 30px;
+  font-size: 22px;
+  border-bottom: solid #cacdd2 1px;
 `;
 
 const MyFlowMenuBox = styled.div`
-  border: 0.5px solid #cacdd2;
-  border-right: 0px;
-  border-left: 0px;
   text-align: center;
-  justify-content: center;
-  padding: 1.5vh 3vh;
   cursor: pointer;
+  padding: 20px;
+  width: 280px;
+  border-bottom: solid #cacdd2 1px;
 `;
 
 const MyFlowContainer = styled.div`

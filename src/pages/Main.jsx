@@ -14,6 +14,9 @@ import workshopImg from "../assets/main/banner1_workshop.png";
 import mtImg from "../assets/main/banner2_mt.png";
 import gatherImg from "../assets/main/banner3_gather.png";
 
+import { Helmet } from "react-helmet";
+import characterImg from "../assets/main/character.png";
+
 export default function Main() {
   const navigator = useNavigate();
   const goToSearchList = () => {
@@ -106,6 +109,28 @@ export default function Main() {
   ];
   return (
     <>
+      <Helmet>
+        <title>AvAb | 아브아브 - 빠르고 쉬운 레크레이션 검색 플랫폼</title>
+        <meta
+          name="description"
+          content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
+        />
+        <meta
+          name="keywords"
+          content="레크레이션, 검색, 추천, 워크샵, MT, 모임, 아브아브, AvAb"
+        />
+        <meta
+          property="og:title"
+          content="아브아브 - 빠르고 쉬운 레크레이션 검색 플랫폼"
+        />
+        <meta
+          property="og:description"
+          content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
+        />
+        <meta property="og:image" content={characterImg} />
+        <meta property="og:url" content="http://avab.site" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Container>
         <Recommend>
           <Comment>
@@ -138,7 +163,7 @@ export default function Main() {
               />
             </More>
           </PopularHeader>
-          <PopularCarousel content={recreationData} />
+          <PopularCarousel />
         </Popular>
       </Container>
       <Carousel content={banner} />

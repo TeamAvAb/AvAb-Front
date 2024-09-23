@@ -24,10 +24,13 @@ export default function MadeFlowBox({ datas, setDoDel }) {
 
   // 삭제 버튼 누를 시 상태 변화 함수
   const deleteBtn = async () => {
-    const response = await privateAPI.delete(`https://dev.avab.shop/api/flows/delete/${deleteId}`);
+    const response = await privateAPI.delete(
+      `https://dev.avab.shop/api/flows/delete/${deleteId}`
+    );
     if (response.status === 200) {
       // 요청이 성공하면 상태 업데이트
       console.log(response.data);
+      alert("삭제되었습니다.");
       setDel(false);
       setDoDel(true);
     } else {
@@ -68,10 +71,14 @@ export default function MadeFlowBox({ datas, setDoDel }) {
                   <br />
                   삭제하시겠습니까?
                 </ModalTitle>
-                <ModalDetail>삭제한 플로우를 다시 복구할 수 없습니다.</ModalDetail>
+                <ModalDetail>
+                  삭제한 플로우를 다시 복구할 수 없습니다.
+                </ModalDetail>
               </div>
               <ModalStoreBtn onClick={deleteBtn}>삭제하기</ModalStoreBtn>
-              <ModalNotStoreBtn onClick={() => setDel(false)}>삭제하지 않기</ModalNotStoreBtn>
+              <ModalNotStoreBtn onClick={() => setDel(false)}>
+                삭제하지 않기
+              </ModalNotStoreBtn>
             </ModalBoxDetail>
           </ModalBox>
         </ModalContainer>
@@ -108,24 +115,38 @@ export default function MadeFlowBox({ datas, setDoDel }) {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={Time}
+                    alt="시간"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={View}
+                    alt="조회수"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={User} alt="스크랩수" style={{ width: "24px", height: "24px" }} />
+                  <img
+                    src={User}
+                    alt="스크랩수"
+                    style={{ width: "24px", height: "24px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
             </FlowBoxDetailBox>
-            <MoreBtn onClick={() => moveToMoreMyFlow(data)}>자세히 보기</MoreBtn>
+            <MoreBtn onClick={() => moveToMoreMyFlow(data)}>
+              자세히 보기
+            </MoreBtn>
           </MyFlowBoxChild>
         ))}
       </MyFlowBoxParent>

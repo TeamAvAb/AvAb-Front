@@ -1,10 +1,12 @@
 import axios from "axios";
 // 인증이 필요없는 요청
-export const publicAPI = axios.create({ baseURL: "https://dev.avab.shop" });
+export const publicAPI = axios.create({
+  baseURL: "https://dev.avab.shop/",
+});
 
 //인증이 필요한 요청
 export const privateAPI = axios.create({
-  baseURL: "https://dev.avab.shop",
+  baseURL: "https://dev.avab.shop/",
 });
 
 // 리프레시 토큰 요청 함수

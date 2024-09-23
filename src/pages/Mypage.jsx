@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import MyInfoBox from "../components/mypage/MyInfoBox";
-import LogoutP from "../assets/mypage/LogoutImg.svg"
+import LogoutP from "../assets/mypage/LogoutImg.svg";
 import { privateAPI } from "../apis/user";
+import { Helmet } from "react-helmet";
 
 export default function Mypage({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -12,12 +13,12 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const openLogoutModal = () => {
@@ -32,6 +33,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
       localStorage.clear();
+      navigate("/");
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
@@ -47,10 +49,16 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
   useEffect(() => {
     const call = async () => {
       setLoading(true);
-      try{
-        const response = await privateAPI.get(`/api/users/me`);
-        setDatas(response.data.result);
-        setLoading(false);
+      try {
+        if (isLoggedIn) {
+          const response = await privateAPI.get(`/api/users/me`);
+          setDatas(response.data.result);
+          setLoading(false);
+        } else {
+          setDatas([]);
+          setLoading(false);
+        }
+
       } catch (error) {
         console.log("내 정보 로드 요청 에러 : ", error);
       }
@@ -60,20 +68,37 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
 
   return (
     <Container>
+      <Helmet>
+        <title>AvAb | 마이페이지 - 내 정보 관리</title>
+        <meta
+          name="description"
+          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
+        />
+        <meta property="og:title" content="마이페이지 - 내 정보 관리" />
+        <meta
+          property="og:description"
+          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
+        />
+      </Helmet>
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem style={{backgroundColor: "#B1BEFF"}} onClick={handleMyInfoClick}>내 정보</MenuItem>
-          <MenuItem onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
+          <MenuItem
+            style={{ backgroundColor: "#B1BEFF" }}
+            onClick={handleMyInfoClick}
+          >
+            내 정보
+          </MenuItem>
+          <MenuItem onClick={handleFavoritesClick}>
+            즐겨 찾는 레크레이션
+          </MenuItem>
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
-      <Content> 
-        {datas && <MyInfoBox content={datas}/>} 
-      </Content>
+      <Content>{datas && <MyInfoBox content={datas} />}</Content>
 
       {/*우측 바*/}
-      <RightSide/>
+      <RightSide />
 
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
@@ -81,7 +106,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           <ModalContent>
             <ModalTitle>로그아웃 하시게요?</ModalTitle>
             <SemiTitle>더 많은 혜택이 기다리고 있어요.</SemiTitle>
-            <LogoutImg src={LogoutP}/>
+            <LogoutImg src={LogoutP} />
             <ModalBut>
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               <CloseButton onClick={closeLogoutModal}>닫기</CloseButton>

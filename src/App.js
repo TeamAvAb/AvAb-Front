@@ -14,7 +14,7 @@ import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
 import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 상세 페이지
 import FlowWriteRecommend from "./pages/FlowWriteRecommend"; // 플로우 만들기 추천 페이지
 import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 내용 페이지
-import RecreationDetail from "./pages/recreation/RecreationDetail"; // 레크레이션 상세정보 페이지
+import RecreationDetail from "./pages/RecreationDetail"; // 레크레이션 상세정보 페이지
 import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
 import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
 import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기
@@ -37,9 +37,15 @@ function App() {
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 내 정보 */}
-      <Route path="/mypage/myinfo" element={<MyPage handleLogin={setIsLoggedIn} />} />
+      <Route
+        path="/mypage/myinfo"
+        element={<MyPage handleLogin={setIsLoggedIn} isLoggedIn={isLoggedIn} />}
+      />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
-      <Route path="/mypage/favorites" element={<FavoriteRecreation handleLogin={setIsLoggedIn} />} />
+      <Route
+        path="/mypage/favorites"
+        element={<FavoriteRecreation handleLogin={setIsLoggedIn} />}
+      />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
@@ -63,9 +69,15 @@ function App() {
       {/* 스크랩 한 일정플로우 더보기 */}
       <Route path="/flow/morescrapflow/:title" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
-      <Route path="/recreation/detail/:recreationId" element={<RecreationDetail />} />
+      <Route
+        path="/recreation/detail/:recreationId"
+        element={<RecreationDetail />}
+      />
       {/* 로그인 리다이렉트 페이지 */}
-      <Route path="/api/auth/login/kakao" element={<LoginLoading handleLogin={setIsLoggedIn} />} />
+      <Route
+        path="/api/auth/login/kakao"
+        element={<LoginLoading handleLogin={setIsLoggedIn} />}
+      />
     </Routes>
   );
 
@@ -79,9 +91,17 @@ function App() {
   }, [isLoggedIn]);
   useEffect(() => {
     const currentPath = window.location.pathname;
-    if (currentPath === "/flow/watch" || currentPath === "/flow/my" || currentPath === "/recreation/detail") {
+    console.log(currentPath);
+    if (
+      currentPath === "/AvAb-Front/flow/watch" ||
+      currentPath === "/AvAb-Front/flow/my" ||
+      currentPath === "/AvAb-Front/recreation/detail"
+    ) {
       setSelectedFooter(<Footer2 />);
-    } else if (currentPath === "/" || currentPath.startsWith("/search")) {
+    } else if (
+      currentPath === "/AvAb-Front" ||
+      currentPath.startsWith("/search")
+    ) {
       setSelectedFooter(<Footer1 />);
     } else {
       setSelectedFooter(<Footer3 />);
@@ -91,8 +111,17 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header isLoggedIn={isLoggedIn} handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} />
-      {loginModal ? <Login handleLoginStatus={setIsLoggedIn} handleLoginModal={setLoginModal} /> : null}
+      <Header
+        isLoggedIn={isLoggedIn}
+        handleLoginStatus={setIsLoggedIn}
+        handleLoginModal={setLoginModal}
+      />
+      {loginModal ? (
+        <Login
+          handleLoginStatus={setIsLoggedIn}
+          handleLoginModal={setLoginModal}
+        />
+      ) : null}
       {routes}
       {selectedFooter}
     </div>

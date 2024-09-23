@@ -3,7 +3,7 @@ import React, { useState, forwardRef, useEffect } from "react";
 import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
-import axios from "axios";
+import { publicAPI } from "../../apis/user";
 import { isLoggedIn, privateAPI } from "../../apis/user";
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const [reviewListData, setReviewListData] = useState([]);
@@ -17,14 +17,11 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   };
 
   const itemsPerPage = 2;
-
   // 리뷰 목록 받아오기
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(
-        `https://dev.avab.shop/api/recreations/${recreationId}/reviews?page=${
-          currentPage - 1
-        }`
+      const response = await publicAPI.get(
+        `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`
       );
       setReviewListData(response.data.result.reviewList);
       setReviewData(response.data.result);

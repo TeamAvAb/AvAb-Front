@@ -1,60 +1,67 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import LogoutP from "../../assets/mypage/LogoutImg.svg"
-import WarnLogo from "../../assets/mypage/WarnLogo.svg"
+import NicknameChangeModal from "../modal/NicknameChangeModal";
+import LogoutP from "../../assets/mypage/LogoutImg.svg";
+import WarnLogo from "../../assets/mypage/WarnLogo.svg";
 import { privateAPI } from "../../apis/user";
 
-export default function MyInfoBox({content}) {
-    const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
-    const [nickname, setNickname] = useState("");
-    localStorage.setItem("userimage", content.profileImage);
+export default function MyInfoBox({ content }) {
+  const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
+  const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
+  const [nickname, setNickname] = useState("");
 
-    const openGoOututModal = () => {
-      setGoOutModalOpen(true);
-    };
+  localStorage.setItem("userimage", content.profileImage);
 
-    const closeGoOutModal = () => {
-      setGoOutModalOpen(false);
-    };
+  const openGoOututModal = () => {
+    setGoOutModalOpen(true);
+  };
 
-    const handleNickname = (e) => {
-      setNickname(e.target.value);
-    };
+  const closeGoOutModal = () => {
+    setGoOutModalOpen(false);
+  };
 
-    const ChangeName = async () => {
-      const response = await privateAPI.patch(`/api/users/me`,
-        {username: nickname}
-      );
-      if (response.status === 200) {
-        // 요청이 성공하면 상태 업데이트
-        console.log(response.data);
-      } else {
-        // 요청이 실패하면 에러 처리
-        console.log(response.data);
-      }
-    };
+  const handleNickname = (e) => {
+    setNickname(e.target.value);
+  };
 
-    return (
+  const ChangeName = async () => {
+    const response = await privateAPI.patch(`/api/users/me`, {
+      username: nickname,
+    });
+    if (response.status === 200) {
+      console.log(response.data);
+      setNickname(response.data.result.username);
+      setIsNicknameChangeModal(true);
+    } else {
+      console.log(response.data);
+    }
+  };
+
+  useEffect(() => {
+    setNickname(content.username);
+  }, [content.username]);
+
+  return (
     <MyInfo>
-        <MyTitle>카카오 계정</MyTitle>
-        <MyInput value={content.email} readOnly/>
-        <MyTitle2>닉네임</MyTitle2>
-        <MyInput placeholder={content.username} maxLength={10} onChange={handleNickname}/>
-        <WarnSpace>
-            <WarnImg src={WarnLogo}/>
-            <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
-        </WarnSpace>
-        <ButtonSection>
-            <OutBut onClick={openGoOututModal}>회원탈퇴</OutBut>
-            <SaveBut onClick={ChangeName}>저장하기</SaveBut>
-        </ButtonSection>
-        {isGoOutModalOpen && (
+      <MyTitle>카카오 계정</MyTitle>
+      <MyInput value={content.email} readOnly />
+      <MyTitle2>닉네임</MyTitle2>
+      <MyInput value={nickname} maxLength={10} onChange={handleNickname} />
+      <WarnSpace>
+        <WarnImg src={WarnLogo} />
+        <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
+      </WarnSpace>
+      <ButtonSection>
+        <OutBut onClick={openGoOututModal}>회원탈퇴</OutBut>
+        <SaveBut onClick={ChangeName}>저장하기</SaveBut>
+      </ButtonSection>
+      {isGoOutModalOpen && (
         <LogoutModal>
           <ModalContent>
             <ModalTitle>회원탈퇴 하시게요?</ModalTitle>
             <SemiTitle>한번 탈퇴하면 되돌릴 수 없습니다.</SemiTitle>
-            <LogoutImg src={LogoutP}/>
+            <LogoutImg src={LogoutP} />
             <ModalBut>
               <LogoutButton onClick={closeGoOutModal}>회원탈퇴</LogoutButton>
               <CloseButton onClick={closeGoOutModal}>닫기</CloseButton>
@@ -62,8 +69,11 @@ export default function MyInfoBox({content}) {
           </ModalContent>
         </LogoutModal>
       )}
+      {isNicknameChangeModalOpen && (
+        <NicknameChangeModal handleModal={setIsNicknameChangeModal} />
+      )}
     </MyInfo>
-  )
+  );
 }
 
 const MyInfo = styled.div`

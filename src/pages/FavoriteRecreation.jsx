@@ -5,7 +5,7 @@ import { privateAPI } from "../apis/user";
 
 import FavoritesBox from "../components/mypage/FavoritesBox";
 import Pagination from "../components/pagination/Pagination";
-import LogoutP from "../assets/mypage/LogoutImg.svg"
+import LogoutP from "../assets/mypage/LogoutImg.svg";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
 
 export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
@@ -14,11 +14,11 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const openLogoutModal = () => {
@@ -28,11 +28,12 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const closeLogoutModal = () => {
     setLogoutModalOpen(false);
   };
-  
+
   const handleLogout = async () => {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
       localStorage.clear();
+      navigate("/");
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
@@ -49,31 +50,45 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   //전체 페이지 수
   const [pages, setPages] = useState(1);
 
-  // 처음 렌더링 시에만 데이터 불러오기
+  // 데이터를 다시 불러오는 함수
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await privateAPI.get(
+        `/api/users/me/favorites/recreations?page=${currentPage}`
+      );
+      setDatas(response.data.result.recreationList);
+      setPages(response.data.result.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.log("레크레이션 로드 요청 에러 : ", error);
+    }
+  };
+
+  // 첫 렌더링 및 페이지 변경 시 데이터를 불러옴
   useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      try {
-        const response = await privateAPI.get(`/api/users/me/favorites/recreations`);
-        setDatas(response.data.result.recreationList);
-        setPages(response.data.result.totalPages);
-        setLoading(false);
-      } catch (error) {
-        console.log("레크레이션 로드 요청 에러 : ", error);
-      }
-    };
-    call();
-  });
+    fetchData();
+  }, [currentPage]);
+
+  // 즐겨찾기 변경 시 목록을 업데이트하는 함수
+  const onFavoriteChange = () => {
+    fetchData(); // 데이터를 다시 불러옴
+  };
 
   return (
     <Container>
-    {/*왼쪽 메뉴바*/}
+      {/*왼쪽 메뉴바*/}
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-            <MenuItem onClick={handleMyInfoClick}>내 정보</MenuItem>
-            <MenuItem style={{backgroundColor: "#B1BEFF"}} onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
-            <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
+          <MenuItem onClick={handleMyInfoClick}>내 정보</MenuItem>
+          <MenuItem
+            style={{ backgroundColor: "#B1BEFF" }}
+            onClick={handleFavoritesClick}
+          >
+            즐겨 찾는 레크레이션
+          </MenuItem>
+          <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
 
@@ -81,9 +96,15 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
       <Content>
         <RecreationWrap>
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
-          {datas.length !== 0 ?( 
-            <FavoritesParent> 
-              {datas && datas.map((data) => <FavoritesBox content={data}/>)} 
+          {datas.length !== 0 ? (
+            <FavoritesParent>
+              {datas &&
+                datas.map((data) => (
+                  <FavoritesBox
+                    content={data}
+                    onFavoriteChange={onFavoriteChange}
+                  />
+                ))}
             </FavoritesParent>
           ) : (
             <NoneWrap>
@@ -91,12 +112,16 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
               <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
             </NoneWrap>
           )}
-          <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage}/>
+          <Pagination
+            currentPage={currentPage}
+            pageNum={pages}
+            setCurrentPage={setCurrentPage}
+          />
         </RecreationWrap>
       </Content>
 
       {/*우측 바*/}
-      <RightSide/>
+      <RightSide />
 
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
@@ -104,7 +129,7 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
           <ModalContent>
             <ModalTitle>로그아웃 하시게요?</ModalTitle>
             <SemiTitle>더 많은 혜택이 기다리고 있어요.</SemiTitle>
-            <LogoutImg src={LogoutP}/>
+            <LogoutImg src={LogoutP} />
             <ModalBut>
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
               <CloseButton onClick={closeLogoutModal}>닫기</CloseButton>
@@ -187,7 +212,7 @@ const FavoritesParent = styled.div`
   margin-top: 39px;
 `;
 
-const NoneWrap  = styled.div`
+const NoneWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -212,7 +237,6 @@ const RightSide = styled.div`
   width: 5.7325%;
   background-color: #f7f8f9;
 `;
-
 
 //로그아웃 모달
 const LogoutModal = styled.div`

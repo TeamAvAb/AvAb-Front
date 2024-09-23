@@ -25,7 +25,8 @@ export default function Search() {
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
-  // 더미 데이터
+
+  // 검색 옵션
   const keywordOptions = [
     { id: 0, value: "협동", param: "COOPERATIVE" },
     { id: 1, value: "순발력", param: "QUICKNESS" },
@@ -60,7 +61,7 @@ export default function Search() {
     { id: 2, value: "20대", param: "TWENTIES" },
     { id: 3, value: "30대", param: "THIRTIES" },
     { id: 4, value: "40대", param: "FORTIES" },
-    { id: 5, value: "50대 이상", param: "FIFTIES" },
+    { id: 5, value: "50대 이상", param: "OVER_FIFTIES" },
   ];
 
   // 필터 더보기 메뉴
@@ -69,7 +70,7 @@ export default function Search() {
     setMenu(!menu);
   };
   useEffect(() => {
-    if (window.location.pathname === "/AvAb-Front/search/list") {
+    if (window.location.pathname === "/search/list") {
       // 검색 리스트 페이지일 때는 열린 상태 유지
       setMenu(true);
     }
@@ -181,7 +182,7 @@ export default function Search() {
         />
       </SearchWordBox>
       <SearchBox>
-        <Filters menu={menu.toString()}>
+        <Filters $menu={menu.toString()}>
           {/* 키워드 */}
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
@@ -229,7 +230,7 @@ export default function Search() {
           </Filter>
         </Filters>
         <Filters>
-          <More isopen={menu}>
+          <More $isopen={menu}>
             <div
               style={{
                 width: "100%",
@@ -269,7 +270,7 @@ export default function Search() {
             </Filter>
 
             {/* 연령대 */}
-            <Filter last="true">
+            <Filter $last="true">
               <LabelName htmlFor="age">연령대</LabelName>
               <RadioInput
                 content={ageOptions}
@@ -279,7 +280,7 @@ export default function Search() {
             </Filter>
           </More>
         </Filters>
-        {window.location.pathname === "/AvAb-Front/search/list" ? null : (
+        {window.location.pathname === "/search/list" ? null : (
           <Menu onClick={openMenu}>
             {menu ? (
               <>
@@ -393,7 +394,7 @@ const Filter = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${(props) => (props.last ? "46px" : 0)};
+  margin-bottom: ${(props) => (props.$last ? "26px" : 0)};
   color: #fff;
   font-size: 20px;
   font-weight: 700;
@@ -418,6 +419,10 @@ const KeywordBox = styled.div`
   align-items: center;
   padding-left: 20.5px;
   box-sizing: border-box;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SelectedKeywords = styled.div`
@@ -427,6 +432,7 @@ const SelectedKeywords = styled.div`
 `;
 
 const SelectedKeyword = styled.div`
+  width: max-content;
   display: inline-flex;
   padding: 2px 10px;
   flex-direction: row;
@@ -464,9 +470,9 @@ const More = styled.div`
   align-items: flex-start;
   gap: 22px;
   overflow: hidden;
-  opacity: ${({ isopen }) => (isopen ? "1" : "0")};
-  visibility: ${({ isopen }) => (isopen ? "visible" : "hidden")};
-  max-height: ${({ isopen }) => (isopen ? "1000px" : "0")};
+  opacity: ${({ $isopen }) => ($isopen ? "1" : "0")};
+  visibility: ${({ $isopen }) => ($isopen ? "visible" : "hidden")};
+  max-height: ${({ $isopen }) => ($isopen ? "1000px" : "0")};
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 `;
 

@@ -51,7 +51,7 @@ export default function RecreationPrev({ content }) {
         <ImgSpace>
           <ExImg src={content.imageUrl}></ExImg>
           <Favorite
-            isFav={isFav}
+            $isfav={isFav}
             onClick={(e) => addToFavorite(e, content.id)}
           />
         </ImgSpace>
@@ -71,7 +71,7 @@ export default function RecreationPrev({ content }) {
             </div>
             <Rate>
               <img src={starImg} style={{ width: "16px", height: "16px" }} />
-              {content.totalStars.toFixed(1)}
+              {parseFloat(content.totalStars).toFixed(1)}
             </Rate>
           </Section2>
         </Explain>
@@ -85,6 +85,7 @@ const Categories = styled.div`
   flex-direction: column;
   align-items: center;
   padding-bottom: 69px;
+  cursor: pointer;
 `;
 
 const Hashtag = styled.div`

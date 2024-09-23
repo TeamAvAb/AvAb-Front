@@ -7,7 +7,7 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
   return (
     <DropdownContainer>
-      <Menu isdropped={dropdownOpen}>
+      <Menu $isdropped={dropdownOpen}>
         <Ul>
           {list.map((li) => (
             <Li
@@ -103,8 +103,8 @@ const Menu = styled.div`
   -webkit-scrollbar-thumb {
     background-color: #2f3542;
   }
-  ${({ isdropped }) =>
-    isdropped &&
+  ${({ $isdropped }) =>
+    $isdropped &&
     css`
       opacity: 1;
       visibility: visible;
