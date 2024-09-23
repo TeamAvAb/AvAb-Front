@@ -12,7 +12,6 @@ export default function RecreationContentBox({
   starRate,
   isFavorite,
 }) {
-  // const testJWT = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const kewordList = kewords.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
@@ -24,6 +23,7 @@ export default function RecreationContentBox({
         `/api/recreations/${recreationId}/favorites`,
         {}
       );
+      console.log(response.data.code);
       if (response.data.code === "COMMON200") {
         SetIsheartToggle(!isheartToggle);
       } else {
