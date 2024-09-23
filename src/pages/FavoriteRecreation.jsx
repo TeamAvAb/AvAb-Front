@@ -50,23 +50,30 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   //전체 페이지 수
   const [pages, setPages] = useState(1);
 
-  // 처음 렌더링 시에만 데이터 불러오기
+  // 데이터를 다시 불러오는 함수
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await privateAPI.get(
+        `/api/users/me/favorites/recreations?page=${currentPage}`
+      );
+      setDatas(response.data.result.recreationList);
+      setPages(response.data.result.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.log("레크레이션 로드 요청 에러 : ", error);
+    }
+  };
+
+  // 첫 렌더링 및 페이지 변경 시 데이터를 불러옴
   useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      try {
-        const response = await privateAPI.get(
-          `/api/users/me/favorites/recreations`
-        );
-        setDatas(response.data.result.recreationList);
-        setPages(response.data.result.totalPages);
-        setLoading(false);
-      } catch (error) {
-        console.log("레크레이션 로드 요청 에러 : ", error);
-      }
-    };
-    call();
-  });
+    fetchData();
+  }, [currentPage]);
+
+  // 즐겨찾기 변경 시 목록을 업데이트하는 함수
+  const onFavoriteChange = () => {
+    fetchData(); // 데이터를 다시 불러옴
+  };
 
   return (
     <Container>
@@ -91,7 +98,13 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
           {datas.length !== 0 ? (
             <FavoritesParent>
-              {datas && datas.map((data) => <FavoritesBox content={data} />)}
+              {datas &&
+                datas.map((data) => (
+                  <FavoritesBox
+                    content={data}
+                    onFavoriteChange={onFavoriteChange}
+                  />
+                ))}
             </FavoritesParent>
           ) : (
             <NoneWrap>

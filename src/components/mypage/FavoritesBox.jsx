@@ -6,8 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
 import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 
-export default function FavoritesBox({ content }) {
+export default function FavoritesBox({ content, onFavoriteChange }) {
   const navigate = useNavigate();
+  const [isFav, setIsFav] = useState(content.isFavorite);
 
   const keywordParam = {
     COOPERATIVE: "협동",
@@ -22,8 +23,6 @@ export default function FavoritesBox({ content }) {
     PREPARATION: "준비물",
   };
 
-  //즐겨찾기 등록, 취소
-  const [isFav, setIsFav] = useState(content.isFavorite);
   const addToFavorite = (id) => {
     const call = async () => {
       try {
@@ -33,8 +32,10 @@ export default function FavoritesBox({ content }) {
         console.log("즐겨찾기 추가/해제 응답 : ", response);
         if (response.data.result.isFavorite === true) {
           setIsFav(true);
+          onFavoriteChange(); // 상위 컴포넌트에 상태 변경 알림
         } else if (response.data.result.isFavorite === false) {
           setIsFav(false);
+          onFavoriteChange(); // 상위 컴포넌트에 상태 변경 알림
         }
       } catch (error) {
         console.log("즐겨찾기 추가/해제 에러 : ", error);
