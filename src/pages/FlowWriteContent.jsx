@@ -195,15 +195,7 @@ export default function FlowWriteContent() {
             purpose: englishKeywords.join(","),
           },
         });
-        const response = await axios.get(
-          "https://dev.avab.shop/api/recreations/recommended",
-          {
-            params: {
-              playTime: savedPlayTime,
-              purpose: englishKeywords.join(","),
-            },
-          }
-        );
+
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
           response.data.result.map((item) => ({
@@ -281,15 +273,6 @@ export default function FlowWriteContent() {
           purpose: englishKeywords.join(","),
         },
       });
-      const response = await axios.get(
-        "https://dev.avab.shop/api/recreations/recommended",
-        {
-          params: {
-            playTime: savedPlayTime,
-            purpose: englishKeywords.join(","),
-          },
-        }
-      );
       // 데이터에서 필요한 정보 추출
       const data = response.data.result.find((item) => item.id === id);
       if (data) {
@@ -341,15 +324,6 @@ export default function FlowWriteContent() {
           Authorization: `Bearer ${testJWT}`,
         },
       });
-      const response = await axios.get(
-        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
-        {
-          headers: {
-            Accept: "*/*",
-            Authorization: `Bearer ${testJWT}`,
-          },
-        }
-      );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
       setScrapRecreationData(
         response.data.result.recreationList.map((item) => ({
@@ -469,7 +443,7 @@ export default function FlowWriteContent() {
               />
             </FlowInfoBox>
           </FlowInfoContainer>
-
+  
           <FlowInfoContainer>
             <FlowInfoBox>
               <ContentInfo>
@@ -491,10 +465,11 @@ export default function FlowWriteContent() {
                     </div>
                     <div>
                       {selectedKeywords.join(", ")}
-                    <div style={{ listStyleType: "none" }}>
-                      {selectedKeywords.map((keyword, index) => (
-                        <li key={index}>{keywordMappings[keyword]}</li>
-                      ))}
+                      <div style={{ listStyleType: "none" }}>
+                        {selectedKeywords.map((keyword, index) => (
+                          <li key={index}>{keywordMappings[keyword]}</li>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <div style={{ display: "flex" }}>
@@ -511,9 +486,9 @@ export default function FlowWriteContent() {
                     <div>{playTime}분</div>
                   </div>
                 </div>
-
+  
                 <Line></Line>
-
+  
                 <div style={{ marginTop: "29px" }}>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
                     <div
@@ -561,7 +536,6 @@ export default function FlowWriteContent() {
                       연령대
                     </div>
                     <div>
-                      {sortedAges.join(", ")}
                       {selectedAges
                         .map((age) =>
                           age === "UNDER_TEENAGER"
@@ -594,11 +568,11 @@ export default function FlowWriteContent() {
                   </div>
                 </div>
               </ContentInfoDetail>
-
+  
               <ContentTitle>
                 <div style={{ marginLeft: "38px" }}>일정플로우 제목</div>
               </ContentTitle>
-
+  
               {/* ContentTitleInput에서 플로우 제목을 입력받음 */}
               <ContentTitleInput
                 type="text"
@@ -606,7 +580,7 @@ export default function FlowWriteContent() {
                 value={flowTitle}
                 onChange={handleFlowTitleChange}
               />
-
+  
               <FlowContainer>
                 <div style={{ width: "393px", textAlign: "center" }}>
                   {/* FlowTitle에 상태로부터 받은 값을 전달 */}
@@ -614,7 +588,7 @@ export default function FlowWriteContent() {
                     {flowTitle || "플로우 제목"}
                   </FlowTitle>
                 </div>
-
+  
                 <div>
                   {/* 기본 레크레이션 박스 */}
                   {infoBoxes.map((num) => num)}
@@ -625,19 +599,19 @@ export default function FlowWriteContent() {
                     onDelete={handleDelete}
                   />
                 </div>
-
+  
                 <AddFlowButton onClick={handleAddFlow}>+</AddFlowButton>
               </FlowContainer>
             </FlowInfoBox>
           </FlowInfoContainer>
-
+  
           <LastButton onClick={handleBeforeClick}>이전으로</LastButton>
           <SaveButton onClick={handleSaveClick}>저장하기</SaveButton>
         </div>
       </FlowwriteContent>
     </FlowWriteWrap>
   );
-}
+}  
 
 const FlowWriteWrap = styled.div`
   display: flex;
