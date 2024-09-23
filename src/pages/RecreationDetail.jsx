@@ -11,7 +11,7 @@ import axios from "axios";
 
 import { Helmet } from "react-helmet"; // react-helmet 임포트
 
-import { publicAPI } from "../apis/user";
+import { privateAPI } from "../apis/user";
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -27,7 +27,7 @@ export default function RecreationDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await publicAPI.get(
+        const response = await privateAPI.get(
           `/api/recreations/${recreationId}`
         );
         setRecreationData(response.data.result);

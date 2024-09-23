@@ -13,7 +13,6 @@ export default function FlowBox({
   console.log(flowData);
   console.log(flowRecreations);
 
-  // const testJWT = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
   const [isScrapToggle, SetIsScrapToggle] = useState(
     flowData?.isFavorite || false
   );
@@ -92,7 +91,7 @@ const NumberBox = styled.div`
   display: inline-flex;
   width: 38px;
   height: 29px;
-  padding: 2px 0px;
+  padding: 2px 10px;
   justify-content: center;
   align-items: center;
   border-radius: 50px;
