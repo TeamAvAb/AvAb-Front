@@ -92,7 +92,7 @@ const NumberBox = styled.div`
   display: inline-flex;
   width: 38px;
   height: 29px;
-  padding: 2px 0px;
+  padding: 2px 10px;
   justify-content: center;
   align-items: center;
   border-radius: 50px;
