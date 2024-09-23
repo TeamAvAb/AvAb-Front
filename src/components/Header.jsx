@@ -69,6 +69,7 @@ const LogoImg = styled.img`
   width: 200px;
   height: 40px;
   margin-right: 55px;
+  cursor: pointer;
 `;
 
 const PlusImg = styled.img`
