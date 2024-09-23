@@ -14,18 +14,14 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
         const response = await publicAPI.get(
           `/api/recreations/${recreationId}/related/flows`
         );
-
+        console.log("플로우: ", response.data);
         setFlowData(response.data.result[0].flowDetail);
         console.log("setFlowData", response.data.result[0].flowDetail);
 
         setFlowSecondData(response.data.result[1].flowDetail);
         console.log(response.data.result[1].flowDetail);
-
         setFlowFirstRecreations(response.data.result[0].recreations);
-        // console.log("response.data.result[0]", response.data.result[0].recreations);
-
         setFlowSecondRecreations(response.data.result[1].recreations);
-        // console.log("response.data.result[1].recreations", response.data);
       } catch (error) {
         console.error(error);
       }
