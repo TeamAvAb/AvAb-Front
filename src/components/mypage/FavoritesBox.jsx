@@ -158,10 +158,12 @@ const Section1 = styled.div`
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 10px;
+  color: #1b1d1f;
 `;
 
 const Section2 = styled.div`
   font-size: 15px;
+  color: #1b1d1f;
 `;
 
 const Section3 = styled.img`
@@ -173,4 +175,5 @@ const Section3 = styled.img`
 const Section4 = styled.div`
   position: relative;
   margin-left: 10px;
+  color: #1b1d1f;
 `;
