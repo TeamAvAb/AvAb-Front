@@ -83,7 +83,7 @@ const FlowTitle = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 700;
-  margin: 0px 150px 0px 85px;
+  margin: 0px 0px 0px 85px;
   word-break: break-word;
   overflow-wrap: break-word;
 `;
