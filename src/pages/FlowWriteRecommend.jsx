@@ -38,7 +38,7 @@ export default function FlowWriteRecommend() {
   useEffect(() => {
     const fetchFlowData = async () => {
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
+        const response = await axios.get(`http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/flows/recommended`, {
            params: {
             playTime: '100',
             purpose: 'WORKSHOP'
