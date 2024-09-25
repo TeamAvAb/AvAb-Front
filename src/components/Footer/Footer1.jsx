@@ -1,28 +1,28 @@
-import React from 'react';
-import FooterP from '../../assets/Footer/FooterP.svg'
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import FooterP from "../../assets/Footer/FooterP.svg";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 export default function Footer() {
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
     navigate(`/mypage`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToInstagram = () => {
-    window.location.href = 'https://www.instagram.com/avab.ovo/';
+    window.open("https://www.instagram.com/avab.ovo/", "Avab Instagram");
   };
   return (
     <FooterWrap>
@@ -32,7 +32,11 @@ export default function Footer() {
         </High1>
         <High2>
           <Section1>아브아브</Section1>
-          <Section2>에게<br/>의견을 보내주세요</Section2>
+          <Section2>
+            에게
+            <br />
+            의견을 보내주세요
+          </Section2>
           <ContactBut onClick={ToInstagram}>의견 보내러 가기</ContactBut>
         </High2>
       </FooterHigh>
@@ -49,13 +53,18 @@ export default function Footer() {
         <Explain2>Contact Us</Explain2>
       </Bottom>
     </FooterWrap>
-  )
+  );
 }
 
 const FooterWrap = styled.footer`
   position: relative;
   height: 577px;
-  background-image: linear-gradient(to bottom, white 104px, #e9ebed 104px, #e9ebed 577px);
+  background-image: linear-gradient(
+    to bottom,
+    white 104px,
+    #e9ebed 104px,
+    #e9ebed 577px
+  );
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,8 +102,7 @@ const Section2 = styled.span`
   font-size: 40px;
 `;
 
-
-const ContactBut = styled.div`
+const ContactBut = styled.button`
   display: flex;
   justify-content: center;
   padding: 15px 10px;
@@ -139,15 +147,15 @@ const Bottom = styled.div`
   font-size: 12px;
   width: 1080px;
   margin-bottom: 40px;
-`
+`;
 
-const Explain1 = styled.div` 
+const Explain1 = styled.div`
   margin-right: 53%;
   margin-top: 20px;
   color: #9fa4a9;
 `;
 
-const Explain2 = styled.div` 
+const Explain2 = styled.div`
   margin-top: 20px;
   color: #9fa4a9;
 `;
