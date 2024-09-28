@@ -93,15 +93,11 @@ function App() {
     const currentPath = window.location.pathname;
     console.log(currentPath);
     if (
-      currentPath === "/AvAb-Front/flow/watch" ||
-      currentPath === "/AvAb-Front/flow/my" ||
-      currentPath === "/AvAb-Front/recreation/detail"
+      currentPath.startsWith("/flow/morewatchflow") ||
+      currentPath.startsWith("/recreation/detail")
     ) {
       setSelectedFooter(<Footer2 />);
-    } else if (
-      currentPath === "/AvAb-Front" ||
-      currentPath.startsWith("/search")
-    ) {
+    } else if (currentPath === "/" || currentPath.startsWith("/search")) {
       setSelectedFooter(<Footer1 />);
     } else {
       setSelectedFooter(<Footer3 />);
