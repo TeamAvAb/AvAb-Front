@@ -171,7 +171,7 @@ const Favorite = styled(HeartImg)`
   margin-left: 50px;
   margin-top: 120px;
   cursor: pointer;
-  fill: ${(props) => (props.isFav === true ? "#FFAA29" : "#E9EBED")};
+  fill: ${(props) => (props.$isfav === true ? "#FFAA29" : "#E9EBED")};
 `;
 
 const Explain = styled.div`
