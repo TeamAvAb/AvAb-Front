@@ -82,14 +82,14 @@ const FlowTitle = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 700;
-  margin: 0px 150px 0px 85px;
+  width: 100%;
   word-break: break-word;
   overflow-wrap: break-word;
 `;
 
 const NumberBox = styled.div`
   display: inline-flex;
-  width: 38px;
+  width: 45px;
   height: 29px;
   padding: 2px 10px;
   justify-content: center;

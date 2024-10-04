@@ -32,22 +32,24 @@ export default function RecreationTopInfo({ recreationData }) {
     : [];
   return (
     <RecreationTopMenuContainer>
-      <MainImage src={recreationData.imageUrl}></MainImage>
-      {/* 레크레이션 정보 */}
-      <div>
-        <RecreationContentBox
-          recreationId={recreationData.recreationId}
-          hashtag={recreationData.hashTagList}
-          recreationTitle={recreationData.title}
-          kewords={kewords}
-          starRate={recreationData.totalStars}
-          isFavorite={recreationData.isFavorite}
-        />
-        <ViewBox>
-          <ViewIcon src={viewIcon} />
-          <ViewText>{recreationData.viewCount}</ViewText>
-        </ViewBox>
-      </div>
+      <ImgMainWrap>
+        <MainImage src={recreationData.imageUrl}></MainImage>
+        {/* 레크레이션 정보 */}
+        <div>
+          <RecreationContentBox
+            recreationId={recreationData.recreationId}
+            hashtag={recreationData.hashTagList}
+            recreationTitle={recreationData.title}
+            kewords={kewords}
+            starRate={recreationData.totalStars}
+            isFavorite={recreationData.isFavorite}
+          />
+          <ViewBox>
+            <ViewIcon src={viewIcon} />
+            <ViewText>{recreationData.viewCount}</ViewText>
+          </ViewBox>
+        </div>
+      </ImgMainWrap>
     </RecreationTopMenuContainer>
   );
 }
@@ -55,10 +57,12 @@ export default function RecreationTopInfo({ recreationData }) {
 const RecreationTopMenuContainer = styled.div`
   height: 403px;
   background-color: #a0ddff;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
+`;
+const ImgMainWrap = styled.div`
+  display: flex;
 `;
 const ViewBox = styled.div`
   margin: 51px 17px 0px 0px;
@@ -79,8 +83,7 @@ const ViewText = styled.div`
 
 const MainImage = styled.img`
   width: 250px;
-  margin-left: 377px;
-  margin-right: 251px;
+  margin-right: 250px;
 `;
 
 const WarningMessage = styled.div`
