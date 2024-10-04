@@ -7,6 +7,7 @@ import FavoritesBox from "../components/mypage/FavoritesBox";
 import Pagination from "../components/pagination/Pagination";
 import LogoutP from "../assets/mypage/LogoutImg.svg";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -70,6 +71,14 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
     fetchData();
   }, [currentPage]);
 
+  // 즐겨찾기를 해제해서 페이지 수가 줄어들 경우 처리
+  useEffect(() => {
+    if (datas.length === 0) {
+      if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+      else setCurrentPage(0);
+    }
+  }, [datas]);
+
   // 즐겨찾기 변경 시 목록을 업데이트하는 함수
   const onFavoriteChange = () => {
     fetchData(); // 데이터를 다시 불러옴
@@ -96,27 +105,39 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
       <Content>
         <RecreationWrap>
           <RecreationTitle>레크레이션 찾기</RecreationTitle>
-          {datas.length !== 0 ? (
-            <FavoritesParent>
-              {datas &&
-                datas.map((data) => (
-                  <FavoritesBox
-                    content={data}
-                    onFavoriteChange={onFavoriteChange}
-                  />
-                ))}
-            </FavoritesParent>
+          {loading ? (
+            <LoadingSpinner
+              comment={
+                <span>
+                  레크레이션을 불러오고 있습니다.
+                  <br />
+                  잠시만 기다려주세요.
+                </span>
+              }
+            />
+          ) : datas.length !== 0 ? (
+            <>
+              <FavoritesParent>
+                {datas &&
+                  datas.map((data) => (
+                    <FavoritesBox
+                      content={data}
+                      onFavoriteChange={onFavoriteChange}
+                    />
+                  ))}
+              </FavoritesParent>
+              <Pagination
+                currentPage={currentPage}
+                pageNum={pages}
+                setCurrentPage={setCurrentPage}
+              />
+            </>
           ) : (
             <NoneWrap>
               <MyFlowNoneImg src={noScrapImg} />
               <NoneFavorite>즐겨찾기한 레크레이션이 없습니다</NoneFavorite>
             </NoneWrap>
           )}
-          <Pagination
-            currentPage={currentPage}
-            pageNum={pages}
-            setCurrentPage={setCurrentPage}
-          />
         </RecreationWrap>
       </Content>
 
