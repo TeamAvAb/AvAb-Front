@@ -26,7 +26,6 @@ export default function RecreationDetail() {
       try {
         // isLoggedIn()이 true면 privateAPI, false면 publicAPI 사용
         const api = isLoggedIn() ? privateAPI : publicAPI;
-
         const response = await api.get(`/api/recreations/${recreationId}`);
         setRecreationData(response.data.result);
         console.log("레크레이션 데이터 ", response.data.result);

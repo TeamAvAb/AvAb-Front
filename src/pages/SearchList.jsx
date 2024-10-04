@@ -26,7 +26,7 @@ export default function SearchList({}) {
   //전체 페이지 수
   const [pages, setPages] = useState(1);
   // 정렬 옵션
-  const [order, setOrder] = useState("RECENT");
+  const [order, setOrder] = useState("LIKE");
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
