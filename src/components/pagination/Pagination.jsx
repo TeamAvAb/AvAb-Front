@@ -3,17 +3,26 @@ import styled from "styled-components";
 import LeftButton from "../../assets/watchflow/moveLeft.png";
 import RightButton from "../../assets/watchflow/moveRight.png";
 
-export default function Pagination({ currentPage, pageNum, setCurrentPage }) {
+export default function Pagination({
+  currentPage,
+  pageNum,
+  setCurrentPage,
+  scrollLocation,
+}) {
   const pageN = [];
   for (let i = 1; i <= pageNum; i++) pageN.push(i);
 
+  const movePage = (page) => {
+    window.scrollTo({ top: scrollLocation || 0, behavior: "smooth" }); // 페이지 이동 시 리스트의 최상단으로 이동(scrollLocation 지정 안되었을 경우 페이지의 최상단으로 이동)
+    setCurrentPage(page);
+  };
   return (
     <PageNumberContainer>
       {/* 왼쪽 버튼 */}
       <ImageBox
         style={{ marginRight: "14px" }}
         onClick={() => {
-          if (currentPage > 0) setCurrentPage(currentPage - 1);
+          if (currentPage > 0) movePage(currentPage - 1);
         }}
       >
         <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
@@ -23,16 +32,13 @@ export default function Pagination({ currentPage, pageNum, setCurrentPage }) {
       {pageN.map((num) => {
         if (currentPage + 1 === num)
           return (
-            <SelectedPageNumber
-              key={num}
-              onClick={() => setCurrentPage(num - 1)}
-            >
+            <SelectedPageNumber key={num} onClick={() => movePage(num - 1)}>
               {num}
             </SelectedPageNumber>
           );
         else
           return (
-            <PageNumber key={num} onClick={() => setCurrentPage(num - 1)}>
+            <PageNumber key={num} onClick={() => movePage(num - 1)}>
               {num}
             </PageNumber>
           );
@@ -42,7 +48,7 @@ export default function Pagination({ currentPage, pageNum, setCurrentPage }) {
       <ImageBox
         style={{ marginLeft: "14px" }}
         onClick={() => {
-          if (currentPage < pageN.length - 1) setCurrentPage(currentPage + 1);
+          if (currentPage < pageN.length - 1) movePage(currentPage + 1);
         }}
       >
         <ButtonImage src={RightButton} alt="오른쪽 버튼" />

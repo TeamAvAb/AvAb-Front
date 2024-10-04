@@ -104,7 +104,7 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
       {/*중앙 부분*/}
       <Content>
         <RecreationWrap>
-          <RecreationTitle>레크레이션 찾기</RecreationTitle>
+          <RecreationTitle id="move">레크레이션 찾기</RecreationTitle>
           {loading ? (
             <LoadingSpinner
               comment={
@@ -130,6 +130,7 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
                 currentPage={currentPage}
                 pageNum={pages}
                 setCurrentPage={setCurrentPage}
+                scrollLocation={document.querySelector("#move").offsetTop}
               />
             </>
           ) : (
