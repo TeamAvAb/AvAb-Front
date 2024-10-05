@@ -94,7 +94,7 @@ export default function SearchList({}) {
         <Search />
         <Popular>
           <ResultHeaderContainer>
-            <ResultHeader>레크레이션 찾기</ResultHeader>
+            <ResultHeader id="move">레크레이션 찾기</ResultHeader>
             <SortControl
               setOption={setOrder}
               selectedOption={order}
@@ -116,29 +116,31 @@ export default function SearchList({}) {
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
-                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                <div style={{ fontSize: "28px", fontWeight: "bold" }}>
                   검색결과가 없습니다!
                 </div>
-                <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                <div style={{ fontSize: "22px", marginTop: "8px" }}>
                   다시 검색해보세요.
                 </div>
               </MyFlowNoneDetail>
             </MyFlowNoneBox>
-          ) : null}
-          {datas.length !== 0 ? (
-            <RecreationWrapper>
-              {datas &&
-                datas.map((data) => (
-                  <Recreation content={data} key={data.id} />
-                ))}
-            </RecreationWrapper>
-          ) : null}
-          {/* </RecreationMain> */}
-          <Pagination
-            currentPage={currentPage}
-            pageNum={pages}
-            setCurrentPage={setCurrentPage}
-          />
+          ) : (
+            <>
+              <RecreationWrapper>
+                {datas &&
+                  datas.map((data) => (
+                    <Recreation content={data} key={data.id} />
+                  ))}
+              </RecreationWrapper>
+
+              <Pagination
+                currentPage={currentPage}
+                pageNum={pages}
+                setCurrentPage={setCurrentPage}
+                scrollLocation={document.querySelector("#move").offsetTop}
+              />
+            </>
+          )}
         </Popular>
       </Container>
     </>
@@ -202,18 +204,12 @@ const MyFlowNoneBox = styled.div`
 `;
 
 const MyFlowNoneImg = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
 `;
 
 const MyFlowNoneDetail = styled.div`
   width: 100%;
-  margin-top: 40px;
+  margin: 40px 0 60px;
   text-align: center;
-`;
-
-const Loading = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
