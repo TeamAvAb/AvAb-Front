@@ -17,7 +17,7 @@ import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
 
 export default function Search() {
   // 검색어 및 키워드 저장
-  const [searchKeyword, setSearchKeyword] = useState();
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [keyword, setKeyword] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [playTime, setPlayTime] = useState([]);
@@ -92,6 +92,12 @@ export default function Search() {
     }
   };
 
+  const participValidCheck = (e) => {
+    if (e.target.value[0] == 0) return;
+    if (e.target.value < 0 || e.target.value > 100) return;
+    else setParticipants(e.target.value);
+  };
+
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
   const [purposeModal, setPurposeModal] = useState(false);
@@ -100,7 +106,9 @@ export default function Search() {
     return selected.map((el) => (
       <>
         <SelectedKeyword key={el}>
-          '{label[label.findIndex((i) => i.param === el)].value}' 포함
+          <div>
+            '{label[label.findIndex((i) => i.param === el)].value}' 포함
+          </div>
           <img
             src={deleteImg}
             id={el}
@@ -152,6 +160,11 @@ export default function Search() {
       console.log(error);
     }
   };
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") submit();
+  };
+
   useEffect(() => {
     const currentURL = new URLSearchParams(window.location.search);
     if (currentURL.size !== 0) {
@@ -173,6 +186,7 @@ export default function Search() {
         <SearchWord
           placeholder="오늘 MT 레크레이션 할 때 뭐하지?"
           onChange={(e) => setSearchKeyword(e.target.value)}
+          onKeyDown={handleSearch}
           value={searchKeyword}
         />
         <img
@@ -204,7 +218,7 @@ export default function Search() {
             <Input
               placeholder="조별 인원을 입력해주세요."
               type="number"
-              onChange={(e) => setParticipants(e.target.value)}
+              onChange={(e) => participValidCheck(e)}
               value={participants}
             ></Input>
           </Filter>
@@ -303,8 +317,12 @@ export default function Search() {
         )}
       </SearchBox>
       <SearchBtns>
-        <ResetBtn onClick={reset}>초기화</ResetBtn>
-        <SearchBtn onClick={submit}>필터 적용</SearchBtn>
+        <Btn id="reset" onClick={reset}>
+          초기화
+        </Btn>
+        <Btn id="search" onClick={submit}>
+          필터 적용
+        </Btn>
       </SearchBtns>
       {keywordModal ? (
         <KeywordModal
@@ -398,6 +416,7 @@ const Filter = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 const LabelName = styled.label`
@@ -434,11 +453,11 @@ const SelectedKeywords = styled.div`
 
 const SelectedKeyword = styled.div`
   width: max-content;
-  display: inline-flex;
-  padding: 2px 10px;
+  display: flex;
   flex-direction: row;
-  gap: 12px;
   align-items: center;
+  padding: 2px 10px;
+  gap: 12px;
   border-radius: 20px;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   background: #d9d9d9;
@@ -501,27 +520,25 @@ const SearchBtns = styled.div`
   bottom: -60px;
   right: 0;
 `;
-const ResetBtn = styled.button`
+const Btn = styled.button`
   display: flex;
   padding: 9px 24px;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
   border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+
   font-size: 20px;
   font-weight: 700;
-`;
-const SearchBtn = styled.button`
-  display: flex;
-  padding: 9px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
+  cursor: pointer;
+
+  &#reset {
+    background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
+    color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+  }
+
+  &#search {
+    background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+    color: #fff;
+  }
 `;
