@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/login_character.png";
-import elipseImg from "../assets/main/elipse.svg";
 import closeImg from "../assets/main/closeIcon.svg";
-import x from "../assets/main/x.svg";
 
 export default function Login({ handleLoginModal }) {
   const { pathname } = useLocation();
@@ -45,14 +43,6 @@ export default function Login({ handleLoginModal }) {
           />
         </Content>
         <Controls>
-          <Control onClick={() => setTemporaryClose((prev) => !prev)}>
-            {temporaryClose ? (
-              <img src={x} />
-            ) : (
-              <img src={elipseImg} style={{ width: "38px", height: "38px" }} />
-            )}
-            오늘 하루 보지 않기
-          </Control>
           <Control onClick={() => handleLoginModal(false)}>
             <img src={closeImg} style={{ width: "24px", height: "25px" }} />
             닫기
@@ -122,7 +112,7 @@ const Button = styled.button`
 `;
 const Controls = styled.div`
   display: inline-flex;
-  justify-content: space-between;
+  justify-content: end;
   height: 25px;
   padding: 22px;
   color: var(--gray-scale-464-c-52, #464c52);
