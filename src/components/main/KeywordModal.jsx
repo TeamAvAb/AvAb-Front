@@ -113,6 +113,7 @@ const Keyword = styled.div`
   font-size: ${(props) => (props.category == "keyword" ? "16px" : "20px")};
   font-weight: ${(props) => (props.category == "keyword" ? "400" : "700")};
   line-height: normal;
+  cursor: pointer;
 `;
 const SetModal = styled.div`
   padding: 16px 32px;
@@ -142,6 +143,7 @@ const ModalBtn = styled.button`
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
+  cursor: pointer;
 `;
 const Reset = styled.button`
   display: flex;
@@ -153,4 +155,5 @@ const Reset = styled.button`
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
+  cursor: pointer;
 `;
