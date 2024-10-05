@@ -139,4 +139,5 @@ const Li = styled.button`
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  cursor: pointer;
 `;

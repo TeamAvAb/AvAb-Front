@@ -3,7 +3,7 @@ import styled from "styled-components";
 import rechoiceIcon from "../../assets/main/rechoiceIcon.svg";
 
 export default function KeywordModal({
-  category,
+  $category,
   content,
   modalControl,
   keywordControl,
@@ -32,10 +32,10 @@ export default function KeywordModal({
   return (
     <Container>
       <Modal>
-        <Keywords category={category}>
+        <Keywords $category={$category}>
           {content.map((el) => (
             <Keyword
-              category={category}
+              $category={$category}
               key={el.param}
               onClick={() => handleSingleSelect(el.param)}
               selected={result.includes(el.param)}
@@ -86,32 +86,33 @@ const Keywords = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: ${(props) => (props.category == "keyword" ? "42px 49px" : "58px 0")};
-  gap: ${(props) => (props.category == "keyword" ? "20px" : "15px")};
+  padding: ${(props) =>
+    props.$category == "keyword" ? "42px 49px" : "58px 0"};
+  gap: ${(props) => (props.$category == "keyword" ? "20px" : "15px")};
   flex-wrap: wrap;
   box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.2) inset;
 `;
 const Keyword = styled.div`
   display: flex;
   padding: ${(props) =>
-    props.category == "keyword" ? "10px 40px" : "16px 34px"};
+    props.$category == "keyword" ? "10px 40px" : "16px 34px"};
   justify-content: center;
   align-items: center;
   border: ${(props) =>
-    props.category == "keyword"
+    props.$category == "keyword"
       ? "none"
       : props.selected
       ? "1px solid transparent"
       : "1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"};
-  border-radius: ${(props) => (props.category == "keyword" ? "5px" : "50px")};
+  border-radius: ${(props) => (props.$category == "keyword" ? "5px" : "50px")};
   background: ${(props) =>
     props.selected
       ? "var(--main-a-0-ddff, #a0ddff)"
-      : props.category === "keyword"
+      : props.$category === "keyword"
       ? "var(--gray-scale-e-9-ebed, #E9EBED)"
       : "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)"};
-  font-size: ${(props) => (props.category == "keyword" ? "16px" : "20px")};
-  font-weight: ${(props) => (props.category == "keyword" ? "400" : "700")};
+  font-size: ${(props) => (props.$category == "keyword" ? "16px" : "20px")};
+  font-weight: ${(props) => (props.$category == "keyword" ? "400" : "700")};
   line-height: normal;
   cursor: pointer;
 `;

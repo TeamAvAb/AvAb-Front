@@ -177,7 +177,7 @@ export default function Search() {
         />
         <img
           src={searchIconImg}
-          style={{ width: "42.399px", height: "42.399px" }}
+          style={{ width: "42.399px", height: "42.399px", cursor: "pointer" }}
           onClick={submit}
         />
       </SearchWordBox>
@@ -308,7 +308,7 @@ export default function Search() {
       </SearchBtns>
       {keywordModal ? (
         <KeywordModal
-          category="keyword"
+          $category="keyword"
           content={keywordOptions}
           modalControl={setKeywordModal}
           keywordControl={setKeyword}
@@ -317,7 +317,7 @@ export default function Search() {
       ) : null}
       {purposeModal ? (
         <KeywordModal
-          category="purpose"
+          $category="purpose"
           content={purposeOptions}
           modalControl={setPurposeModal}
           keywordControl={setPurpose}
@@ -423,6 +423,7 @@ const KeywordBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  cursor: pointer;
 `;
 
 const SelectedKeywords = styled.div`
@@ -487,6 +488,7 @@ const Menu = styled.div`
   font-size: 20px;
   font-weight: 700;
   gap: 8px;
+  cursor: pointer;
 `;
 
 // 버튼
