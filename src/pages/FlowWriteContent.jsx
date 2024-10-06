@@ -13,6 +13,7 @@ import WithoutSaving from "../components/flowwrite/WithoutSavingModal.jsx";
 // import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from "../components/flowwrite/NoTitleModal.jsx";
 // import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
+import WriteSelectedRecreationInfo from "../components/flowwrite/WriteSelectedRecreationInfo.jsx";
 import WriteRecreationInfo from "../components/flowwrite/WriteRecreationInfo.jsx";
 import AddRecreationInfo from "../components/flowwrite/AddRecreationInfo.jsx";
 import RecommendRecreation from "../components/flowwrite/RecommendRecreation.jsx";
@@ -34,6 +35,7 @@ export default function FlowWriteContent() {
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAges, setSelectedAges] = useState([]);
   const [selectedGroupSize, setSelectedGroupSize] = useState("");
+  const [selectedFlow, setSelectedFlow] = useState(null);
 
   const testJWT =
     "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiaWF0IjoxNzA3Mjk1MzkzLCJleHAiOjE5MDcyOTg5OTN9.yEvU_V98IMhnC09lEL_BdxU7aQTx69BclrAd9zjZL64";
@@ -82,6 +84,22 @@ export default function FlowWriteContent() {
     if (storedGroupSize) {
       const parsedGroupSize = JSON.parse(storedGroupSize);
       setSelectedGroupSize(parsedGroupSize);
+    }
+
+    // 로컬 스토리지에서 저장된 플로우 추천 가져오기
+    const storedFlow = localStorage.getItem('selectedFlow');
+    if (storedFlow) {
+      try {
+        const parsedFlow = JSON.parse(storedFlow); // JSON 파싱
+        setSelectedFlow(parsedFlow); // 상태에 저장
+
+        // 콘솔로 데이터 확인
+        console.log("Stored flow data:", parsedFlow); // 저장된 플로우 데이터 확인
+      } catch (error) {
+        console.error("Error parsing selectedFlow from localStorage:", error);
+      }
+    } else {
+      console.log("No flow data found in localStorage."); // 로컬 스토리지에 데이터가 없을 경우
     }
   }, []);
 
@@ -551,8 +569,22 @@ export default function FlowWriteContent() {
                 </div>
   
                 <div>
-                  {/* 기본 레크레이션 박스 */}
-                  {infoBoxes.map((box, index) => (
+                  {/* 선택한 플로우의 레크레이션 표시 */}
+                  {selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0 ? (
+                    selectedFlow.recreations.map((rec, index) => (
+                      <WriteSelectedRecreationInfo 
+                        key={rec.id} // 고유한 ID를 키로 사용
+                        num={index} // 박스 번호를 전달
+                        title={rec.title || "제목 없음"} // 레크레이션 제목
+                        onDelete={() => handleDelete(index)} // 삭제 기능 처리
+                        selectedKeywords={rec.keywordList || []} // 레크레이션 키워드
+                        time={rec.playTime || 0} // 플레이 시간
+                      />
+                    ))
+                  ) : null}
+
+                  {/* 기본 레크레이션 박스 : 추천 플로우가 선택되지 않았을 경우에만 표시 */}
+                  {!(selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0) && infoBoxes.map((box, index) => (
                     <div key={`infoBox-${index}`}>
                       {React.cloneElement(box, {
                         num: index, // 인덱스를 num으로 전달
@@ -560,12 +592,14 @@ export default function FlowWriteContent() {
                       })}
                     </div>
                   ))}
-                  <WriteRecreationInfo
-                    key={numOfRecreationInfo}
-                    time={time}
-                    num={infoBoxes.length} // 마지막 박스의 num 설정
-                    onDelete={() => handleDelete(infoBoxes.length-1)} // 마지막 박스의 삭제 기능
-                  />
+                  {!(selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0) && (
+                    <WriteRecreationInfo
+                      key={numOfRecreationInfo}
+                      time={time}
+                      num={infoBoxes.length} // 마지막 박스의 num 설정
+                      onDelete={() => handleDelete(infoBoxes.length - 1)} // 마지막 박스의 삭제 기능
+                    />
+                  )}
                 </div>
   
                 <AddFlowButton onClick={handleAddFlow}>+</AddFlowButton>
@@ -732,6 +766,14 @@ const FlowContainer = styled.div`
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   background: white;
+`;
+
+const RecreationBox = styled.div`
+  border: 1px solid #cacdd2;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
 `;
 
 const Line = styled.div`

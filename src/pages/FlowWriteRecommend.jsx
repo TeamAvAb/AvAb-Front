@@ -28,23 +28,36 @@ export default function FlowWriteRecommend() {
   const handleButtonClick = (button) => {
     if (selectedButton === button) {
       setSelectedButton(null);
+      localStorage.removeItem('selectedFlow'); // 선택 해제 시 로컬 스토리지에서 삭제
       console.log(`Button ${button} deselected`);
     } else {
       setSelectedButton(button);
-      console.log(`Selected button: ${button}`);
+
+      // 버튼 값에 따라 flowData에서 데이터를 찾기
+      const index = button === '1안' ? 0 : 1; // 버튼 값에 따라 인덱스 결정
+      const selectedFlowData = flowData[index]; // 해당 인덱스의 flowData를 가져옴
+
+      if (selectedFlowData) {
+        localStorage.setItem('selectedFlow', JSON.stringify(selectedFlowData)); // 선택된 플로우 데이터를 로컬 스토리지에 저장
+        console.log(`Selected flow data:`, selectedFlowData); // 저장하는 데이터 확인
+        console.log(`Button clicked: ${button}, Selected Flow Data:`, selectedFlowData);
+      } else {
+        console.warn(`No flow data found for button: ${button}`); // 데이터가 없을 경우 경고
+      }
     }
   };
 
   useEffect(() => {
     const fetchFlowData = async () => {
       try {
-        const response = await axios.get(`http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/flows/recommended`, {
+        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
            params: {
             playTime: '100',
             purpose: 'WORKSHOP'
           }
         });
         setFlowData(response.data.result);
+        console.log(response.data.result); // 데이터 구조 확인
       } catch (error) {
         console.error(error);
       }
@@ -93,7 +106,7 @@ export default function FlowWriteRecommend() {
                 1안
                 </Select1Button>
                   <div style={{ width: "393px", textAlign: "center" }}>
-                  <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
+                  <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "title"}</FlowTitle>
                   </div>
                   
                   <RecreationBox>
@@ -109,8 +122,8 @@ export default function FlowWriteRecommend() {
                 2안
                </Select2Button>
                <div style={{ width: "393px", textAlign: "center" }}>
-               <FlowTitle>{flowData.length > 0 ? flowData[1].flowDetail.title : "플로우 제목"}</FlowTitle>
-                  </div>
+                  <FlowTitle>{flowData.length > 0 ? flowData[1].flowDetail.title : "title"}</FlowTitle>
+               </div>
 
                 <RecreationBox>
                   {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
