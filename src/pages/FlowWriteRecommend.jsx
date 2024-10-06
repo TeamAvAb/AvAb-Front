@@ -39,7 +39,7 @@ export default function FlowWriteRecommend() {
       const parsedKeywords = JSON.parse(savedKeywords);
       console.log('Parsed Keywords:', parsedKeywords); // 값 확인
       const englishKeywords = parsedKeywords.map(
-        (keyword) => keywordMappings[keyword] || keyword // 매핑이 없는 경우 원래 키워드 사용
+        (keyword) => Object.keys(keywordMappings).find(key => keywordMappings[key] === keyword) || keyword // 키워드를 영어로 변환
       );
       setSelectedKeywords(englishKeywords);
     }
@@ -62,7 +62,7 @@ export default function FlowWriteRecommend() {
 
       console.log('Fetching flow data...'); // API 호출 준비 로그
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, { // 실제 API URL로 변경
+        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
           params: {
             playTime: playTime, // 플레이 시간 사용
             purpose: selectedKeywords.join(','),
