@@ -267,7 +267,7 @@ export default function FlowWriteContent() {
         (keyword) => keywordMappings[keyword]
       );
       // API를 호출하여 데이터 가져오기
-      const response = await axios.get("http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended", {
+      const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
         params: {
           playTime: savedPlayTime,
           purpose: englishKeywords.join(","),
@@ -284,26 +284,6 @@ export default function FlowWriteContent() {
         });
         // 추출한 정보를 저장
         return { title, keywordList, playTime };
-        // 플로우 박스를 추가하는 로직 추가
-        // 커스텀 플로우 박스 추가
-        // setInfoBoxes((prevInfoBoxes) => [
-        //   ...prevInfoBoxes,
-        //   infoBoxes.length + 1,
-        // ]);
-        // setNumOfRecreationInfo((prevNum) => prevNum);
-
-        // 데이터를 AddRecreationInfo 컴포넌트로 전달
-        // setInfoBoxes((prevInfoBoxes) => [
-        //   ...prevInfoBoxes,
-        //   <AddRecreationInfo
-        //     num={prevInfoBoxes.length + 1}
-        //     id={id}
-        //     title={title}
-        //     keywordList={keywordList}
-        //     playTime={playTime}
-        //   />,
-        // ]);
-        // setNumOfRecreationInfo(numOfRecreationInfo + 1);
       } else {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
         return null;
@@ -318,7 +298,7 @@ export default function FlowWriteContent() {
   const handleAddScrapFlow = async () => {
     try {
       console.log("API 호출 전");
-      const response = await axios.get(`http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/users/me/favorites/recreations?page=0`, {
+      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=0`, {
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${testJWT}`,
@@ -356,22 +336,6 @@ export default function FlowWriteContent() {
       playTime,
     });
   }, [scrapRecreationData]);
-
-  // const handleAddScrapFlow = async () => {
-  //   try {
-  //     // privateAPI를 사용하여 인증이 필요한 요청 보내기
-  //     const response = await privateAPI.get('/api/users/me/favorites/recreations');
-  //     // 데이터에서 필요한 정보 추출
-  //     const { title, keywordList, playTime } = response.data;
-  //     console.log('추가된 레크레이션 데이터:', { title, keywordList, playTime });
-  //     // 추출한 정보를 저장
-  //     return { title, keywordList, playTime };
-  //   } catch (error) {
-  //     // 에러 발생 시 에러 처리
-  //     console.error('추가 중 오류 발생:', error);
-  //     throw error; // 에러를 상위로 전파하여 처리 가능하도록 함
-  //   }
-  // };
 
   FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
   FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
@@ -464,14 +428,11 @@ export default function FlowWriteContent() {
                       목적
                     </div>
                     <div>
-                      {selectedKeywords.join(", ")}
-                      <div style={{ listStyleType: "none" }}>
-                        {selectedKeywords.map((keyword, index) => (
-                          <li key={index}>{keywordMappings[keyword]}</li>
-                        ))}
+                      <div>
+                        {selectedKeywords.join(", ")}
                       </div>
                     </div>
-                  </div>
+                    </div>
                   <div style={{ display: "flex" }}>
                     <div
                       style={{
@@ -536,7 +497,7 @@ export default function FlowWriteContent() {
                       연령대
                     </div>
                     <div>
-                      {selectedAges
+                    {sortedAges
                         .map((age) =>
                           age === "UNDER_TEENAGER"
                             ? "10대 미만"
@@ -591,7 +552,11 @@ export default function FlowWriteContent() {
   
                 <div>
                   {/* 기본 레크레이션 박스 */}
-                  {infoBoxes.map((num) => num)}
+                  {infoBoxes.map((box, index) => (
+                    <div key={`infoBox-${index}`}>
+                      {React.cloneElement(box, { num: index })} {/* 인덱스를 num으로 전달 */}
+                    </div>
+                  ))}
                   <WriteRecreationInfo
                     key={numOfRecreationInfo + 2}
                     time={time}
