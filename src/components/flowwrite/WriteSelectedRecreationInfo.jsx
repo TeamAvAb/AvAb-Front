@@ -3,7 +3,7 @@ import styled from "styled-components";
 import fix from "../../assets/flowwrite/fix_flow_write.png";
 import deleteIcon from "../../assets/flowwrite/deleteIcon.png";
 
-const keywordMapping = {
+const DetailMapping = {
     COOPERATIVE: "협동",
     QUICKNESS: "순발력",
     SENSIBLE: "센스",
@@ -28,7 +28,7 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
   };
 
   // 키워드를 한국어로 변환
-  const translatedKeywords = selectedKeywords.map(keyword => keywordMapping[keyword] || keyword);
+  const translatedKeywords = selectedKeywords.map(keyword => DetailMapping[keyword] || keyword);
 
   return (
     <Container>
