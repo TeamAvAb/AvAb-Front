@@ -15,6 +15,73 @@ export default function FlowWriteRecommend() {
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [flowData, setFlowData] = useState([]);
+  const [playTime, setPlayTime] = useState(''); 
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+
+  const keywordMappings = {
+    WORKSHOP: "워크샵",
+    SPORTS_DAY: "체육대회",
+    MT: "MT",
+    GATHERING: "모임",
+    RETREAT: "수련회",
+  };
+
+  // 로컬 스토리지에서 값 가져오기
+  useEffect(() => {
+    const savedPlayTime = localStorage.getItem("playTime");
+    if (savedPlayTime) {
+      setPlayTime(savedPlayTime);
+      console.log('Parsed Play Time:', savedPlayTime); // 값 확인
+    }
+
+    const savedKeywords = localStorage.getItem("selectedKeywords");
+    if (savedKeywords) {
+      const parsedKeywords = JSON.parse(savedKeywords);
+      console.log('Parsed Keywords:', parsedKeywords); // 값 확인
+      const englishKeywords = parsedKeywords.map(
+        (keyword) => keywordMappings[keyword] || keyword // 매핑이 없는 경우 원래 키워드 사용
+      );
+      setSelectedKeywords(englishKeywords);
+    }
+  }, []); // 컴포넌트가 처음 마운트될 때만 실행
+
+
+
+  // 플로우 데이터 가져오기
+  useEffect(() => {
+    const fetchFlowData = async () => {
+      console.log('Checking play time and keywords...'); // 상태 확인 로그
+      console.log('Play Time:', playTime); // 상태 확인
+      console.log('Selected Keywords:', selectedKeywords); // 상태 확인
+
+      // 상태가 비어 있는 경우 로그 출력 후 함수 종료
+      if (!playTime || selectedKeywords.length === 0) {
+        console.log('Play time or keywords are empty.'); // 상태가 비어 있을 때 로그
+        return; // 함수 종료
+      }
+
+      console.log('Fetching flow data...'); // API 호출 준비 로그
+      try {
+        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, { // 실제 API URL로 변경
+          params: {
+            playTime: playTime, // 플레이 시간 사용
+            purpose: selectedKeywords.join(','),
+          },
+        });
+        console.log(response.data); // API 응답 확인
+        if (response.data.result) {
+          setFlowData(response.data.result);
+          console.log(response.data.result); // 데이터 구조 확인
+        } else {
+          console.warn("No result found in API response.");
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+      }
+    };
+
+    fetchFlowData();
+  }, [playTime, selectedKeywords]); // 상태가 변경될 때마다 호출
 
   const handleNextClick = () => {
     navigate('/flow/write/content');
@@ -28,33 +95,46 @@ export default function FlowWriteRecommend() {
   const handleButtonClick = (button) => {
     if (selectedButton === button) {
       setSelectedButton(null);
+      localStorage.removeItem('selectedFlow'); // 선택 해제 시 로컬 스토리지에서 삭제
       console.log(`Button ${button} deselected`);
     } else {
       setSelectedButton(button);
-      console.log(`Selected button: ${button}`);
+
+      // 버튼 값에 따라 flowData에서 데이터를 찾기
+      const index = button === '1안' ? 0 : 1; // 버튼 값에 따라 인덱스 결정
+      const selectedFlowData = flowData[index]; // 해당 인덱스의 flowData를 가져옴
+
+      if (selectedFlowData) {
+        localStorage.setItem('selectedFlow', JSON.stringify(selectedFlowData)); // 선택된 플로우 데이터를 로컬 스토리지에 저장
+        console.log(`Selected flow data:`, selectedFlowData); // 저장하는 데이터 확인
+        console.log(`Button clicked: ${button}, Selected Flow Data:`, selectedFlowData);
+      } else {
+        console.warn(`No flow data found for button: ${button}`); // 데이터가 없을 경우 경고
+      }
     }
   };
 
-  useEffect(() => {
-    const fetchFlowData = async () => {
-      try {
-        const response = await axios.get(`http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/flows/recommended`, {
-           params: {
-            playTime: '100',
-            purpose: 'WORKSHOP'
-          }
-        });
-        setFlowData(response.data.result);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchFlowData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchFlowData = async () => {
+  //     try {
+  //       const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
+  //          params: {
+  //           playTime: '100',
+  //           purpose: 'WORKSHOP'
+  //         }
+  //       });
+  //       setFlowData(response.data.result);
+  //       console.log(response.data.result); // 데이터 구조 확인
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchFlowData();
+  // }, []);
 
-  useEffect(() => {
-    console.log(flowData);
-  }, [flowData]);
+  // useEffect(() => {
+  //   console.log(flowData);
+  // }, [flowData]);
 
     return (
         <FlowWriteRecommendWrap>
@@ -85,38 +165,35 @@ export default function FlowWriteRecommend() {
               <span>입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를 <strong>클릭</strong>하여 저장해주세요.</span>
             </AdditionalExplain>
             <RecommendWrapper>
-              <Recommend1 selected={selectedButton === '1안'}>
-                <Select1Button
-                  onClick={() => handleButtonClick('1안')}
-                  clicked={selectedButton === '1안'}
-                >
+            <Recommend1 selected={selectedButton === '1안'}>
+              <Select1Button
+                onClick={() => handleButtonClick('1안')}
+                clicked={selectedButton === '1안'}
+              >
                 1안
-                </Select1Button>
-                  <div style={{ width: "393px", textAlign: "center" }}>
-                  <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "플로우 제목"}</FlowTitle>
-                  </div>
-                  
-                  <RecreationBox>
-                    {flowData.length > 0 && <RecreationInfo recreations={flowData[0].recreations} />}
-                  </RecreationBox>
-
-              </Recommend1>
-              <Recommend2 selected={selectedButton === '2안'}>
-               <Select2Button
+              </Select1Button>
+              <div style={{ width: "393px", textAlign: "center" }}>
+                <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "title"}</FlowTitle>
+              </div>
+              <RecreationBox>
+                {flowData.length > 0 && <RecreationInfo recreations={flowData[0].recreations} />}
+              </RecreationBox>
+            </Recommend1>
+            <Recommend2 selected={selectedButton === '2안'}>
+              <Select2Button
                 onClick={() => handleButtonClick('2안')}
                 clicked={selectedButton === '2안'}
-               >
+              >
                 2안
-               </Select2Button>
-               <div style={{ width: "393px", textAlign: "center" }}>
-               <FlowTitle>{flowData.length > 0 ? flowData[1].flowDetail.title : "플로우 제목"}</FlowTitle>
-                  </div>
-
-                <RecreationBox>
-                  {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
-                </RecreationBox>
-              </Recommend2>
-            </RecommendWrapper>
+              </Select2Button>
+              <div style={{ width: "393px", textAlign: "center" }}>
+                <FlowTitle>{flowData.length > 1 ? flowData[1].flowDetail.title : "title"}</FlowTitle>
+              </div>
+              <RecreationBox>
+                {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
+              </RecreationBox>
+            </Recommend2>
+          </RecommendWrapper>
 
             <CardGoContent onClick={handleNextClick}>
                 <CardGoContainer>
