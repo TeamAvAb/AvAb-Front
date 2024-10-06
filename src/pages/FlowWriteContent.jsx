@@ -340,10 +340,10 @@ export default function FlowWriteContent() {
   FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
   FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
 
-  const handleDelete = (num) => {
+  const handleDelete = (index) => {
     // 플로우 박스 삭제
     setInfoBoxes((prevInfoBoxes) =>
-      prevInfoBoxes.filter((item) => item !== num)
+      prevInfoBoxes.filter((_, i) => i !== index) // 인덱스를 기준으로 삭제
     );
   };
 
@@ -554,14 +554,17 @@ export default function FlowWriteContent() {
                   {/* 기본 레크레이션 박스 */}
                   {infoBoxes.map((box, index) => (
                     <div key={`infoBox-${index}`}>
-                      {React.cloneElement(box, { num: index })} {/* 인덱스를 num으로 전달 */}
+                      {React.cloneElement(box, {
+                        num: index, // 인덱스를 num으로 전달
+                        onDelete: () => handleDelete(index), // 인덱스를 전달하여 삭제 기능 추가
+                      })}
                     </div>
                   ))}
                   <WriteRecreationInfo
-                    key={numOfRecreationInfo + 2}
+                    key={numOfRecreationInfo}
                     time={time}
-                    num={numOfRecreationInfo}
-                    onDelete={handleDelete}
+                    num={infoBoxes.length} // 마지막 박스의 num 설정
+                    onDelete={() => handleDelete(infoBoxes.length-1)} // 마지막 박스의 삭제 기능
                   />
                 </div>
   
