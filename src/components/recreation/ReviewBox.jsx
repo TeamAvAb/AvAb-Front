@@ -2,16 +2,19 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import greyStar from "../../assets/recreation/greyStar.svg";
-import good from "../../assets/recreation/good.svg";
-import bad from "../../assets/recreation/bad.svg";
+import { ReactComponent as GoodIcon } from "../../assets/recreation/good.svg";
+import { ReactComponent as BadIcon } from "../../assets/recreation/bad.svg";
 
 export default function ReviewBox({
+  reviewId,
   starNum,
   nickname,
   date,
   review,
   like,
   dislike,
+  handleLikeClick,
+  handleDislikeClick,
 }) {
   const Stars = () => {
     const stars = [];
@@ -39,12 +42,19 @@ export default function ReviewBox({
       </NickNameDateBox>
       <ReviewContent>{review}</ReviewContent>
       <NickNameDateBox>
-        <LikeDislikeBox marginRight="40px">
-          <LikeDislikeIcon src={good} alt="good" />
+        <LikeDislikeBox
+          active={like}
+          marginRight="40px"
+          onClick={() => handleLikeClick(reviewId)}
+        >
+          <LikeDislikeIcon active={like} />
           {like}
         </LikeDislikeBox>
-        <LikeDislikeBox>
-          <LikeDislikeIcon src={bad} alt="good" />
+        <LikeDislikeBox
+          active={dislike}
+          onClick={() => handleDislikeClick(reviewId)}
+        >
+          <LikeDislikeIcon as={BadIcon} active={dislike} />
           {dislike}
         </LikeDislikeBox>
       </NickNameDateBox>
@@ -77,10 +87,12 @@ const StarNum = styled.div`
   align-items: center;
   margin-left: 12px;
 `;
+
 const NickNameDateBox = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const NickName = styled.div`
   width: fit-content;
   color: var(--gray-scale-464-c-52, #464c52);
@@ -90,11 +102,13 @@ const NickName = styled.div`
   margin-right: 13px;
   border-right: #464c52 0.25px solid;
 `;
+
 const Date = styled.div`
   color: #9fa4a9;
   font-size: 16px;
   font-weight: 400;
 `;
+
 const ReviewContent = styled.div`
   margin: 17px 0px;
   color: #1b1d1f;
@@ -102,9 +116,11 @@ const ReviewContent = styled.div`
   font-weight: 400;
   line-height: 30px;
 `;
-
-const LikeDislikeIcon = styled.img`
+const LikeDislikeIcon = styled(GoodIcon)`
   margin-right: 8px;
+  fill: none;
+  stroke: ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
+  transition: stroke 0.3s;
 `;
 
 const LikeDislikeBox = styled.div`
@@ -112,12 +128,13 @@ const LikeDislikeBox = styled.div`
   align-items: center;
   width: max-content;
   border-radius: 50px;
-  border: 0.5px solid #9fa4a9;
+  border: 0.5px solid ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
   padding: 14px 21px;
-  align-items: flex-start;
-  color: #9fa4a9;
+  color: ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
   margin-right: ${(props) => props.marginRight || "0px"};
+  transition: all 0.3s;
+  justify-content: center;
 `;

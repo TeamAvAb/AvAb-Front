@@ -7,11 +7,8 @@ import RecreationRelated from "../components/recreation/RecreationRelated";
 import RecreationFlow from "../components/recreation/RecreationFlow";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-
-import { Helmet } from "react-helmet"; // react-helmet 임포트
-
-import { privateAPI } from "../apis/user";
+import { Helmet } from "react-helmet";
+import { publicAPI, privateAPI, isLoggedIn } from "../apis/user";
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -27,11 +24,11 @@ export default function RecreationDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await privateAPI.get(
-          `/api/recreations/${recreationId}`
-        );
+        // isLoggedIn()이 true면 privateAPI, false면 publicAPI 사용
+        const api = isLoggedIn() ? privateAPI : publicAPI;
+        const response = await api.get(`/api/recreations/${recreationId}`);
         setRecreationData(response.data.result);
-
+        console.log("레크레이션 데이터 ", response.data.result);
         setLoading(false); // 데이터 받아오기 성공
       } catch (error) {
         console.error(error);

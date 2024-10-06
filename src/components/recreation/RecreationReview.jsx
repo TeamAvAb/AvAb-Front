@@ -12,6 +12,9 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const [reviewInput, setReviewInput] = useState("");
   const [selectedStars, setSelectedStars] = useState(0);
 
+  const [likeState, setLikeState] = useState(false);
+  const [dislikeState, setDislikeState] = useState(false);
+
   const handleStarClick = (starCount) => {
     setSelectedStars(starCount);
   };
@@ -19,12 +22,14 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const itemsPerPage = 2;
   // 리뷰 목록 받아오기
   const fetchReviews = async () => {
+    console.log("리뷰 목록 다시 받기");
     try {
       const response = await publicAPI.get(
         `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`
       );
       setReviewListData(response.data.result.reviewList);
-      setReviewData(response.data.result);
+      console.log("ReviewListData", reviewListData);
+      console.log("ReviewData", reviewData);
     } catch (error) {
       console.error(error);
     }
@@ -67,9 +72,50 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
     }
   };
 
+  // 좋아요 클릭 핸들러
+  const handleLikeClick = async (id) => {
+    console.log("좋아요");
+    if (localStorage.getItem("accessToken")) {
+      const response = await privateAPI.post(
+        `/api/recreation-reviews/${id}/recommendations`,
+        {
+          type: "GOOD",
+        }
+      );
+      if (response.data?.code === "COMMON201") {
+        setLikeState(true); // 좋아요 클릭 상태 변경
+        setDislikeState(false); // 싫어요 해제
+
+        fetchReviews();
+      } else {
+        console.log(response.data);
+      }
+    } else alert("로그인이 필요한 기능입니다.");
+  };
+
+  // 싫어요 클릭 핸들러
+  const handleDislikeClick = async (id) => {
+    console.log("싫어요");
+    if (localStorage.getItem("accessToken")) {
+      const response = await privateAPI.post(
+        `/api/recreation-reviews/${id}/recommendations`,
+        {
+          type: "BAD",
+        }
+      );
+      if (response.data?.code === "COMMON201") {
+        setLikeState(false); // 좋아요 해제
+        setDislikeState(true); // 싫어요 클릭 상태 변경
+        fetchReviews();
+      } else {
+        console.log(response.data);
+      }
+    } else alert("로그인이 필요한 기능입니다.");
+  };
+
   return (
     <RecreationReviewContainer ref={ref}>
-      <TitleText>리뷰 및 평가 ({reviewData.totalReviews})</TitleText>
+      <TitleText>리뷰 및 평가 ({reviewListData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
         <ReviewStars onStarClick={handleStarClick} />
@@ -97,13 +143,17 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
       {reviewListData.map((review) => (
         <ReviewBox
-          key={review.reviewId}
+          reviewId={review.reviewId}
           starNum={review.stars}
           nickname={review.author.username}
           date={review.createdAt}
           review={review.contents}
           like={review.goodCount}
           dislike={review.badCount}
+          handleLikeClick={handleLikeClick}
+          handleDislikeClick={handleDislikeClick}
+          likeState={likeState}
+          dislikeState={dislikeState}
         />
       ))}
       <RecreationPagination

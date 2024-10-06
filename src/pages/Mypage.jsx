@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,7 +7,7 @@ import LogoutP from "../assets/mypage/LogoutImg.svg";
 import { privateAPI } from "../apis/user";
 import { Helmet } from "react-helmet";
 
-export default function Mypage({ handleLogin, isLoggedIn }) {
+export default function Mypage({ handleLogin }) {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -41,31 +41,6 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
     setLogoutModalOpen(false);
   };
 
-  // 데이터 가져오기
-  const [datas, setDatas] = useState([]);
-  // 데이터 불러오는 동안 로딩
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      try {
-        if (isLoggedIn) {
-          const response = await privateAPI.get(`/api/users/me`);
-          setDatas(response.data.result);
-          setLoading(false);
-        } else {
-          setDatas([]);
-          setLoading(false);
-        }
-
-      } catch (error) {
-        console.log("내 정보 로드 요청 에러 : ", error);
-      }
-    };
-    call();
-  }, []);
-
   return (
     <Container>
       <Helmet>
@@ -95,7 +70,7 @@ export default function Mypage({ handleLogin, isLoggedIn }) {
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
-      <Content>{datas && <MyInfoBox content={datas} />}</Content>
+      <Content>{<MyInfoBox />}</Content>
 
       {/*우측 바*/}
       <RightSide />
