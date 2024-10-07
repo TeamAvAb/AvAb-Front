@@ -28,9 +28,10 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`
       );
       setReviewListData(response.data.result.reviewList);
-      console.log("ReviewListData", reviewListData);
-      console.log("ReviewData", reviewData);
+      setReviewData(response.data.result);
     } catch (error) {
+      console.log("리뷰데이터");
+
       console.error(error);
     }
   };
@@ -62,9 +63,9 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         fetchReviews();
 
         alert("리뷰가 등록되었습니다");
+        setSelectedStars(0);
 
         setReviewInput("");
-        setSelectedStars(0);
       } catch (error) {
         console.error(error);
         alert("리뷰 등록에 실패했습니다");
@@ -118,7 +119,10 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       <TitleText>리뷰 및 평가 ({reviewListData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
-        <ReviewStars onStarClick={handleStarClick} />
+        <ReviewStars
+          onStarClick={handleStarClick}
+          selectedStars={selectedStars}
+        />
       </StarBox>
 
       <ReviewInputWrap>

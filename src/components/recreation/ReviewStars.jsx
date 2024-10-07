@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import greyStar from "../../assets/recreation/greyStar.svg";
 
-export default function ReviewStars({ onStarClick }) {
+export default function ReviewStars({ onStarClick, selectedStars }) {
   // 별점 기본값 설정
   const [clicked, setClicked] = useState([false, false, false, false, false]);
   // 별을 5개로 표현하기 위한 더미 배열
@@ -18,6 +18,12 @@ export default function ReviewStars({ onStarClick }) {
     setClicked(star);
     onStarClick(star.filter((element) => element).length);
   };
+
+  // 외부에서 selectedStars가 변경될 때마다 clicked 상태 업데이트
+  useEffect(() => {
+    const updatedStars = array.map((index) => index < selectedStars);
+    setClicked(updatedStars);
+  }, [selectedStars]);
 
   // 현재 선택한 별점 개수
   let clickedStarNum = clicked.filter((element) => true === element).length;
