@@ -69,9 +69,15 @@ export default function FlowWriteRecommend() {
           },
         });
         console.log(response.data); // API 응답 확인
+        
         if (response.data.result) {
-          setFlowData(response.data.result);
-          console.log(response.data.result); // 데이터 구조 확인
+          // playTime과 totalPlayTime이 같은 플로우만 필터링
+          const validFlowData = response.data.result.filter(flow => flow.flowDetail.totalPlayTime === parseInt(playTime));
+          setFlowData(validFlowData);
+          
+          if (validFlowData.length === 0) {
+            console.warn("No flow data found that matches the exact play time.");
+          }
         } else {
           console.warn("No result found in API response.");
         }
