@@ -14,6 +14,7 @@ import hrImg from "../../assets/main/hr.svg";
 import deleteImg from "../../assets/main/deleteIcon.svg";
 import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
 import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
+import useDeboucedEffect from "../../hooks/useDeboucedEffect";
 
 export default function Search() {
   // 검색어 및 키워드 저장
@@ -25,6 +26,7 @@ export default function Search() {
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
+  const [participantsAlert, setParticipantsAlert] = useState(false);
 
   // 검색 옵션
   const keywordOptions = [
@@ -92,11 +94,27 @@ export default function Search() {
     }
   };
 
-  const participValidCheck = (e) => {
-    if (e.target.value[0] == 0) return;
-    if (e.target.value < 0 || e.target.value > 100) return;
-    else setParticipants(e.target.value);
+  const checkOnlyNumber = (string) => {
+    const check = /[^0-9]/g;
+    string = string.replace(check, "");
+    return string;
   };
+  const participValidCheck = (e) => {
+    const value = checkOnlyNumber(e.target.value);
+    if (value[0] == 0) {
+      setParticipantsAlert(true);
+      return;
+    }
+    if (value < 0 || value > 100) {
+      setParticipantsAlert(true);
+      return;
+    } else {
+      if (participantsAlert) setParticipantsAlert(false);
+      setParticipants(value);
+    }
+  };
+  // 1~100 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
+  useDeboucedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
 
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
@@ -217,10 +235,13 @@ export default function Search() {
             <LabelName htmlFor="participants">인원</LabelName>
             <Input
               placeholder="조별 인원을 입력해주세요."
-              type="number"
+              type="text"
               onChange={(e) => participValidCheck(e)}
               value={participants}
             ></Input>
+            {participantsAlert && (
+              <Alert>1부터 100까지만 입력 가능합니다!</Alert>
+            )}
           </Filter>
 
           {/* 진행 시간*/}
@@ -541,4 +562,12 @@ const Btn = styled.button`
     background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
     color: #fff;
   }
+`;
+
+const Alert = styled.span`
+  padding-top: 2px;
+  margin-left: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
 `;
