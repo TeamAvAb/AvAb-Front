@@ -14,6 +14,7 @@ import hrImg from "../../assets/main/hr.svg";
 import deleteImg from "../../assets/main/deleteIcon.svg";
 import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
 import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
+import alertImg from "../../assets/main/alert.svg";
 import useDeboucedEffect from "../../hooks/useDeboucedEffect";
 
 export default function Search() {
@@ -41,6 +42,7 @@ export default function Search() {
     { id: 8, value: "상식", param: "COMMON_SENSE" },
     { id: 9, value: "준비물", param: "PREPARATION" },
   ];
+  const participantsLimit = 20;
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
   const placeOptions = [
     { id: 0, value: "실내", param: "INDOOR" },
@@ -105,7 +107,7 @@ export default function Search() {
       setParticipantsAlert(true);
       return;
     }
-    if (value < 0 || value > 100) {
+    if (value < 0 || value > participantsLimit) {
       setParticipantsAlert(true);
       return;
     } else {
@@ -113,7 +115,7 @@ export default function Search() {
       setParticipants(value);
     }
   };
-  // 1~100 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
+  // 1~participantsLimit 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
   useDeboucedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
 
   // 모달창
@@ -238,9 +240,13 @@ export default function Search() {
               type="text"
               onChange={(e) => participValidCheck(e)}
               value={participants}
+              $alert={participantsAlert}
             ></Input>
             {participantsAlert && (
-              <Alert>1부터 100까지만 입력 가능합니다!</Alert>
+              <Alert>
+                <img src={alertImg} />
+                <span>1부터 {participantsLimit}까지 입력해주세요.</span>
+              </Alert>
             )}
           </Filter>
 
@@ -488,6 +494,7 @@ const Input = styled.input`
   width: 230px;
   height: 44px;
   border-radius: 50px;
+  outline: ${(props) => (props.$alert ? "5px solid #ffaa29" : "none")};
   background: #fff;
   border: none;
   color: var(--gray-scale-464-c-52, #464c52);
@@ -564,10 +571,18 @@ const Btn = styled.button`
   }
 `;
 
-const Alert = styled.span`
+const Alert = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+
   padding-top: 2px;
   margin-left: 14px;
-  font-size: 14px;
+
+  color: #ffaa29;
+
+  font-size: 16px;
+  font-style: normal;
   font-weight: 400;
-  color: #fff;
+  line-height: normal;
 `;
