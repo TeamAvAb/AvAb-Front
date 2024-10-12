@@ -213,7 +213,7 @@ const CurrentSlide = styled.img`
   position: absolute;
   top: -1px;
   left: ${(props) =>
-    props.index === 1 ? "0" : props.index === 2 ? "252px" : "504px"};
+    props.$index === 1 ? "0" : props.$index === 2 ? "252px" : "504px"};
 `;
 const SlideControl = styled.div`
   width: 116px;

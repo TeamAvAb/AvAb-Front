@@ -8,7 +8,6 @@ import Footer3 from "./components/Footer/Footer3";
 import Main from "./pages/Main";
 import MyPage from "./pages/Mypage";
 import FavoriteRecreation from "./pages/FavoriteRecreation";
-import Search from "./pages/Search";
 import SearchList from "./pages/SearchList";
 import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
 import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 상세 페이지
@@ -34,8 +33,8 @@ function App() {
     <Routes>
       {/* 메인 */}
       <Route path="/" element={<Main />} />
-      {/* 검색 페이지 */}
-      <Route path="/search" element={<Search />} />
+      {/* 레크레이션 탭 */}
+      <Route path="/search/list" element={<SearchList />} />
       {/* 마이 페이지 내 정보 */}
       <Route
         path="/mypage/myinfo"
@@ -46,8 +45,6 @@ function App() {
         path="/mypage/favorites"
         element={<FavoriteRecreation handleLogin={setIsLoggedIn} />}
       />
-      {/* 검색 리스트 페이지 */}
-      <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
       <Route path="/flow/write" element={<FlowWrite />} />
       {/* 플로우 만들기 상세 페이지 */}

@@ -62,7 +62,6 @@ const HeaderWrap = styled.header`
   box-shadow: 0px 3px 3px #abaaae;
   position: relative;
   height: 67px;
-  z-index: 999;
 `;
 
 const LogoImg = styled.img`
