@@ -5,7 +5,10 @@ import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
 import { publicAPI } from "../../apis/user";
 import { isLoggedIn, privateAPI } from "../../apis/user";
+import useLoginModalStore from "../../stores/loginModalStore";
+
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
+  const { modalControl } = useLoginModalStore();
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewData, setReviewData] = useState(0);
@@ -90,7 +93,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       } else {
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   // 싫어요 클릭 핸들러
@@ -110,7 +113,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       } else {
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   return (

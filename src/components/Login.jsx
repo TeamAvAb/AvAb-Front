@@ -3,10 +3,11 @@ import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/login_character.png";
 import closeImg from "../assets/main/closeIcon.svg";
+import useLoginModalStore from "../stores/loginModalStore";
 
-export default function Login({ handleLoginModal }) {
+export default function Login() {
   const { pathname } = useLocation();
-  const [temporaryClose, setTemporaryClose] = useState(false);
+  const { modalControl } = useLoginModalStore((state) => state);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   let REDIRECT_URI = null;
 
@@ -43,7 +44,7 @@ export default function Login({ handleLoginModal }) {
           />
         </Content>
         <Controls>
-          <Control onClick={() => handleLoginModal(false)}>
+          <Control onClick={() => modalControl()}>
             <img src={closeImg} style={{ width: "24px", height: "25px" }} />
             닫기
           </Control>

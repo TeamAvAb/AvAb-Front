@@ -7,6 +7,7 @@ import Write from "../../assets/scrapflow/write.png";
 import User from "../../assets/scrapflow/user.png";
 import { useNavigate } from "react-router-dom";
 import { privateAPI } from "../../apis/user";
+import useLoginModalStore from "../../stores/loginModalStore";
 
 const PurposeList = {
   MT: "MT",
@@ -17,6 +18,8 @@ const PurposeList = {
 };
 
 export default function ScrapFlowBox({ datas, setScrap }) {
+  const { modalControl } = useLoginModalStore();
+
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
     if (localStorage.getItem("accessToken")) {
@@ -29,7 +32,7 @@ export default function ScrapFlowBox({ datas, setScrap }) {
         // 요청이 실패하면 에러 처리
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   // 자세히 보기
@@ -51,7 +54,13 @@ export default function ScrapFlowBox({ datas, setScrap }) {
 
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
-              {data.isScraped && <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={() => DoScrap(data.id)} />}
+              {data.isScraped && (
+                <FlowBoxScrapImg
+                  src={Scrap2}
+                  alt="스크랩"
+                  onClick={() => DoScrap(data.id)}
+                />
+              )}
             </FlowBoxScrapBox>
 
             {/* 플로우 이름 */}
@@ -63,25 +72,41 @@ export default function ScrapFlowBox({ datas, setScrap }) {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={Time}
+                    alt="시간"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={View}
+                    alt="조회수"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                  <img
+                    src={Write}
+                    alt="작성자"
+                    style={{ width: "35px", height: "35px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={User} alt="스크랩수" style={{ width: "24px", height: "24px" }} />
+                  <img
+                    src={User}
+                    alt="스크랩수"
+                    style={{ width: "24px", height: "24px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>

@@ -6,20 +6,22 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination.jsx";
 import { publicAPI, privateAPI } from "../apis/user.js";
 import SortControl from "../components/SortControl.jsx";
+import useLoginModalStore from "../stores/loginModalStore.js";
 
 export default function WatchFlow() {
+  const { modalControl } = useLoginModalStore();
   const navigate = useNavigate();
   const moveToMy = () => {
     if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
-    else alert("로그인이 필요한 페이지입니다.");
+    else modalControl();
   };
   const moveToScrap = () => {
     if (localStorage.getItem("accessToken")) navigate(`/flow/scrap`);
-    else alert("로그인이 필요한 페이지입니다.");
+    else modalControl();
   };
   const moveToMakeFlow = () => {
     if (localStorage.getItem("accessToken")) navigate(`/flow/write`);
-    else alert("로그인이 필요한 페이지입니다.");
+    else modalControl();
   };
 
   // 데이터 가져오기
