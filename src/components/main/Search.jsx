@@ -454,6 +454,7 @@ const KeywordBox = styled.div`
   width: 769px;
   height: 44px;
   border-radius: 50px;
+  padding-right: 8px;
   background: #fff;
   color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
   font-size: 16px;
