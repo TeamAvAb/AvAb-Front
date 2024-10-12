@@ -4,19 +4,13 @@ import styled from "styled-components";
 import plus from "../assets/header/Icon.svg";
 import AvAb from "../assets/header/AvAb.png";
 import ProfileImg from "../assets/header/profileImg.png";
-export default function Header({
-  isLoggedIn,
-  handleLoginStatus,
-  handleLoginModal,
-}) {
+import useLoginStore from "../stores/loginStore";
+import useLoginModalStore from "../stores/loginModalStore";
+
+export default function Header() {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore((state) => state);
   const navigate = useNavigate();
-  const handleLogin = () => {
-    if (isLoggedIn) {
-      handleLoginStatus(false);
-    } else {
-      handleLoginModal(true);
-    }
-  };
   const ToMainpage = () => {
     navigate(`/`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -30,10 +24,10 @@ export default function Header({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else alert("로그인이 필요한 페이지입니다.");
+    } else modalControl();
   };
 
   return (
@@ -43,12 +37,12 @@ export default function Header({
       <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
-      {localStorage.getItem("accessToken") ? (
+      {isLoggedIn ? (
         <LogoutImg src={ProfileImg} onClick={ToMypage} />
       ) : (
         <>
           <PlusImg src={plus} />
-          <Login onClick={handleLogin}>로그인</Login>
+          <Login onClick={() => modalControl()}>로그인</Login>
         </>
       )}
     </HeaderWrap>

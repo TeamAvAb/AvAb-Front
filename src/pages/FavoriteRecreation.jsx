@@ -8,9 +8,11 @@ import Pagination from "../components/pagination/Pagination";
 import LogoutP from "../assets/mypage/LogoutImg.svg";
 import noScrapImg from "../assets/scrapflow/noScrap.png";
 import LoadingSpinner from "../components/LoadingSpinner";
+import useLoginStore from "../stores/loginStore";
 
-export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
+export default function FavoriteRecreation() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { setIsLoggedIn } = useLoginStore();
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
@@ -33,12 +35,14 @@ export default function FavoriteRecreation({ handleLogin, isLoggedIn }) {
   const handleLogout = async () => {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
-      localStorage.clear();
-      navigate("/");
+      if (response.data.isSuccess === true) {
+        localStorage.clear();
+        setIsLoggedIn(false);
+        navigate("/");
+      }
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
-    handleLogin(false);
     setLogoutModalOpen(false);
   };
 

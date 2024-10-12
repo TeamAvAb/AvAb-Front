@@ -24,12 +24,13 @@ import MoreScrapFlow from "./pages/MoreScrapFlow"; // 스크랩 한 일정플로
 import Login from "./components/Login";
 import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
+import useLoginModalStore from "./stores/loginModalStore";
 
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginModal, setLoginModal] = useState(false);
+
+  const { modalOpen } = useLoginModalStore();
   const routes = (
     <Routes>
       {/* 메인 */}
@@ -37,15 +38,9 @@ function App() {
       {/* 검색 페이지 */}
       <Route path="/search" element={<Search />} />
       {/* 마이 페이지 내 정보 */}
-      <Route
-        path="/mypage/myinfo"
-        element={<MyPage handleLogin={setIsLoggedIn} isLoggedIn={isLoggedIn} />}
-      />
+      <Route path="/mypage/myinfo" element={<MyPage />} />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
-      <Route
-        path="/mypage/favorites"
-        element={<FavoriteRecreation handleLogin={setIsLoggedIn} />}
-      />
+      <Route path="/mypage/favorites" element={<FavoriteRecreation />} />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<SearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
@@ -74,21 +69,10 @@ function App() {
         element={<RecreationDetail />}
       />
       {/* 로그인 리다이렉트 페이지 */}
-      <Route
-        path="/api/auth/login/kakao"
-        element={<LoginLoading handleLogin={setIsLoggedIn} />}
-      />
+      <Route path="/api/auth/login/kakao" element={<LoginLoading />} />
     </Routes>
   );
 
-  // 로그인 상태 확인
-  useEffect(() => {
-    if (window.localStorage.getItem("userId") !== null) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
   useEffect(() => {
     const currentPath = window.location.pathname;
     console.log(currentPath);
@@ -107,17 +91,8 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Header
-        isLoggedIn={isLoggedIn}
-        handleLoginStatus={setIsLoggedIn}
-        handleLoginModal={setLoginModal}
-      />
-      {loginModal ? (
-        <Login
-          handleLoginStatus={setIsLoggedIn}
-          handleLoginModal={setLoginModal}
-        />
-      ) : null}
+      <Header />
+      {modalOpen ? <Login /> : null}
       {routes}
       {selectedFooter}
     </div>

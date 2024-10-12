@@ -5,9 +5,13 @@ import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
 
 import { privateAPI } from "../../apis/user";
 import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
+import useLoginStore from "../../stores/loginStore";
+import useLoginModalStore from "../../stores/loginModalStore";
 
 export default function Recreation({ content }) {
   const navigate = useNavigate();
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
   const ToRecreationDetail = (recreationId) => {
     navigate(`/recreation/detail/${recreationId}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -44,7 +48,12 @@ export default function Recreation({ content }) {
         console.log("즐겨찾기 추가/해제 에러 : ", error);
       }
     };
-    call();
+
+    if (isLoggedIn) {
+      call();
+    } else {
+      modalControl();
+    }
   };
 
   return (
