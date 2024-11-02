@@ -50,7 +50,8 @@ export default function MyInfoBox() {
     });
     if (response.status === 200) {
       console.log(response.data);
-      setNickname(response.data.result.username);
+      setNickname("");
+      setPreviousNickname(nickname);
       setIsNicknameChangeModal(true);
     } else {
       console.log(response.data);
