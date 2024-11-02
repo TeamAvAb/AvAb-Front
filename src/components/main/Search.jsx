@@ -14,10 +14,12 @@ import hrImg from "../../assets/main/hr.svg";
 import deleteImg from "../../assets/main/deleteIcon.svg";
 import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
 import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
+import alertImg from "../../assets/main/alert.svg";
+import useDeboucedEffect from "../../hooks/useDeboucedEffect";
 
 export default function Search() {
   // 검색어 및 키워드 저장
-  const [searchKeyword, setSearchKeyword] = useState();
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [keyword, setKeyword] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [playTime, setPlayTime] = useState([]);
@@ -25,6 +27,7 @@ export default function Search() {
   const [purpose, setPurpose] = useState([]);
   const [gender, setGender] = useState([]);
   const [age, setAge] = useState([]);
+  const [participantsAlert, setParticipantsAlert] = useState(false);
 
   // 검색 옵션
   const keywordOptions = [
@@ -39,6 +42,7 @@ export default function Search() {
     { id: 8, value: "상식", param: "COMMON_SENSE" },
     { id: 9, value: "준비물", param: "PREPARATION" },
   ];
+  const participantsLimit = 20;
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
   const placeOptions = [
     { id: 0, value: "실내", param: "INDOOR" },
@@ -92,6 +96,28 @@ export default function Search() {
     }
   };
 
+  const checkOnlyNumber = (string) => {
+    const check = /[^0-9]/g;
+    string = string.replace(check, "");
+    return string;
+  };
+  const participValidCheck = (e) => {
+    const value = checkOnlyNumber(e.target.value);
+    if (value[0] == 0) {
+      setParticipantsAlert(true);
+      return;
+    }
+    if (value < 0 || value > participantsLimit) {
+      setParticipantsAlert(true);
+      return;
+    } else {
+      if (participantsAlert) setParticipantsAlert(false);
+      setParticipants(value);
+    }
+  };
+  // 1~participantsLimit 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
+  useDeboucedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
+
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
   const [purposeModal, setPurposeModal] = useState(false);
@@ -100,7 +126,9 @@ export default function Search() {
     return selected.map((el) => (
       <>
         <SelectedKeyword key={el}>
-          '{label[label.findIndex((i) => i.param === el)].value}' 포함
+          <div>
+            '{label[label.findIndex((i) => i.param === el)].value}' 포함
+          </div>
           <img
             src={deleteImg}
             id={el}
@@ -152,6 +180,11 @@ export default function Search() {
       console.log(error);
     }
   };
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") submit();
+  };
+
   useEffect(() => {
     const currentURL = new URLSearchParams(window.location.search);
     if (currentURL.size !== 0) {
@@ -173,11 +206,12 @@ export default function Search() {
         <SearchWord
           placeholder="오늘 MT 레크레이션 할 때 뭐하지?"
           onChange={(e) => setSearchKeyword(e.target.value)}
+          onKeyDown={handleSearch}
           value={searchKeyword}
         />
         <img
           src={searchIconImg}
-          style={{ width: "42.399px", height: "42.399px" }}
+          style={{ width: "42.399px", height: "42.399px", cursor: "pointer" }}
           onClick={submit}
         />
       </SearchWordBox>
@@ -203,10 +237,17 @@ export default function Search() {
             <LabelName htmlFor="participants">인원</LabelName>
             <Input
               placeholder="조별 인원을 입력해주세요."
-              type="number"
-              onChange={(e) => setParticipants(e.target.value)}
+              type="text"
+              onChange={(e) => participValidCheck(e)}
               value={participants}
+              $alert={participantsAlert}
             ></Input>
+            {participantsAlert && (
+              <Alert>
+                <img src={alertImg} />
+                <span>1부터 {participantsLimit}까지 입력해주세요.</span>
+              </Alert>
+            )}
           </Filter>
 
           {/* 진행 시간*/}
@@ -303,12 +344,16 @@ export default function Search() {
         )}
       </SearchBox>
       <SearchBtns>
-        <ResetBtn onClick={reset}>초기화</ResetBtn>
-        <SearchBtn onClick={submit}>필터 적용</SearchBtn>
+        <Btn id="reset" onClick={reset}>
+          초기화
+        </Btn>
+        <Btn id="search" onClick={submit}>
+          필터 적용
+        </Btn>
       </SearchBtns>
       {keywordModal ? (
         <KeywordModal
-          category="keyword"
+          $category="keyword"
           content={keywordOptions}
           modalControl={setKeywordModal}
           keywordControl={setKeyword}
@@ -317,7 +362,7 @@ export default function Search() {
       ) : null}
       {purposeModal ? (
         <KeywordModal
-          category="purpose"
+          $category="purpose"
           content={purposeOptions}
           modalControl={setPurposeModal}
           keywordControl={setPurpose}
@@ -398,6 +443,7 @@ const Filter = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 const LabelName = styled.label`
@@ -408,6 +454,7 @@ const KeywordBox = styled.div`
   width: 769px;
   height: 44px;
   border-radius: 50px;
+  padding-right: 8px;
   background: #fff;
   color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
   font-size: 16px;
@@ -423,6 +470,7 @@ const KeywordBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  cursor: pointer;
 `;
 
 const SelectedKeywords = styled.div`
@@ -433,11 +481,11 @@ const SelectedKeywords = styled.div`
 
 const SelectedKeyword = styled.div`
   width: max-content;
-  display: inline-flex;
-  padding: 2px 10px;
+  display: flex;
   flex-direction: row;
-  gap: 12px;
   align-items: center;
+  padding: 2px 10px;
+  gap: 12px;
   border-radius: 20px;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   background: #d9d9d9;
@@ -447,6 +495,7 @@ const Input = styled.input`
   width: 230px;
   height: 44px;
   border-radius: 50px;
+  outline: ${(props) => (props.$alert ? "5px solid #ffaa29" : "none")};
   background: #fff;
   border: none;
   color: var(--gray-scale-464-c-52, #464c52);
@@ -487,6 +536,7 @@ const Menu = styled.div`
   font-size: 20px;
   font-weight: 700;
   gap: 8px;
+  cursor: pointer;
 `;
 
 // 버튼
@@ -499,27 +549,41 @@ const SearchBtns = styled.div`
   bottom: -60px;
   right: 0;
 `;
-const ResetBtn = styled.button`
+const Btn = styled.button`
   display: flex;
   padding: 9px 24px;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
   border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+
   font-size: 20px;
   font-weight: 700;
+  cursor: pointer;
+
+  &#reset {
+    background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
+    color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+  }
+
+  &#search {
+    background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+    color: #fff;
+  }
 `;
-const SearchBtn = styled.button`
+
+const Alert = styled.div`
   display: flex;
-  padding: 9px 24px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
+  gap: 8px;
+  align-items: baseline;
+
+  padding-top: 2px;
+  margin-left: 14px;
+
+  color: #ffaa29;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 `;

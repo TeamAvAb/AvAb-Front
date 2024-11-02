@@ -50,4 +50,5 @@ const Option = styled.button`
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
+  cursor: pointer;
 `;

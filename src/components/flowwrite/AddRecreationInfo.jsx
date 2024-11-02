@@ -86,7 +86,7 @@ export default function AddRecreationInfo({
       <InfoBox time={playTime}>
         {/* 레크레이션 제목 */}
         <RecreationTitle>
-          <Number>{num}</Number>
+          <Number>{num + 1}</Number>
           <RecreationTitleInput
             type="text"
             value={title}

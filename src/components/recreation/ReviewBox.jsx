@@ -13,6 +13,8 @@ export default function ReviewBox({
   review,
   like,
   dislike,
+  likeState,
+  dislikeState,
   handleLikeClick,
   handleDislikeClick,
 }) {
@@ -43,7 +45,7 @@ export default function ReviewBox({
       <ReviewContent>{review}</ReviewContent>
       <NickNameDateBox>
         <LikeDislikeBox
-          active={like}
+          active={likeState}
           marginRight="40px"
           onClick={() => handleLikeClick(reviewId)}
         >
@@ -51,7 +53,7 @@ export default function ReviewBox({
           {like}
         </LikeDislikeBox>
         <LikeDislikeBox
-          active={dislike}
+          active={dislikeState}
           onClick={() => handleDislikeClick(reviewId)}
         >
           <LikeDislikeIcon as={BadIcon} active={dislike} />

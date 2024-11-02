@@ -5,6 +5,10 @@ import downIconImg from "../../assets/main/downIcon.svg";
 
 export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
+  const handleClickLi = (li) => {
+    if (selectedOption === li) setOption([]);
+    else setOption(li);
+  };
   return (
     <DropdownContainer>
       <Menu $isdropped={dropdownOpen}>
@@ -13,7 +17,7 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
             <Li
               key={li}
               value={li}
-              onClick={() => setOption(li)}
+              onClick={() => handleClickLi(li)}
               selected={selectedOption === li}
             >
               {li}분
@@ -78,10 +82,10 @@ const Menu = styled.div`
   position: absolute;
   top: 26px;
   left: 50%;
-  width: 154px;
-  height: 129px;
-  padding-top: 18px;
-  padding-bottom: 12px;
+  width: 100%;
+  max-height: 129px;
+  padding: 18px 0 12px;
+
   background: #fff;
   box-sizing: border-box;
   text-align: center;
@@ -94,15 +98,10 @@ const Menu = styled.div`
   overflow: auto;
   overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: #464c52;
-  -webkit-scrollbar {
-    width: 0px;
-    height: 87px;
+  &::-webkit-scrollbar {
+    display: none;
   }
-  -webkit-scrollbar-thumb {
-    background-color: #2f3542;
-  }
+
   ${({ $isdropped }) =>
     $isdropped &&
     css`
@@ -140,4 +139,5 @@ const Li = styled.button`
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  cursor: pointer;
 `;

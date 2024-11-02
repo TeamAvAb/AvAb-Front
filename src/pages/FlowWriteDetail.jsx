@@ -33,6 +33,7 @@ export default function FlowWriteDetail() {
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAges, setSelectedAges] = useState([]);
   const [selectedGroupSize, setSelectedGroupSize] = useState("");
+  
   const ageGroups = [
     ["10대 미만", "UNDER_TEENAGER"],
     ["10대", "TEENAGER"],
@@ -278,38 +279,42 @@ export default function FlowWriteDetail() {
               onChange={handleGroupSizeChange}
             />
           </JoinPeople>
-          <CardContainer>
-            <CardGoRecommend onClick={handleNextClick}>
-              <CardGoContainer>
-                <img
-                  src={imgGo3}
-                  alt="go 3"
-                  style={{ width: "120px", height: "120px" }}
-                />
-                <CardGoTextContainer>
-                  <CardGo3Text>추천 플로우 확인하기</CardGo3Text>
-                  <CardGo3SubText>
-                    입력한 정보를 바탕으로{"\n"}아브아브가 추천한 플로우예요!
-                  </CardGo3SubText>
-                </CardGoTextContainer>
-              </CardGoContainer>
-            </CardGoRecommend>
-            <CardGoContent onClick={handleGo4Click}>
-              <CardGoContainer>
-                <CardGoTextContainer>
-                  <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
-                  <CardGo4SubText>
-                    원하는 플로우를 작성할 수 있도록{"\n"}아브아브가 도와줄게요!
-                  </CardGo4SubText>
-                </CardGoTextContainer>
-                <img
-                  src={imgGo4}
-                  alt="go 4"
-                  style={{ width: "120px", height: "120px" }}
-                />
-              </CardGoContainer>
-            </CardGoContent>
-          </CardContainer>
+          <CardContainerWrapper>
+            <CardContainer>
+            <CardInteractionContainer>
+              <CardGoRecommend onClick={handleNextClick}>
+                <CardGoContainer>
+                  <img
+                    src={imgGo3}
+                    alt="go 3"
+                    style={{ width: "120px", height: "120px" }}
+                  />
+                  <CardGoTextContainer>
+                    <CardGo3Text>추천 플로우 확인하기</CardGo3Text>
+                    <CardGo3SubText>
+                      입력한 정보를 바탕으로{"\n"}아브아브가 추천한 플로우예요!
+                    </CardGo3SubText>
+                  </CardGoTextContainer>
+                </CardGoContainer>
+              </CardGoRecommend>
+              <CardGoContent onClick={handleGo4Click}>
+                <CardGoContainer>
+                  <CardGoTextContainer>
+                    <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
+                    <CardGo4SubText>
+                      원하는 플로우를 작성할 수 있도록{"\n"}아브아브가 도와줄게요!
+                    </CardGo4SubText>
+                  </CardGoTextContainer>
+                  <img
+                    src={imgGo4}
+                    alt="go 4"
+                    style={{ width: "120px", height: "120px" }}
+                  />
+                </CardGoContainer>
+              </CardGoContent>
+              </CardInteractionContainer>
+            </CardContainer>
+          </CardContainerWrapper>
           <LastButton onClick={handleBeforeClick}>이전으로</LastButton>
           <NextButton onClick={handleNextClick}>다음으로</NextButton>
         </div>
@@ -530,23 +535,31 @@ const JoinPeopleInput = styled.input`
 
 const CardContainer = styled.div`
   display: flex;
+  gap: 20px;
 `;
 
 const CardGoRecommend = styled.div`
-  width: 372px;
+  width: 502px;
   height: 129px;
-  padding: 40px 90px;
+  padding: 40px 25px;
   border-radius: 20px;
   border: none;
   background: #a0ddff;
   margin-top: 40px;
-  margin-left: 113px;
   align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 추가 */
+  position: relative; 
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15); /* 호버 시 그림자 효과 */
+    width: calc(502px + 118px); /* 너비 증가 */
+  }
 `;
 
 const CardGoContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const CardGoTextContainer = styled.div`
@@ -573,15 +586,21 @@ const CardGo3SubText = styled.div`
 `;
 
 const CardGoContent = styled.div`
-  width: 372px;
+  width: 502px;
   height: 129px;
-  padding: 40px 90px;
+  padding: 40px 25px;
   border-radius: 20px;
   border: none;
   background: #ffaa29;
   margin-top: 40px;
-  margin-left: 26px;
   align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 추가 */
+  position: relative; 
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15); /* 호버 시 그림자 효과 */
+    width: calc(502px + 118px); /* 너비 증가 */
+  }
 `;
 
 const CardGo4Text = styled.div`
@@ -600,6 +619,25 @@ const CardGo4SubText = styled.div`
   text-align: right;
   white-space: pre-line;
   margin-right: 42px;
+`;
+
+const CardContainerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+// 상호작용 설정
+const CardInteractionContainer = styled.div`
+  display: flex;
+  gap: 20px;
+
+  ${CardGoRecommend}:hover + ${CardGoContent} {
+    width: calc(502px - 118px); /* Recommend 카드 호버 시 Content 카드 너비 감소 */
+  }
+
+  ${CardGoContent}:hover + ${CardGoRecommend} {
+    width: calc(502px - 118px); /* Content 카드 호버 시 Recommend 카드 너비 감소 */
+  }
 `;
 
 const LastButton = styled.button`
