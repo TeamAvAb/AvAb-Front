@@ -42,14 +42,14 @@ export default function PopularCarousel() {
     const call = async () => {
       try {
         if (isLoggedIn) {
-          const response = await privateAPI.get("/api/recreations/popular");
+          const response = await privateAPI.get("/api/recreations");
           if (response.status === 200) {
             setData(response.data.result.recreationList);
           } else {
             console.log("인기 레크 로드 요청 에러 : ", response);
           }
         } else {
-          const response = await publicAPI.get("/api/recreations/popular");
+          const response = await publicAPI.get("/api/recreations");
           if (response.status === 200) {
             setData(response.data.result.recreationList);
           } else {

@@ -32,7 +32,7 @@ export default function SearchList({}) {
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
-    const requestURL = `/api/recreations/search`;
+    const requestURL = `/api/recreations`;
 
     const call = async () => {
       setLoading(true);
