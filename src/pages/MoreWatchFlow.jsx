@@ -12,6 +12,7 @@ import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 import { Helmet } from "react-helmet";
 import useLoginModalStore from "../stores/loginModalStore";
+import useLoginStore from "../stores/loginStore";
 
 const PurposeList = {
   MT: "MT",
@@ -50,11 +51,12 @@ const AgeList = {
 
 export default function MoreWatchFlow() {
   const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   const [scrap, setScrap] = useState(false);
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       const response = await privateAPI.post(`/api/flows/${id}/scraps`);
       if (response.status === 200) {
         // 요청이 성공하면 상태 업데이트
@@ -100,7 +102,7 @@ export default function MoreWatchFlow() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (localStorage.getItem("accessToken")) {
+        if (isLoggedIn) {
           const response = await privateAPI.get(`/api/flows/${id}`);
           setData(response.data.result);
         } else {

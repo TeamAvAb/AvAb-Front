@@ -6,8 +6,11 @@ import arrow from "../../assets/main/nextSlide.svg";
 import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 import starImg from "../../assets/main/starIcon.svg";
 import useLoginModalStore from "../../stores/loginModalStore.js";
+import useLoginStore from "../../stores/loginStore.js";
+
 export default function RecreationPrev({ content }) {
   const { modalControl } = useLoginModalStore((state) => state);
+  const { isLoggedIn } = useLoginStore((state) => state);
   const keywordParam = {
     COOPERATIVE: "협동",
     QUICKNESS: "순발력",
@@ -44,7 +47,7 @@ export default function RecreationPrev({ content }) {
         console.log("즐겨찾기 추가/해제 에러 : ", error);
       }
     };
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       call();
     } else modalControl();
   };

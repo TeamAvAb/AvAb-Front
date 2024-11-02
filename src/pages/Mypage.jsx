@@ -10,8 +10,7 @@ import useLoginStore from "../stores/loginStore";
 
 export default function Mypage() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-  const { isLoggedIn } = useLoginStore((state) => state);
-  const { setIsLoggedIn } = useLoginStore();
+  const { logout } = useLoginStore();
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
@@ -37,7 +36,7 @@ export default function Mypage() {
       const response = await privateAPI.delete("/api/auth/logout");
       if (response.data.isSuccess === true) {
         localStorage.clear();
-        setIsLoggedIn(false);
+        logout();
         navigate("/");
       } else {
         alert("로그아웃 요청 에러가 발생했습니다!");

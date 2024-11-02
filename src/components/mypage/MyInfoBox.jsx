@@ -21,7 +21,6 @@ export default function MyInfoBox() {
       try {
         const response = await privateAPI.get(`/api/users/me`);
         setPreviousNickname(response.data.result.username);
-        localStorage.setItem("userimage", response.data.result.profileImage);
         setEmail(response.data.result.email);
         setLoading(false);
       } catch (error) {

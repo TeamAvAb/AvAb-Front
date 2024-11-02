@@ -10,6 +10,11 @@ import useLoginModalStore from "../stores/loginModalStore";
 export default function Header() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
+  const profieImg = () => {
+    if (localStorage.getItem("userImgage") !== null) {
+      return localStorage.getItem("userImgage");
+    } else return ProfileImg;
+  };
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
@@ -38,7 +43,7 @@ export default function Header() {
       <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
       <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
       {isLoggedIn ? (
-        <LogoutImg src={ProfileImg} onClick={ToMypage} />
+        <LogoutImg src={profieImg()} onClick={ToMypage} />
       ) : (
         <>
           <PlusImg src={plus} />

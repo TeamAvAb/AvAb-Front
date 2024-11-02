@@ -12,7 +12,7 @@ import useLoginStore from "../stores/loginStore";
 
 export default function FavoriteRecreation() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-  const { setIsLoggedIn } = useLoginStore();
+  const { logout } = useLoginStore();
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
@@ -37,7 +37,7 @@ export default function FavoriteRecreation() {
       const response = await privateAPI.delete("/api/auth/logout");
       if (response.data.isSuccess === true) {
         localStorage.clear();
-        setIsLoggedIn(false);
+        logout();
         navigate("/");
       }
     } catch (error) {

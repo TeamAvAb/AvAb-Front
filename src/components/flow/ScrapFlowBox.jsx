@@ -8,6 +8,7 @@ import User from "../../assets/scrapflow/user.png";
 import { useNavigate } from "react-router-dom";
 import { privateAPI } from "../../apis/user";
 import useLoginModalStore from "../../stores/loginModalStore";
+import useLoginStore from "../../stores/loginStore";
 
 const PurposeList = {
   MT: "MT",
@@ -19,10 +20,11 @@ const PurposeList = {
 
 export default function ScrapFlowBox({ datas, setScrap }) {
   const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       const response = await privateAPI.post(`/api/flows/${id}/scraps`);
       if (response.status === 200) {
         // 요청이 성공하면 상태 업데이트

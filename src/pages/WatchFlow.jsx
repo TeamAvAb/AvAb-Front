@@ -7,20 +7,23 @@ import Pagination from "../components/pagination/Pagination.jsx";
 import { publicAPI, privateAPI } from "../apis/user.js";
 import SortControl from "../components/SortControl.jsx";
 import useLoginModalStore from "../stores/loginModalStore.js";
+import useLoginStore from "../stores/loginStore.js";
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
+
   const navigate = useNavigate();
   const moveToMy = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
+    if (isLoggedIn) navigate(`/flow/my`);
     else modalControl();
   };
   const moveToScrap = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/scrap`);
+    if (isLoggedIn) navigate(`/flow/scrap`);
     else modalControl();
   };
   const moveToMakeFlow = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/write`);
+    if (isLoggedIn) navigate(`/flow/write`);
     else modalControl();
   };
 
@@ -40,7 +43,7 @@ export default function WatchFlow() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if (localStorage.getItem("accessToken")) {
+      if (isLoggedIn) {
         const response = await privateAPI.get(
           `/api/flows?page=${currentPage}&sortBy=${order}`
         );
