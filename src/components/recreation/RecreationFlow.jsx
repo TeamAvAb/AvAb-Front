@@ -15,15 +15,16 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
           `/api/recreations/${recreationId}/related/flows`
         );
         console.log("플로우: ", response.data);
-        setFlowData(response.data.result[0].flowDetail);
-        console.log("setFlowData", response.data.result[0].flowDetail);
-
-        setFlowSecondData(response.data.result[1].flowDetail);
-        console.log(response.data.result[1].flowDetail);
-        setFlowFirstRecreations(response.data.result[0].recreations);
-        setFlowSecondRecreations(response.data.result[1].recreations);
+        if (response.data.result.length > 0) {
+          setFlowData(response.data.result[0]?.flowDetail || {});
+          setFlowFirstRecreations(response.data.result[0]?.recreations || []);
+        }
+        if (response.data.result.length > 1) {
+          setFlowSecondData(response.data.result[1]?.flowDetail || {});
+          setFlowSecondRecreations(response.data.result[1]?.recreations || []);
+        }
       } catch (error) {
-        console.error(error);
+        console.error("플로우 에러 발생", error);
       }
     };
 
@@ -36,12 +37,14 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
       <SubText>해당 레크레이션과 관련된 플로우를 제공해드려요!</SubText>
       <FlowBoxWrap>
         <FlowBox
+          key="flow-box-1"
           num={1}
           marginRight="110px"
           flowData={flowData}
           flowRecreations={flowFirstRecreations}
         ></FlowBox>
         <FlowBox
+          key="flow-box-2"
           num={2}
           marginRight="0px"
           flowData={flowSecondData}
