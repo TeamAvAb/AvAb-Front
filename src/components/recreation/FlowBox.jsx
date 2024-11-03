@@ -17,12 +17,10 @@ export default function FlowBox({
     flowData?.isFavorite || false
   );
 
-  const onHandleScrap = async (recreationId) => {
+  const onHandleScrap = async (flowId) => {
     try {
-      const response = await privateAPI.post(
-        `/api/recreations/${recreationId}/favorites`,
-        {}
-      );
+      const response = await privateAPI.post(`/api/flows/${flowId}/scraps`, {});
+      console.log("스크랩 완료: ", response);
       if (response.data.code === "COMMON200") {
         SetIsScrapToggle(!isScrapToggle);
       } else {
@@ -39,19 +37,23 @@ export default function FlowBox({
       <TitleWrap>
         <NumberBox>{num}안</NumberBox>
         <FlowTitle>{flowData?.title}</FlowTitle>
-        <IconWrap>
-          <ScrapIcon
-            fill={scrapIconColor}
-            onClick={() => onHandleScrap(flowData.id)}
-          />
-        </IconWrap>
+        {flowRecreations &&
+          flowRecreations.length > 0 && ( // 추천 플로우가 있을 때만 스크랩 아이콘 렌더링
+            <IconWrap>
+              <ScrapIcon
+                fill={scrapIconColor}
+                onClick={() => onHandleScrap(flowData.id)}
+              />
+            </IconWrap>
+          )}
       </TitleWrap>
-      {flowRecreations ? (
+      {flowRecreations && flowRecreations.length > 0 ? (
         flowRecreations.map((recreations, index) => (
           <FlowRecreationBox
+            key={index}
             index={index}
             recreationTitle={recreations.title}
-            kewords={recreations.keywordList}
+            keywords={recreations.keywordList}
             playTime={recreations.playTime}
           />
         ))
