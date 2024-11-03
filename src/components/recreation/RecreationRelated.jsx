@@ -2,12 +2,14 @@ import styled from "styled-components";
 import React, { forwardRef, useState, useEffect } from "react";
 import RelatedRecreationBox from "./RelatedRecreationBox";
 import { publicAPI } from "../../apis/user";
+import { isLoggedIn, privateAPI } from "../../apis/user";
 const RecreationRelated = forwardRef(({ recreationId }, ref) => {
   const [relatedData, setRelatedData] = useState([]);
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await publicAPI.get(
+        const api = isLoggedIn() ? privateAPI : publicAPI;
+        const response = await api.get(
           `/api/recreations/${recreationId}/related/recreations`
         );
         setRelatedData(response.data.result);

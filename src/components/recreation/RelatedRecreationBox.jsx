@@ -8,6 +8,7 @@ export default function RelatedRecreationBox({
   kewords,
   starRate,
   relatedId,
+  isFavorite,
 }) {
   const navigate = useNavigate();
   const matchKeywords = (kewords) => {
@@ -36,6 +37,7 @@ export default function RelatedRecreationBox({
           recreationTitle={recreationTitle}
           kewords={translatedKewords}
           starRate={starRate}
+          isFavorite={isFavorite}
         />
       </BoxWrap>
       <DetailLinkButton

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
 import { privateAPI } from "../../apis/user";
@@ -13,19 +13,27 @@ export default function RecreationContentBox({
   isFavorite,
 }) {
   const kewordList = kewords.map((keyword) => (
-    <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
+    <KeywordBox key={keyword} keyword={keyword}>
+      {keyword}
+    </KeywordBox>
   ));
-  const [isheartToggle, SetIsheartToggle] = useState(isFavorite);
+
+  const [isheartToggle, setIsheartToggle] = useState(isFavorite);
+
+  useEffect(() => {
+    setIsheartToggle(isFavorite);
+  }, [isFavorite]);
+
   const formattedStarRate = parseFloat(starRate).toFixed(1);
+
   const onHandleScrap = async (recreationId) => {
     try {
       const response = await privateAPI.post(
-        `/api/recreations/${recreationId}/favorites`,
-        {}
+        `/api/recreations/${recreationId}/favorites`
       );
       console.log(response.data.code);
       if (response.data.code === "COMMON200") {
-        SetIsheartToggle(!isheartToggle);
+        setIsheartToggle(!isheartToggle);
       } else {
         console.log(response.data);
       }
@@ -35,26 +43,25 @@ export default function RecreationContentBox({
   };
 
   const heartIconColor = isheartToggle ? "#ffd446" : "#E9EBED";
+
   return (
-    <>
-      <ContentBox>
-        <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
-        <HeartIconWrap onClick={() => onHandleScrap(recreationId)}>
-          <Icon fill={heartIconColor} />
-        </HeartIconWrap>
-        <TitleStar>
-          <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
-          {/* 레크레이션 제목 */}
-          <Star>
-            <img src={yellowStar}></img>{" "}
-            <StarRating>{formattedStarRate}</StarRating>
-          </Star>
-          {/* 별점*/}
-        </TitleStar>
-        {kewordList}
-        {/* 키워드 */}
-      </ContentBox>
-    </>
+    <ContentBox>
+      <HashTagBox>#{hashtag}</HashTagBox> {/* 해시태그 */}
+      <HeartIconWrap onClick={() => onHandleScrap(recreationId)}>
+        <Icon fill={heartIconColor} />
+      </HeartIconWrap>
+      <TitleStar>
+        <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
+        {/* 레크레이션 제목 */}
+        <Star>
+          <img src={yellowStar} alt="star icon" />{" "}
+          <StarRating>{formattedStarRate}</StarRating>
+        </Star>
+        {/* 별점*/}
+      </TitleStar>
+      {kewordList}
+      {/* 키워드 */}
+    </ContentBox>
   );
 }
 
