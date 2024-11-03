@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { isLoggedIn, publicAPI, privateAPI } from "../apis/user.js";
+import { publicAPI, privateAPI } from "../apis/user.js";
 import qs from "qs";
 import styled from "styled-components";
 import write1 from "../assets/flowwrite/write_1.png";
@@ -87,7 +87,7 @@ export default function FlowWriteContent() {
     }
 
     // 로컬 스토리지에서 저장된 플로우 추천 가져오기
-    const storedFlow = localStorage.getItem('selectedFlow');
+    const storedFlow = localStorage.getItem("selectedFlow");
     if (storedFlow) {
       try {
         const parsedFlow = JSON.parse(storedFlow); // JSON 파싱
@@ -145,7 +145,9 @@ export default function FlowWriteContent() {
   };
 
   // 연령대 정렬
-  const sortedAges = selectedAges.slice().sort((a, b) => ageOrder(a) - ageOrder(b));
+  const sortedAges = selectedAges
+    .slice()
+    .sort((a, b) => ageOrder(a) - ageOrder(b));
 
   const handleNextClick = () => {
     if (flowTitle.trim() === "") {
@@ -207,12 +209,15 @@ export default function FlowWriteContent() {
           (keyword) => keywordMappings[keyword]
         );
 
-        const response = await axios.get("http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended", {
-          params: {
-            playTime: savedPlayTime,
-            purpose: englishKeywords.join(","),
-          },
-        });
+        const response = await axios.get(
+          "http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended",
+          {
+            params: {
+              playTime: savedPlayTime,
+              purpose: englishKeywords.join(","),
+            },
+          }
+        );
 
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
@@ -285,12 +290,15 @@ export default function FlowWriteContent() {
         (keyword) => keywordMappings[keyword]
       );
       // API를 호출하여 데이터 가져오기
-      const response = await axios.get("https://dev.avab.shop/api/recreations/recommended", {
-        params: {
-          playTime: savedPlayTime,
-          purpose: englishKeywords.join(","),
-        },
-      });
+      const response = await axios.get(
+        "https://dev.avab.shop/api/recreations/recommended",
+        {
+          params: {
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(","),
+          },
+        }
+      );
       // 데이터에서 필요한 정보 추출
       const data = response.data.result.find((item) => item.id === id);
       if (data) {
@@ -316,12 +324,15 @@ export default function FlowWriteContent() {
   const handleAddScrapFlow = async () => {
     try {
       console.log("API 호출 전");
-      const response = await axios.get(`https://dev.avab.shop/api/users/me/favorites/recreations?page=0`, {
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${testJWT}`,
-        },
-      });
+      const response = await axios.get(
+        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
+        {
+          headers: {
+            Accept: "*/*",
+            Authorization: `Bearer ${testJWT}`,
+          },
+        }
+      );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
       setScrapRecreationData(
         response.data.result.recreationList.map((item) => ({
@@ -360,8 +371,8 @@ export default function FlowWriteContent() {
 
   const handleDelete = (index) => {
     // 플로우 박스 삭제
-    setInfoBoxes((prevInfoBoxes) =>
-      prevInfoBoxes.filter((_, i) => i !== index) // 인덱스를 기준으로 삭제
+    setInfoBoxes(
+      (prevInfoBoxes) => prevInfoBoxes.filter((_, i) => i !== index) // 인덱스를 기준으로 삭제
     );
   };
 
@@ -425,7 +436,7 @@ export default function FlowWriteContent() {
               />
             </FlowInfoBox>
           </FlowInfoContainer>
-  
+
           <FlowInfoContainer>
             <FlowInfoBox>
               <ContentInfo>
@@ -446,11 +457,9 @@ export default function FlowWriteContent() {
                       목적
                     </div>
                     <div>
-                      <div>
-                        {selectedKeywords.join(", ")}
-                      </div>
+                      <div>{selectedKeywords.join(", ")}</div>
                     </div>
-                    </div>
+                  </div>
                   <div style={{ display: "flex" }}>
                     <div
                       style={{
@@ -465,9 +474,9 @@ export default function FlowWriteContent() {
                     <div>{playTime}분</div>
                   </div>
                 </div>
-  
+
                 <Line></Line>
-  
+
                 <div style={{ marginTop: "29px" }}>
                   <div style={{ display: "flex", marginBottom: "8px" }}>
                     <div
@@ -515,7 +524,7 @@ export default function FlowWriteContent() {
                       연령대
                     </div>
                     <div>
-                    {sortedAges
+                      {sortedAges
                         .map((age) =>
                           age === "UNDER_TEENAGER"
                             ? "10대 미만"
@@ -547,11 +556,11 @@ export default function FlowWriteContent() {
                   </div>
                 </div>
               </ContentInfoDetail>
-  
+
               <ContentTitle>
                 <div style={{ marginLeft: "38px" }}>일정플로우 제목</div>
               </ContentTitle>
-  
+
               {/* ContentTitleInput에서 플로우 제목을 입력받음 */}
               <ContentTitleInput
                 type="text"
@@ -559,7 +568,7 @@ export default function FlowWriteContent() {
                 value={flowTitle}
                 onChange={handleFlowTitleChange}
               />
-  
+
               <FlowContainer>
                 <div style={{ width: "393px", textAlign: "center" }}>
                   {/* FlowTitle에 상태로부터 받은 값을 전달 */}
@@ -567,32 +576,43 @@ export default function FlowWriteContent() {
                     {flowTitle || "플로우 제목"}
                   </FlowTitle>
                 </div>
-  
+
                 <div>
                   {/* 선택한 플로우의 레크레이션 표시 */}
-                  {selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0 ? (
-                    selectedFlow.recreations.map((rec, index) => (
-                      <WriteSelectedRecreationInfo 
-                        key={rec.id} // 고유한 ID를 키로 사용
-                        num={index} // 박스 번호를 전달
-                        title={rec.title || "제목 없음"} // 레크레이션 제목
-                        onDelete={() => handleDelete(index)} // 삭제 기능 처리
-                        selectedKeywords={rec.keywordList || []} // 레크레이션 키워드
-                        time={rec.playTime || 0} // 플레이 시간
-                      />
-                    ))
-                  ) : null}
+                  {selectedFlow &&
+                  selectedFlow.recreations &&
+                  selectedFlow.recreations.length > 0
+                    ? selectedFlow.recreations.map((rec, index) => (
+                        <WriteSelectedRecreationInfo
+                          key={rec.id} // 고유한 ID를 키로 사용
+                          num={index} // 박스 번호를 전달
+                          title={rec.title || "제목 없음"} // 레크레이션 제목
+                          onDelete={() => handleDelete(index)} // 삭제 기능 처리
+                          selectedKeywords={rec.keywordList || []} // 레크레이션 키워드
+                          time={rec.playTime || 0} // 플레이 시간
+                        />
+                      ))
+                    : null}
 
                   {/* 기본 레크레이션 박스 : 추천 플로우가 선택되지 않았을 경우에만 표시 */}
-                  {!(selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0) && infoBoxes.map((box, index) => (
-                    <div key={`infoBox-${index}`}>
-                      {React.cloneElement(box, {
-                        num: index, // 인덱스를 num으로 전달
-                        onDelete: () => handleDelete(index), // 인덱스를 전달하여 삭제 기능 추가
-                      })}
-                    </div>
-                  ))}
-                  {!(selectedFlow && selectedFlow.recreations && selectedFlow.recreations.length > 0) && (
+                  {!(
+                    selectedFlow &&
+                    selectedFlow.recreations &&
+                    selectedFlow.recreations.length > 0
+                  ) &&
+                    infoBoxes.map((box, index) => (
+                      <div key={`infoBox-${index}`}>
+                        {React.cloneElement(box, {
+                          num: index, // 인덱스를 num으로 전달
+                          onDelete: () => handleDelete(index), // 인덱스를 전달하여 삭제 기능 추가
+                        })}
+                      </div>
+                    ))}
+                  {!(
+                    selectedFlow &&
+                    selectedFlow.recreations &&
+                    selectedFlow.recreations.length > 0
+                  ) && (
                     <WriteRecreationInfo
                       key={numOfRecreationInfo}
                       time={time}
@@ -601,19 +621,19 @@ export default function FlowWriteContent() {
                     />
                   )}
                 </div>
-  
+
                 <AddFlowButton onClick={handleAddFlow}>+</AddFlowButton>
               </FlowContainer>
             </FlowInfoBox>
           </FlowInfoContainer>
-  
+
           <LastButton onClick={handleBeforeClick}>이전으로</LastButton>
           <SaveButton onClick={handleSaveClick}>저장하기</SaveButton>
         </div>
       </FlowwriteContent>
     </FlowWriteWrap>
   );
-}  
+}
 
 const FlowWriteWrap = styled.div`
   display: flex;
