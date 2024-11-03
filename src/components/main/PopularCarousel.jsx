@@ -14,8 +14,10 @@ import prevSlide from "../../assets/main/prevSlide.svg";
 import nextSlide from "../../assets/main/nextSlide.svg";
 import wholeSlide from "../../assets/main/wholeSlide.svg";
 import currentSlide from "../../assets/main/currentSlide.svg";
+import useLoginStore from "../../stores/loginStore";
 
 export default function PopularCarousel() {
+  const { isLoggedIn } = useLoginStore((state) => state);
   const [data, setData] = useState();
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
@@ -39,12 +41,20 @@ export default function PopularCarousel() {
   useEffect(() => {
     const call = async () => {
       try {
-        if (localStorage.getItem("accessToken")) {
-          const response = await privateAPI.get("/api/recreations/popular");
-          setData(response.data.result.recreationList);
+        if (isLoggedIn) {
+          const response = await privateAPI.get("/api/recreations");
+          if (response.status === 200) {
+            setData(response.data.result.recreationList);
+          } else {
+            console.log("인기 레크 로드 요청 에러 : ", response);
+          }
         } else {
-          const response = await publicAPI.get("/api/recreations/popular");
-          setData(response.data.result.recreationList);
+          const response = await publicAPI.get("/api/recreations");
+          if (response.status === 200) {
+            setData(response.data.result.recreationList);
+          } else {
+            console.log("인기 레크 로드 요청 에러 : ", response);
+          }
         }
       } catch (error) {
         console.log("인기 레크 로드 요청 에러 : ", error);

@@ -6,20 +6,25 @@ import noScrapImg from "../assets/scrapflow/noScrap.png";
 import { useNavigate } from "react-router-dom";
 import ScrapFlowBox from "../components/flow/ScrapFlowBox";
 import Pagination from "../components/pagination/Pagination";
+import useLoginModalStore from "../stores/loginModalStore";
+import useLoginStore from "../stores/loginStore";
 
 export default function ScrapFlow() {
+  const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
+
   const navigate = useNavigate();
   const moveToWatch = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/watch`);
-    else alert("로그인이 필요한 페이지입니다.");
+    if (isLoggedIn) navigate(`/flow/watch`);
+    else modalControl();
   };
   const moveToMy = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/my`);
-    else alert("로그인이 필요한 페이지입니다.");
+    if (isLoggedIn) navigate(`/flow/my`);
+    else modalControl();
   };
   const moveToMakeFlow = () => {
-    if (localStorage.getItem("accessToken")) navigate(`/flow/write`);
-    else alert("로그인이 필요한 페이지입니다.");
+    if (isLoggedIn) navigate(`/flow/write`);
+    else modalControl();
   };
 
   // 데이터 가져오기
@@ -37,7 +42,7 @@ export default function ScrapFlow() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if (localStorage.getItem("accessToken")) {
+      if (isLoggedIn) {
         const response = await privateAPI.get(
           `/api/users/me/scraps/flows?page=${currentPage}`
         );

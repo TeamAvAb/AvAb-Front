@@ -12,8 +12,10 @@ import noScrapImg from "../assets/scrapflow/noScrap.png";
 import { Helmet } from "react-helmet";
 
 import LoadingSpinner from "../components/LoadingSpinner";
+import useLoginStore from "../stores/loginStore";
 
 export default function SearchList({}) {
+  const { isLoggedIn } = useLoginStore((state) => state);
   const location = useLocation();
   const param = location.search + "&";
 
@@ -30,13 +32,13 @@ export default function SearchList({}) {
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
-    const requestURL = `/api/recreations/search`;
+    const requestURL = `/api/recreations`;
 
     const call = async () => {
       setLoading(true);
       try {
         if (location.search === "") {
-          if (localStorage.getItem("accessToken")) {
+          if (isLoggedIn) {
             const response = await privateAPI.get(
               `/api/recreations?page=${currentPage}&sortBy=${order}`
             );
@@ -52,7 +54,7 @@ export default function SearchList({}) {
             setPages(response.data.result.totalPages);
           }
         } else {
-          if (localStorage.getItem("accessToken")) {
+          if (isLoggedIn) {
             const response = await privateAPI.get(
               requestURL + param + `sortBy=${order}`
             );

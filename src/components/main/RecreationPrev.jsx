@@ -5,8 +5,12 @@ import styled from "styled-components";
 import arrow from "../../assets/main/nextSlide.svg";
 import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
 import starImg from "../../assets/main/starIcon.svg";
-import Login from "../Login.jsx";
+import useLoginModalStore from "../../stores/loginModalStore.js";
+import useLoginStore from "../../stores/loginStore.js";
+
 export default function RecreationPrev({ content }) {
+  const { modalControl } = useLoginModalStore((state) => state);
+  const { isLoggedIn } = useLoginStore((state) => state);
   const keywordParam = {
     COOPERATIVE: "협동",
     QUICKNESS: "순발력",
@@ -27,6 +31,7 @@ export default function RecreationPrev({ content }) {
   };
   const addToFavorite = (e, id) => {
     e.stopPropagation();
+
     const call = async () => {
       try {
         const response = await privateAPI.post(
@@ -42,7 +47,9 @@ export default function RecreationPrev({ content }) {
         console.log("즐겨찾기 추가/해제 에러 : ", error);
       }
     };
-    call();
+    if (isLoggedIn) {
+      call();
+    } else modalControl();
   };
   return (
     <Categories>

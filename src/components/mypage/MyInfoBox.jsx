@@ -21,7 +21,6 @@ export default function MyInfoBox() {
       try {
         const response = await privateAPI.get(`/api/users/me`);
         setPreviousNickname(response.data.result.username);
-        localStorage.setItem("userimage", response.data.result.profileImage);
         setEmail(response.data.result.email);
         setLoading(false);
       } catch (error) {
@@ -51,7 +50,8 @@ export default function MyInfoBox() {
     });
     if (response.status === 200) {
       console.log(response.data);
-      setNickname(response.data.result.username);
+      setNickname("");
+      setPreviousNickname(nickname);
       setIsNicknameChangeModal(true);
     } else {
       console.log(response.data);
