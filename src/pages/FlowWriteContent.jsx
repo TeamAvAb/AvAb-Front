@@ -224,7 +224,7 @@ export default function FlowWriteContent() {
           response.data.result.map((item) => ({
             id: item.id,
             title: item.title,
-            totalStars: item.totalStars,
+            totalStars: Math.round(item.totalStars * 10) / 10,
             keywordList: item.keywordList,
             imageUrl: item.imageUrl,
             summary: item.summary,
@@ -338,7 +338,7 @@ export default function FlowWriteContent() {
         response.data.result.recreationList.map((item) => ({
           id: item.id,
           title: item.title,
-          totalStars: item.totalStars,
+          totalStars: Math.round(item.totalStars * 10) / 10,
           keywordList: item.keywordList,
           imageUrl: item.imageUrl,
           summary: item.summary,
