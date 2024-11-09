@@ -28,21 +28,23 @@ export default function Pagination({
         <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
       </ImageBox>
 
-      {/* 페이지 번호 */}
-      {pageN.map((num) => {
-        if (currentPage + 1 === num)
-          return (
-            <SelectedPageNumber key={num} onClick={() => movePage(num - 1)}>
-              {num}
-            </SelectedPageNumber>
-          );
-        else
-          return (
-            <PageNumber key={num} onClick={() => movePage(num - 1)}>
-              {num}
-            </PageNumber>
-          );
-      })}
+      <MidContainer>
+        {/* 페이지 번호 */}
+        {pageN.map((num) => {
+          if (currentPage + 1 === num)
+            return (
+              <PageNumber key={num} onClick={() => movePage(num - 1)} className="current">
+                {num}
+              </PageNumber>
+            );
+          else
+            return (
+              <PageNumber key={num} onClick={() => movePage(num - 1)}>
+                {num}
+              </PageNumber>
+            );
+        })}
+      </MidContainer>
 
       {/* 오른쪽 버튼 */}
       <ImageBox
@@ -66,36 +68,27 @@ const PageNumberContainer = styled.div`
   height: 42px;
 `;
 
+const MidContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+`
+
 const PageNumber = styled.div`
   font-size: 20px;
   font-weight: bold;
   width: 42px;
   height: 42px;
-  margin-right: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  /* &:focus::after {
-    background-color: #8896df;
-    border-radius: 50%;
-    color: white;
-  } */
-`;
 
-const SelectedPageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  margin-right: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  &.current {
   background-color: #8896df;
   border-radius: 50%;
   color: white;
+  }
 `;
 
 const ImageBox = styled.div`
