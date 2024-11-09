@@ -58,7 +58,7 @@ const HeaderWrap = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 3px 3px #abaaae;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.10);
   position: relative;
   height: 67px;
 `;
