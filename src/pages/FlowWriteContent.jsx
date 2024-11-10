@@ -321,7 +321,7 @@ export default function FlowWriteContent() {
     }
   };
 
-  const handleAddScrapFlow = async () => {
+  const handleAddScrapFlow = async (id) => {
     try {
       console.log("API 호출 전");
       const response = await axios.get(
@@ -334,6 +334,7 @@ export default function FlowWriteContent() {
         }
       );
       console.log(" 스크랩 레크 응답 데이터:", response.data);
+      console.log(`레크레이션 ID ${id}가 즐겨찾기에 추가되었습니다.`);
       setScrapRecreationData(
         response.data.result.recreationList.map((item) => ({
           id: item.id,
