@@ -159,6 +159,12 @@ export default function WriteRecreationInfo({ num, onDelete }) {
               type="text"
               value={time}
               onChange={handleTimeChange}
+              onFocus={() => setTime('')}  // 입력창에 포커스가 가면 기존 값 지우기
+              onBlur={() => {
+                if (time === '') {
+                  setTime(10); // 입력창을 벗어날 때 값이 비어 있으면 기본값 10으로 설정
+                }
+              }}
               style={{
                 fontSize: "16px",
                 fontStyle: "normal",

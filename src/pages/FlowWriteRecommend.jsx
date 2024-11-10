@@ -179,7 +179,9 @@ export default function FlowWriteRecommend() {
                 1안
               </Select1Button>
               <div style={{ width: "393px", textAlign: "center" }}>
-                <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "title"}</FlowTitle>
+                <FlowTitle hasData={flowData.length > 0}>
+                  {flowData.length > 0 ? flowData[0].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                </FlowTitle>
               </div>
               <RecreationBox>
                 {flowData.length > 0 && <RecreationInfo recreations={flowData[0].recreations} />}
@@ -193,7 +195,9 @@ export default function FlowWriteRecommend() {
                 2안
               </Select2Button>
               <div style={{ width: "393px", textAlign: "center" }}>
-                <FlowTitle>{flowData.length > 1 ? flowData[1].flowDetail.title : "title"}</FlowTitle>
+                <FlowTitle hasData={flowData.length > 1}>
+                  {flowData.length > 1 ? flowData[1].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                </FlowTitle>
               </div>
               <RecreationBox>
                 {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
@@ -365,8 +369,9 @@ const Recommend2 = styled(RecommendBase)`
 
 const FlowTitle = styled.div`
   margin-bottom: 59px;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: ${({ hasData }) => (hasData ? 24: 20)}px;
+  font-weight: ${({ hasData }) => (hasData ? 700 : 400)};
+  color: ${({ hasData }) => (hasData ? 'inherit' : '#cacdd2')};
 `;
 
 const RecreationBox = styled.div`
