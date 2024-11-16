@@ -4,8 +4,7 @@ import { publicAPI, privateAPI } from "../../apis/user";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import RecreationPrev from "./RecreationPrev";
+import RecreationTripleSet from "./RecreationTripleSet";
 
 import elipseImg from "../../assets/main/elipse.svg";
 import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
@@ -22,19 +21,18 @@ export default function PopularCarousel() {
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
-    className: "slider variable-width",
+    className: "slider",
     infinite: true,
     centerMode: false,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    variableWidth: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     arrrow: false,
     speed: 2000,
-    autoplaySpeed: 4000,
+    autoplay: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     beforeChange: (current, next) => {
-      return setSlideIndex(next);
+     return setSlideIndex(next)
     },
   };
 
@@ -44,14 +42,14 @@ export default function PopularCarousel() {
         if (isLoggedIn) {
           const response = await privateAPI.get("/api/recreations");
           if (response.status === 200) {
-            setData(response.data.result.recreationList);
+            setData([response.data.result.recreationList.slice(0, 3), response.data.result.recreationList.slice(3, 6), response.data.result.recreationList.slice(6,9)]);
           } else {
             console.log("인기 레크 로드 요청 에러 : ", response);
           }
         } else {
           const response = await publicAPI.get("/api/recreations");
           if (response.status === 200) {
-            setData(response.data.result.recreationList);
+            setData([response.data.result.recreationList.slice(0, 3), response.data.result.recreationList.slice(3, 6), response.data.result.recreationList.slice(6,9)]);
           } else {
             console.log("인기 레크 로드 요청 에러 : ", response);
           }
@@ -62,7 +60,7 @@ export default function PopularCarousel() {
     };
     call();
   }, []);
-
+ 
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -70,15 +68,13 @@ export default function PopularCarousel() {
       <StyledSlider ref={slider} {...settings}>
         {data &&
           data.map((banner) => (
-            <div key={banner.id} style={{ width: "284px" }}>
-              <RecreationPrev content={banner} />
-            </div>
+              <RecreationTripleSet dataset={banner} key={banner.id}/>
           ))}
       </StyledSlider>
-      <SlideIndex $index={slideIndex / 3 + 1}>
+      <SlideIndex $index={slideIndex + 1}>
         <ProgressBar>
           <WholeSlide src={wholeSlide} />
-          <CurrentSlide src={currentSlide} $index={slideIndex / 3 + 1} />
+          <CurrentSlide src={currentSlide} $index={slideIndex + 1} />
         </ProgressBar>
         <SlideControl>
           <img
@@ -86,7 +82,7 @@ export default function PopularCarousel() {
             style={{ width: "24px", height: "24px", cursor: "pointer" }}
             onClick={() => slider?.current?.slickPrev()}
           />
-          <span>{slideIndex / 3 + 1}/3</span>
+          <span>{slideIndex + 1} / 3</span> 
           <img
             src={nextSlide}
             style={{ width: "24px", height: "24px", cursor: "pointer" }}
@@ -99,7 +95,7 @@ export default function PopularCarousel() {
 }
 
 const StyledSlider = styled(Slider)`
-  width: 918px;
+  width: 938px;
   margin-top: 120px;
 
   .slick-list {
@@ -107,10 +103,10 @@ const StyledSlider = styled(Slider)`
   }
   .slick-track {
     display: flex;
-    gap: 22px;
+    gap: 46px;
   }
   .slick-slide {
-    transform: translateX(10px);
+    transform: translateX(-29px);
   }
   .slick-arrow {
     position: absolute;
@@ -236,3 +232,4 @@ const SlideControl = styled.div`
   font-weight: 400;
   line-height: normal;
 `;
+
