@@ -1,8 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useLoginStore from "../../stores/loginStore"
+import useLoginModalStore from "../../stores/loginModalStore";
 
 export default function Footer() {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore((state) => state);
+
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
@@ -17,8 +22,10 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
-    navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+   if (isLoggedIn) {
+      navigate(`/mypage/myinfo`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else modalControl();
   };
   return (
     <FooterWrap>
