@@ -15,7 +15,7 @@ export default function Login() {
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
   else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
 
-  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
+  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
