@@ -118,7 +118,7 @@ const RecreationExplain = styled.div`
   margin-top: 20px;
   border-radius: 20px;
   background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-  box-shadow: 0px 10px 30px 3px rgba(27, 29, 31, 0.2);
+  box-shadow: 0px 10px 20px 3px rgba(27, 29, 31, 0.2);
 `;
 
 const ImgSpace = styled.div`

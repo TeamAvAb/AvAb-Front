@@ -56,14 +56,14 @@ export default function SearchList({}) {
         } else {
           if (isLoggedIn) {
             const response = await privateAPI.get(
-              requestURL + param + `sortBy=${order}`
+              requestURL + param + `sortBy=${order}&page=${currentPage}`
             );
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
             const response = await publicAPI.get(
-              requestURL + param + `sortBy=${order}`
+              requestURL + param + `sortBy=${order}&page=${currentPage}`
             );
             console.log("전체 레크:", response);
             setDatas(response.data.result.recreationList);
