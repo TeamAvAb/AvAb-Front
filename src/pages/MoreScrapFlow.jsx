@@ -10,6 +10,8 @@ import Scrap2 from "../assets/moreflow/scrap2.png";
 import Close from "../assets/myflow/close.png";
 import RecreationInfo from "../components/recreationInfo/RecreationInfo";
 import { privateAPI, publicAPI } from "../apis/user";
+import useLoginModalStore from "../stores/loginModalStore";
+import useLoginStore from "../stores/loginStore";
 
 const PurposeList = {
   MT: "MT",
@@ -47,10 +49,13 @@ const AgeList = {
 };
 
 export default function MoreWatchFlow() {
+  const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
+
   const [scrap, setScrap] = useState(false);
   // 스크랩 상태 변경
   const DoScrap = async (id) => {
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       const response = await privateAPI.post(`/api/flows/${id}/scraps`);
       if (response.status === 200) {
         // 요청이 성공하면 상태 업데이트
@@ -60,7 +65,7 @@ export default function MoreWatchFlow() {
         // 요청이 실패하면 에러 처리
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   // 삭제 버튼 모달창을 위한 상태
@@ -96,7 +101,7 @@ export default function MoreWatchFlow() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (localStorage.getItem("accessToken")) {
+        if (isLoggedIn) {
           const response = await privateAPI.get(`/api/flows/${id}`);
           setData(response.data.result);
         } else {
@@ -136,7 +141,9 @@ export default function MoreWatchFlow() {
                 {share ? (
                   <AfterCopyBtn>복사 완료</AfterCopyBtn>
                 ) : (
-                  <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
+                  <BeforeCopyBtn onClick={ShareBtn}>
+                    링크 복사하기
+                  </BeforeCopyBtn>
                 )}
               </ModalBoxDetail>
             </ModalBox>
@@ -155,7 +162,11 @@ export default function MoreWatchFlow() {
             <DetailTitleBox>
               <KeyWord>{PurposeList[data.flowDetail.purposeList[0]]}</KeyWord>
               <ScrapImg onClick={() => DoScrap(id)}>
-                {data.flowDetail.isFavorite ? <img src={Scrap2} alt="스크랩O" /> : <img src={Scrap} alt="스크랩X" />}
+                {data.flowDetail.isFavorite ? (
+                  <img src={Scrap2} alt="스크랩O" />
+                ) : (
+                  <img src={Scrap} alt="스크랩X" />
+                )}
               </ScrapImg>
             </DetailTitleBox>
             <FlowName>{data.flowDetail.title}</FlowName>
@@ -164,25 +175,41 @@ export default function MoreWatchFlow() {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={Time}
+                    alt="시간"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                  <img
+                    src={View}
+                    alt="조회수"
+                    style={{ width: "38px", height: "38px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Write} alt="작성자" style={{ width: "35px", height: "35px" }} />
+                  <img
+                    src={Write}
+                    alt="작성자"
+                    style={{ width: "35px", height: "35px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
+                  <img
+                    src={User}
+                    alt="사용자수"
+                    style={{ width: "24px", height: "24px" }}
+                  />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
@@ -207,7 +234,9 @@ export default function MoreWatchFlow() {
                 <div style={{ display: "flex", marginBottom: "8px" }}>
                   <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
                   <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
-                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(", ")}
+                    {data.flowDetail.purposeList
+                      .map((p) => PurposeList[p])
+                      .join(", ")}
                   </FlowInfo2>
                 </div>
                 <div style={{ display: "flex" }}>

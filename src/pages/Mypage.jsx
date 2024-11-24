@@ -6,9 +6,11 @@ import MyInfoBox from "../components/mypage/MyInfoBox";
 import LogoutP from "../assets/mypage/LogoutImg.svg";
 import { privateAPI } from "../apis/user";
 import { Helmet } from "react-helmet";
+import useLoginStore from "../stores/loginStore";
 
-export default function Mypage({ handleLogin }) {
+export default function Mypage() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { logout } = useLoginStore();
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
@@ -32,12 +34,17 @@ export default function Mypage({ handleLogin }) {
   const handleLogout = async () => {
     try {
       const response = await privateAPI.delete("/api/auth/logout");
-      localStorage.clear();
-      navigate("/");
+      if (response.data.isSuccess === true) {
+        localStorage.clear();
+        logout();
+        navigate("/");
+      } else {
+        alert("로그아웃 요청 에러가 발생했습니다!");
+        console.log(response);
+      }
     } catch (error) {
       console.log("로그아웃 요청 에러 : ", error);
     }
-    handleLogin(false);
     setLogoutModalOpen(false);
   };
 

@@ -8,7 +8,8 @@ import RecreationFlow from "../components/recreation/RecreationFlow";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { publicAPI, privateAPI, isLoggedIn } from "../apis/user";
+import { publicAPI, privateAPI } from "../apis/user";
+import useLoginStore from "../stores/loginStore";
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -17,6 +18,7 @@ export default function RecreationDetail() {
   const relatedRef = useRef(null);
   const flowRef = useRef(null);
   const scrollRefs = useRef([infoRef, reviewRef, relatedRef, flowRef]);
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   const [recreationData, setRecreationData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ export default function RecreationDetail() {
     const fetchData = async () => {
       try {
         // isLoggedIn()이 true면 privateAPI, false면 publicAPI 사용
-        const api = isLoggedIn() ? privateAPI : publicAPI;
+        const api = isLoggedIn ? privateAPI : publicAPI;
         const response = await api.get(`/api/recreations/${recreationId}`);
         setRecreationData(response.data.result);
         console.log("레크레이션 데이터 ", response.data.result);

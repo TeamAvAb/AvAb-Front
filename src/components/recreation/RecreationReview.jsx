@@ -4,9 +4,13 @@ import ReviewStars from "./ReviewStars";
 import ReviewBox from "./ReviewBox";
 import RecreationPagination from "./RecreationPagination";
 import { publicAPI } from "../../apis/user";
-import { isLoggedIn, privateAPI } from "../../apis/user";
+import { privateAPI } from "../../apis/user";
+import useLoginModalStore from "../../stores/loginModalStore";
+import useLoginStore from "../../stores/loginStore";
 
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
+  const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewData, setReviewData] = useState(0);
@@ -42,9 +46,8 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
   // 리뷰 작성
   const handleReviewSubmit = async () => {
-    if (isLoggedIn()) {
+    if (isLoggedIn) {
       try {
-        const accessToken = localStorage.getItem("accessToken");
         await privateAPI.post(
           `/api/recreations/${recreationId}/reviews`,
           {
@@ -54,7 +57,6 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           {
             headers: {
               Accept: "*/*",
-              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -75,7 +77,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   // 좋아요 클릭 핸들러
   const handleLikeClick = async (id) => {
     console.log("좋아요");
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       const response = await privateAPI.post(
         `/api/recreation-reviews/${id}/recommendations`,
         { type: "GOOD" }
@@ -85,13 +87,13 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       } else {
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   // 싫어요 클릭 핸들러
   const handleDislikeClick = async (id) => {
     console.log("싫어요");
-    if (localStorage.getItem("accessToken")) {
+    if (isLoggedIn) {
       const response = await privateAPI.post(
         `/api/recreation-reviews/${id}/recommendations`,
         { type: "BAD" }
@@ -101,7 +103,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       } else {
         console.log(response.data);
       }
-    } else alert("로그인이 필요한 기능입니다.");
+    } else modalControl();
   };
 
   return (
@@ -116,7 +118,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       </StarBox>
 
       <ReviewInputWrap>
-        {isLoggedIn() ? (
+        {isLoggedIn ? (
           <>
             <ReviewInputBox
               placeholder="리뷰를 작성하세요."
