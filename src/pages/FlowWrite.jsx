@@ -24,22 +24,15 @@ export default function FlowWrite() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [playTime, setPlayTime] = useState("");
+  const [savedPlayTime, setSavedPlayTime] = useState(null); // 로컬스토리지 값 상태 관리
 
   useEffect(() => {
     // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
-    const savedPlayTime = localStorage.getItem("playTime");
-    if (savedPlayTime) {
-      setPlayTime(savedPlayTime);
+    const savedValue = localStorage.getItem("playTime");
+    if (savedValue) {
+      setSavedPlayTime(savedValue); // 상태로 저장하되, 입력 필드는 비워둠
     }
   }, []);
-
-  // useEffect(() => {
-  //   // 페이지가 로드될 때 localStorage에서 selectedKeywords을 가져와서 상태를 설정합니다.
-  //   const savedSelectedKeywords = localStorage.getItem('selectedKeywords');
-  //   if (savedSelectedKeywords) {
-  //     setSelectedKeywords(savedSelectedKeywords);
-  //   }
-  // }, []);
 
   const handleNextClick = () => {
     const englishKeywords = selectedKeywords.map(
@@ -47,6 +40,7 @@ export default function FlowWrite() {
     );
     localStorage.setItem("selectedKeywords", JSON.stringify(englishKeywords));
     localStorage.setItem("playTime", playTime);
+    setSavedPlayTime(playTime); // 저장된 값을 상태에 업데이트
     console.log("Saved keywords:", englishKeywords);
     console.log("Saved play time:", playTime);
     navigate("/flow/write/detail");
