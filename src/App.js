@@ -24,10 +24,12 @@ import Login from "./components/Login";
 import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 import useLoginModalStore from "./stores/loginModalStore";
+import styled from "styled-components";
 
 function App() {
   const navigate = useNavigate();
   const [selectedFooter, setSelectedFooter] = useState(<Footer1 />);
+  const [isMobile, setIsMobile] = useState(false); // 모바일인지 여부
 
   const { modalOpen } = useLoginModalStore();
   const routes = (
@@ -72,6 +74,28 @@ function App() {
     </Routes>
   );
 
+  // 화면 크기 감지
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true); // 모바일 화면이면 true
+      } else {
+        setIsMobile(false); // 모바일 화면이 아니면 false
+      }
+    };
+
+    handleResize(); // 초기 화면 크기 확인
+    window.addEventListener("resize", handleResize); // 화면 크기 변경 감지
+
+    if (isMobile) {
+      alert("모바일 버전은 준비 중입니다. PC로 접속해주세요.");
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isMobile]);
+
   useEffect(() => {
     const currentPath = window.location.pathname;
     console.log(currentPath);
@@ -92,7 +116,10 @@ function App() {
       <GlobalStyle />
       <Header />
       {modalOpen ? <Login /> : null}
-      {routes}
+
+      {/* 기존의 라우팅을 표시 */}
+      {!isMobile && routes}
+
       {selectedFooter}
     </div>
   );
