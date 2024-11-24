@@ -38,6 +38,7 @@ export default function FlowBox({
   };
 
   const scrapIconColor = isScrapToggle ? "#ffd446" : "#E9EBED";
+  console.log("플로우 레크레이션", flowRecreations);
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>

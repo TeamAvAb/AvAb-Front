@@ -5,13 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 export default function RelatedRecreationBox({
   hashtag,
   recreationTitle,
-  kewords,
+  keywords,
   starRate,
   relatedId,
   isFavorite,
 }) {
   const navigate = useNavigate();
-  const matchKeywords = (kewords) => {
+  const matchKeywords = (keywords) => {
     const keywordMap = {
       QUICKNESS: "순발력",
       SENSIBLE: "센스",
@@ -23,11 +23,11 @@ export default function RelatedRecreationBox({
       COMMON_SENSE: "행운",
       PREPARATION: "상식",
     };
-    const matchedWords = kewords.map((keyword) => keywordMap[keyword]);
+    const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
   };
 
-  const translatedKewords = kewords ? matchKeywords(kewords) : [];
+  const translatedKeywords = keywords ? matchKeywords(keywords) : [];
   return (
     <RelatedRecreationContainer>
       <BoxWrap>
@@ -35,7 +35,7 @@ export default function RelatedRecreationBox({
           recreationId={relatedId}
           hashtag={hashtag}
           recreationTitle={recreationTitle}
-          kewords={translatedKewords}
+          keywords={translatedKeywords}
           starRate={starRate}
           isFavorite={isFavorite}
         />

@@ -11,7 +11,7 @@ export default function RecreationTopInfo({ recreationData }) {
       </WarningMessage>
     );
   }
-  const matchKeywords = (kewords) => {
+  const matchKeywords = (keywords) => {
     const keywordMap = {
       QUICKNESS: "순발력",
       SENSIBLE: "센스",
@@ -23,11 +23,11 @@ export default function RecreationTopInfo({ recreationData }) {
       COMMON_SENSE: "행운",
       PREPARATION: "상식",
     };
-    const matchedWords = kewords.map((keyword) => keywordMap[keyword]);
+    const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
   };
 
-  const kewords = recreationData
+  const keywords = recreationData
     ? matchKeywords(recreationData.keywordList)
     : [];
   return (
@@ -40,7 +40,7 @@ export default function RecreationTopInfo({ recreationData }) {
             recreationId={recreationData.recreationId}
             hashtag={recreationData.hashTagList}
             recreationTitle={recreationData.title}
-            kewords={kewords}
+            keywords={keywords}
             starRate={recreationData.totalStars}
             isFavorite={recreationData.isFavorite}
           />

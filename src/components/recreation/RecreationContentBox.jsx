@@ -10,13 +10,13 @@ export default function RecreationContentBox({
   recreationId,
   hashtag,
   recreationTitle,
-  kewords,
+  keywords,
   starRate,
   isFavorite,
 }) {
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
-  const kewordList = kewords.map((keyword) => (
+  const kewordList = keywords.map((keyword) => (
     <KeywordBox key={keyword} keyword={keyword}>
       {keyword}
     </KeywordBox>
