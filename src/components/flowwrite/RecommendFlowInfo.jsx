@@ -29,13 +29,6 @@ export default function RecommendFlowInfo({ recreations }) {
                 <Number>{index + 1}</Number>
                 <div style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700" }}>{recreation.title}</div>
               </RecreationTitle>
-      
-              {/* 레크레이션 키워드 */}
-              {/* <KeywordBox>
-                {recreation.keywordList && recreation.keywordList.map((keyword, keywordIndex) => (
-                  <Keyword key={keywordIndex}>{keyword}</Keyword>
-                ))}
-              </KeywordBox> */}
 
               <KeywordBox>
               {recreation.keywordList && mapKeywordsToKorean(recreation.keywordList).map((keyword, keywordIndex) => (
