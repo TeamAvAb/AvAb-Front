@@ -4,10 +4,10 @@ import styled from "styled-components";
 export default function FlowRecreationBox({
   index,
   recreationTitle,
-  kewords,
+  keywords,
   playTime,
 }) {
-  const matchKeywords = (kewords) => {
+  const matchKeywords = (keywords) => {
     const keywordMap = {
       QUICKNESS: "순발력",
       SENSIBLE: "센스",
@@ -19,17 +19,19 @@ export default function FlowRecreationBox({
       COMMON_SENSE: "행운",
       PREPARATION: "상식",
     };
-    const matchedWords = kewords.map((keyword) => keywordMap[keyword]);
+    const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
   };
 
-  const keys = kewords ? matchKeywords(kewords) : [];
+  const keys = Array.isArray(keywords) ? matchKeywords(keywords) : [];
 
   const kewordList = keys.map((keyword) => (
     <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
   ));
 
   const height = (playTime / 10) * 128;
+  console.log("키워드리스트", keywords);
+  console.log("제목", recreationTitle);
   return (
     <FlowRecreationBoxWrap height={height}>
       <LeftTimeBar height={height}></LeftTimeBar>
