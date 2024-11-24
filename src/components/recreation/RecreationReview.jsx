@@ -158,13 +158,17 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           }
         />
       ))}
-      <RecreationPagination
-        itemsPerPage={itemsPerPage}
-        totalItems={reviewData.totalReviews}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPageNum={reviewData.totalPages}
-      />
+      {isLoggedIn ? (
+        <RecreationPagination
+          itemsPerPage={itemsPerPage}
+          totalItems={reviewData.totalReviews}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPageNum={reviewData.totalPages}
+        />
+      ) : (
+        <></>
+      )}
     </RecreationReviewContainer>
   );
 });

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import yellowStar from "../../assets/recreation/yellowStar.svg";
 import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
 import { privateAPI } from "../../apis/user";
+import useLoginModalStore from "../../stores/loginModalStore";
+import useLoginStore from "../../stores/loginStore";
 
 export default function RecreationContentBox({
   recreationId,
@@ -12,6 +14,8 @@ export default function RecreationContentBox({
   starRate,
   isFavorite,
 }) {
+  const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
   const kewordList = kewords.map((keyword) => (
     <KeywordBox key={keyword} keyword={keyword}>
       {keyword}
@@ -26,7 +30,15 @@ export default function RecreationContentBox({
 
   const formattedStarRate = parseFloat(starRate).toFixed(1);
 
+  // 하트 클릭 시 로그인 여부 체크
   const onHandleScrap = async (recreationId) => {
+    if (!isLoggedIn) {
+      // 로그인 안되어 있으면 모달 띄우기
+      modalControl();
+      return; // 로그인 안되었을 때 함수 종료
+    }
+
+    // 로그인 되어 있으면
     try {
       const response = await privateAPI.post(
         `/api/recreations/${recreationId}/favorites`
