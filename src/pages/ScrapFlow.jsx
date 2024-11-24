@@ -135,7 +135,7 @@ const RightSide = styled.div`
 const MyFlowMenuContainer = styled.div`
   background-color: white;
   width: 320px;
-  height: 713px;
+  height: 100%;
   box-sizing: border-box;
   font-size: 22px;
   border: solid #cacdd2 1px;
