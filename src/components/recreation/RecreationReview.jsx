@@ -27,7 +27,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const fetchReviews = async () => {
     console.log("리뷰 목록 다시 받기");
     try {
-      const api = isLoggedIn() ? privateAPI : publicAPI;
+      const api = isLoggedIn ? privateAPI : publicAPI;
       const response = await api.get(
         `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`
       );
@@ -46,34 +46,37 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
   // 리뷰 작성
   const handleReviewSubmit = async () => {
-    if (isLoggedIn) {
-      try {
-        await privateAPI.post(
-          `/api/recreations/${recreationId}/reviews`,
-          {
-            stars: selectedStars,
-            contents: reviewInput,
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    }
+
+    try {
+      await privateAPI.post(
+        `/api/recreations/${recreationId}/reviews`,
+        {
+          stars: selectedStars,
+          contents: reviewInput,
+        },
+        {
+          headers: {
+            Accept: "*/*",
           },
-          {
-            headers: {
-              Accept: "*/*",
-            },
-          }
-        );
+        }
+      );
 
-        // 리뷰 목록 업데이트
-        fetchReviews();
+      // 리뷰 목록 업데이트
+      fetchReviews();
 
-        alert("리뷰가 등록되었습니다");
-        setSelectedStars(0);
-
-        setReviewInput("");
-      } catch (error) {
-        console.error(error);
-        alert("리뷰 등록에 실패했습니다");
-      }
+      alert("리뷰가 등록되었습니다");
+      setSelectedStars(0);
+      setReviewInput("");
+    } catch (error) {
+      console.error(error);
+      alert("리뷰 등록에 실패했습니다");
     }
   };
+
   // 좋아요 클릭 핸들러
   const handleLikeClick = async (id) => {
     console.log("좋아요");
@@ -132,7 +135,9 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         ) : (
           <>
             <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
-            <ReviewInputButton>등록</ReviewInputButton>
+            <ReviewInputButton onClick={handleReviewSubmit}>
+              등록
+            </ReviewInputButton>
           </>
         )}
       </ReviewInputWrap>
@@ -158,7 +163,8 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           }
         />
       ))}
-      {isLoggedIn ? (
+      {/* 리뷰 리스트가 있을 때만 페이지네이션 표시 */}
+      {reviewListData.length > 0 && (
         <RecreationPagination
           itemsPerPage={itemsPerPage}
           totalItems={reviewData.totalReviews}
@@ -166,8 +172,6 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           setCurrentPage={setCurrentPage}
           totalPageNum={reviewData.totalPages}
         />
-      ) : (
-        <></>
       )}
     </RecreationReviewContainer>
   );
