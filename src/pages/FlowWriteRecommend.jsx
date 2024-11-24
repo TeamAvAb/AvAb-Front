@@ -120,28 +120,6 @@ export default function FlowWriteRecommend() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchFlowData = async () => {
-  //     try {
-  //       const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
-  //          params: {
-  //           playTime: '100',
-  //           purpose: 'WORKSHOP'
-  //         }
-  //       });
-  //       setFlowData(response.data.result);
-  //       console.log(response.data.result); // 데이터 구조 확인
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchFlowData();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(flowData);
-  // }, [flowData]);
-
     return (
         <FlowWriteRecommendWrap>
           <ProgressbarStyle>
@@ -175,6 +153,7 @@ export default function FlowWriteRecommend() {
               <Select1Button
                 onClick={() => handleButtonClick('1안')}
                 clicked={selectedButton === '1안'}
+                disabled={flowData.length === 0}
               >
                 1안
               </Select1Button>
@@ -191,6 +170,7 @@ export default function FlowWriteRecommend() {
               <Select2Button
                 onClick={() => handleButtonClick('2안')}
                 clicked={selectedButton === '2안'}
+                disabled={flowData.length <= 1}
               >
                 2안
               </Select2Button>
@@ -316,12 +296,13 @@ const Select1Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1b1d1f;
+  border: 0.5px solid ${({ disabled }) => (disabled ? '#cacdd2' : '#1b1d1f')};
   border-radius: 50px;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
+  color: ${({ clicked, disabled }) => 
+    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
   align-items: center;
-  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
 
@@ -347,11 +328,12 @@ const Select2Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1b1d1f;
+  border: 0.5px solid ${({ disabled }) => (disabled ? '#cacdd2' : '#1b1d1f')};
   border-radius: 50px;
   font-size: 20px;
-  font-weight: 700;
-  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
+  font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
+  color: ${({ clicked, disabled }) => 
+    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
   cursor: pointer;
 `;
 

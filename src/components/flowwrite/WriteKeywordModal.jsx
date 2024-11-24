@@ -114,13 +114,13 @@ const KeywordSpan = styled.span`
   display: inline-flex;
   padding: 16px 34px;
   border-radius: 50px;
-  border: 1px solid #1B1D1F;
+  border: 1px solid ${({ clicked }) => (clicked ? 'transparent' : '#1B1D1F')};
   background-color: ${({ clicked }) => (clicked ? '#A0DDFF' : '#F7F8F9')};
   justify-content: center;
   align-items: center;
   display: flex;
   margin-right: 15px;
-  color: #1B1D1F;
+  color: #000000;
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
@@ -138,7 +138,7 @@ const BottomContainer = styled.div`
 const CloseButton = styled.button`
   width: 101px;
   height: 54px;
-  color: #464C52;
+  color: #1B1D1F;
   background-color: #fff;
   border: 1px solid #1B1D1F;
   border-radius: 50px;
