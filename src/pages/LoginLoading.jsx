@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { privateAPI, publicAPI } from "../apis/user";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useLoginStore from "../stores/loginStore";
+import useLoginModalStore from "../stores/loginModalStore";
+import userDeleteRollback from "../apis/userDeleteRollback";
 
 export default function LoginLoading() {
   const {
@@ -12,6 +14,7 @@ export default function LoginLoading() {
     setAccessToken,
     setRefreshToken,
   } = useLoginStore();
+  const { modalControl } = useLoginModalStore();
   const code = new URL(window.location.href).searchParams.get("code");
   const redirectURL = new URL(window.location.href).searchParams.get("state");
   const navigator = useNavigate();
@@ -36,16 +39,27 @@ export default function LoginLoading() {
       } else {
         response = await publicAPI.get(`/api/auth/login/kakao?code=${code}`);
       }
-
-      // localStorage.setItem("accessToken", response.data.result.accessToken);
-      // localStorage.setItem("refreshToken", response.data.result.refreshToken);
-      // localStorage.setItem("userId", response.data.result.userId);
       if (response.data.isSuccess === true) {
-        setIsLoggedIn(true);
-        setUserId(response.data.result.userId);
-        setAccessToken(response.data.result.accessToken);
-        setRefreshToken(response.data.result.refreshToken);
-        navigator(redirectURL);
+        if (response.data.result.isDeleted) {
+          // 탈퇴 회원의 경우
+          localStorage.setItem(
+            "accessTokenForRollback",
+            response.data.result.accessToken
+          );
+          if (window.confirm("계정을 복구하시겠어요?")) {
+            if (userDeleteRollback()) {
+              modalControl(); // 로그인 모달 열기
+            }
+          }
+        } else {
+          setIsLoggedIn(true);
+          setUserId(response.data.result.userId);
+          setAccessToken(response.data.result.accessToken);
+          setRefreshToken(response.data.result.refreshToken);
+          if (redirectURL === "/api/auth/login/kakao")
+            navigator("/"); // 탈퇴 복구에서 이어지는 로그인
+          else navigator(redirectURL);
+        }
       }
     } catch (error) {
       console.log("로그인 요청 에러 : ", error);

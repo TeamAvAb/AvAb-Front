@@ -6,14 +6,20 @@ import LogoutP from "../../assets/mypage/LogoutImg.svg";
 import WarnLogo from "../../assets/mypage/WarnLogo.svg";
 import { privateAPI } from "../../apis/user";
 import LoadingSpinner from "../LoadingSpinner";
+import patchUserDelete from "../../apis/patchUserDelete";
+import useLoginStore from "../../stores/loginStore";
+import { useNavigate } from "react-router";
 
 export default function MyInfoBox() {
-  const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
   const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
   const [nickname, setNickname] = useState("");
   const [previousNickname, setPreviousNickname] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
+  const [withdrawComplete, setWithdrawComplete] = useState(false);
+  const { logout } = useLoginStore();
+  const navigator = useNavigate();
 
   useEffect(() => {
     const call = async () => {
@@ -34,10 +40,20 @@ export default function MyInfoBox() {
     setGoOutModalOpen(true);
   };
 
+  const apiCall = () => {
+    if (patchUserDelete()) {
+      setWithdrawComplete(true);
+    } else {
+      console.log("patchUserDelete Fail");
+    }
+  };
   const closeGoOutModal = () => {
     setGoOutModalOpen(false);
   };
-
+  const completeWithdraw = () => {
+    logout();
+    navigator("/");
+  };
   const handleNickname = (e, maxlength) => {
     if (e.target.value.length > maxlength)
       setNickname(e.target.value.substr(0, maxlength));
@@ -91,15 +107,34 @@ export default function MyInfoBox() {
           {isGoOutModalOpen && (
             <LogoutModal>
               <ModalContent>
-                <ModalTitle>회원탈퇴 하시게요?</ModalTitle>
-                <SemiTitle>한번 탈퇴하면 되돌릴 수 없습니다.</SemiTitle>
-                <LogoutImg src={LogoutP} />
-                <ModalBut>
-                  <LogoutButton onClick={closeGoOutModal}>
-                    회원탈퇴
-                  </LogoutButton>
-                  <CloseButton onClick={closeGoOutModal}>닫기</CloseButton>
-                </ModalBut>
+                {withdrawComplete ? (
+                  <>
+                    <TitleContainer>
+                      <ModalTitle>탈퇴되었습니다</ModalTitle>
+                      <SemiTitle>
+                        계정 정보는 한달 동안 유효하니 다시 찾아주세요!
+                      </SemiTitle>
+                    </TitleContainer>
+                    <LogoutImg src={LogoutP} />
+                    <ModalBut>
+                      <CloseButton onClick={completeWithdraw}>닫기</CloseButton>
+                    </ModalBut>
+                  </>
+                ) : (
+                  <>
+                    <TitleContainer>
+                      <ModalTitle>회원탈퇴 하시게요?</ModalTitle>
+                      <SemiTitle>정말요?🥹</SemiTitle>
+                    </TitleContainer>
+                    <LogoutImg src={LogoutP} />
+                    <ModalBut>
+                      <LogoutButton onClick={apiCall}>회원탈퇴</LogoutButton>
+                      <CloseButton onClick={closeGoOutModal} className="right">
+                        닫기
+                      </CloseButton>
+                    </ModalBut>
+                  </>
+                )}
               </ModalContent>
             </LogoutModal>
           )}
@@ -208,6 +243,12 @@ const ModalContent = styled.div`
   margin-top: 230px;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const ModalTitle = styled.div`
   font-size: 30px;
   font-weight: 600;
@@ -250,5 +291,7 @@ const CloseButton = styled(LogoutButton)`
   background-color: #4036ed;
   color: white;
   border: none;
-  margin-left: 80px;
+  &.right {
+    margin-left: 80px;
+  }
 `;
