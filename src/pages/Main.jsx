@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import useLoginStore from "../stores/loginStore";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import Search from "../components/main/Search";
@@ -33,80 +34,15 @@ export default function Main() {
     { index: 1, keyword: "MT", param: "MT", img: mtImg },
     { index: 2, keyword: "모임", param: "GATHERING", img: gatherImg },
   ];
-  const recreationData = [
-    {
-      index: 1,
-      title: "레크레이션 1",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 2,
-      title: "레크레이션 2",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 3,
-      title: "레크레이션 3",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 4,
-      title: "레크레이션 4",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 5,
-      title: "레크레이션 5",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 6,
-      title: "레크레이션 6",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 7,
-      title: "레크레이션 7",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 8,
-      title: "레크레이션 8",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-    {
-      index: 9,
-      title: "레크레이션 9",
-      keywords: "키워드1, 키워드2, 키워드3",
-      imgSrc: blankImg,
-      hashtag: "#해시태그",
-      rate: "4.5",
-    },
-  ];
+
+  // 로컬 스토리지 데이터 없어도 isLoggedIn 유지되는 문제 해결(일시적..)
+  useEffect(() => {
+    const storedState = localStorage.getItem("loginStorage");
+    if (!storedState) {
+      useLoginStore.getState().logout();
+    }
+  }, []);
+
   return (
     <>
       <Helmet>
