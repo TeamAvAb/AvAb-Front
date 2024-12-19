@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/login_character.png";
@@ -44,7 +44,7 @@ export default function Login() {
           />
         </Content>
         <Controls>
-          <Control onClick={() => modalControl()}>
+          <Control onClick={modalControl}>
             <img src={closeImg} style={{ width: "24px", height: "25px" }} />
             닫기
           </Control>
