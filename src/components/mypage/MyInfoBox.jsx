@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import WarningIcon from "../../assets/mypage/WarnLogo.svg";
 import NicknameChangeModal from "../modal/NicknameChangeModal";
-import LogoutP from "../../assets/mypage/LogoutImg.svg";
-import WarnLogo from "../../assets/mypage/WarnLogo.svg";
+import WithdrawModal from "../modal/WithdrawModal";
 import { privateAPI } from "../../apis/user";
 import LoadingSpinner from "../LoadingSpinner";
-import patchUserDelete from "../../apis/patchUserDelete";
-import useLoginStore from "../../stores/loginStore";
-import { useNavigate } from "react-router";
 
 export default function MyInfoBox() {
   const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
@@ -17,9 +13,6 @@ export default function MyInfoBox() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
-  const [withdrawComplete, setWithdrawComplete] = useState(false);
-  const { logout } = useLoginStore();
-  const navigator = useNavigate();
 
   useEffect(() => {
     const call = async () => {
@@ -40,20 +33,6 @@ export default function MyInfoBox() {
     setGoOutModalOpen(true);
   };
 
-  const apiCall = () => {
-    if (patchUserDelete()) {
-      setWithdrawComplete(true);
-    } else {
-      console.log("patchUserDelete Fail");
-    }
-  };
-  const closeGoOutModal = () => {
-    setGoOutModalOpen(false);
-  };
-  const completeWithdraw = () => {
-    logout();
-    navigator("/");
-  };
   const handleNickname = (e, maxlength) => {
     if (e.target.value.length > maxlength)
       setNickname(e.target.value.substr(0, maxlength));
@@ -97,7 +76,7 @@ export default function MyInfoBox() {
             placeholder={previousNickname}
           />
           <WarnSpace>
-            <WarnImg src={WarnLogo} />
+            <WarnImg src={WarningIcon} />
             <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
           </WarnSpace>
           <ButtonSection>
@@ -105,38 +84,7 @@ export default function MyInfoBox() {
             <SaveBut onClick={ChangeName}>저장하기</SaveBut>
           </ButtonSection>
           {isGoOutModalOpen && (
-            <LogoutModal>
-              <ModalContent>
-                {withdrawComplete ? (
-                  <>
-                    <TitleContainer>
-                      <ModalTitle>탈퇴되었습니다</ModalTitle>
-                      <SemiTitle>
-                        계정 정보는 한달 동안 유효하니 다시 찾아주세요!
-                      </SemiTitle>
-                    </TitleContainer>
-                    <LogoutImg src={LogoutP} />
-                    <ModalBut>
-                      <CloseButton onClick={completeWithdraw}>닫기</CloseButton>
-                    </ModalBut>
-                  </>
-                ) : (
-                  <>
-                    <TitleContainer>
-                      <ModalTitle>회원탈퇴 하시게요?</ModalTitle>
-                      <SemiTitle>정말요?🥹</SemiTitle>
-                    </TitleContainer>
-                    <LogoutImg src={LogoutP} />
-                    <ModalBut>
-                      <LogoutButton onClick={apiCall}>회원탈퇴</LogoutButton>
-                      <CloseButton onClick={closeGoOutModal} className="right">
-                        닫기
-                      </CloseButton>
-                    </ModalBut>
-                  </>
-                )}
-              </ModalContent>
-            </LogoutModal>
+            <WithdrawModal handleModal={setGoOutModalOpen} />
           )}
           {isNicknameChangeModalOpen && (
             <NicknameChangeModal handleModal={setIsNicknameChangeModal} />
@@ -215,83 +163,4 @@ const OutBut = styled.div`
 
 const SaveBut = styled(OutBut)`
   background-color: #19297c;
-`;
-
-//회원탈퇴 모달
-const LogoutModal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  z-index: 999;
-`;
-
-const ModalContent = styled.div`
-  background-color: #f7f8f9;
-  width: 400px;
-  height: 395px;
-  padding: 20px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 230px;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ModalTitle = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-`;
-
-const SemiTitle = styled.div`
-  font-size: 17px;
-  font-weight: 600;
-  margin-top: 10px;
-`;
-
-const LogoutImg = styled.img`
-  width: 200px;
-  height: 210px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`;
-
-const ModalBut = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 20px;
-  border-top: solid gray 1px;
-  width: 440px;
-`;
-
-const LogoutButton = styled.div`
-  display: flex;
-  justify-content: center;
-  border: solid black 1px;
-  padding: 12px 10px;
-  border-radius: 30px;
-  width: 110px;
-  font-weight: 600;
-  cursor: pointer;
-`;
-
-const CloseButton = styled(LogoutButton)`
-  background-color: #4036ed;
-  color: white;
-  border: none;
-  &.right {
-    margin-left: 80px;
-  }
 `;
