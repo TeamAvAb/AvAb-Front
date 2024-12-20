@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { privateAPI, publicAPI } from "../apis/user";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useLoginStore from "../stores/loginStore";
 import useLoginModalStore from "../stores/loginModalStore";
-import userDeleteRollback from "../apis/userDeleteRollback";
+import WithdrawRollbackModal from "../components/modal/WithdrawRollbackModal";
+import useModal from "../hooks/useModal";
 
 export default function LoginLoading() {
   const {
@@ -18,6 +19,8 @@ export default function LoginLoading() {
   const code = new URL(window.location.href).searchParams.get("code");
   const redirectURL = new URL(window.location.href).searchParams.get("state");
   const navigator = useNavigate();
+  const { ModalWrapper, openModal, closeModal } = useModal();
+  const [rollbackState, setRollbackState] = useState(false);
 
   useEffect(() => {
     kakaoLogin();
@@ -28,6 +31,12 @@ export default function LoginLoading() {
       getProfileImage();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (rollbackState) {
+      openModal();
+    }
+  }, [rollbackState]);
 
   const kakaoLogin = async () => {
     try {
@@ -46,11 +55,7 @@ export default function LoginLoading() {
             "accessTokenForRollback",
             response.data.result.accessToken
           );
-          if (window.confirm("계정을 복구하시겠어요?")) {
-            if (userDeleteRollback()) {
-              modalControl(); // 로그인 모달 열기
-            }
-          }
+          openModal();
         } else {
           setIsLoggedIn(true);
           setUserId(response.data.result.userId);
@@ -75,14 +80,25 @@ export default function LoginLoading() {
   };
 
   return (
-    <LoadingSpinner
-      comment={
-        <span>
-          로그인 중입니다.
-          <br />
-          잠시만 기다려주세요.
-        </span>
-      }
-    />
+    <>
+      <LoadingSpinner
+        comment={
+          <span>
+            로그인 중입니다.
+            <br />
+            잠시만 기다려주세요.
+          </span>
+        }
+      />
+      <ModalWrapper
+        children={
+          <WithdrawRollbackModal
+            close={closeModal}
+            rollbackState={rollbackState}
+            setRollbackState={setRollbackState}
+          />
+        }
+      ></ModalWrapper>
+    </>
   );
 }
