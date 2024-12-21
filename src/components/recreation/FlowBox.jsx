@@ -3,21 +3,27 @@ import styled from "styled-components";
 import FlowRecreationBox from "./FlowRecreationBox";
 import { ReactComponent as ScrapIcon } from "../../assets/recreation/scrapIcon.svg";
 import { privateAPI } from "../../apis/user";
-
+import useLoginModalStore from "../../stores/loginModalStore";
+import useLoginStore from "../../stores/loginStore";
 export default function FlowBox({
   num,
   marginRight,
   flowData,
   flowRecreations,
 }) {
-  console.log(flowData);
-  console.log(flowRecreations);
+  const { modalControl } = useLoginModalStore();
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   const [isScrapToggle, SetIsScrapToggle] = useState(
     flowData?.isFavorite || false
   );
 
   const onHandleScrap = async (flowId) => {
+    if (!isLoggedIn) {
+      // 로그인 안 되어 있으면 모달 띄우기
+      modalControl();
+      return;
+    }
     try {
       const response = await privateAPI.post(`/api/flows/${flowId}/scraps`, {});
       console.log("스크랩 완료: ", response);
@@ -32,6 +38,7 @@ export default function FlowBox({
   };
 
   const scrapIconColor = isScrapToggle ? "#ffd446" : "#E9EBED";
+  console.log("플로우 레크레이션", flowRecreations);
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>

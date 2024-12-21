@@ -31,7 +31,7 @@ const RecreationRelated = forwardRef(({ recreationId }, ref) => {
         <RelatedRecreationBox
           hashtag={related.hashtagList}
           recreationTitle={related.title}
-          kewords={related.keywordList}
+          keywords={related.keywordList}
           starRate={related.totalStars}
           isFavorite={related.isFavorite}
           relatedId={related.id}

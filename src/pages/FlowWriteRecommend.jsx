@@ -120,28 +120,6 @@ export default function FlowWriteRecommend() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchFlowData = async () => {
-  //     try {
-  //       const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
-  //          params: {
-  //           playTime: '100',
-  //           purpose: 'WORKSHOP'
-  //         }
-  //       });
-  //       setFlowData(response.data.result);
-  //       console.log(response.data.result); // 데이터 구조 확인
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchFlowData();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(flowData);
-  // }, [flowData]);
-
     return (
         <FlowWriteRecommendWrap>
           <ProgressbarStyle>
@@ -175,11 +153,14 @@ export default function FlowWriteRecommend() {
               <Select1Button
                 onClick={() => handleButtonClick('1안')}
                 clicked={selectedButton === '1안'}
+                disabled={flowData.length === 0}
               >
                 1안
               </Select1Button>
               <div style={{ width: "393px", textAlign: "center" }}>
-                <FlowTitle>{flowData.length > 0 ? flowData[0].flowDetail.title : "title"}</FlowTitle>
+                <FlowTitle hasData={flowData.length > 0}>
+                  {flowData.length > 0 ? flowData[0].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                </FlowTitle>
               </div>
               <RecreationBox>
                 {flowData.length > 0 && <RecreationInfo recreations={flowData[0].recreations} />}
@@ -189,11 +170,14 @@ export default function FlowWriteRecommend() {
               <Select2Button
                 onClick={() => handleButtonClick('2안')}
                 clicked={selectedButton === '2안'}
+                disabled={flowData.length <= 1}
               >
                 2안
               </Select2Button>
               <div style={{ width: "393px", textAlign: "center" }}>
-                <FlowTitle>{flowData.length > 1 ? flowData[1].flowDetail.title : "title"}</FlowTitle>
+                <FlowTitle hasData={flowData.length > 1}>
+                  {flowData.length > 1 ? flowData[1].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                </FlowTitle>
               </div>
               <RecreationBox>
                 {flowData.length > 1 && <RecreationInfo recreations={flowData[1].recreations} />}
@@ -312,12 +296,13 @@ const Select1Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1b1d1f;
+  border: 0.5px solid ${({ disabled }) => (disabled ? '#cacdd2' : '#1b1d1f')};
   border-radius: 50px;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
+  color: ${({ clicked, disabled }) => 
+    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
   align-items: center;
-  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
 
@@ -343,11 +328,12 @@ const Select2Button = styled.button`
   width: 89px;
   height: 29px;
   background-color: ${({ clicked }) => (clicked ? '#4036ED' : '#fff')};
-  border: 0.5px solid #1b1d1f;
+  border: 0.5px solid ${({ disabled }) => (disabled ? '#cacdd2' : '#1b1d1f')};
   border-radius: 50px;
   font-size: 20px;
-  font-weight: 700;
-  color: ${({ clicked }) => (clicked ? '#fff' : '#1B1D1F')};
+  font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
+  color: ${({ clicked, disabled }) => 
+    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
   cursor: pointer;
 `;
 
@@ -365,8 +351,9 @@ const Recommend2 = styled(RecommendBase)`
 
 const FlowTitle = styled.div`
   margin-bottom: 59px;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: ${({ hasData }) => (hasData ? 24: 20)}px;
+  font-weight: ${({ hasData }) => (hasData ? 700 : 400)};
+  color: ${({ hasData }) => (hasData ? 'inherit' : '#cacdd2')};
 `;
 
 const RecreationBox = styled.div`

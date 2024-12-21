@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { publicAPI, privateAPI } from "../apis/user";
 import useLoginStore from "../stores/loginStore";
-
+import useLoginModalStore from "../stores/loginModalStore";
 export default function RecreationDetail() {
   const { recreationId } = useParams();
   const infoRef = useRef(null);
@@ -19,7 +19,7 @@ export default function RecreationDetail() {
   const flowRef = useRef(null);
   const scrollRefs = useRef([infoRef, reviewRef, relatedRef, flowRef]);
   const { isLoggedIn } = useLoginStore((state) => state);
-
+  const { modalControl } = useLoginModalStore((state) => state);
   const [recreationData, setRecreationData] = useState(null);
   const [loading, setLoading] = useState(true);
 
