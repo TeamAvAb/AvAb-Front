@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { privateAPI, publicAPI } from "../apis/user";
 import LoadingSpinner from "../components/LoadingSpinner";
 import useLoginStore from "../stores/loginStore";
+import useLoginModalStore from "../stores/loginModalStore";
+import WithdrawRollbackModal from "../components/modal/WithdrawRollbackModal";
+import useModal from "../hooks/useModal";
 
 export default function LoginLoading() {
   const {
@@ -12,9 +15,12 @@ export default function LoginLoading() {
     setAccessToken,
     setRefreshToken,
   } = useLoginStore();
+  const { modalControl } = useLoginModalStore();
   const code = new URL(window.location.href).searchParams.get("code");
   const redirectURL = new URL(window.location.href).searchParams.get("state");
   const navigator = useNavigate();
+  const { ModalWrapper, openModal, closeModal } = useModal();
+  const [rollbackState, setRollbackState] = useState(false);
 
   useEffect(() => {
     kakaoLogin();
@@ -26,6 +32,12 @@ export default function LoginLoading() {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (rollbackState) {
+      openModal();
+    }
+  }, [rollbackState]);
+
   const kakaoLogin = async () => {
     try {
       let response;
@@ -36,16 +48,23 @@ export default function LoginLoading() {
       } else {
         response = await publicAPI.get(`/api/auth/login/kakao?code=${code}`);
       }
-
-      // localStorage.setItem("accessToken", response.data.result.accessToken);
-      // localStorage.setItem("refreshToken", response.data.result.refreshToken);
-      // localStorage.setItem("userId", response.data.result.userId);
       if (response.data.isSuccess === true) {
-        setIsLoggedIn(true);
-        setUserId(response.data.result.userId);
-        setAccessToken(response.data.result.accessToken);
-        setRefreshToken(response.data.result.refreshToken);
-        navigator(redirectURL);
+        if (response.data.result.isDeleted) {
+          // 탈퇴 회원의 경우
+          localStorage.setItem(
+            "accessTokenForRollback",
+            response.data.result.accessToken
+          );
+          openModal();
+        } else {
+          setIsLoggedIn(true);
+          setUserId(response.data.result.userId);
+          setAccessToken(response.data.result.accessToken);
+          setRefreshToken(response.data.result.refreshToken);
+          if (redirectURL === "/api/auth/login/kakao")
+            navigator("/"); // 탈퇴 복구에서 이어지는 로그인
+          else navigator(redirectURL);
+        }
       }
     } catch (error) {
       console.log("로그인 요청 에러 : ", error);
@@ -61,14 +80,25 @@ export default function LoginLoading() {
   };
 
   return (
-    <LoadingSpinner
-      comment={
-        <span>
-          로그인 중입니다.
-          <br />
-          잠시만 기다려주세요.
-        </span>
-      }
-    />
+    <>
+      <LoadingSpinner
+        comment={
+          <span>
+            로그인 중입니다.
+            <br />
+            잠시만 기다려주세요.
+          </span>
+        }
+      />
+      <ModalWrapper
+        children={
+          <WithdrawRollbackModal
+            close={closeModal}
+            rollbackState={rollbackState}
+            setRollbackState={setRollbackState}
+          />
+        }
+      ></ModalWrapper>
+    </>
   );
 }

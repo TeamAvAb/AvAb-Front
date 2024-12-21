@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router";
 import styled from "styled-components";
 import character from "../assets/main/login_character.png";
@@ -15,7 +15,7 @@ export default function Login() {
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
   else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
 
-  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}`;
+  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
@@ -44,7 +44,7 @@ export default function Login() {
           />
         </Content>
         <Controls>
-          <Control onClick={() => modalControl()}>
+          <Control onClick={modalControl}>
             <img src={closeImg} style={{ width: "24px", height: "25px" }} />
             닫기
           </Control>

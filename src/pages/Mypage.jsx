@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import MyInfoBox from "../components/mypage/MyInfoBox";
-import LogoutP from "../assets/mypage/LogoutImg.svg";
-import { privateAPI } from "../apis/user";
 import { Helmet } from "react-helmet";
-import useLoginStore from "../stores/loginStore";
+import LogoutModal from "../components/modal/LogoutModal";
 
 export default function Mypage() {
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-  const { logout } = useLoginStore();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
@@ -21,31 +17,6 @@ export default function Mypage() {
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const openLogoutModal = () => {
-    setLogoutModalOpen(true);
-  };
-
-  const closeLogoutModal = () => {
-    setLogoutModalOpen(false);
-  };
-
-  const handleLogout = async () => {
-    try {
-      const response = await privateAPI.delete("/api/auth/logout");
-      if (response.data.isSuccess === true) {
-        localStorage.clear();
-        logout();
-        navigate("/");
-      } else {
-        alert("로그아웃 요청 에러가 발생했습니다!");
-        console.log(response);
-      }
-    } catch (error) {
-      console.log("로그아웃 요청 에러 : ", error);
-    }
-    setLogoutModalOpen(false);
   };
 
   return (
@@ -74,7 +45,9 @@ export default function Mypage() {
           <MenuItem onClick={handleFavoritesClick}>
             즐겨 찾는 레크레이션
           </MenuItem>
-          <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
+          <MenuItem onClick={() => setIsLogoutModalOpen(true)}>
+            로그아웃
+          </MenuItem>
         </MenuList>
       </SideBar>
       <Content>{<MyInfoBox />}</Content>
@@ -84,17 +57,7 @@ export default function Mypage() {
 
       {/*로그아웃 모달*/}
       {isLogoutModalOpen && (
-        <LogoutModal>
-          <ModalContent>
-            <ModalTitle>로그아웃 하시게요?</ModalTitle>
-            <SemiTitle>더 많은 혜택이 기다리고 있어요.</SemiTitle>
-            <LogoutImg src={LogoutP} />
-            <ModalBut>
-              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-              <CloseButton onClick={closeLogoutModal}>닫기</CloseButton>
-            </ModalBut>
-          </ModalContent>
-        </LogoutModal>
+        <LogoutModal handleModal={setIsLogoutModalOpen}></LogoutModal>
       )}
     </Container>
   );
@@ -150,73 +113,4 @@ const Content = styled.div`
 const RightSide = styled.div`
   width: 5.7325%;
   background-color: #f7f8f9;
-`;
-
-const LogoutModal = styled.div`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  z-index: 999;
-`;
-
-const ModalContent = styled.div`
-  background-color: #f7f8f9;
-  width: 400px;
-  height: 395px;
-  padding: 20px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 230px;
-`;
-
-const ModalTitle = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-`;
-
-const SemiTitle = styled.div`
-  font-size: 17px;
-  font-weight: 600;
-  margin-top: 10px;
-`;
-
-const LogoutImg = styled.img`
-  width: 200px;
-  height: 210px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`;
-
-const ModalBut = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 20px;
-  border-top: solid gray 1px;
-  width: 440px;
-`;
-
-const LogoutButton = styled.div`
-  display: flex;
-  justify-content: center;
-  border: solid black 1px;
-  padding: 12px 10px;
-  border-radius: 30px;
-  width: 110px;
-  font-weight: 600;
-  cursor: pointer;
-`;
-
-const CloseButton = styled(LogoutButton)`
-  background-color: #4036ed;
-  color: white;
-  border: none;
-  margin-left: 80px;
 `;

@@ -2,8 +2,13 @@ import React from "react";
 import FooterP from "../../assets/Footer/FooterP.svg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useLoginStore from "../../stores/loginStore"
+import useLoginModalStore from "../../stores/loginModalStore";
 
 export default function Footer() {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore((state) => state);
+  
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
@@ -18,8 +23,10 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const ToMypage = () => {
-    navigate(`/mypage`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isLoggedIn) {
+      navigate(`/mypage/myinfo`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else modalControl();
   };
   const ToInstagram = () => {
     window.open("https://www.instagram.com/avab.ovo/", "Avab Instagram");
