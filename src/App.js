@@ -24,6 +24,7 @@ import Login from "./components/Login";
 import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
 import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 import useLoginModalStore from "./stores/loginModalStore";
+import cryingAvab from "./assets/main/cryingAvab.svg";
 import styled from "styled-components";
 
 function App() {
@@ -87,10 +88,6 @@ function App() {
     handleResize(); // 초기 화면 크기 확인
     window.addEventListener("resize", handleResize); // 화면 크기 변경 감지
 
-    if (isMobile) {
-      alert("모바일 버전은 준비 중입니다. PC로 접속해주세요.");
-    }
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -112,17 +109,61 @@ function App() {
   }, [navigate]);
 
   return (
-    <div className="App">
+    <AppContainer>
       <GlobalStyle />
       <Header />
       {modalOpen ? <Login /> : null}
 
-      {/* 기존의 라우팅을 표시 */}
-      {!isMobile && routes}
-
-      {selectedFooter}
-    </div>
+      {/* 모바일 화면일 경우 메시지 표시 */}
+      {isMobile ? (
+        <MobileOverlay>
+          <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
+          <SubMessage>PC로 접속해주세요.</SubMessage>
+          <Image src={cryingAvab} alt="Crying Avatar" />
+        </MobileOverlay>
+      ) : (
+        <>
+          {routes}
+          {selectedFooter}
+        </>
+      )}
+    </AppContainer>
   );
 }
 
+const AppContainer = styled.div`
+  text-align: center;
+`;
+
+const MobileOverlay = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 1000;
+`;
+
+const MobileMessage = styled.p`
+  font-size: 30px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 8px;
+`;
+
+const SubMessage = styled.div`
+  font-size: 18px;
+  color: black;
+  margin-bottom: 35px;
+`;
+
+const Image = styled.img`
+  width: 150px;
+  height: 150px;
+`;
 export default App;
