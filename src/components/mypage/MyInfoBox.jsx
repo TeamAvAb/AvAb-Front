@@ -40,6 +40,7 @@ export default function MyInfoBox() {
   };
 
   const ChangeName = async () => {
+    if (nickname === "") return;
     const response = await privateAPI.patch(`/api/users/me`, {
       username: nickname,
     });
