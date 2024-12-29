@@ -28,18 +28,17 @@ export default function RadioInput({ content, setOption, selectedOption }) {
 const Options = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 2.5rem;
 `;
 const Option = styled.button`
-  width: max-content;
-  height: 43px;
+  height: 2.8rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 50px;
+  border-radius: 9999px;
   box-sizing: border-box;
-  padding: 12px 30px;
+  padding: 0.8rem 1.8rem;
   background: ${(props) =>
     props.selected ? "var(--main-scale-b-1-beff, #B1BEFF)" : "#FFF"};
   text-align: center;
@@ -47,8 +46,7 @@ const Option = styled.button`
     props.selected
       ? "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"
       : "var(--gray-scale-9-fa-4-a-9, #9fa4a9)"};
-  font-size: 16px;
-  font-style: normal;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
 `;

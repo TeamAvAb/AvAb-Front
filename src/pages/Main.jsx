@@ -80,9 +80,7 @@ export default function Main() {
           <img
             src={character}
             style={{
-              width: "370px",
-              height: "308px",
-              marginLeft: "-15px",
+              height: "20rem",
             }}
           />
         </Recommend>
@@ -95,7 +93,7 @@ export default function Main() {
               더보기
               <img
                 src={plusIconImg}
-                style={{ width: "24px", height: "24px" }}
+                style={{ width: "1.5rem" }}
               />
             </More>
           </PopularHeader>
@@ -120,33 +118,24 @@ const Container = styled.div`
   overflow: hidden;
 `;
 const Recommend = styled.div`
+  margin-right: 8rem;
   display: flex;
   flex-direction: row;
   align-items: end;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  font-size: 72px;
-  margin-top: 8px;
-  margin-bottom: 90px;
-  margin-left: 59.5px;
-  margin-right: 120.5px;
+  font-size: 4.5rem;
 `;
 const Comment = styled.div`
-  width: 434px;
-  height: 272px;
   justify-content: center;
   align-items: center;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  font-size: 72px;
   font-style: normal;
   font-weight: 400;
-  margin-right: -15px;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
 `;
 
 const Popular = styled.div`
-  width: 957px;
-  height: 659px;
-  margin-top: 135px;
-  margin-bottom: 90px;
 `;
 const PopularHeader = styled.div`
   display: flex;
@@ -156,12 +145,12 @@ const PopularHeader = styled.div`
 `;
 const HeaderTitle = styled.span`
   color: #000;
-  font-size: 36px;
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 700;
 `;
 const More = styled.button`
-  height: 24px;
+  height: 1.5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -169,7 +158,7 @@ const More = styled.button`
   border: none;
   background: transparent;
   color: #000;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
 `;

@@ -132,7 +132,7 @@ export default function Search() {
           <img
             src={deleteImg}
             id={el}
-            style={{ width: "15px", height: "15px" }}
+            style={{ width: "1rem"}}
             onClick={(e) => {
               e.stopPropagation();
               onRemove(label, el);
@@ -211,7 +211,7 @@ export default function Search() {
         />
         <img
           src={searchIconImg}
-          style={{ width: "42.399px", height: "42.399px", cursor: "pointer" }}
+          style={{ width: "3rem",marginRight: "1.2rem", cursor: "pointer" }}
           onClick={submit}
         />
       </SearchWordBox>
@@ -241,7 +241,7 @@ export default function Search() {
               onChange={(e) => participValidCheck(e)}
               value={participants}
               $alert={participantsAlert}
-            ></Input>
+            />
             {participantsAlert && (
               <Alert>
                 <img src={alertImg} />
@@ -271,7 +271,7 @@ export default function Search() {
           </Filter>
         </Filters>
         <Filters>
-          <More $isopen={menu}>
+          <MoreFilters $isopen={menu}>
             <div
               style={{
                 width: "100%",
@@ -288,7 +288,7 @@ export default function Search() {
               <KeywordBox id="purpose" onClick={() => setPurposeModal(true)}>
                 <img
                   src={keywordImg}
-                  style={{ width: "20px", height: "20px" }}
+                  style={{ width: "1.2rem"}}
                 />
                 {purpose.length === 0 ? (
                   "클릭하면 목적 선택창이 나와요!"
@@ -319,38 +319,42 @@ export default function Search() {
                 selectedOption={age}
               />
             </Filter>
-          </More>
+          </MoreFilters>
         </Filters>
-        {window.location.pathname === "/search/list" ? null : (
-          <Menu onClick={openMenu}>
-            {menu ? (
-              <>
-                필터 접기
-                <img
-                  style={{ width: "24px", height: "24px" }}
-                  src={arrowUpImg}
-                />
-              </>
-            ) : (
-              <>
-                필터 더보기
-                <img
-                  style={{ width: "24px", height: "24px" }}
-                  src={arrowDownImg}
-                />
-              </>
-            )}
-          </Menu>
-        )}
+
       </SearchBox>
-      <SearchBtns>
-        <Btn id="reset" onClick={reset}>
-          초기화
-        </Btn>
-        <Btn id="search" onClick={submit}>
-          필터 적용
-        </Btn>
-      </SearchBtns>
+      {window.location.pathname === "/search/list" ? null : (
+          <MoreFiltersButton onClick={openMenu}>
+            {menu ? (
+                <>
+                  필터 접기
+                  <img
+                      style={{ width: "24px", height: "24px" }}
+                      src={arrowUpImg}
+                  />
+                </>
+            ) : (
+                <>
+                  필터 더보기
+                  <img
+                      style={{ width: "24px", height: "24px" }}
+                      src={arrowDownImg}
+                  />
+                </>
+            )}
+          </MoreFiltersButton>
+      )}
+      <BtnContainer>
+        <SearchBtns>
+          <Btn id="reset" onClick={reset}>
+            초기화
+          </Btn>
+          <Btn id="search" onClick={submit}>
+            필터 적용
+          </Btn>
+        </SearchBtns>
+      </BtnContainer>
+
       {keywordModal ? (
         <KeywordModal
           $category="keyword"
@@ -375,7 +379,6 @@ export default function Search() {
 
 // 스타일링
 const SearchEngine = styled.div`
-  width: 958px;
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -387,27 +390,26 @@ const SearchEngine = styled.div`
 const SearchWordBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  overflow: hidden;
   align-items: center;
-  position: absolute;
-  top: -89.998px;
-  width: 515.413px;
-  height: 68.898px;
-  box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15);
-  border-radius: 50px;
+  width: 32rem;
+  box-shadow: 0 0 1.2rem 0 rgba(27, 29, 31, 0.15);
+  border-radius: 9999px;
   background: #fff;
+  margin-bottom: 2rem;
 `;
 
 const SearchWord = styled.input`
-  width: 386px;
-  height: 50px;
-  display: inline-flex;
-  padding: 9px 17px;
+  width: 100%;
+  box-sizing: content-box;
+  height: 3rem;
+  padding: 0.5rem 0 0.5rem 2rem;
+  display: block;
   align-items: center;
-  gap: 48px;
+  gap: 3rem;
   background: #fff;
   color: var(--gray-scale-464-c-52, #464c52);
-  font-size: 20px;
+  font-size: 1.2rem;
   transition: max-height 0.3s ease-out;
   border: 0;
   outline: none;
@@ -415,56 +417,53 @@ const SearchWord = styled.input`
 
 // 필터링 박스
 const SearchBox = styled.div`
-  width: 957px;
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: 1.2rem 1.2rem 0 0;
   background: var(--main-d-9-d-9-d-9, #19297c);
-  box-shadow: 0px 15px 20px 0px rgba(27, 29, 31, 0.2);
-  margin-bottom: 14.73px;
 `;
 
 // 필터 설정 박스
 const Filters = styled.div`
-  width: 885px;
-  margin: 26px 47px 0 26px;
+  margin: 1.5rem 3rem 0 1.5rem;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 22px;
+  gap: 1.4rem;
 `;
 
 const Filter = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${(props) => (props.$last ? "26px" : 0)};
+  margin-bottom: ${(props) => (props.$last ? "1.5rem" : 0)};
   color: #fff;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
 `;
 
 const LabelName = styled.label`
-  width: 117px;
+  text-align: start;
+  width: 7.5rem;
 `;
 
 const KeywordBox = styled.div`
-  width: 769px;
-  height: 44px;
-  border-radius: 50px;
-  padding-right: 8px;
+  flex: 1;
+  height: 3rem;
+  border-radius: 9999px;
+  padding-right: 0.5rem;
   background: #fff;
   color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
-  font-size: 16px;
-  font-style: normal;
+  font-size: 1rem;
   font-weight: 400;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 0.5rem;
   align-items: center;
-  padding-left: 20.5px;
+  padding-left: 1.4rem;
   box-sizing: border-box;
   overflow-x: scroll;
   &::-webkit-scrollbar {
@@ -476,33 +475,32 @@ const KeywordBox = styled.div`
 const SelectedKeywords = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 0.8rem;
 `;
 
 const SelectedKeyword = styled.div`
-  width: max-content;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 2px 10px;
-  gap: 12px;
-  border-radius: 20px;
+  padding: 0.2rem 0.8rem;
+  gap: 0.8rem;
+  border-radius: 9999px;
   color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   background: #d9d9d9;
 `;
 
 const Input = styled.input`
-  width: 230px;
-  height: 44px;
-  border-radius: 50px;
-  outline: ${(props) => (props.$alert ? "5px solid #ffaa29" : "none")};
+  width: 16rem;
+  height: 3rem;
+  border-radius: 9999px;
+  outline: ${(props) => (props.$alert ? "3px solid #ffaa29" : "none")};
   background: #fff;
   border: none;
   color: var(--gray-scale-464-c-52, #464c52);
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
-  padding-left: 21px;
+  padding-left: 1.5rem;
   &::-webkit-inner-spin-button,
   &::-webkit-out-spin-button {
     -webkit-appearance: none;
@@ -513,51 +511,51 @@ const Input = styled.input`
   }
 `;
 
-const More = styled.div`
+const MoreFilters = styled.div`
   display: inline-flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 22px;
+  gap: 1.5rem;
   overflow: hidden;
-  opacity: ${({ $isopen }) => ($isopen ? "1" : "0")};
-  visibility: ${({ $isopen }) => ($isopen ? "visible" : "hidden")};
   max-height: ${({ $isopen }) => ($isopen ? "1000px" : "0")};
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  transition: max-height 0.7s ease-in-out;
 `;
 
-const Menu = styled.div`
+const MoreFiltersButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 69px;
-  border-radius: 0px 0px 20px 20px;
+  height: 4.2rem;
+  border-radius: 0 0 1.2rem 1.2rem;
   background: var(--main-scale-b-1-beff, #b1beff);
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  gap: 8px;
+  gap: 0.5rem;
   cursor: pointer;
+  box-shadow: 0 1rem 1.2rem 0 rgba(27, 29, 31, 0.2);
 `;
 
 // 버튼
+const BtnContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+`
 const SearchBtns = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: end;
-  gap: 39px;
-  position: absolute;
-  bottom: -60px;
-  right: 0;
+  gap: 2.5rem;
 `;
 const Btn = styled.button`
   display: flex;
-  padding: 9px 24px;
+  padding: 0.5rem 1.5rem;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 9999px;
   border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
 
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
 
@@ -574,16 +572,9 @@ const Btn = styled.button`
 
 const Alert = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   align-items: baseline;
-
-  padding-top: 2px;
-  margin-left: 14px;
-
+  margin-left: 1rem;
   color: #ffaa29;
-
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-size: 1rem;
 `;

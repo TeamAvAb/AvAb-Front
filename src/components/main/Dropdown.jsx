@@ -32,72 +32,65 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
       >
         {selectedOption.length === 0 ? "10" : selectedOption}
         분
-        <img src={downIconImg} style={{ width: "24px", height: "24px" }} />
+        <img src={downIconImg} style={{ width: "1.2rem" }} />
       </DropdownButton>
     </DropdownContainer>
   );
 }
 
 const DropdownContainer = styled.div`
-  width: 155px;
-  height: 44px;
+  width: 10rem;
+  height: 3rem;
   background: #fff;
   position: relative;
   text-align: center;
   color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
-  border-radius: 50px;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
+  border-radius: 9999px;
+  font-size: 1rem;
 `;
 
 const DropdownButton = styled.button`
   cursor: pointer;
-  width: 155px;
-  height: 44px;
-  border-radius: 50px;
+  width: 10rem;
+  height: 3rem;
+  border-radius: 9999px;
   text-align: center;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 63px;
+  justify-content: space-between;
+  padding: 0 1rem;
   position: relative;
   background: #fff;
-  border: none;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
+  font-size: 1rem;
   color: ${(props) =>
     props.selected.length === 0
       ? "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"
       : "var(--gray-scale-464-c-52, #464C52)"};
   &:focus {
-    border: 0.5px solid var(--gray-scale-9-fa-4-a-9, #9fa4a9);
+    border: 1px solid var(--gray-scale-9-fa-4-a-9, #9fa4a9);
   }
 `;
 
 const Menu = styled.div`
   background: #fff;
   position: absolute;
-  top: 26px;
+  top: 1.5rem;
+  padding-top: 1.5rem;
   left: 50%;
   width: 100%;
-  max-height: 129px;
-  padding: 18px 0 12px;
+  max-height: 8rem;
 
-  background: #fff;
   box-sizing: border-box;
   text-align: center;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, -20px);
+  transform: translate(-50%, -1.2rem);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
   overflow: auto;
   overflow-y: scroll;
-  overflow-x: hidden;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -113,10 +106,10 @@ const Menu = styled.div`
 `;
 
 const Ul = styled.ul`
-  height: 111px;
+  height: 8rem;
   & > button {
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   list-style-type: none;
@@ -136,7 +129,7 @@ const Li = styled.button`
       : "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"};
   border: none;
   background: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
   cursor: pointer;

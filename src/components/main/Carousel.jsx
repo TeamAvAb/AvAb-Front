@@ -104,7 +104,7 @@ export default function Carousel({ content }) {
     slidesToShow: 1,
     slidesToScroll: 1,
     variableWidth: true,
-    arrrow: false,
+    arrow: false,
     autoplay: true,
     speed: 2000,
     autoplaySpeed: 4000,
@@ -144,7 +144,7 @@ export default function Carousel({ content }) {
     navigator(`/search/list?purpose=${param}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  let bannerWidth = "957px";
+  let bannerWidth = "60rem";
   return (
     <StyledSlider {...settings} bannerWidth={bannerWidth}>
       {content &&
@@ -181,10 +181,13 @@ export default function Carousel({ content }) {
 const StyledSlider = styled(Slider)`
   .slick-list {
     background-color: transparent;
+    height: 26rem;
+    display: flex;
+    align-items: center;
   }
   .slick-track {
     display: flex;
-    gap: 100px;
+    gap: 8rem;
   }
   .slick-slide {
     transform: translateX(calc((100vw - ${(props) => props.bannerWidth}) / 2));
@@ -192,23 +195,23 @@ const StyledSlider = styled(Slider)`
   .slick-arrow {
     position: absolute;
     z-index: 5;
+    top: 50% !important;
   }
   .slick-arrow::before {
     display: none;
   }
   .slick-prev {
-    left: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 27px);
+    left: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 1.5rem);
   }
   .slick-next {
-    right: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 32px);
+    right: calc((100vw - ${(props) => props.bannerWidth}) / 2 - 2.3rem);
   }
   .slick-dots {
-    position: absolute;
-    bottom: 30px;
+    bottom: 6rem;
   }
   .slick-dots li button:before {
-    width: 14px;
-    height: 14px;
+    width: 1rem;
+    height: 1rem;
     display: flex;
     justify-content: center;
 
@@ -218,17 +221,16 @@ const StyledSlider = styled(Slider)`
     content: url(${currentDotImg});
   }
 
-  margin-bottom: 140px;
 `;
 
 const Banner = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 46px 90px 47px 80px;
+  padding: 3rem 6rem 3rem 6rem;
   background: ${(props) => props.color[0]};
-  border-radius: 20px;
-  box-shadow: 0px 0px 60px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 1.4rem;
+  box-shadow: 0 0 4rem 1rem rgba(0, 0, 0, 0.1);
 `;
 const Left = styled.div`
   display: flex;
@@ -236,26 +238,27 @@ const Left = styled.div`
   color: var(--gray-scale-e-9-ebed, #e9ebed);
 `;
 const Title = styled.span`
-  margin-bottom: 10px;
+  margin-bottom: 0.8rem;
   color: ${(props) => props.color[1]};
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
+  text-align: left;
 `;
 const Comment = styled.span`
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
   color: ${(props) => props.color[1]};
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 400;
 `;
 const Button = styled.button`
   width: max-content;
-  padding: 15px 34px;
+  padding: 1rem 2rem;
   text-align: center;
   border: none;
-  border-radius: 50px;
+  border-radius: 9999px;
   background: ${(props) => props.color[2]};
   color: ${(props) => props.color[3]};
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
 `;

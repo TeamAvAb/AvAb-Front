@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
 }
 * {
     font-family: 'Pretendard';
-    margin: 0px;
+    margin: 0;
 }
 `;
 
