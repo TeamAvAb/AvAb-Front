@@ -26,6 +26,8 @@ import GlobalStyle from "./GlobalStyles"; // 전역 스타일
 import useLoginModalStore from "./stores/loginModalStore";
 import cryingAvab from "./assets/main/cryingAvab.svg";
 import styled from "styled-components";
+import theme from "./styles/theme";
+import { ThemeProvider } from "styled-components";
 
 function App() {
   const navigate = useNavigate();
@@ -109,31 +111,29 @@ function App() {
   }, [navigate]);
 
   return (
-    <AppContainer>
-      <GlobalStyle />
-      <Header />
-      {modalOpen ? <Login /> : null}
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <GlobalStyle />
+        <Header />
+        {modalOpen ? <Login /> : null}
 
-      {/* 모바일 화면일 경우 메시지 표시 */}
-      {isMobile ? (
-        <MobileOverlay>
-          <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
-          <SubMessage>PC로 접속해주세요.</SubMessage>
-          <Image src={cryingAvab} alt="Crying Avatar" />
-        </MobileOverlay>
-      ) : (
-        <>
-          {routes}
-          {selectedFooter}
-        </>
-      )}
-    </AppContainer>
+        {/* 모바일 화면일 경우 메시지 표시 */}
+        {isMobile ? (
+          <MobileOverlay>
+            <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
+            <SubMessage>PC로 접속해주세요.</SubMessage>
+            <Image src={cryingAvab} alt="Crying Avatar" />
+          </MobileOverlay>
+        ) : (
+          <>
+            {routes}
+            {selectedFooter}
+          </>
+        )}
+      </div>
+    </ThemeProvider>
   );
 }
-
-const AppContainer = styled.div`
-  text-align: center;
-`;
 
 const MobileOverlay = styled.div`
   display: flex;
