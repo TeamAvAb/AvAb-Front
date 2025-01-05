@@ -6,19 +6,19 @@ const theme = {
     main04: "#FFAA29", // orange
     main05: "#FFFFFF", // white
 
-    // 푸른색 계열
+    // bluescale
     secondary01: "#32439C",
     secondary02: "#5B6BBE",
     secondary03: "#8896DF",
     secondary04: "#B1BEFF",
 
-    grayscale01: "#1B1D1F",
+    grayscale01: "#1B1D1F", // black
     grayscale02: "#26282B",
     grayscale03: "#464C52",
     grayscale04: "#9FA4A9",
     grayscale05: "#CACDD2",
     grayscale06: "#E9EBED",
-    grayscale07: "#F7F8F9",
+    grayscale07: "#F7F8F9", // light gray
   },
   text: {
     h1: { fontSize: "4.5rem", fontWeight: 700 },
