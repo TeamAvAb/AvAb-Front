@@ -1,19 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { publicAPI, privateAPI } from '../../apis/user';
+import { privateAPI, publicAPI } from '../../apis/user';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import RecreationTripleSet from './RecreationTripleSet';
-
-import elipseImg from '../../assets/main/elipse.svg';
-import prevArrowImg from '../../assets/main/prevArrowIcon.svg';
-import nextArrowImg from '../../assets/main/nextArrowIcon.svg';
 import prevSlide from '../../assets/main/prevSlide.svg';
 import nextSlide from '../../assets/main/nextSlide.svg';
 import wholeSlide from '../../assets/main/wholeSlide.svg';
 import currentSlide from '../../assets/main/currentSlide.svg';
 import useLoginStore from '../../stores/loginStore';
+import LeftArrow from '../button/LeftArrow';
+import RightArrow from '../button/RightArrow';
 
 export default function PopularCarousel() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -70,7 +68,13 @@ export default function PopularCarousel() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <StyledSlider ref={slider} {...settings}>
         {data && data.map((banner) => <RecreationTripleSet dataset={banner} key={banner.id} />)}
       </StyledSlider>
@@ -104,104 +108,42 @@ const StyledSlider = styled(Slider)`
   .slick-list {
     background-color: transparent;
   }
+
   .slick-track {
     display: flex;
     gap: 46px;
   }
+
   .slick-slide {
     transform: translateX(-29px);
   }
+
   .slick-arrow {
     position: absolute;
     z-index: 5;
   }
+
   .slick-arrow::before {
     display: none;
   }
 `;
 
-function PrevArrow(props) {
-  const { className, onClick } = props;
+function PrevArrow({ className, onClick }) {
   return (
-    <div
-      style={{
-        display: 'block',
-        width: '42px',
-        height: '42px',
-        border: 'none',
-        position: 'absolute',
-        top: '206px',
-        left: '-10px',
-      }}
-      className={className}
-      onClick={onClick}
-    >
-      <img
-        src={elipseImg}
-        style={{
-          width: '42px',
-          height: '42px',
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
-        }}
-      />
-      <img
-        src={prevArrowImg}
-        style={{
-          display: 'block',
-          width: '8px',
-          height: '16px',
-          position: 'absolute',
-          top: '13px',
-          left: '17px',
-        }}
-      />
+    <div className={className} style={{ top: '47%', left: 0 }}>
+      <LeftArrow onClick={onClick} />
     </div>
   );
 }
-function NextArrow(props) {
-  const { className, onClick } = props;
+
+function NextArrow({ className, onClick }) {
   return (
-    <div
-      style={{
-        display: 'block',
-        width: '42px',
-        height: '42px',
-        border: 'none',
-        position: 'absolute',
-        top: '206px',
-        right: '-10px',
-      }}
-      className={className}
-      onClick={onClick}
-    >
-      <img
-        src={elipseImg}
-        style={{
-          width: '42px',
-          height: '42px',
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
-        }}
-      />
-      <img
-        src={nextArrowImg}
-        style={{
-          display: 'block',
-          width: '8px',
-          height: '16px',
-          position: 'absolute',
-          top: '13px',
-          right: '17px',
-        }}
-      />
+    <div className={className} style={{ top: '46%', right: '1.4rem' }}>
+      <RightArrow onClick={onClick} />
     </div>
   );
 }
+
 const SlideIndex = styled.div`
   display: flex;
   flex-direction: row;
