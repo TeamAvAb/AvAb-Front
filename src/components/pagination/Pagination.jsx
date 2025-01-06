@@ -74,8 +74,8 @@ const PageNumber = styled.button`
   height: 2.6rem;
 
   &.current {
-    background-color: #8896df;
-    border-radius: 50%;
+    background-color: ${({ theme }) => theme.color.secondary03};
+    border-radius: 9999px;
     color: white;
   }
 `;
