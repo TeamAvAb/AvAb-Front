@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import close from '../../assets/flowwrite/close_modal.png'
+import close from '../../assets/flowwrite/close_modal.png';
 
 const WithoutSaving = ({ onClose }) => {
   const navigate = useNavigate();
@@ -14,11 +14,13 @@ const WithoutSaving = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
-      <CloseButtonContainer>
-        <ModalCloseButton onClick={onClose} src={close} alt="Close" />
-      </CloseButtonContainer>
+        <CloseButtonContainer>
+          <ModalCloseButton onClick={onClose} src={close} alt="Close" />
+        </CloseButtonContainer>
         <ModalTitle>
-            일정 플로우를<br/>저장하세요!
+          일정 플로우를
+          <br />
+          저장하세요!
         </ModalTitle>
         <ModalMessage>저장한 플로우를 수정할 수 있어요.</ModalMessage>
         <ModalSaveButton onClick={onClose}>저장하기</ModalSaveButton>
@@ -57,8 +59,8 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   width: 440px;
   height: 435px;
-  background-color: #FFF;
-  border: 0.5px solid #CACDD2;
+  background-color: #fff;
+  border: 0.5px solid #cacdd2;
   border-radius: 20px;
   z-index: 1001;
   display: flex;
@@ -66,7 +68,6 @@ const ModalContent = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 
 const ModalTitle = styled.h2`
   font-size: 36px;
@@ -84,7 +85,7 @@ const ModalMessage = styled.p`
 const ModalSaveButton = styled.button`
   width: 223px;
   height: 54px;
-  background-color: #4036ED;
+  background-color: #4036ed;
   padding: 15px 34px;
   border: none;
   border-radius: 50px;
@@ -96,7 +97,7 @@ const ModalSaveButton = styled.button`
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #3530ED; /* hover 시의 배경색 변경 */
+    background-color: #3530ed; /* hover 시의 배경색 변경 */
   }
 `;
 
@@ -104,17 +105,17 @@ const ModalNoSaveButton = styled.button`
   width: 223px;
   height: 54px;
   background-color: #fff;
-  border: 1px solid #464C52;
+  border: 1px solid #464c52;
   border-radius: 50px;
   font-size: 20px;
   font-weight: 700;
-  color: #464C52;
+  color: #464c52;
   cursor: pointer;
   margin-top: 40px;
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #F7F8F9; /* hover 시의 배경색 변경 */
+    background-color: #f7f8f9; /* hover 시의 배경색 변경 */
   }
 `;
 

@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 const useLoginModalStore = create((set) => ({
   modalOpen: false,

@@ -1,20 +1,20 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useState, useRef } from 'react';
+import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import WriteRecreationPrev from "../../components/flowwrite/WriteRecreationPrev";
+import WriteRecreationPrev from '../../components/flowwrite/WriteRecreationPrev';
 
-import elipseImg from "../../assets/main/elipse.svg";
-import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
-import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
+import elipseImg from '../../assets/main/elipse.svg';
+import prevArrowImg from '../../assets/main/prevArrowIcon.svg';
+import nextArrowImg from '../../assets/main/nextArrowIcon.svg';
 
 export default function ScrapRecreation({ content, handleAddScrapFlow }) {
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
-    className: "slider variable-width",
+    className: 'slider variable-width',
     infinite: false,
     centerMode: false,
     slidesToShow: 2,
@@ -33,11 +33,11 @@ export default function ScrapRecreation({ content, handleAddScrapFlow }) {
   console.log('handleAddScrapFlow in ScrapRecreation:', handleAddScrapFlow);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <StyledSlider ref={slider} {...settings}>
         {content &&
           content.map((banner) => (
-            <div key={banner.id} style={{ width: "284px" }}>
+            <div key={banner.id} style={{ width: '284px' }}>
               <WriteRecreationPrev content={banner} handleAddScrapFlow={handleAddScrapFlow} />
             </div>
           ))}
@@ -75,13 +75,13 @@ function PrevArrow(props) {
   return (
     <div
       style={{
-        display: "block",
-        width: "42px",
-        height: "42px",
-        border: "none",
-        position: "absolute",
-        top: "206px",
-        left: "25px",
+        display: 'block',
+        width: '42px',
+        height: '42px',
+        border: 'none',
+        position: 'absolute',
+        top: '206px',
+        left: '25px',
       }}
       className={className}
       onClick={onClick}
@@ -90,24 +90,24 @@ function PrevArrow(props) {
         src={elipseImg}
         alt="Elipse"
         style={{
-          width: "42px",
-          height: "42px",
-          position: "absolute",
-          top: "0",
-          left: "0",
-          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+          width: '42px',
+          height: '42px',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
         }}
       />
       <img
         src={prevArrowImg}
         alt="PrevArrow"
         style={{
-          display: "block",
-          width: "8px",
-          height: "16px",
-          position: "absolute",
-          top: "13px",
-          left: "17px",
+          display: 'block',
+          width: '8px',
+          height: '16px',
+          position: 'absolute',
+          top: '13px',
+          left: '17px',
         }}
       />
     </div>
@@ -118,13 +118,13 @@ function NextArrow(props) {
   return (
     <div
       style={{
-        display: "block",
-        width: "42px",
-        height: "42px",
-        border: "none",
-        position: "absolute",
-        top: "206px",
-        right: "10px",
+        display: 'block',
+        width: '42px',
+        height: '42px',
+        border: 'none',
+        position: 'absolute',
+        top: '206px',
+        right: '10px',
       }}
       className={className}
       onClick={onClick}
@@ -133,24 +133,24 @@ function NextArrow(props) {
         src={elipseImg}
         alt="Elipse"
         style={{
-          width: "42px",
-          height: "42px",
-          position: "absolute",
-          top: "0",
-          right: "0",
-          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+          width: '42px',
+          height: '42px',
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
         }}
       />
       <img
         src={nextArrowImg}
         alt="NextArrow"
         style={{
-          display: "block",
-          width: "8px",
-          height: "16px",
-          position: "absolute",
-          top: "13px",
-          right: "17px",
+          display: 'block',
+          width: '8px',
+          height: '16px',
+          position: 'absolute',
+          top: '13px',
+          right: '17px',
         }}
       />
     </div>

@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
-import styled, { ThemeContext } from "styled-components";
-import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
-import { privateAPI } from "../../apis/user";
-import useLoginStore from "../../stores/loginStore";
-import useLoginModalStore from "../../stores/loginModalStore";
+import React, { useContext, useState } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import { ReactComponent as Icon } from '../../assets/recreation/heartIcon.svg';
+import { privateAPI } from '../../apis/user';
+import useLoginStore from '../../stores/loginStore';
+import useLoginModalStore from '../../stores/loginModalStore';
 
 export default function FavBtn({ recreationId, isFav }) {
   const [isFavorite, setIsFavorite] = useState(isFav);
@@ -17,9 +17,7 @@ export default function FavBtn({ recreationId, isFav }) {
       return;
     } else {
       try {
-        const response = await privateAPI.post(
-          `/api/recreations/${recreationId}/favorites`
-        );
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
         if (response.status === 201) {
           setIsFavorite((prev) => !prev);
           return;
@@ -27,7 +25,7 @@ export default function FavBtn({ recreationId, isFav }) {
           console.log(response.data);
         }
       } catch (error) {
-        throw new Error("FavBtn Error");
+        throw new Error('FavBtn Error');
       }
     }
   };

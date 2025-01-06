@@ -1,23 +1,18 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-export default function FlowRecreationBox({
-  index,
-  recreationTitle,
-  keywords,
-  playTime,
-}) {
+export default function FlowRecreationBox({ index, recreationTitle, keywords, playTime }) {
   const matchKeywords = (keywords) => {
     const keywordMap = {
-      QUICKNESS: "순발력",
-      SENSIBLE: "센스",
-      COOPERATIVE: "창의력",
-      ACTIVE: "협동",
-      BRAIN: "액티브",
-      PSYCHOLOGICAL: "두뇌",
-      LUCK: "심리",
-      COMMON_SENSE: "행운",
-      PREPARATION: "상식",
+      QUICKNESS: '순발력',
+      SENSIBLE: '센스',
+      COOPERATIVE: '창의력',
+      ACTIVE: '협동',
+      BRAIN: '액티브',
+      PSYCHOLOGICAL: '두뇌',
+      LUCK: '심리',
+      COMMON_SENSE: '행운',
+      PREPARATION: '상식',
     };
     const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
@@ -25,13 +20,11 @@ export default function FlowRecreationBox({
 
   const keys = Array.isArray(keywords) ? matchKeywords(keywords) : [];
 
-  const kewordList = keys.map((keyword) => (
-    <KeywordBox keyword={keyword}>{keyword}</KeywordBox>
-  ));
+  const kewordList = keys.map((keyword) => <KeywordBox keyword={keyword}>{keyword}</KeywordBox>);
 
   const height = (playTime / 10) * 128;
-  console.log("키워드리스트", keywords);
-  console.log("제목", recreationTitle);
+  console.log('키워드리스트', keywords);
+  console.log('제목', recreationTitle);
   return (
     <FlowRecreationBoxWrap height={height}>
       <LeftTimeBar height={height}></LeftTimeBar>
@@ -52,7 +45,7 @@ export default function FlowRecreationBox({
 const LeftTimeBar = styled.div`
   background-color: #b1beff;
   width: 8px;
-  height: ${(props) => (props.height ? props.height + "px" : "128px")};
+  height: ${(props) => (props.height ? props.height + 'px' : '128px')};
   border-radius: 50px;
   margin-right: 20px;
 `;

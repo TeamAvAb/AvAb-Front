@@ -1,26 +1,26 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const userDeleteRollback = async () => {
-  const accessToken = localStorage.getItem("accessTokenForRollback");
+  const accessToken = localStorage.getItem('accessTokenForRollback');
   try {
     const response = await axios.patch(
-      "https://dev.avab.shop/api/users/me/deleted",
+      'https://dev.avab.shop/api/users/me/deleted',
       { accessToken },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     if (response.status === 200) {
-      localStorage.removeItem("accessTokenForRollback");
+      localStorage.removeItem('accessTokenForRollback');
       return true;
     } else {
-      console.log("탈퇴 복구 api 에러", response);
+      console.log('탈퇴 복구 api 에러', response);
       return false;
     }
   } catch (error) {
-    throw new Error("Error", error);
+    throw new Error('Error', error);
   }
 };
 

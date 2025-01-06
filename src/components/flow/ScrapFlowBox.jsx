@@ -1,21 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import Scrap2 from "../../assets/scrapflow/scrap2.png";
-import Time from "../../assets/scrapflow/time.png";
-import View from "../../assets/scrapflow/view.png";
-import Write from "../../assets/scrapflow/write.png";
-import User from "../../assets/scrapflow/user.png";
-import { useNavigate } from "react-router-dom";
-import { privateAPI } from "../../apis/user";
-import useLoginModalStore from "../../stores/loginModalStore";
-import useLoginStore from "../../stores/loginStore";
+import React from 'react';
+import styled from 'styled-components';
+import Scrap2 from '../../assets/scrapflow/scrap2.png';
+import Time from '../../assets/scrapflow/time.png';
+import View from '../../assets/scrapflow/view.png';
+import Write from '../../assets/scrapflow/write.png';
+import User from '../../assets/scrapflow/user.png';
+import { useNavigate } from 'react-router-dom';
+import { privateAPI } from '../../apis/user';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
 
 const PurposeList = {
-  MT: "MT",
-  GATHERING: "모임",
-  WORKSHOP: "워크샵",
-  RETREAT: "수련회",
-  SPORTS_DAY: "체육대회",
+  MT: 'MT',
+  GATHERING: '모임',
+  WORKSHOP: '워크샵',
+  RETREAT: '수련회',
+  SPORTS_DAY: '체육대회',
 };
 
 export default function ScrapFlowBox({ datas, setScrap }) {
@@ -40,7 +40,7 @@ export default function ScrapFlowBox({ datas, setScrap }) {
   // 자세히 보기
   const navigate = useNavigate();
   const moveToMoreInfo = (moreData) => {
-    localStorage.setItem("moreData", JSON.stringify(moreData));
+    localStorage.setItem('moreData', JSON.stringify(moreData));
     navigate(`/flow/morescrapflow/${moreData.title}`, { state: { moreData } });
   };
 
@@ -57,11 +57,7 @@ export default function ScrapFlowBox({ datas, setScrap }) {
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
               {data.isScraped && (
-                <FlowBoxScrapImg
-                  src={Scrap2}
-                  alt="스크랩"
-                  onClick={() => DoScrap(data.id)}
-                />
+                <FlowBoxScrapImg src={Scrap2} alt="스크랩" onClick={() => DoScrap(data.id)} />
               )}
             </FlowBoxScrapBox>
 
@@ -74,41 +70,25 @@ export default function ScrapFlowBox({ datas, setScrap }) {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Time}
-                    alt="시간"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={Time} alt="시간" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={View}
-                    alt="조회수"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={View} alt="조회수" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Write}
-                    alt="작성자"
-                    style={{ width: "35px", height: "35px" }}
-                  />
+                  <img src={Write} alt="작성자" style={{ width: '35px', height: '35px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={User}
-                    alt="스크랩수"
-                    style={{ width: "24px", height: "24px" }}
-                  />
+                  <img src={User} alt="스크랩수" style={{ width: '24px', height: '24px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>

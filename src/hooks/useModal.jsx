@@ -1,5 +1,5 @@
-import { useState } from "react";
-import ModalWrapper from "../components/modal/ModalWrapper";
+import { useState } from 'react';
+import ModalWrapper from '../components/modal/ModalWrapper';
 
 const useModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,9 +12,7 @@ const useModal = () => {
 
   return {
     ModalWrapper: ({ children }) =>
-      isModalOpen ? (
-        <ModalWrapper close={closeModal} children={children} />
-      ) : null,
+      isModalOpen ? <ModalWrapper close={closeModal} children={children} /> : null,
     openModal,
     closeModal,
   };

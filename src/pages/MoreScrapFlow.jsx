@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Share from "../assets/moreflow/share.png";
-import Time from "../assets/moreflow/time.png";
-import User from "../assets/moreflow/user.png";
-import View from "../assets/moreflow/view.png";
-import Write from "../assets/moreflow/write.png";
-import Scrap from "../assets/moreflow/scrap.png";
-import Scrap2 from "../assets/moreflow/scrap2.png";
-import Close from "../assets/myflow/close.png";
-import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-import { privateAPI, publicAPI } from "../apis/user";
-import useLoginModalStore from "../stores/loginModalStore";
-import useLoginStore from "../stores/loginStore";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Share from '../assets/moreflow/share.png';
+import Time from '../assets/moreflow/time.png';
+import User from '../assets/moreflow/user.png';
+import View from '../assets/moreflow/view.png';
+import Write from '../assets/moreflow/write.png';
+import Scrap from '../assets/moreflow/scrap.png';
+import Scrap2 from '../assets/moreflow/scrap2.png';
+import Close from '../assets/myflow/close.png';
+import RecreationInfo from '../components/recreationInfo/RecreationInfo';
+import { privateAPI, publicAPI } from '../apis/user';
+import useLoginModalStore from '../stores/loginModalStore';
+import useLoginStore from '../stores/loginStore';
 
 const PurposeList = {
-  MT: "MT",
-  GATHERING: "모임",
-  WORKSHOP: "워크샵",
-  RETREAT: "수련회",
-  SPORTS_DAY: "체육대회",
+  MT: 'MT',
+  GATHERING: '모임',
+  WORKSHOP: '워크샵',
+  RETREAT: '수련회',
+  SPORTS_DAY: '체육대회',
 };
 
 const KeywordList = {
-  COOPERATIVE: "협동",
-  QUICKNESS: "순발력",
-  SENSIBLE: "센스",
-  BRAIN: "두뇌",
-  CREATIVE: "창의력",
-  ACTIVE: "액티브",
-  PSYCHOLOGICAL: "심리",
-  LUCK: "행운",
-  COMMON_SENSE: "상식",
-  PREPARATION: "준비물",
+  COOPERATIVE: '협동',
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  BRAIN: '두뇌',
+  CREATIVE: '창의력',
+  ACTIVE: '액티브',
+  PSYCHOLOGICAL: '심리',
+  LUCK: '행운',
+  COMMON_SENSE: '상식',
+  PREPARATION: '준비물',
 };
 
 const GenderList = {
-  MALE: "남성",
-  FEMALE: "여성",
+  MALE: '남성',
+  FEMALE: '여성',
 };
 
 const AgeList = {
-  UNDER_TEENAGER: "10대 미만",
-  TEENAGER: "10대",
-  TWENTIES: "20대",
-  THIRTIES: "30대",
-  FORTIES: "40대",
-  OVER_FIFTIES: "50대 이상",
+  UNDER_TEENAGER: '10대 미만',
+  TEENAGER: '10대',
+  TWENTIES: '20대',
+  THIRTIES: '30대',
+  FORTIES: '40대',
+  OVER_FIFTIES: '50대 이상',
 };
 
 export default function MoreWatchFlow() {
@@ -81,10 +81,10 @@ export default function MoreWatchFlow() {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        console.log("URL copied to clipboard");
+        console.log('URL copied to clipboard');
       })
       .catch((err) => {
-        console.error("Could not copy text: ", err);
+        console.error('Could not copy text: ', err);
       });
   };
   // 삭제 모달 창 닫기 위한 상태 변화 함수
@@ -95,7 +95,7 @@ export default function MoreWatchFlow() {
 
   // moreData 가져오기
   const [data, setData] = useState([]);
-  const moreData = JSON.parse(localStorage.getItem("moreData"));
+  const moreData = JSON.parse(localStorage.getItem('moreData'));
   const id = moreData.id;
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export default function MoreWatchFlow() {
 
   return (
     data.length !== 0 && (
-      <div style={{ backgroundColor: "#E9EBED" }}>
+      <div style={{ backgroundColor: '#E9EBED' }}>
         {/* 모달창 */}
         {modal ? (
           <ModalContainer>
@@ -141,9 +141,7 @@ export default function MoreWatchFlow() {
                 {share ? (
                   <AfterCopyBtn>복사 완료</AfterCopyBtn>
                 ) : (
-                  <BeforeCopyBtn onClick={ShareBtn}>
-                    링크 복사하기
-                  </BeforeCopyBtn>
+                  <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
                 )}
               </ModalBoxDetail>
             </ModalBox>
@@ -156,7 +154,7 @@ export default function MoreWatchFlow() {
           <img
             src={data.flowDetail.imageUrl}
             alt="플로우사진"
-            style={{ width: "250px", height: "250px", marginTop: "86px" }}
+            style={{ width: '250px', height: '250px', marginTop: '86px' }}
           />
           <TitleBox>
             <DetailTitleBox>
@@ -175,41 +173,25 @@ export default function MoreWatchFlow() {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Time}
-                    alt="시간"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={Time} alt="시간" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={View}
-                    alt="조회수"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={View} alt="조회수" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Write}
-                    alt="작성자"
-                    style={{ width: "35px", height: "35px" }}
-                  />
+                  <img src={Write} alt="작성자" style={{ width: '35px', height: '35px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={User}
-                    alt="사용자수"
-                    style={{ width: "24px", height: "24px" }}
-                  />
+                  <img src={User} alt="사용자수" style={{ width: '24px', height: '24px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
@@ -230,16 +212,14 @@ export default function MoreWatchFlow() {
             </FlowInfoTitle>
 
             <FlowInfoDetail>
-              <div style={{ width: "284px" }}>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
-                  <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
-                  <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
-                    {data.flowDetail.purposeList
-                      .map((p) => PurposeList[p])
-                      .join(", ")}
+              <div style={{ width: '284px' }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
+                  <FlowInfo style={{ width: '28px' }}>목적</FlowInfo>
+                  <FlowInfo2 style={{ fontWeight: '400', maxWidth: '240px' }}>
+                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(', ')}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: 'flex' }}>
                   <FlowInfo>플레이 시간</FlowInfo>
                   <div>{data.flowDetail.totalPlayTime}분</div>
                 </div>
@@ -247,8 +227,8 @@ export default function MoreWatchFlow() {
 
               <Line />
 
-              <div style={{ marginLeft: "29px" }}>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+              <div style={{ marginLeft: '29px' }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>키워드</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.keywordList.map((keyword) => (
@@ -256,7 +236,7 @@ export default function MoreWatchFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>성별</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.gender.map((gender) => (
@@ -264,7 +244,7 @@ export default function MoreWatchFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>연령대</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.age.map((age) => (
@@ -272,7 +252,7 @@ export default function MoreWatchFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>인원</FlowInfo>
                   <div>{data.flowDetail.participants}명</div>
                 </div>

@@ -1,28 +1,28 @@
-import React from "react";
-import styled from "styled-components";
-import x from "../../assets/main/closeIcon.svg";
-import * as S from "./modal.style";
-import LogoutP from "../../assets/mypage/LogoutImg.svg";
-import { privateAPI } from "../../apis/user";
-import useLoginStore from "../../stores/loginStore";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import x from '../../assets/main/closeIcon.svg';
+import * as S from './modal.style';
+import LogoutP from '../../assets/mypage/LogoutImg.svg';
+import { privateAPI } from '../../apis/user';
+import useLoginStore from '../../stores/loginStore';
+import { useNavigate } from 'react-router-dom';
 
 export default function LogoutModal({ handleModal }) {
   const { logout } = useLoginStore();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      const response = await privateAPI.delete("/api/auth/logout");
+      const response = await privateAPI.delete('/api/auth/logout');
       if (response.data.isSuccess === true) {
         localStorage.clear();
         logout();
-        navigate("/");
+        navigate('/');
       } else {
-        alert("로그아웃 요청 에러가 발생했습니다!");
+        alert('로그아웃 요청 에러가 발생했습니다!');
         console.log(response);
       }
     } catch (error) {
-      console.log("로그아웃 요청 에러 : ", error);
+      console.log('로그아웃 요청 에러 : ', error);
     }
     handleModal(false);
   };

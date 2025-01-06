@@ -4,11 +4,9 @@ import styled from 'styled-components';
 export default function Footer() {
   return (
     <FooterWrap>
-      <Content>
-        COPYRIGHT © Avab all rights reserved
-      </Content>
+      <Content>COPYRIGHT © Avab all rights reserved</Content>
     </FooterWrap>
-  )
+  );
 }
 
 const FooterWrap = styled.footer`

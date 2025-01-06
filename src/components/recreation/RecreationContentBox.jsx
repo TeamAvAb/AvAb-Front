@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import yellowStar from "../../assets/recreation/yellowStar.svg";
-import { ReactComponent as Icon } from "../../assets/recreation/heartIcon.svg";
-import { privateAPI } from "../../apis/user";
-import useLoginModalStore from "../../stores/loginModalStore";
-import useLoginStore from "../../stores/loginStore";
+import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import yellowStar from '../../assets/recreation/yellowStar.svg';
+import { ReactComponent as Icon } from '../../assets/recreation/heartIcon.svg';
+import { privateAPI } from '../../apis/user';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
 
 export default function RecreationContentBox({
   recreationId,
@@ -40,11 +40,9 @@ export default function RecreationContentBox({
 
     // 로그인 되어 있으면
     try {
-      const response = await privateAPI.post(
-        `/api/recreations/${recreationId}/favorites`
-      );
+      const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
       console.log(response.data.code);
-      if (response.data.code === "COMMON200") {
+      if (response.data.code === 'COMMON200') {
         setIsheartToggle(!isheartToggle);
       } else {
         console.log(response.data);
@@ -54,7 +52,7 @@ export default function RecreationContentBox({
     }
   };
 
-  const heartIconColor = isheartToggle ? "#ffd446" : "#E9EBED";
+  const heartIconColor = isheartToggle ? '#ffd446' : '#E9EBED';
 
   return (
     <ContentBox>
@@ -63,11 +61,9 @@ export default function RecreationContentBox({
         <Icon fill={heartIconColor} />
       </HeartIconWrap>
       <TitleStar>
-        <RecreationTitle>{recreationTitle}</RecreationTitle>{" "}
-        {/* 레크레이션 제목 */}
+        <RecreationTitle>{recreationTitle}</RecreationTitle> {/* 레크레이션 제목 */}
         <Star>
-          <img src={yellowStar} alt="star icon" />{" "}
-          <StarRating>{formattedStarRate}</StarRating>
+          <img src={yellowStar} alt="star icon" /> <StarRating>{formattedStarRate}</StarRating>
         </Star>
         {/* 별점*/}
       </TitleStar>

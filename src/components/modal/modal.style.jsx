@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Modal = styled.div`
   width: 440px;
@@ -105,14 +105,4 @@ const CloseBtn = styled.img`
   cursor: pointer;
 `;
 
-export {
-  Modal,
-  Content,
-  TitleContainer,
-  Title,
-  SubTitle,
-  BtnContainer,
-  BtnF,
-  BtnB,
-  CloseBtn,
-};
+export { Modal, Content, TitleContainer, Title, SubTitle, BtnContainer, BtnF, BtnB, CloseBtn };

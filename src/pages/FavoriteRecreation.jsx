@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import { privateAPI } from "../apis/user";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { privateAPI } from '../apis/user';
 
-import FavoritesBox from "../components/mypage/FavoritesBox";
-import Pagination from "../components/pagination/Pagination";
-import LogoutP from "../assets/mypage/LogoutImg.svg";
-import noScrapImg from "../assets/scrapflow/noScrap.png";
-import LoadingSpinner from "../components/LoadingSpinner";
-import useLoginStore from "../stores/loginStore";
+import FavoritesBox from '../components/mypage/FavoritesBox';
+import Pagination from '../components/pagination/Pagination';
+import LogoutP from '../assets/mypage/LogoutImg.svg';
+import noScrapImg from '../assets/scrapflow/noScrap.png';
+import LoadingSpinner from '../components/LoadingSpinner';
+import useLoginStore from '../stores/loginStore';
 
 export default function FavoriteRecreation() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -17,11 +17,11 @@ export default function FavoriteRecreation() {
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const openLogoutModal = () => {
@@ -34,14 +34,14 @@ export default function FavoriteRecreation() {
 
   const handleLogout = async () => {
     try {
-      const response = await privateAPI.delete("/api/auth/logout");
+      const response = await privateAPI.delete('/api/auth/logout');
       if (response.data.isSuccess === true) {
         localStorage.clear();
         logout();
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
-      console.log("로그아웃 요청 에러 : ", error);
+      console.log('로그아웃 요청 에러 : ', error);
     }
     setLogoutModalOpen(false);
   };
@@ -60,13 +60,13 @@ export default function FavoriteRecreation() {
     setLoading(true);
     try {
       const response = await privateAPI.get(
-        `/api/users/me/favorites/recreations?page=${currentPage}`
+        `/api/users/me/favorites/recreations?page=${currentPage}`,
       );
       setDatas(response.data.result.recreationList);
       setPages(response.data.result.totalPages);
       setLoading(false);
     } catch (error) {
-      console.log("레크레이션 로드 요청 에러 : ", error);
+      console.log('레크레이션 로드 요청 에러 : ', error);
     }
   };
 
@@ -95,10 +95,7 @@ export default function FavoriteRecreation() {
         <Title>마이페이지</Title>
         <MenuList>
           <MenuItem onClick={handleMyInfoClick}>내 정보</MenuItem>
-          <MenuItem
-            style={{ backgroundColor: "#B1BEFF" }}
-            onClick={handleFavoritesClick}
-          >
+          <MenuItem style={{ backgroundColor: '#B1BEFF' }} onClick={handleFavoritesClick}>
             즐겨 찾는 레크레이션
           </MenuItem>
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
@@ -124,17 +121,14 @@ export default function FavoriteRecreation() {
               <FavoritesParent>
                 {datas &&
                   datas.map((data) => (
-                    <FavoritesBox
-                      content={data}
-                      onFavoriteChange={onFavoriteChange}
-                    />
+                    <FavoritesBox content={data} onFavoriteChange={onFavoriteChange} />
                   ))}
               </FavoritesParent>
               <Pagination
                 currentPage={currentPage}
                 pageNum={pages}
                 setCurrentPage={setCurrentPage}
-                scrollLocation={document.querySelector("#move").offsetTop}
+                scrollLocation={document.querySelector('#move').offsetTop}
               />
             </>
           ) : (

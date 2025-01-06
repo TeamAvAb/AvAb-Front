@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import React, { forwardRef, useState, useEffect } from "react";
-import RelatedRecreationBox from "./RelatedRecreationBox";
-import { publicAPI, privateAPI } from "../../apis/user";
-import useLoginStore from "../../stores/loginStore.js";
+import styled from 'styled-components';
+import React, { forwardRef, useState, useEffect } from 'react';
+import RelatedRecreationBox from './RelatedRecreationBox';
+import { publicAPI, privateAPI } from '../../apis/user';
+import useLoginStore from '../../stores/loginStore.js';
 
 const RecreationRelated = forwardRef(({ recreationId }, ref) => {
   const [relatedData, setRelatedData] = useState([]);
@@ -11,13 +11,11 @@ const RecreationRelated = forwardRef(({ recreationId }, ref) => {
     const fetchReviews = async () => {
       try {
         const api = isLoggedIn ? privateAPI : publicAPI;
-        const response = await api.get(
-          `/api/recreations/${recreationId}/related/recreations`
-        );
+        const response = await api.get(`/api/recreations/${recreationId}/related/recreations`);
         setRelatedData(response.data.result);
-        console.log("연관 레크레이션: ", response);
+        console.log('연관 레크레이션: ', response);
       } catch (error) {
-        console.error("연관 레크레이션 오류: ", error);
+        console.error('연관 레크레이션 오류: ', error);
       }
     };
 
