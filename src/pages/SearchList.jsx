@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet";
 
 import LoadingSpinner from "../components/LoadingSpinner";
 import useLoginStore from "../stores/loginStore";
+import RecreationCardL from "../components/card/recreationCard/RecreationCardL";
 
 export default function SearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -131,7 +132,7 @@ export default function SearchList({}) {
               <RecreationWrapper>
                 {datas &&
                   datas.map((data) => (
-                    <Recreation content={data} key={data.id} />
+                    <RecreationCardL content={data} key={data.id} />
                   ))}
               </RecreationWrapper>
 
@@ -194,7 +195,7 @@ const ResultHeader = styled.div`
 //레크레이션 찾기
 const RecreationWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 440px);
+  grid-template-columns: repeat(3, 1fr);
   row-gap: 20px;
   column-gap: 30px;
 `;
