@@ -4,16 +4,15 @@ import styled from 'styled-components';
 
 import { privateAPI, publicAPI } from '../apis/user';
 import Search from '../components/main/Search';
-import Recreation from '../components/main/Recreation';
 import Pagination from '../components/pagination/Pagination';
 import SortControl from '../components/SortControl';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 
 import { Helmet } from 'react-helmet';
 
-import LoadingSpinner from "../components/LoadingSpinner";
-import useLoginStore from "../stores/loginStore";
-import RecreationCardL from "../components/card/recreationCard/RecreationCardL";
+import LoadingSpinner from '../components/LoadingSpinner';
+import useLoginStore from '../stores/loginStore';
+import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
 
 export default function SearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -126,10 +125,7 @@ export default function SearchList({}) {
           ) : (
             <>
               <RecreationWrapper>
-                {datas &&
-                  datas.map((data) => (
-                    <RecreationCardL content={data} key={data.id} />
-                  ))}
+                {datas && datas.map((data) => <RecreationCardL content={data} key={data.id} />)}
               </RecreationWrapper>
 
               <Pagination
