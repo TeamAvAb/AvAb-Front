@@ -1,6 +1,6 @@
-import React from "react";
-import { PacmanLoader } from "react-spinners";
-import styled from "styled-components";
+import React from 'react';
+import { PacmanLoader } from 'react-spinners';
+import styled from 'styled-components';
 
 export default function LoadingSpinner({ comment }) {
   return (

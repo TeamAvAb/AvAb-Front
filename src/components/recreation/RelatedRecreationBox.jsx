@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import React, { useState } from "react";
-import RecreationContentBox from "./RecreationContentBox";
-import { Link, useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import RecreationContentBox from './RecreationContentBox';
+import { Link, useNavigate } from 'react-router-dom';
 export default function RelatedRecreationBox({
   hashtag,
   recreationTitle,
@@ -13,15 +13,15 @@ export default function RelatedRecreationBox({
   const navigate = useNavigate();
   const matchKeywords = (keywords) => {
     const keywordMap = {
-      QUICKNESS: "순발력",
-      SENSIBLE: "센스",
-      COOPERATIVE: "창의력",
-      ACTIVE: "협동",
-      BRAIN: "액티브",
-      PSYCHOLOGICAL: "두뇌",
-      LUCK: "심리",
-      COMMON_SENSE: "행운",
-      PREPARATION: "상식",
+      QUICKNESS: '순발력',
+      SENSIBLE: '센스',
+      COOPERATIVE: '창의력',
+      ACTIVE: '협동',
+      BRAIN: '액티브',
+      PSYCHOLOGICAL: '두뇌',
+      LUCK: '심리',
+      COMMON_SENSE: '행운',
+      PREPARATION: '상식',
     };
     const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
@@ -41,13 +41,13 @@ export default function RelatedRecreationBox({
         />
       </BoxWrap>
       <DetailLinkButton
-        to={"/recreation/detail/" + relatedId}
+        to={'/recreation/detail/' + relatedId}
         onClick={() => {
           window.scrollTo(0, 0); // 페이지 이동 전에 스크롤을 맨 위로 이동
-          navigate("/recreation/detail/" + relatedId);
+          navigate('/recreation/detail/' + relatedId);
         }}
       >
-        상세 페이지 보러가기 {">"}
+        상세 페이지 보러가기 {'>'}
       </DetailLinkButton>
     </RelatedRecreationContainer>
   );

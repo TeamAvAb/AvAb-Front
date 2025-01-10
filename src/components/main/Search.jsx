@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { publicAPI } from "../../apis/user";
-import qs from "qs";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { publicAPI } from '../../apis/user';
+import qs from 'qs';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
-import KeywordModal from "./KeywordModal";
-import Dropdown from "./Dropdown";
-import RadioInput from "./RadioInput";
+import KeywordModal from './KeywordModal';
+import Dropdown from './Dropdown';
+import RadioInput from './RadioInput';
 
-import searchIconImg from "../../assets/main/searchIcon.svg";
-import keywordImg from "../../assets/main/checkIcon.svg";
-import hrImg from "../../assets/main/hr.svg";
-import deleteImg from "../../assets/main/deleteIcon.svg";
-import arrowDownImg from "../../assets/main/arrowDownIcon.svg";
-import arrowUpImg from "../../assets/main/arrowUpIcon.svg";
-import alertImg from "../../assets/main/alert.svg";
-import useDeboucedEffect from "../../hooks/useDeboucedEffect";
+import searchIconImg from '../../assets/main/searchIcon.svg';
+import keywordImg from '../../assets/main/checkIcon.svg';
+import hrImg from '../../assets/main/hr.svg';
+import deleteImg from '../../assets/main/deleteIcon.svg';
+import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
+import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
+import alertImg from '../../assets/main/alert.svg';
+import useDeboucedEffect from '../../hooks/useDeboucedEffect';
 
 export default function Search() {
   // 검색어 및 키워드 저장
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [keyword, setKeyword] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [playTime, setPlayTime] = useState([]);
@@ -31,41 +31,41 @@ export default function Search() {
 
   // 검색 옵션
   const keywordOptions = [
-    { id: 0, value: "협동", param: "COOPERATIVE" },
-    { id: 1, value: "순발력", param: "QUICKNESS" },
-    { id: 2, value: "센스", param: "SENSIBLE" },
-    { id: 3, value: "두뇌", param: "BRAIN" },
-    { id: 4, value: "창의력", param: "CREATIVE" },
-    { id: 5, value: "액티브", param: "ACTIVE" },
-    { id: 6, value: "심리", param: "PSYCHOLOGICAL" },
-    { id: 7, value: "행운", param: "LUCK" },
-    { id: 8, value: "상식", param: "COMMON_SENSE" },
-    { id: 9, value: "준비물", param: "PREPARATION" },
+    { id: 0, value: '협동', param: 'COOPERATIVE' },
+    { id: 1, value: '순발력', param: 'QUICKNESS' },
+    { id: 2, value: '센스', param: 'SENSIBLE' },
+    { id: 3, value: '두뇌', param: 'BRAIN' },
+    { id: 4, value: '창의력', param: 'CREATIVE' },
+    { id: 5, value: '액티브', param: 'ACTIVE' },
+    { id: 6, value: '심리', param: 'PSYCHOLOGICAL' },
+    { id: 7, value: '행운', param: 'LUCK' },
+    { id: 8, value: '상식', param: 'COMMON_SENSE' },
+    { id: 9, value: '준비물', param: 'PREPARATION' },
   ];
   const participantsLimit = 20;
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
   const placeOptions = [
-    { id: 0, value: "실내", param: "INDOOR" },
-    { id: 1, value: "실외", param: "OUTDOOR" },
+    { id: 0, value: '실내', param: 'INDOOR' },
+    { id: 1, value: '실외', param: 'OUTDOOR' },
   ];
   const purposeOptions = [
-    { id: 0, value: "워크샵", param: "WORKSHOP" },
-    { id: 1, value: "체육대회", param: "SPORTS_DAY" },
-    { id: 2, value: "MT", param: "MT" },
-    { id: 3, value: "모임", param: "GATHERING" },
-    { id: 4, value: "수련회", param: "RETREAT" },
+    { id: 0, value: '워크샵', param: 'WORKSHOP' },
+    { id: 1, value: '체육대회', param: 'SPORTS_DAY' },
+    { id: 2, value: 'MT', param: 'MT' },
+    { id: 3, value: '모임', param: 'GATHERING' },
+    { id: 4, value: '수련회', param: 'RETREAT' },
   ];
   const genderOptions = [
-    { id: 0, value: "여성", param: "FEMALE" },
-    { id: 1, value: "남성", param: "MALE" },
+    { id: 0, value: '여성', param: 'FEMALE' },
+    { id: 1, value: '남성', param: 'MALE' },
   ];
   const ageOptions = [
-    { id: 0, value: "10대 미만", param: "UNDER_TEENAGER" },
-    { id: 1, value: "10대", param: "TEENAGER" },
-    { id: 2, value: "20대", param: "TWENTIES" },
-    { id: 3, value: "30대", param: "THIRTIES" },
-    { id: 4, value: "40대", param: "FORTIES" },
-    { id: 5, value: "50대 이상", param: "OVER_FIFTIES" },
+    { id: 0, value: '10대 미만', param: 'UNDER_TEENAGER' },
+    { id: 1, value: '10대', param: 'TEENAGER' },
+    { id: 2, value: '20대', param: 'TWENTIES' },
+    { id: 3, value: '30대', param: 'THIRTIES' },
+    { id: 4, value: '40대', param: 'FORTIES' },
+    { id: 5, value: '50대 이상', param: 'OVER_FIFTIES' },
   ];
 
   // 필터 더보기 메뉴
@@ -74,7 +74,7 @@ export default function Search() {
     setMenu(!menu);
   };
   useEffect(() => {
-    if (window.location.pathname === "/search/list") {
+    if (window.location.pathname === '/search/list') {
       // 검색 리스트 페이지일 때는 열린 상태 유지
       setMenu(true);
     }
@@ -85,20 +85,20 @@ export default function Search() {
       setKeyword(
         keyword.filter((el) => {
           return el !== id;
-        })
+        }),
       );
     } else if (category === purposeOptions) {
       setPurpose(
         purpose.filter((el) => {
           return el !== id;
-        })
+        }),
       );
     }
   };
 
   const checkOnlyNumber = (string) => {
     const check = /[^0-9]/g;
-    string = string.replace(check, "");
+    string = string.replace(check, '');
     return string;
   };
   const participValidCheck = (e) => {
@@ -126,9 +126,7 @@ export default function Search() {
     return selected.map((el) => (
       <>
         <SelectedKeyword key={el}>
-          <div>
-            '{label[label.findIndex((i) => i.param === el)].value}' 포함
-          </div>
+          <div>'{label[label.findIndex((i) => i.param === el)].value}' 포함</div>
           <img
             src={deleteImg}
             id={el}
@@ -158,7 +156,7 @@ export default function Search() {
   // 필터 적용
   const navigator = useNavigate();
   publicAPI.defaults.paramsSerializer = (params) => {
-    return qs.stringify(params, { arrayFormat: "repeat" });
+    return qs.stringify(params, { arrayFormat: 'repeat' });
   };
   const submit = async () => {
     const params = {
@@ -172,30 +170,30 @@ export default function Search() {
       age: age,
     };
 
-    const param = qs.stringify(params, { arrayFormat: "repeat" });
+    const param = qs.stringify(params, { arrayFormat: 'repeat' });
     try {
       navigator(`/search/list?${param}`, { state: param });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleSearch = (e) => {
-    if (e.key === "Enter") submit();
+    if (e.key === 'Enter') submit();
   };
 
   useEffect(() => {
     const currentURL = new URLSearchParams(window.location.search);
     if (currentURL.size !== 0) {
-      setSearchKeyword(currentURL.get("searchKeyword"));
-      setKeyword(currentURL.getAll("keyword"));
-      setParticipants(currentURL.get("participants"));
-      setPlayTime(currentURL.getAll("playTime"));
-      setPlace(currentURL.getAll("place"));
-      setPurpose(currentURL.getAll("purpose"));
-      setAge(currentURL.getAll("age"));
-      setGender(currentURL.getAll("gender"));
+      setSearchKeyword(currentURL.get('searchKeyword'));
+      setKeyword(currentURL.getAll('keyword'));
+      setParticipants(currentURL.get('participants'));
+      setPlayTime(currentURL.getAll('playTime'));
+      setPlace(currentURL.getAll('place'));
+      setPurpose(currentURL.getAll('purpose'));
+      setAge(currentURL.getAll('age'));
+      setGender(currentURL.getAll('gender'));
     }
   }, [window.location.href]);
 
@@ -221,13 +219,11 @@ export default function Search() {
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
             <KeywordBox id="keyword" onClick={() => setKeywordModal(true)}>
-              <img src={keywordImg} style={{ width: "20px", height: "20px" }} />
+              <img src={keywordImg} style={{ width: '20px', height: '20px' }} />
               {keyword.length === 0 ? (
-                "클릭하면 키워드 선택창이 나와요!"
+                '클릭하면 키워드 선택창이 나와요!'
               ) : (
-                <SelectedKeywords>
-                  {renderKeyword(keywordOptions, keyword)}
-                </SelectedKeywords>
+                <SelectedKeywords>{renderKeyword(keywordOptions, keyword)}</SelectedKeywords>
               )}
             </KeywordBox>
           </Filter>
@@ -253,30 +249,22 @@ export default function Search() {
           {/* 진행 시간*/}
           <Filter>
             <LabelName htmlFor="playTime">진행 시간</LabelName>
-            <Dropdown
-              list={playTimeOptions}
-              setOption={setPlayTime}
-              selectedOption={playTime}
-            />
+            <Dropdown list={playTimeOptions} setOption={setPlayTime} selectedOption={playTime} />
           </Filter>
 
           {/* 장소 */}
           <Filter>
             <LabelName htmlFor="place">장소</LabelName>
-            <RadioInput
-              content={placeOptions}
-              setOption={setPlace}
-              selectedOption={place}
-            />
+            <RadioInput content={placeOptions} setOption={setPlace} selectedOption={place} />
           </Filter>
         </Filters>
         <Filters>
           <MoreFilters $isopen={menu}>
             <div
               style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
               <img src={hrImg} />
@@ -291,11 +279,9 @@ export default function Search() {
                   style={{ width: "1.2rem"}}
                 />
                 {purpose.length === 0 ? (
-                  "클릭하면 목적 선택창이 나와요!"
+                  '클릭하면 목적 선택창이 나와요!'
                 ) : (
-                  <SelectedKeywords>
-                    {renderKeyword(purposeOptions, purpose)}
-                  </SelectedKeywords>
+                  <SelectedKeywords>{renderKeyword(purposeOptions, purpose)}</SelectedKeywords>
                 )}
               </KeywordBox>
             </Filter>
@@ -303,26 +289,18 @@ export default function Search() {
             {/* 성별 */}
             <Filter>
               <LabelName htmlFor="gender">성별</LabelName>
-              <RadioInput
-                content={genderOptions}
-                setOption={setGender}
-                selectedOption={gender}
-              />
+              <RadioInput content={genderOptions} setOption={setGender} selectedOption={gender} />
             </Filter>
 
             {/* 연령대 */}
             <Filter $last="true">
               <LabelName htmlFor="age">연령대</LabelName>
-              <RadioInput
-                content={ageOptions}
-                setOption={setAge}
-                selectedOption={age}
-              />
+              <RadioInput content={ageOptions} setOption={setAge} selectedOption={age} />
             </Filter>
           </MoreFilters>
         </Filters>
-
       </SearchBox>
+
       {window.location.pathname === "/search/list" ? null : (
           <MoreFiltersButton onClick={openMenu}>
             {menu ? (
@@ -334,13 +312,10 @@ export default function Search() {
                   />
                 </>
             ) : (
-                <>
-                  필터 더보기
-                  <img
-                      style={{ width: "24px", height: "24px" }}
-                      src={arrowDownImg}
-                  />
-                </>
+              <>
+                필터 더보기
+                <img style={{ width: '24px', height: '24px' }} src={arrowDownImg} />
+              </>
             )}
           </MoreFiltersButton>
       )}

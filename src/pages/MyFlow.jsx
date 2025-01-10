@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { publicAPI, privateAPI } from "../apis/user";
-import styled from "styled-components";
-import penguinImg from "../assets/myflow/penguin.png";
-import noFlowImg from "../assets/myflow/noFlow.png";
-import MadeFlowBox from "../components/flow/MadeFlowBox";
-import { useNavigate } from "react-router-dom";
-import Pagination from "../components/pagination/Pagination";
-import useLoginModalStore from "../stores/loginModalStore";
-import useLoginStore from "../stores/loginStore";
+import React, { useState, useEffect } from 'react';
+import { publicAPI, privateAPI } from '../apis/user';
+import styled from 'styled-components';
+import penguinImg from '../assets/myflow/penguin.png';
+import noFlowImg from '../assets/myflow/noFlow.png';
+import MadeFlowBox from '../components/flow/MadeFlowBox';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '../components/pagination/Pagination';
+import useLoginModalStore from '../stores/loginModalStore';
+import useLoginStore from '../stores/loginStore';
 
 export default function MyFlow() {
   const { modalControl } = useLoginModalStore();
@@ -43,16 +43,12 @@ export default function MyFlow() {
     const fetchData = async () => {
       setLoading(true);
       if (isLoggedIn) {
-        const response = await privateAPI.get(
-          `/api/users/me/flows?page=${currentPage}`
-        );
-        console.log("전체 레크:", response);
+        const response = await privateAPI.get(`/api/users/me/flows?page=${currentPage}`);
+        console.log('전체 레크:', response);
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       } else {
-        const response = await publicAPI.get(
-          `/api/users/me/flows?page=${currentPage}`
-        );
+        const response = await publicAPI.get(`/api/users/me/flows?page=${currentPage}`);
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       }
@@ -72,9 +68,7 @@ export default function MyFlow() {
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
         <MyFlowMenuBox onClick={moveToWatch}>플로우 구경하기</MyFlowMenuBox>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>
-          내가 만든 일정플로우
-        </MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: '#B1BEFF' }}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
 
@@ -84,9 +78,7 @@ export default function MyFlow() {
           <MyFlowBoxContainer>
             <MyFlowBoxImage src={penguinImg} />
             <TitleBox>
-              <MyFlowBoxTitle onClick={moveToMakeFlow}>
-                일정플로우 만들기
-              </MyFlowBoxTitle>
+              <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
             </TitleBox>
           </MyFlowBoxContainer>
           {/* 내가 만든 일정플로우 - Grid */}
@@ -106,10 +98,10 @@ export default function MyFlow() {
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noFlowImg} />
               <MyFlowNoneDetail>
-                <div style={{ fontSize: "24px", fontWeight: "bold" }}>
+                <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
                   내가 만든 일정플로우가 없습니다!
                 </div>
-                <div style={{ fontSize: "20px", marginTop: "8px" }}>
+                <div style={{ fontSize: '20px', marginTop: '8px' }}>
                   위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.
                 </div>
               </MyFlowNoneDetail>

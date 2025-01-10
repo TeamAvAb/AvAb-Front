@@ -1,15 +1,15 @@
-import ModalPortal from "../../portals/ModalPortal";
-import { useEffect } from "react";
-import styled from "styled-components";
+import ModalPortal from '../../portals/ModalPortal';
+import { useEffect } from 'react';
+import styled from 'styled-components';
 
 const ModalWrapper = ({ children, close }) => {
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === "Escape") close();
+      if (e.key === 'Escape') close();
     };
-    window.addEventListener("keydown", handleEsc);
+    window.addEventListener('keydown', handleEsc);
     return () => {
-      window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener('keydown', handleEsc);
     };
   }, [close]);
 

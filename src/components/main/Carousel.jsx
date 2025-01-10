@@ -1,16 +1,16 @@
-import React from "react";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import blankImg from "../../assets/main/blankImg.png";
-import elipseImg from "../../assets/main/elipse.svg";
-import prevArrowImg from "../../assets/main/prevArrowIcon.svg";
-import nextArrowImg from "../../assets/main/nextArrowIcon.svg";
-import currentDotImg from "../../assets/main/bannerDotCurrent.svg";
-import defaultDotImg from "../../assets/main/bannerDotDefault.svg";
+import blankImg from '../../assets/main/blankImg.png';
+import elipseImg from '../../assets/main/elipse.svg';
+import prevArrowImg from '../../assets/main/prevArrowIcon.svg';
+import nextArrowImg from '../../assets/main/nextArrowIcon.svg';
+import currentDotImg from '../../assets/main/bannerDotCurrent.svg';
+import defaultDotImg from '../../assets/main/bannerDotDefault.svg';
 
 // 이전 배너 화살표
 function PrevArrow(props) {
@@ -18,12 +18,12 @@ function PrevArrow(props) {
   return (
     <div
       style={{
-        display: "block",
-        width: "42px",
-        height: "42px",
-        border: "none",
-        position: "absolute",
-        top: "118px",
+        display: 'block',
+        width: '42px',
+        height: '42px',
+        border: 'none',
+        position: 'absolute',
+        top: '118px',
       }}
       className={className}
       onClick={onClick}
@@ -31,23 +31,23 @@ function PrevArrow(props) {
       <img
         src={elipseImg}
         style={{
-          width: "42px",
-          height: "42px",
-          position: "absolute",
-          top: "0",
-          left: "0",
-          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+          width: '42px',
+          height: '42px',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
         }}
       />
       <img
         src={prevArrowImg}
         style={{
-          display: "block",
-          width: "8px",
-          height: "16px",
-          position: "absolute",
-          top: "13px",
-          left: "17px",
+          display: 'block',
+          width: '8px',
+          height: '16px',
+          position: 'absolute',
+          top: '13px',
+          left: '17px',
         }}
       />
     </div>
@@ -59,12 +59,12 @@ function NextArrow(props) {
   return (
     <div
       style={{
-        display: "block",
-        width: "42px",
-        height: "42px",
-        border: "none",
-        position: "absolute",
-        top: "118px",
+        display: 'block',
+        width: '42px',
+        height: '42px',
+        border: 'none',
+        position: 'absolute',
+        top: '118px',
       }}
       className={className}
       onClick={onClick}
@@ -72,23 +72,23 @@ function NextArrow(props) {
       <img
         src={elipseImg}
         style={{
-          width: "42px",
-          height: "42px",
-          position: "absolute",
-          top: "0",
-          right: "0",
-          filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
+          width: '42px',
+          height: '42px',
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
         }}
       />
       <img
         src={nextArrowImg}
         style={{
-          display: "block",
-          width: "8px",
-          height: "16px",
-          position: "absolute",
-          top: "13px",
-          right: "17px",
+          display: 'block',
+          width: '8px',
+          height: '16px',
+          position: 'absolute',
+          top: '13px',
+          right: '17px',
         }}
       />
     </div>
@@ -97,7 +97,7 @@ function NextArrow(props) {
 
 export default function Carousel({ content }) {
   const settings = {
-    className: "slider variable-width",
+    className: 'slider variable-width',
     dots: true,
     infinite: true,
     centerMode: false,
@@ -116,33 +116,33 @@ export default function Carousel({ content }) {
     switch (id) {
       case 0:
         return [
-          "var(--main-4036-ed, #4036ED)",
-          "var(--gray-scale-e-9-ebed, #E9EBED)",
-          "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)",
-          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
+          'var(--main-4036-ed, #4036ED)',
+          'var(--gray-scale-e-9-ebed, #E9EBED)',
+          'var(--gray-scale-f-7-f-8-f-9, #F7F8F9)',
+          'var(--gray-scale-1-b-1-d-1-f, #1B1D1F)',
         ];
       case 1:
         return [
-          "var(--main-ffaa-29, #FFAA29)",
-          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
-          "var(--gray-scale-26282-b, #26282B)",
-          "#FFF",
+          'var(--main-ffaa-29, #FFAA29)',
+          'var(--gray-scale-1-b-1-d-1-f, #1B1D1F)',
+          'var(--gray-scale-26282-b, #26282B)',
+          '#FFF',
         ];
       case 2:
         return [
-          "var(--main-a-0-ddff, #A0DDFF)",
-          "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)",
-          "var(--gray-scale-26282-b, #26282B)",
-          "#FFF",
+          'var(--main-a-0-ddff, #A0DDFF)',
+          'var(--gray-scale-1-b-1-d-1-f, #1B1D1F)',
+          'var(--gray-scale-26282-b, #26282B)',
+          '#FFF',
         ];
       default:
-        return "black";
+        return 'black';
     }
   };
   const navigator = useNavigate();
   const gotoList = (param) => {
     navigator(`/search/list?purpose=${param}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   let bannerWidth = "60rem";
   return (
@@ -156,8 +156,8 @@ export default function Carousel({ content }) {
                   {banner.keyword} 레크레이션을 찾으시나요?
                 </Title>
                 <Comment color={getColor(banner.index)}>
-                  <span style={{ fontWeight: "700" }}>{banner.keyword}</span>{" "}
-                  키워드로 작성된 레크레이션을 보러가세요.
+                  <span style={{ fontWeight: '700' }}>{banner.keyword}</span> 키워드로 작성된
+                  레크레이션을 보러가세요.
                 </Comment>
                 <Button
                   color={getColor(banner.index)}
@@ -167,10 +167,7 @@ export default function Carousel({ content }) {
                 </Button>
               </Left>
 
-              <img
-                src={banner.img}
-                style={{ width: "161px", height: "161px" }}
-              />
+              <img src={banner.img} style={{ width: '161px', height: '161px' }} />
             </Banner>
           </div>
         ))}

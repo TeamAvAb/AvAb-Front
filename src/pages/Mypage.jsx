@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import MyInfoBox from "../components/mypage/MyInfoBox";
-import { Helmet } from "react-helmet";
-import LogoutModal from "../components/modal/LogoutModal";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import MyInfoBox from '../components/mypage/MyInfoBox';
+import { Helmet } from 'react-helmet';
+import LogoutModal from '../components/modal/LogoutModal';
 
 export default function Mypage() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -11,12 +11,12 @@ export default function Mypage() {
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleFavoritesClick = () => {
     navigate(`/mypage/favorites`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -36,18 +36,11 @@ export default function Mypage() {
       <SideBar>
         <Title>마이페이지</Title>
         <MenuList>
-          <MenuItem
-            style={{ backgroundColor: "#B1BEFF" }}
-            onClick={handleMyInfoClick}
-          >
+          <MenuItem style={{ backgroundColor: '#B1BEFF' }} onClick={handleMyInfoClick}>
             내 정보
           </MenuItem>
-          <MenuItem onClick={handleFavoritesClick}>
-            즐겨 찾는 레크레이션
-          </MenuItem>
-          <MenuItem onClick={() => setIsLogoutModalOpen(true)}>
-            로그아웃
-          </MenuItem>
+          <MenuItem onClick={handleFavoritesClick}>즐겨 찾는 레크레이션</MenuItem>
+          <MenuItem onClick={() => setIsLogoutModalOpen(true)}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
       <Content>{<MyInfoBox />}</Content>
@@ -56,9 +49,7 @@ export default function Mypage() {
       <RightSide />
 
       {/*로그아웃 모달*/}
-      {isLogoutModalOpen && (
-        <LogoutModal handleModal={setIsLogoutModalOpen}></LogoutModal>
-      )}
+      {isLogoutModalOpen && <LogoutModal handleModal={setIsLogoutModalOpen}></LogoutModal>}
     </Container>
   );
 }

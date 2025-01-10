@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from 'react';
 
 function useDeboucedEffect(func, delay, deps) {
   const callback = useCallback(func, [deps]);

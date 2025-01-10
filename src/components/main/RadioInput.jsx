@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 export default function RadioInput({ content, setOption, selectedOption }) {
   const handleSelect = (param) => {
@@ -39,8 +39,7 @@ const Option = styled.button`
   border-radius: 9999px;
   box-sizing: border-box;
   padding: 0.8rem 1.8rem;
-  background: ${(props) =>
-    props.selected ? "var(--main-scale-b-1-beff, #B1BEFF)" : "#FFF"};
+  background: ${(props) => (props.selected ? 'var(--main-scale-b-1-beff, #B1BEFF)' : '#FFF')};
   text-align: center;
   color: ${(props) =>
     props.selected

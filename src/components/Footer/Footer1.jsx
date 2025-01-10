@@ -1,35 +1,35 @@
-import React from "react";
-import FooterP from "../../assets/Footer/FooterP.svg";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import useLoginStore from "../../stores/loginStore"
-import useLoginModalStore from "../../stores/loginModalStore";
+import React from 'react';
+import FooterP from '../../assets/Footer/FooterP.svg';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import useLoginStore from '../../stores/loginStore';
+import useLoginModalStore from '../../stores/loginModalStore';
 
 export default function Footer() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
-  
+
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
     if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else modalControl();
   };
   const ToInstagram = () => {
-    window.open("https://www.instagram.com/avab.ovo/", "Avab Instagram");
+    window.open('https://www.instagram.com/avab.ovo/', 'Avab Instagram');
   };
   return (
     <FooterWrap>
@@ -66,12 +66,7 @@ export default function Footer() {
 const FooterWrap = styled.footer`
   position: relative;
   height: 577px;
-  background-image: linear-gradient(
-    to bottom,
-    white 104px,
-    #e9ebed 104px,
-    #e9ebed 577px
-  );
+  background-image: linear-gradient(to bottom, white 104px, #e9ebed 104px, #e9ebed 577px);
   display: flex;
   flex-direction: column;
   justify-content: center;

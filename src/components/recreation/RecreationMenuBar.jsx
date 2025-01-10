@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 export default function RecreationMenuBar({ scrollRefs }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const offset = -90;
   const MenuBar = [
-    { idx: 0, name: "상세정보" },
-    { idx: 1, name: "리뷰 및 평가" },
-    { idx: 2, name: "연관 레크레이션" },
-    { idx: 3, name: "연관 플로우" },
+    { idx: 0, name: '상세정보' },
+    { idx: 1, name: '리뷰 및 평가' },
+    { idx: 2, name: '연관 레크레이션' },
+    { idx: 3, name: '연관 플로우' },
   ];
 
   useEffect(() => {
@@ -20,8 +20,7 @@ export default function RecreationMenuBar({ scrollRefs }) {
         if (
           ref.current &&
           ref.current.offsetTop + offset <= scrollPosition &&
-          ref.current.offsetTop + ref.current.offsetHeight + offset >
-            scrollPosition
+          ref.current.offsetTop + ref.current.offsetHeight + offset > scrollPosition
         ) {
           activeSectionIndex = index;
         }
@@ -30,10 +29,10 @@ export default function RecreationMenuBar({ scrollRefs }) {
       setActiveIndex(activeSectionIndex);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [scrollRefs]);
 
@@ -42,7 +41,7 @@ export default function RecreationMenuBar({ scrollRefs }) {
 
     window.scrollTo({
       top: targetPosition,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -52,7 +51,7 @@ export default function RecreationMenuBar({ scrollRefs }) {
         <NavBtn
           key={idx}
           onClick={() => handleButtonClick(index)}
-          className={activeIndex === index ? "active" : ""}
+          className={activeIndex === index ? 'active' : ''}
         >
           {name}
         </NavBtn>

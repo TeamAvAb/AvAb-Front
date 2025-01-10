@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 export default function ModalPortal({ children }) {
   const [el, setEl] = useState(null);
 
   useEffect(() => {
-    let element = document.getElementById("modal");
+    let element = document.getElementById('modal');
     let created = false;
 
     if (!element) {
-      element = document.createElement("div");
-      element.id = "modal";
+      element = document.createElement('div');
+      element.id = 'modal';
       document.body.appendChild(element);
       created = true;
     }

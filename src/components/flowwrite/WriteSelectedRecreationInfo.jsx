@@ -1,22 +1,28 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import fix from "../../assets/flowwrite/fix_flow_write.png";
-import deleteIcon from "../../assets/flowwrite/deleteIcon.png";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import fix from '../../assets/flowwrite/fix_flow_write.png';
+import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
 
 const DetailMapping = {
-    COOPERATIVE: "협동",
-    QUICKNESS: "순발력",
-    SENSIBLE: "센스",
-    BRAIN: "두뇌",
-    CREATIVE: "창의력",
-    ACTIVE: "액티브",
-    PSYCHOLOGICAL: "심리",
-    LUCK: "행운",
-    COMMON_SENSE: "상식",
-    PREPARATION: "준비물",
-  };
+  COOPERATIVE: '협동',
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  BRAIN: '두뇌',
+  CREATIVE: '창의력',
+  ACTIVE: '액티브',
+  PSYCHOLOGICAL: '심리',
+  LUCK: '행운',
+  COMMON_SENSE: '상식',
+  PREPARATION: '준비물',
+};
 
-export default function WriteSelectedRecreationInfo({ num, onDelete, title, selectedKeywords, time }) {
+export default function WriteSelectedRecreationInfo({
+  num,
+  onDelete,
+  title,
+  selectedKeywords,
+  time,
+}) {
   const [editableTitle, setEditableTitle] = useState(title);
 
   const handleTitleChange = (e) => {
@@ -28,7 +34,7 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
   };
 
   // 키워드를 한국어로 변환
-  const translatedKeywords = selectedKeywords.map(keyword => DetailMapping[keyword] || keyword);
+  const translatedKeywords = selectedKeywords.map((keyword) => DetailMapping[keyword] || keyword);
 
   return (
     <Container>
@@ -42,16 +48,16 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
             onChange={handleTitleChange}
             placeholder="레크레이션 제목 입력"
             style={{
-              fontSize: "20px",
-              fontWeight: "700",
-              border: "none",
-              outline: "none",
+              fontSize: '20px',
+              fontWeight: '700',
+              border: 'none',
+              outline: 'none',
             }}
           />
           <img
             src={fix}
             alt="Fix"
-            style={{ width: "24px", height: "24px", cursor: "pointer" }}
+            style={{ width: '24px', height: '24px', cursor: 'pointer' }}
             onClick={handleDeleteClick}
           />
         </RecreationTitle>
@@ -62,13 +68,13 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
               type="text"
               placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
               style={{
-                width: "90%",
-                height: "18px",
-                backgroundColor: "#E9EBED",
+                width: '90%',
+                height: '18px',
+                backgroundColor: '#E9EBED',
               }}
             />
           ) : (
-            <div style={{ width: "90%", display: "flex" }}>
+            <div style={{ width: '90%', display: 'flex' }}>
               {translatedKeywords.map((keyword, index) => (
                 <StyledKeyword key={index}>
                   {keyword}
@@ -76,10 +82,10 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
                     src={deleteIcon}
                     alt="Delete"
                     style={{
-                      width: "20px",
-                      height: "20px",
-                      marginLeft: "5px",
-                      cursor: "pointer",
+                      width: '20px',
+                      height: '20px',
+                      marginLeft: '5px',
+                      cursor: 'pointer',
                     }}
                     onClick={(event) => handleDeleteKeyword(index, event)}
                   />
@@ -90,12 +96,8 @@ export default function WriteSelectedRecreationInfo({ num, onDelete, title, sele
         </KeywordBox>
 
         <PlayTime>
-          <div style={{ fontSize: "16px", fontWeight: "500", color: "#1B1D1F" }}>
-            플레이까지
-          </div>
-          <div style={{ fontSize: "16px", fontWeight: "600", color: "#1B1D1F" }}>
-            {time} 분
-          </div>
+          <div style={{ fontSize: '16px', fontWeight: '500', color: '#1B1D1F' }}>플레이까지</div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: '#1B1D1F' }}>{time} 분</div>
         </PlayTime>
       </InfoBox>
     </Container>
@@ -122,8 +124,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) =>
-    props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`};
+  top: ${(props) => (props.time === 10 ? '0' : `calc(-${props.time / 10 - 1} * 119.04px)`)};
   min-height: 119.004px;
 `;
 

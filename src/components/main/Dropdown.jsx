@@ -1,7 +1,7 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import useDetectClose from "../../hooks/main/useDetectClose";
-import downIconImg from "../../assets/main/downIcon.svg";
+import React from 'react';
+import styled, { css } from 'styled-components';
+import useDetectClose from '../../hooks/main/useDetectClose';
+import downIconImg from '../../assets/main/downIcon.svg';
 
 export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
@@ -25,12 +25,8 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
           ))}
         </Ul>
       </Menu>
-      <DropdownButton
-        onClick={myPageHandler}
-        ref={myPageRef}
-        selected={selectedOption}
-      >
-        {selectedOption.length === 0 ? "10" : selectedOption}
+      <DropdownButton onClick={myPageHandler} ref={myPageRef} selected={selectedOption}>
+        {selectedOption.length === 0 ? '10' : selectedOption}
         분
         <img src={downIconImg} style={{ width: "1.2rem" }} />
       </DropdownButton>
@@ -65,8 +61,8 @@ const DropdownButton = styled.button`
   font-size: 1rem;
   color: ${(props) =>
     props.selected.length === 0
-      ? "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"
-      : "var(--gray-scale-464-c-52, #464C52)"};
+      ? 'var(--gray-scale-9-fa-4-a-9, #9FA4A9)'
+      : 'var(--gray-scale-464-c-52, #464C52)'};
   &:focus {
     border: 1px solid var(--gray-scale-9-fa-4-a-9, #9fa4a9);
   }
@@ -125,8 +121,8 @@ const Li = styled.button`
   width: 100%;
   color: ${(props) =>
     props.selected
-      ? "var(--gray-scale-464-c-52, #464C52)"
-      : "var(--gray-scale-9-fa-4-a-9, #9FA4A9)"};
+      ? 'var(--gray-scale-464-c-52, #464C52)'
+      : 'var(--gray-scale-9-fa-4-a-9, #9FA4A9)'};
   border: none;
   background: #fff;
   font-size: 1rem;

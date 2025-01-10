@@ -1,22 +1,22 @@
-import React from "react";
-import { privateAPI } from "../../apis/user";
-import styled from "styled-components";
-import Scrap from "../../assets/watchflow/scrap.png";
-import Scrap2 from "../../assets/watchflow/scrap2.png";
-import Time from "../../assets/watchflow/time.png";
-import View from "../../assets/watchflow/view.png";
-import Write from "../../assets/watchflow/write.png";
-import User from "../../assets/watchflow/user.png";
-import { useNavigate } from "react-router-dom";
-import useLoginModalStore from "../../stores/loginModalStore";
-import useLoginStore from "../../stores/loginStore";
+import React from 'react';
+import { privateAPI } from '../../apis/user';
+import styled from 'styled-components';
+import Scrap from '../../assets/watchflow/scrap.png';
+import Scrap2 from '../../assets/watchflow/scrap2.png';
+import Time from '../../assets/watchflow/time.png';
+import View from '../../assets/watchflow/view.png';
+import Write from '../../assets/watchflow/write.png';
+import User from '../../assets/watchflow/user.png';
+import { useNavigate } from 'react-router-dom';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
 
 const PurposeList = {
-  MT: "MT",
-  GATHERING: "모임",
-  WORKSHOP: "워크샵",
-  RETREAT: "수련회",
-  SPORTS_DAY: "체육대회",
+  MT: 'MT',
+  GATHERING: '모임',
+  WORKSHOP: '워크샵',
+  RETREAT: '수련회',
+  SPORTS_DAY: '체육대회',
 };
 
 export default function FlowBox({ datas, setScrap }) {
@@ -42,7 +42,7 @@ export default function FlowBox({ datas, setScrap }) {
   const navigate = useNavigate();
 
   const moveToMoreWatchFlow = (moreData) => {
-    localStorage.setItem("moreData", JSON.stringify(moreData));
+    localStorage.setItem('moreData', JSON.stringify(moreData));
     navigate(`/flow/morewatchflow/${moreData.title}`);
   };
 
@@ -57,17 +57,9 @@ export default function FlowBox({ datas, setScrap }) {
             {/* 스크랩 버튼 */}
             <FlowBoxScrapBox>
               {data.isScraped ? (
-                <FlowBoxScrapImg
-                  src={Scrap2}
-                  alt="스크랩O"
-                  onClick={() => DoScrap(data.id)}
-                />
+                <FlowBoxScrapImg src={Scrap2} alt="스크랩O" onClick={() => DoScrap(data.id)} />
               ) : (
-                <FlowBoxScrapImg
-                  src={Scrap}
-                  alt="스크랩X"
-                  onClick={() => DoScrap(data.id)}
-                />
+                <FlowBoxScrapImg src={Scrap} alt="스크랩X" onClick={() => DoScrap(data.id)} />
               )}
             </FlowBoxScrapBox>
 
@@ -81,50 +73,32 @@ export default function FlowBox({ datas, setScrap }) {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Time}
-                    alt="시간"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={Time} alt="시간" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={View}
-                    alt="조회수"
-                    style={{ width: "38px", height: "38px" }}
-                  />
+                  <img src={View} alt="조회수" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={Write}
-                    alt="작성자"
-                    style={{ width: "35px", height: "35px" }}
-                  />
+                  <img src={Write} alt="작성자" style={{ width: '35px', height: '35px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.author.username}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img
-                    src={User}
-                    alt="스크랩 수"
-                    style={{ width: "24px", height: "24px" }}
-                  />
+                  <img src={User} alt="스크랩 수" style={{ width: '24px', height: '24px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
             </FlowBoxDetailBox>
 
             {/* 자세히 보기 */}
-            <MoreBtn onClick={() => moveToMoreWatchFlow(data)}>
-              자세히 보기
-            </MoreBtn>
+            <MoreBtn onClick={() => moveToMoreWatchFlow(data)}>자세히 보기</MoreBtn>
           </MyFlowBoxChild>
         ))}
       </MyFlowBoxParent>

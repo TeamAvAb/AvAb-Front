@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import React, { forwardRef, useEffect, useState } from "react";
-import FlowBox from "./FlowBox";
-import { publicAPI } from "../../apis/user";
+import styled from 'styled-components';
+import React, { forwardRef, useEffect, useState } from 'react';
+import FlowBox from './FlowBox';
+import { publicAPI } from '../../apis/user';
 const RecreationFlow = forwardRef(({ recreationId }, ref) => {
   const [flowData, setFlowData] = useState(null); // 플로우 정보
   const [flowSecondData, setFlowSecondData] = useState(null);
@@ -11,10 +11,8 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
   useEffect(() => {
     const fetchFlows = async () => {
       try {
-        const response = await publicAPI.get(
-          `/api/recreations/${recreationId}/related/flows`
-        );
-        console.log("플로우: ", response.data);
+        const response = await publicAPI.get(`/api/recreations/${recreationId}/related/flows`);
+        console.log('플로우: ', response.data);
         if (response.data.result.length > 0) {
           setFlowData(response.data.result[0]?.flowDetail || {});
           setFlowFirstRecreations(response.data.result[0]?.recreations || []);
@@ -24,7 +22,7 @@ const RecreationFlow = forwardRef(({ recreationId }, ref) => {
           setFlowSecondRecreations(response.data.result[1]?.recreations || []);
         }
       } catch (error) {
-        console.error("플로우 에러 발생", error);
+        console.error('플로우 에러 발생', error);
       }
     };
 

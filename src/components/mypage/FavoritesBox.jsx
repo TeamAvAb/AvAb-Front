@@ -1,35 +1,33 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { privateAPI } from "../../apis/user";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { privateAPI } from '../../apis/user';
+import { Link, useNavigate } from 'react-router-dom';
 
-import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
-import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
+import starIcon from '../../assets/mypage/mingcute_star-fill.svg';
+import { ReactComponent as HeartImg } from '../../assets/main/heart.svg';
 
 export default function FavoritesBox({ content, onFavoriteChange }) {
   const navigate = useNavigate();
   const [isFav, setIsFav] = useState(content.isFavorite);
 
   const keywordParam = {
-    COOPERATIVE: "협동",
-    QUICKNESS: "순발력",
-    SENSIBLE: "센스",
-    BRAIN: "두뇌",
-    CREATIVE: "창의력",
-    ACTIVE: "액티브",
-    PSYCHOLOGICAL: "심리",
-    LUCK: "행운",
-    COMMON_SENSE: "상식",
-    PREPARATION: "준비물",
+    COOPERATIVE: '협동',
+    QUICKNESS: '순발력',
+    SENSIBLE: '센스',
+    BRAIN: '두뇌',
+    CREATIVE: '창의력',
+    ACTIVE: '액티브',
+    PSYCHOLOGICAL: '심리',
+    LUCK: '행운',
+    COMMON_SENSE: '상식',
+    PREPARATION: '준비물',
   };
 
   const addToFavorite = (id) => {
     const call = async () => {
       try {
-        const response = await privateAPI.post(
-          `/api/recreations/${id}/favorites`
-        );
-        console.log("즐겨찾기 추가/해제 응답 : ", response);
+        const response = await privateAPI.post(`/api/recreations/${id}/favorites`);
+        console.log('즐겨찾기 추가/해제 응답 : ', response);
         if (response.data.result.isFavorite === true) {
           setIsFav(true);
           onFavoriteChange(); // 상위 컴포넌트에 상태 변경 알림
@@ -38,7 +36,7 @@ export default function FavoritesBox({ content, onFavoriteChange }) {
           onFavoriteChange(); // 상위 컴포넌트에 상태 변경 알림
         }
       } catch (error) {
-        console.log("즐겨찾기 추가/해제 에러 : ", error);
+        console.log('즐겨찾기 추가/해제 에러 : ', error);
       }
     };
     call();
@@ -53,17 +51,16 @@ export default function FavoritesBox({ content, onFavoriteChange }) {
           <Favorite isFav={isFav} onClick={() => addToFavorite(content.id)} />
         </ImgSpace>
         <Explain
-          to={"/recreation/detail/" + content.id}
+          to={'/recreation/detail/' + content.id}
           onClick={() => {
             window.scrollTo(0, 0); // 페이지 이동 전에 스크롤을 맨 위로 이동
-            navigate("/recreation/detail/" + content.id);
+            navigate('/recreation/detail/' + content.id);
           }}
         >
           <Section1>{content.title}</Section1>
           <SectionWrap>
             <Section2>
-              {keywordParam[content.keywordList[0]]},{" "}
-              {keywordParam[content.keywordList[1]]},{" "}
+              {keywordParam[content.keywordList[0]]}, {keywordParam[content.keywordList[1]]},{' '}
               {keywordParam[content.keywordList[2]]}
             </Section2>
             <Section3 src={starIcon} />
@@ -129,7 +126,7 @@ const Favorite = styled(HeartImg)`
   margin-top: 140px;
   width: 42px;
   cursor: pointer;
-  fill: ${(props) => (props.favorite === true ? "#E9EBED" : "#FFAA29")};
+  fill: ${(props) => (props.favorite === true ? '#E9EBED' : '#FFAA29')};
 `;
 
 const Explain = styled(Link)`
