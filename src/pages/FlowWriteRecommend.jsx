@@ -7,45 +7,44 @@ import writeSelect3 from '../assets/flowwrite/write_select_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
 import fast from '../assets/flowwrite/fast.png';
-import RecreationInfo from "../components/flowwrite/RecommendFlowInfo";
-import axios from "axios";
-import imgGo4 from '../assets/flowwrite/ImgGo4.png'
+import RecreationInfo from '../components/flowwrite/RecommendFlowInfo';
+import axios from 'axios';
+import imgGo4 from '../assets/flowwrite/ImgGo4.png';
 
 export default function FlowWriteRecommend() {
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [flowData, setFlowData] = useState([]);
-  const [playTime, setPlayTime] = useState(''); 
+  const [playTime, setPlayTime] = useState('');
   const [selectedKeywords, setSelectedKeywords] = useState([]);
 
   const keywordMappings = {
-    WORKSHOP: "워크샵",
-    SPORTS_DAY: "체육대회",
-    MT: "MT",
-    GATHERING: "모임",
-    RETREAT: "수련회",
+    WORKSHOP: '워크샵',
+    SPORTS_DAY: '체육대회',
+    MT: 'MT',
+    GATHERING: '모임',
+    RETREAT: '수련회',
   };
 
   // 로컬 스토리지에서 값 가져오기
   useEffect(() => {
-    const savedPlayTime = localStorage.getItem("playTime");
+    const savedPlayTime = localStorage.getItem('playTime');
     if (savedPlayTime) {
       setPlayTime(savedPlayTime);
       console.log('Parsed Play Time:', savedPlayTime); // 값 확인
     }
 
-    const savedKeywords = localStorage.getItem("selectedKeywords");
+    const savedKeywords = localStorage.getItem('selectedKeywords');
     if (savedKeywords) {
       const parsedKeywords = JSON.parse(savedKeywords);
       console.log('Parsed Keywords:', parsedKeywords); // 값 확인
       const englishKeywords = parsedKeywords.map(
-        (keyword) => Object.keys(keywordMappings).find(key => keywordMappings[key] === keyword) || keyword // 키워드를 영어로 변환
+        (keyword) =>
+          Object.keys(keywordMappings).find((key) => keywordMappings[key] === keyword) || keyword, // 키워드를 영어로 변환
       );
       setSelectedKeywords(englishKeywords);
     }
   }, []); // 컴포넌트가 처음 마운트될 때만 실행
-
-
 
   // 플로우 데이터 가져오기
   useEffect(() => {
@@ -69,20 +68,22 @@ export default function FlowWriteRecommend() {
           },
         });
         console.log(response.data); // API 응답 확인
-        
+
         if (response.data.result) {
           // playTime과 totalPlayTime이 같은 플로우만 필터링
-          const validFlowData = response.data.result.filter(flow => flow.flowDetail.totalPlayTime === parseInt(playTime));
+          const validFlowData = response.data.result.filter(
+            (flow) => flow.flowDetail.totalPlayTime === parseInt(playTime),
+          );
           setFlowData(validFlowData);
-          
+
           if (validFlowData.length === 0) {
-            console.warn("No flow data found that matches the exact play time.");
+            console.warn('No flow data found that matches the exact play time.');
           }
         } else {
-          console.warn("No result found in API response.");
+          console.warn('No result found in API response.');
         }
       } catch (error) {
-        console.error("API Error:", error);
+        console.error('API Error:', error);
       }
     };
 
@@ -120,35 +121,38 @@ export default function FlowWriteRecommend() {
     }
   };
 
-    return (
-        <FlowWriteRecommendWrap>
-          <ProgressbarStyle>
-            <ProgressBarItem>
-              <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
-              <span>기본정보</span>
-              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-            </ProgressBarItem>
-            <ProgressBarItem>
-              <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
-              <span>세부정보</span>
-              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-            </ProgressBarItem>
-            <ProgressBarItem>
-              <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
-              <span style={{ color: '#19297C' }}>추천 플로우</span>
-              <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
-            </ProgressBarItem>
-            <ProgressBarItem>
-            <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
-              <span>플로우 내용</span>
-            </ProgressBarItem>
-          </ProgressbarStyle>
-          <FlowwriteRecommend>
-            <div>
-            <AdditionalExplain>
-              <span>입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를 <strong>클릭</strong>하여 저장해주세요.</span>
-            </AdditionalExplain>
-            <RecommendWrapper>
+  return (
+    <FlowWriteRecommendWrap>
+      <ProgressbarStyle>
+        <ProgressBarItem>
+          <img src={write1} alt="Write 1" style={{ width: '50px', height: '50px' }} />
+          <span>기본정보</span>
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+        </ProgressBarItem>
+        <ProgressBarItem>
+          <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
+          <span>세부정보</span>
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+        </ProgressBarItem>
+        <ProgressBarItem>
+          <img src={writeSelect3} alt="Write Select 3" style={{ width: '50px', height: '50px' }} />
+          <span style={{ color: '#19297C' }}>추천 플로우</span>
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
+        </ProgressBarItem>
+        <ProgressBarItem>
+          <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
+          <span>플로우 내용</span>
+        </ProgressBarItem>
+      </ProgressbarStyle>
+      <FlowwriteRecommend>
+        <div>
+          <AdditionalExplain>
+            <span>
+              입력한 내용을 기반으로 한 추천 플로우입니다. 저장하고 싶은 플로우를{' '}
+              <strong>클릭</strong>하여 저장해주세요.
+            </span>
+          </AdditionalExplain>
+          <RecommendWrapper>
             <Recommend1 selected={selectedButton === '1안'}>
               <Select1Button
                 onClick={() => handleButtonClick('1안')}
@@ -157,9 +161,11 @@ export default function FlowWriteRecommend() {
               >
                 1안
               </Select1Button>
-              <div style={{ width: "393px", textAlign: "center" }}>
+              <div style={{ width: '393px', textAlign: 'center' }}>
                 <FlowTitle hasData={flowData.length > 0}>
-                  {flowData.length > 0 ? flowData[0].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                  {flowData.length > 0
+                    ? flowData[0].flowDetail.title
+                    : '추천 플로우가 존재하지 않습니다.'}
                 </FlowTitle>
               </div>
               <RecreationBox>
@@ -174,9 +180,11 @@ export default function FlowWriteRecommend() {
               >
                 2안
               </Select2Button>
-              <div style={{ width: "393px", textAlign: "center" }}>
+              <div style={{ width: '393px', textAlign: 'center' }}>
                 <FlowTitle hasData={flowData.length > 1}>
-                  {flowData.length > 1 ? flowData[1].flowDetail.title : "추천 플로우가 존재하지 않습니다."}
+                  {flowData.length > 1
+                    ? flowData[1].flowDetail.title
+                    : '추천 플로우가 존재하지 않습니다.'}
                 </FlowTitle>
               </div>
               <RecreationBox>
@@ -185,26 +193,28 @@ export default function FlowWriteRecommend() {
             </Recommend2>
           </RecommendWrapper>
 
-            <CardGoContent onClick={handleNextClick}>
-                <CardGoContainer>
-                <CardGoTextContainer>
+          <CardGoContent onClick={handleNextClick}>
+            <CardGoContainer>
+              <CardGoTextContainer>
                 <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
-                <CardGo4SubText>원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!</CardGo4SubText>
-                </CardGoTextContainer>
-                <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
-                <img src={fast} alt="Fast" style={{ width: '44px', height: '44px', marginLeft: '225px'}} />
-                </CardGoContainer>
-              </CardGoContent>
-            <LastButton onClick={handleBeforeClick}>
-              이전으로
-            </LastButton>
-            <NextButton onClick={handleNextClick}>
-              다음으로
-            </NextButton>
-            </div>
-          </FlowwriteRecommend>
-        </FlowWriteRecommendWrap>
-      );
+                <CardGo4SubText>
+                  원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!
+                </CardGo4SubText>
+              </CardGoTextContainer>
+              <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
+              <img
+                src={fast}
+                alt="Fast"
+                style={{ width: '44px', height: '44px', marginLeft: '225px' }}
+              />
+            </CardGoContainer>
+          </CardGoContent>
+          <LastButton onClick={handleBeforeClick}>이전으로</LastButton>
+          <NextButton onClick={handleNextClick}>다음으로</NextButton>
+        </div>
+      </FlowwriteRecommend>
+    </FlowWriteRecommendWrap>
+  );
 }
 
 const FlowWriteRecommendWrap = styled.div`
@@ -300,8 +310,7 @@ const Select1Button = styled.button`
   border-radius: 50px;
   font-size: 20px;
   font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
-  color: ${({ clicked, disabled }) => 
-    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
+  color: ${({ clicked, disabled }) => (disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F')};
   align-items: center;
   cursor: pointer;
 `;
@@ -315,7 +324,7 @@ const Recommend1 = styled(RecommendBase)`
   width: 552px;
   margin-left: 113px;
   position: relative;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 
   ${Select1Button} {
     position: absolute;
@@ -332,8 +341,7 @@ const Select2Button = styled.button`
   border-radius: 50px;
   font-size: 20px;
   font-weight: ${({ disabled }) => (disabled ? 400 : 700)};
-  color: ${({ clicked, disabled }) => 
-    disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F'};
+  color: ${({ clicked, disabled }) => (disabled ? '#cacdd2' : clicked ? '#fff' : '#1B1D1F')};
   cursor: pointer;
 `;
 
@@ -341,7 +349,7 @@ const Recommend2 = styled(RecommendBase)`
   width: 552px;
   margin-left: 25px;
   position: relative;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 
   ${Select2Button} {
     position: absolute;
@@ -351,7 +359,7 @@ const Recommend2 = styled(RecommendBase)`
 
 const FlowTitle = styled.div`
   margin-bottom: 59px;
-  font-size: ${({ hasData }) => (hasData ? 24: 20)}px;
+  font-size: ${({ hasData }) => (hasData ? 24 : 20)}px;
   font-weight: ${({ hasData }) => (hasData ? 700 : 400)};
   color: ${({ hasData }) => (hasData ? 'inherit' : '#cacdd2')};
 `;

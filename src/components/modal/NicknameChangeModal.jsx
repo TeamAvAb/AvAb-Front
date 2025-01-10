@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import x from "../../assets/main/closeIcon.svg";
-import * as S from "./modal.style";
+import React from 'react';
+import styled from 'styled-components';
+import x from '../../assets/main/closeIcon.svg';
+import * as S from './modal.style';
 
 export default function NicknameChangeModal({ handleModal }) {
   return (

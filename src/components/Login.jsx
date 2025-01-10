@@ -1,9 +1,9 @@
-import React from "react";
-import { useLocation } from "react-router";
-import styled from "styled-components";
-import character from "../assets/main/login_character.png";
-import closeImg from "../assets/main/closeIcon.svg";
-import useLoginModalStore from "../stores/loginModalStore";
+import React from 'react';
+import { useLocation } from 'react-router';
+import styled from 'styled-components';
+import character from '../assets/main/login_character.png';
+import closeImg from '../assets/main/closeIcon.svg';
+import useLoginModalStore from '../stores/loginModalStore';
 
 export default function Login() {
   const { pathname } = useLocation();
@@ -11,7 +11,7 @@ export default function Login() {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   let REDIRECT_URI = null;
 
-  if (window.location.href.startsWith("http://localhost:3000/"))
+  if (window.location.href.startsWith('http://localhost:3000/'))
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
   else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
 
@@ -32,20 +32,15 @@ export default function Login() {
             <Comment>
               카카오 계정으로 <br />
               간편하게 로그인을 하고 <br />
-              <span style={{ fontWeight: "700" }}>
-                성공적인 레크레이션
-              </span>을 <br /> 경험해보세요!
+              <span style={{ fontWeight: '700' }}>성공적인 레크레이션</span>을 <br /> 경험해보세요!
             </Comment>
             <Button onClick={toKakaoLogin}>간편 로그인하기</Button>
           </Text>
-          <img
-            src={character}
-            style={{ width: "249px", height: "286px", objectFit: "cover" }}
-          />
+          <img src={character} style={{ width: '249px', height: '286px', objectFit: 'cover' }} />
         </Content>
         <Controls>
           <Control onClick={modalControl}>
-            <img src={closeImg} style={{ width: "24px", height: "25px" }} />
+            <img src={closeImg} style={{ width: '24px', height: '25px' }} />
             닫기
           </Control>
         </Controls>

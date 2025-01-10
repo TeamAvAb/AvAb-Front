@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import React, { useState } from "react";
-import yellowStar from "../../assets/recreation/yellowStar.svg";
-import greyStar from "../../assets/recreation/greyStar.svg";
-import { ReactComponent as GoodIcon } from "../../assets/recreation/good.svg";
-import { ReactComponent as BadIcon } from "../../assets/recreation/bad.svg";
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import yellowStar from '../../assets/recreation/yellowStar.svg';
+import greyStar from '../../assets/recreation/greyStar.svg';
+import { ReactComponent as GoodIcon } from '../../assets/recreation/good.svg';
+import { ReactComponent as BadIcon } from '../../assets/recreation/bad.svg';
 
 export default function ReviewBox({
   reviewId,
@@ -52,10 +52,7 @@ export default function ReviewBox({
           <LikeDislikeIcon active={like} />
           {like}
         </LikeDislikeBox>
-        <LikeDislikeBox
-          active={dislikeState}
-          onClick={() => handleDislikeClick(reviewId)}
-        >
+        <LikeDislikeBox active={dislikeState} onClick={() => handleDislikeClick(reviewId)}>
           <LikeDislikeIcon as={BadIcon} active={dislike} />
           {dislike}
         </LikeDislikeBox>
@@ -121,7 +118,7 @@ const ReviewContent = styled.div`
 const LikeDislikeIcon = styled(GoodIcon)`
   margin-right: 8px;
   fill: none;
-  stroke: ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
+  stroke: ${(props) => (props.active ? '#1b1d1f' : '#9fa4a9')};
   transition: stroke 0.3s;
 `;
 
@@ -130,13 +127,13 @@ const LikeDislikeBox = styled.div`
   align-items: center;
   width: max-content;
   border-radius: 50px;
-  border: 0.5px solid ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
+  border: 0.5px solid ${(props) => (props.active ? '#1b1d1f' : '#9fa4a9')};
   padding: 14px 21px;
-  color: ${(props) => (props.active ? "#1b1d1f" : "#9fa4a9")};
+  color: ${(props) => (props.active ? '#1b1d1f' : '#9fa4a9')};
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
-  margin-right: ${(props) => props.marginRight || "0px"};
+  margin-right: ${(props) => props.marginRight || '0px'};
   transition: all 0.3s;
   justify-content: center;
 `;

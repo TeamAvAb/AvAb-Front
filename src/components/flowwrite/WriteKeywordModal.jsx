@@ -1,13 +1,17 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import rechoice from '../../assets/flowwrite/rechoice.png';
 
-const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: propSelectedKeywords }) => {
-  console.log("Selected Keywords in PurposeKeywordModal:", propSelectedKeywords);
+const PurposeKeywordModal = ({
+  onClose,
+  onSelectKeywords,
+  selectedKeywords: propSelectedKeywords,
+}) => {
+  console.log('Selected Keywords in PurposeKeywordModal:', propSelectedKeywords);
   const [internalSelectedKeywords, setInternalSelectedKeywords] = useState([]);
 
   useEffect(() => {
-      setInternalSelectedKeywords(propSelectedKeywords);
+    setInternalSelectedKeywords(propSelectedKeywords);
   }, [propSelectedKeywords]);
 
   // const purposeGroups = ['워크샵', '체육대회', 'MT', '모임', '수련회'];
@@ -21,29 +25,31 @@ const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: prop
   // ];
 
   const keywordMappings = {
-    '워크샵': 'WORKSHOP',
-    '체육대회': 'SPORTS_DAY',
-    'MT': 'MT',
-    '모임': 'GATHERING',
-    '수련회': 'RETREAT'
+    워크샵: 'WORKSHOP',
+    체육대회: 'SPORTS_DAY',
+    MT: 'MT',
+    모임: 'GATHERING',
+    수련회: 'RETREAT',
   };
 
   const handleKeywordClick = (keyword) => {
     console.log(`Keyword: ${keyword}`);
     if (internalSelectedKeywords.includes(keyword)) {
-      setInternalSelectedKeywords(internalSelectedKeywords.filter((selected) => selected !== keyword));
+      setInternalSelectedKeywords(
+        internalSelectedKeywords.filter((selected) => selected !== keyword),
+      );
     } else {
       setInternalSelectedKeywords([...internalSelectedKeywords, keyword]);
     }
   };
 
   const handleResetKeywords = () => {
-      setInternalSelectedKeywords([]);
+    setInternalSelectedKeywords([]);
   };
 
   const handleSelectKeywords = () => {
-      onSelectKeywords(internalSelectedKeywords); // 선택된 키워드를 부모 컴포넌트로 전달
-      onClose();
+    onSelectKeywords(internalSelectedKeywords); // 선택된 키워드를 부모 컴포넌트로 전달
+    onClose();
   };
 
   return (
@@ -51,23 +57,21 @@ const PurposeKeywordModal = ({ onClose, onSelectKeywords, selectedKeywords: prop
       <ModalOverlay onClick={onClose} />
       <ModalContent>
         <KeywordWrap>
-        {Object.keys(keywordMappings).map((keyword) => (
+          {Object.keys(keywordMappings).map((keyword) => (
             <KeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
-              <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>{keyword}</KeywordSpan>
+              <KeywordSpan clicked={internalSelectedKeywords.includes(keyword)}>
+                {keyword}
+              </KeywordSpan>
             </KeywordButton>
           ))}
-            </KeywordWrap>
+        </KeywordWrap>
         <BottomContainer>
-        <CloseButton onClick={onClose}>
-            닫기
-          </CloseButton>
+          <CloseButton onClick={onClose}>닫기</CloseButton>
           <RechoiceButton onClick={handleResetKeywords}>
-          <img src={rechoice} alt="Rechoice" style={{ width: '42px', height: '42px' }} />
-          초기화
+            <img src={rechoice} alt="Rechoice" style={{ width: '42px', height: '42px' }} />
+            초기화
           </RechoiceButton>
-          <KeywordSelectButton onClick={handleSelectKeywords}>
-            선택 완료
-          </KeywordSelectButton>
+          <KeywordSelectButton onClick={handleSelectKeywords}>선택 완료</KeywordSelectButton>
         </BottomContainer>
       </ModalContent>
     </>
@@ -82,7 +86,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #464C52; /* Dark overlay color */
+  background-color: #464c52; /* Dark overlay color */
   opacity: 0.8; /* Adjust the opacity as needed */
   z-index: 1000; /* Ensure the modal is above other elements */
 `;
@@ -94,8 +98,8 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   width: 760px;
   height: 258px;
-  background-color: #FFF;
-  border: 0.5px solid #CACDD2;
+  background-color: #fff;
+  border: 0.5px solid #cacdd2;
   border-radius: 20px;
   z-index: 1001; /* Ensure the modal is above the overlay */
 `;
@@ -128,8 +132,8 @@ const KeywordSpan = styled.span`
 
 const BottomContainer = styled.div`
   height: 70px;
-  border-top: 0.5px solid var(--gray-scale-464-c-52, #464C52);
-  background: #FFF;
+  border-top: 0.5px solid var(--gray-scale-464-c-52, #464c52);
+  background: #fff;
 
   display: flex;
   align-items: center;
@@ -138,9 +142,9 @@ const BottomContainer = styled.div`
 const CloseButton = styled.button`
   width: 101px;
   height: 54px;
-  color: #1B1D1F;
+  color: #1b1d1f;
   background-color: #fff;
-  border: 1px solid #1B1D1F;
+  border: 1px solid #1b1d1f;
   border-radius: 50px;
   font-size: 19px;
   font-weight: 700;
@@ -150,10 +154,9 @@ const CloseButton = styled.button`
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #F7F8F9; /* hover 시의 배경색 변경 */
+    background-color: #f7f8f9; /* hover 시의 배경색 변경 */
   }
 `;
-
 
 const RechoiceButton = styled.button`
   height: 42px;
@@ -170,21 +173,21 @@ const RechoiceButton = styled.button`
 `;
 
 const KeywordSelectButton = styled.button`
-    width: 138px;
-    height: 54px;
-    background-color: #4036ED;
-    border: none;
-    border-radius: 50px;
-    font-size: 19px;
-    font-weight: 700;
-    color: #fff;
-    cursor: pointer;
-    margin-left: 40px;
-    margin-top: 16px;
-    align-items: center;
+  width: 138px;
+  height: 54px;
+  background-color: #4036ed;
+  border: none;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 40px;
+  margin-top: 16px;
+  align-items: center;
 
-    /* 선택적으로 hover 효과 추가 */
-    &:hover {
-    background-color: #3530ED; /* hover 시의 배경색 변경 */
-    }
+  /* 선택적으로 hover 효과 추가 */
+  &:hover {
+    background-color: #3530ed; /* hover 시의 배경색 변경 */
+  }
 `;

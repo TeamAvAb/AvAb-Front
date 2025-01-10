@@ -1,31 +1,27 @@
-import React from "react";
-import userDeleteRollback from "../../apis/userDeleteRollback";
-import { useNavigate } from "react-router";
-import x from "../../assets/main/closeIcon.svg";
-import * as S from "./modal.style";
-export default function WithdrawRollbackModal({
-  close,
-  rollbackState,
-  setRollbackState,
-}) {
+import React from 'react';
+import userDeleteRollback from '../../apis/userDeleteRollback';
+import { useNavigate } from 'react-router';
+import x from '../../assets/main/closeIcon.svg';
+import * as S from './modal.style';
+export default function WithdrawRollbackModal({ close, rollbackState, setRollbackState }) {
   const navigator = useNavigate();
   const deleteRollback = async () => {
     try {
       const response = await userDeleteRollback();
       if (response) {
-        console.log("복구 완료");
+        console.log('복구 완료');
         setRollbackState(true);
         close();
       } else {
-        console.log("복구 중 에러 발생", response);
+        console.log('복구 중 에러 발생', response);
       }
     } catch (error) {
-      throw new Error("복구 실패", error);
+      throw new Error('복구 실패', error);
     }
   };
   const navigateLogin = () => {
     close();
-    navigator("/");
+    navigator('/');
   };
   return (
     <S.Modal>

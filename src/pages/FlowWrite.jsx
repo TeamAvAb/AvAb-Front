@@ -1,62 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import WriteKeywordModal from "../components/flowwrite/WriteKeywordModal.jsx";
-import writeSelect1 from "../assets/flowwrite/write_select_1.png";
-import write2 from "../assets/flowwrite/write_2.png";
-import write3 from "../assets/flowwrite/write_3.png";
-import write4 from "../assets/flowwrite/write_4.png";
-import line from "../assets/flowwrite/line.png";
-import check from "../assets/flowwrite/check.png";
-import deleteIcon from "../assets/flowwrite/deleteIcon.png";
-import { Helmet } from "react-helmet";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import WriteKeywordModal from '../components/flowwrite/WriteKeywordModal.jsx';
+import writeSelect1 from '../assets/flowwrite/write_select_1.png';
+import write2 from '../assets/flowwrite/write_2.png';
+import write3 from '../assets/flowwrite/write_3.png';
+import write4 from '../assets/flowwrite/write_4.png';
+import line from '../assets/flowwrite/line.png';
+import check from '../assets/flowwrite/check.png';
+import deleteIcon from '../assets/flowwrite/deleteIcon.png';
+import { Helmet } from 'react-helmet';
 
 const keywordMappings = {
-  워크샵: "WORKSHOP",
-  체육대회: "SPORTS_DAY",
-  MT: "MT",
-  모임: "GATHERING",
-  수련회: "RETREAT",
+  워크샵: 'WORKSHOP',
+  체육대회: 'SPORTS_DAY',
+  MT: 'MT',
+  모임: 'GATHERING',
+  수련회: 'RETREAT',
 };
 
 export default function FlowWrite() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
-  const [playTime, setPlayTime] = useState("");
+  const [playTime, setPlayTime] = useState('');
   const [savedPlayTime, setSavedPlayTime] = useState(null); // 로컬스토리지 값 상태 관리
 
   useEffect(() => {
     // 페이지가 로드될 때 localStorage에서 playTime을 가져와서 상태를 설정합니다.
-    const savedValue = localStorage.getItem("playTime");
+    const savedValue = localStorage.getItem('playTime');
     if (savedValue) {
       setSavedPlayTime(savedValue); // 상태로 저장하되, 입력 필드는 비워둠
     }
   }, []);
 
   const handleNextClick = () => {
-    const englishKeywords = selectedKeywords.map(
-      (keyword) => keywordMappings[keyword]
-    );
-    localStorage.setItem("selectedKeywords", JSON.stringify(englishKeywords));
-    localStorage.setItem("playTime", playTime);
+    const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
+    localStorage.setItem('selectedKeywords', JSON.stringify(englishKeywords));
+    localStorage.setItem('playTime', playTime);
     setSavedPlayTime(playTime); // 저장된 값을 상태에 업데이트
-    console.log("Saved keywords:", englishKeywords);
-    console.log("Saved play time:", playTime);
-    navigate("/flow/write/detail");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    console.log("Selected keywords for API:", englishKeywords);
+    console.log('Saved keywords:', englishKeywords);
+    console.log('Saved play time:', playTime);
+    navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log('Selected keywords for API:', englishKeywords);
   };
 
   const handleBeforeClick = () => {
-    localStorage.removeItem("selectedKeywords");
-    localStorage.removeItem("playTime");
-    localStorage.removeItem("selectedGenders");
-    localStorage.removeItem("selectedAges");
-    localStorage.removeItem("selectedGroupSize");
-    localStorage.removeItem("selectedDetailKeywords");
-    navigate("/flow/my");
-    window.scrollTo({ top: 0, behavior: "smooth" }); // 화면 스크롤 최상단으로 이동
+    localStorage.removeItem('selectedKeywords');
+    localStorage.removeItem('playTime');
+    localStorage.removeItem('selectedGenders');
+    localStorage.removeItem('selectedAges');
+    localStorage.removeItem('selectedGroupSize');
+    localStorage.removeItem('selectedDetailKeywords');
+    navigate('/flow/my');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
 
   const handlePurposeSearchClick = () => {
@@ -71,7 +69,7 @@ export default function FlowWrite() {
 
   const handleSelectKeywords = (keywords) => {
     setSelectedKeywords(keywords);
-    console.log("Selected keywords:", keywords);
+    console.log('Selected keywords:', keywords);
     handleCloseModal();
     setIsModalOpen(true);
   };
@@ -93,10 +91,7 @@ export default function FlowWrite() {
           name="description"
           content="레크레이션 플로우를 작성하고 개인 맞춤형 레크레이션 계획을 쉽게 만들 수 있는 페이지입니다."
         />
-        <meta
-          name="keywords"
-          content="레크레이션, 플로우 작성, 아브아브, AvAb"
-        />
+        <meta name="keywords" content="레크레이션, 플로우 작성, 아브아브, AvAb" />
       </Helmet>
       {isModalOpen && (
         <WriteKeywordModal
@@ -107,38 +102,22 @@ export default function FlowWrite() {
       )}
       <ProgressbarStyle>
         <ProgressBarItem>
-          <img
-            src={writeSelect1}
-            alt="Write Select 1"
-            style={{ width: "50px", height: "50px" }}
-          />
-          <span style={{ color: "#19297C" }}>기본정보</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={writeSelect1} alt="Write Select 1" style={{ width: '50px', height: '50px' }} />
+          <span style={{ color: '#19297C' }}>기본정보</span>
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={write2}
-            alt="Write 2"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
           <span>세부정보</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={write3}
-            alt="Write 3"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write3} alt="Write 3" style={{ width: '50px', height: '50px' }} />
           <span>추천 플로우</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img
-            src={write4}
-            alt="Write 4"
-            style={{ width: "50px", height: "50px" }}
-          />
+          <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
           <span>플로우 내용</span>
         </ProgressBarItem>
       </ProgressbarStyle>
@@ -146,19 +125,15 @@ export default function FlowWrite() {
         <div>
           <TextLine>레크레이션의 목적을 입력해주세요.</TextLine>
           <PurposeSearch onClick={handlePurposeSearchClick}>
-            <img
-              src={check}
-              alt="Check"
-              style={{ width: "25px", height: "25px" }}
-            />
+            <img src={check} alt="Check" style={{ width: '25px', height: '25px' }} />
             {selectedKeywords.length === 0 ? (
               <PurposeInput
                 type="text"
                 placeholder="클릭하면 목적 선택창이 나와요!"
-                style={{ width: "90%", height: "18px" }}
+                style={{ width: '90%', height: '18px' }}
               />
             ) : (
-              <div style={{ width: "90%", display: "flex" }}>
+              <div style={{ width: '90%', display: 'flex' }}>
                 {selectedKeywords.map((keyword, index) => (
                   <React.Fragment key={index}>
                     <StyledKeyword>
@@ -167,15 +142,15 @@ export default function FlowWrite() {
                         src={deleteIcon}
                         alt="Delete"
                         style={{
-                          width: "20px",
-                          height: "20px",
-                          marginLeft: "5px",
-                          cursor: "pointer",
+                          width: '20px',
+                          height: '20px',
+                          marginLeft: '5px',
+                          cursor: 'pointer',
                         }}
                         onClick={(event) => handleDeleteKeyword(index, event)}
                       />
                     </StyledKeyword>
-                    {index !== selectedKeywords.length - 1 && " "}
+                    {index !== selectedKeywords.length - 1 && ' '}
                   </React.Fragment>
                 ))}
               </div>
@@ -186,7 +161,7 @@ export default function FlowWrite() {
             <PlayInput
               type="text"
               placeholder="시간을 10분 단위로 입력해주세요."
-              style={{ width: "90%", height: "18px" }}
+              style={{ width: '90%', height: '18px' }}
               value={playTime}
               onChange={(e) => setPlayTime(e.target.value)}
             />

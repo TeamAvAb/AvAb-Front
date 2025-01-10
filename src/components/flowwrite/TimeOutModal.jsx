@@ -1,18 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from '../../assets/flowwrite/close_modal.png'
+import close from '../../assets/flowwrite/close_modal.png';
 
 const TimeOut = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
-      <CloseButtonContainer>
-        <ModalCloseButton onClick={onClose} src={close} alt="Close" />
-      </CloseButtonContainer>
+        <CloseButtonContainer>
+          <ModalCloseButton onClick={onClose} src={close} alt="Close" />
+        </CloseButtonContainer>
         <ModalTitle>
-        플레이 시간을<br/>수정해주세요!
+          플레이 시간을
+          <br />
+          수정해주세요!
         </ModalTitle>
-        <ModalMessage>입력한 시간보다<br/>플레이 시간을 초과했어요.</ModalMessage>
+        <ModalMessage>
+          입력한 시간보다
+          <br />
+          플레이 시간을 초과했어요.
+        </ModalMessage>
         <ModalFixButton onClick={onClose}>시간 수정하기</ModalFixButton>
       </ModalContent>
     </ModalOverlay>
@@ -48,8 +54,8 @@ const ModalContent = styled.div`
   transform: translate(-50%, -50%);
   width: 440px;
   height: 435px;
-  background-color: #FFF;
-  border: 0.5px solid #CACDD2;
+  background-color: #fff;
+  border: 0.5px solid #cacdd2;
   border-radius: 20px;
   z-index: 1001;
   display: flex;
@@ -57,7 +63,6 @@ const ModalContent = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 
 const ModalTitle = styled.h2`
   font-size: 36px;
@@ -75,7 +80,7 @@ const ModalMessage = styled.p`
 const ModalFixButton = styled.button`
   width: 223px;
   height: 54px;
-  background-color: #4036ED;
+  background-color: #4036ed;
   padding: 15px 34px;
   border: none;
   border-radius: 50px;
@@ -87,7 +92,7 @@ const ModalFixButton = styled.button`
 
   /* 선택적으로 hover 효과 추가 */
   &:hover {
-    background-color: #3530ED; /* hover 시의 배경색 변경 */
+    background-color: #3530ed; /* hover 시의 배경색 변경 */
   }
 `;
 

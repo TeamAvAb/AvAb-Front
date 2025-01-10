@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import PenguinImg from "../assets/watchflow/penguin.png";
-import Flow from "../components/flow/FlowBox.jsx";
-import { useNavigate } from "react-router-dom";
-import Pagination from "../components/pagination/Pagination.jsx";
-import { publicAPI, privateAPI } from "../apis/user.js";
-import SortControl from "../components/SortControl.jsx";
-import useLoginModalStore from "../stores/loginModalStore.js";
-import useLoginStore from "../stores/loginStore.js";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import PenguinImg from '../assets/watchflow/penguin.png';
+import Flow from '../components/flow/FlowBox.jsx';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '../components/pagination/Pagination.jsx';
+import { publicAPI, privateAPI } from '../apis/user.js';
+import SortControl from '../components/SortControl.jsx';
+import useLoginModalStore from '../stores/loginModalStore.js';
+import useLoginStore from '../stores/loginStore.js';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
@@ -38,21 +38,17 @@ export default function WatchFlow() {
   // 스크랩 변화 감지 함수
   const [scrap, setScrap] = useState(false);
   // 필터링 옵션
-  const [order, setOrder] = useState("RECENT");
+  const [order, setOrder] = useState('RECENT');
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       if (isLoggedIn) {
-        const response = await privateAPI.get(
-          `/api/flows?page=${currentPage}&sortBy=${order}`
-        );
+        const response = await privateAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       } else {
-        const response = await publicAPI.get(
-          `/api/flows?page=${currentPage}&sortBy=${order}`
-        );
+        const response = await publicAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
         setDatas(response.data.result.flowList);
         setPages(response.data.result.totalPages);
       }
@@ -71,9 +67,7 @@ export default function WatchFlow() {
       {/* 플로우 왼쪽 메뉴바 */}
       <MyFlowMenuContainer>
         <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
-        <MyFlowMenuBox style={{ backgroundColor: "#B1BEFF" }}>
-          플로우 구경하기
-        </MyFlowMenuBox>
+        <MyFlowMenuBox style={{ backgroundColor: '#B1BEFF' }}>플로우 구경하기</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
         <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
       </MyFlowMenuContainer>
@@ -85,9 +79,7 @@ export default function WatchFlow() {
             <MyFlowBoxContainer>
               <MyFlowBoxImage src={PenguinImg} />
               <TitleBox>
-                <MyFlowBoxTitle onClick={moveToMakeFlow}>
-                  일정플로우 만들기
-                </MyFlowBoxTitle>
+                <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
               </TitleBox>
             </MyFlowBoxContainer>
             <SortControl
@@ -104,11 +96,7 @@ export default function WatchFlow() {
         </div>
 
         {/* 페이지번호 */}
-        <Pagination
-          currentPage={currentPage}
-          pageNum={pages}
-          setCurrentPage={setCurrentPage}
-        />
+        <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
       </MyFlowContainer>
       <RightSide />
     </MyFlowWrap>

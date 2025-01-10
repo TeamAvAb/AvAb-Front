@@ -1,108 +1,81 @@
-import React from "react";
-import styled from "styled-components";
-import LeftButton from "../../assets/watchflow/moveLeft.png";
-import RightButton from "../../assets/watchflow/moveRight.png";
+import React from 'react';
+import styled from 'styled-components';
+import LeftArrow from '../button/LeftArrow';
+import RightArrow from '../button/RightArrow';
 
-export default function Pagination({
-  currentPage,
-  pageNum,
-  setCurrentPage,
-  scrollLocation,
-}) {
+export default function Pagination({ currentPage, pageNum, setCurrentPage, scrollLocation }) {
   const pageN = [];
-  for (let i = 1; i <= pageNum; i++) pageN.push(i);
+  for (let i = 1; i <= pageNum; i++) {
+    pageN.push(i);
+  }
 
   const movePage = (page) => {
-    window.scrollTo({ top: scrollLocation || 0, behavior: "smooth" }); // 페이지 이동 시 리스트의 최상단으로 이동(scrollLocation 지정 안되었을 경우 페이지의 최상단으로 이동)
+    window.scrollTo({ top: scrollLocation || 0, behavior: 'smooth' }); // 페이지 이동 시 리스트의 최상단으로 이동(scrollLocation 지정 안되었을 경우 페이지의 최상단으로 이동)
     setCurrentPage(page);
   };
-  return (
-    <PageNumberContainer>
-      {/* 왼쪽 버튼 */}
-      <ImageBox
-        style={{ marginRight: "14px" }}
-        onClick={() => {
-          if (currentPage > 0) movePage(currentPage - 1);
-        }}
-      >
-        <ButtonImage src={LeftButton} alt="왼쪽 버튼" />
-      </ImageBox>
 
-      <MidContainer>
+  const handlePrevClick = () => {
+    if (currentPage > 0) {
+      movePage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < pageN.length - 1) {
+      movePage(currentPage + 1);
+    }
+  };
+
+  return (
+    <Container>
+      {/* 왼쪽 버튼 */}
+      <LeftArrow onClick={handlePrevClick} />
+
+      <Pages>
         {/* 페이지 번호 */}
         {pageN.map((num) => {
-          if (currentPage + 1 === num)
+          if (currentPage + 1 === num) {
             return (
               <PageNumber key={num} onClick={() => movePage(num - 1)} className="current">
                 {num}
               </PageNumber>
             );
-          else
+          } else {
             return (
               <PageNumber key={num} onClick={() => movePage(num - 1)}>
                 {num}
               </PageNumber>
             );
+          }
         })}
-      </MidContainer>
+      </Pages>
 
       {/* 오른쪽 버튼 */}
-      <ImageBox
-        style={{ marginLeft: "14px" }}
-        onClick={() => {
-          if (currentPage < pageN.length - 1) movePage(currentPage + 1);
-        }}
-      >
-        <ButtonImage src={RightButton} alt="오른쪽 버튼" />
-      </ImageBox>
-    </PageNumberContainer>
+      <RightArrow onClick={handleNextClick} />
+    </Container>
   );
 }
 
-// 페이지 번호
-const PageNumberContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: 82px;
-  margin-bottom: 113px;
-  height: 42px;
+  gap: 1rem;
 `;
 
-const MidContainer = styled.div`
+const Pages = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 8px;
-`
+  gap: 0.5rem;
+`;
 
-const PageNumber = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+const PageNumber = styled.button`
+  font-size: ${({ theme }) => theme.text.button.fontSize};
+  font-weight: ${({ theme }) => theme.text.button.fontWeight};
+  width: 2.6rem;
+  height: 2.6rem;
 
   &.current {
-  background-color: #8896df;
-  border-radius: 50%;
-  color: white;
+    background-color: ${({ theme }) => theme.color.secondary03};
+    border-radius: 9999px;
+    color: white;
   }
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 42px;
-  height: 42px;
-`;
-
-const ButtonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
-  cursor: pointer;
 `;

@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { privateAPI, publicAPI } from "../apis/user";
-import Search from "../components/main/Search";
-import Recreation from "../components/main/Recreation";
-import Pagination from "../components/pagination/Pagination";
-import SortControl from "../components/SortControl";
-import noScrapImg from "../assets/scrapflow/noScrap.png";
+import { privateAPI, publicAPI } from '../apis/user';
+import Search from '../components/main/Search';
+import Pagination from '../components/pagination/Pagination';
+import SortControl from '../components/SortControl';
+import noScrapImg from '../assets/scrapflow/noScrap.png';
 
-import { Helmet } from "react-helmet";
+import { Helmet } from 'react-helmet';
 
-import LoadingSpinner from "../components/LoadingSpinner";
-import useLoginStore from "../stores/loginStore";
-import RecreationCardL from "../components/card/recreationCard/RecreationCardL";
+import LoadingSpinner from '../components/LoadingSpinner';
+import useLoginStore from '../stores/loginStore';
+import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
 
 export default function SearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const location = useLocation();
-  const param = location.search + "&";
+  const param = location.search + '&';
 
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
@@ -29,7 +28,7 @@ export default function SearchList({}) {
   //전체 페이지 수
   const [pages, setPages] = useState(1);
   // 정렬 옵션
-  const [order, setOrder] = useState("LIKE");
+  const [order, setOrder] = useState('LIKE');
 
   // 처음 렌더링 시에만 데이터 불러오기
   useEffect(() => {
@@ -38,42 +37,42 @@ export default function SearchList({}) {
     const call = async () => {
       setLoading(true);
       try {
-        if (location.search === "") {
+        if (location.search === '') {
           if (isLoggedIn) {
             const response = await privateAPI.get(
-              `/api/recreations?page=${currentPage}&sortBy=${order}`
+              `/api/recreations?page=${currentPage}&sortBy=${order}`,
             );
-            console.log("전체 레크:", response);
+            console.log('전체 레크:', response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
             const response = await publicAPI.get(
-              `/api/recreations?page=${currentPage}&sortBy=${order}`
+              `/api/recreations?page=${currentPage}&sortBy=${order}`,
             );
-            console.log("전체 레크:", response);
+            console.log('전체 레크:', response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           }
         } else {
           if (isLoggedIn) {
             const response = await privateAPI.get(
-              requestURL + param + `sortBy=${order}&page=${currentPage}`
+              requestURL + param + `sortBy=${order}&page=${currentPage}`,
             );
-            console.log("전체 레크:", response);
+            console.log('전체 레크:', response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           } else {
             const response = await publicAPI.get(
-              requestURL + param + `sortBy=${order}&page=${currentPage}`
+              requestURL + param + `sortBy=${order}&page=${currentPage}`,
             );
-            console.log("전체 레크:", response);
+            console.log('전체 레크:', response);
             setDatas(response.data.result.recreationList);
             setPages(response.data.result.totalPages);
           }
         }
         setLoading(false);
       } catch (error) {
-        console.log("레크레이션 로드 요청 에러 : ", error);
+        console.log('레크레이션 로드 요청 에러 : ', error);
       }
     };
     call();
@@ -119,28 +118,21 @@ export default function SearchList({}) {
             <MyFlowNoneBox>
               <MyFlowNoneImg src={noScrapImg} />
               <MyFlowNoneDetail>
-                <div style={{ fontSize: "28px", fontWeight: "bold" }}>
-                  검색결과가 없습니다!
-                </div>
-                <div style={{ fontSize: "22px", marginTop: "8px" }}>
-                  다시 검색해보세요.
-                </div>
+                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>검색결과가 없습니다!</div>
+                <div style={{ fontSize: '22px', marginTop: '8px' }}>다시 검색해보세요.</div>
               </MyFlowNoneDetail>
             </MyFlowNoneBox>
           ) : (
             <>
               <RecreationWrapper>
-                {datas &&
-                  datas.map((data) => (
-                    <RecreationCardL content={data} key={data.id} />
-                  ))}
+                {datas && datas.map((data) => <RecreationCardL content={data} key={data.id} />)}
               </RecreationWrapper>
 
               <Pagination
                 currentPage={currentPage}
                 pageNum={pages}
                 setCurrentPage={setCurrentPage}
-                scrollLocation={document.querySelector("#move").offsetTop}
+                scrollLocation={document.querySelector('#move').offsetTop}
               />
             </>
           )}

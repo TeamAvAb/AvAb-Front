@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 const useLoginStore = create(
   persist(
@@ -21,9 +21,9 @@ const useLoginStore = create(
         }),
     }),
     {
-      name: "loginStorage",
-    }
-  )
+      name: 'loginStorage',
+    },
+  ),
 );
 
 export default useLoginStore;

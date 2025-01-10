@@ -1,33 +1,33 @@
-import { useNavigate } from "react-router-dom";
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import Footer1 from "./components/Footer/Footer1";
-import Footer2 from "./components/Footer/Footer2";
-import Footer3 from "./components/Footer/Footer3";
-import Main from "./pages/Main";
-import MyPage from "./pages/Mypage";
-import FavoriteRecreation from "./pages/FavoriteRecreation";
-import SearchList from "./pages/SearchList";
-import FlowWrite from "./pages/FlowWrite"; // 플로우 만들기 페이지
-import FlowWriteDetail from "./pages/FlowWriteDetail"; // 플로우 만들기 상세 페이지
-import FlowWriteRecommend from "./pages/FlowWriteRecommend"; // 플로우 만들기 추천 페이지
-import FlowWriteContent from "./pages/FlowWriteContent"; // 플로우 만들기 내용 페이지
-import RecreationDetail from "./pages/RecreationDetail"; // 레크레이션 상세정보 페이지
-import MyFlow from "./pages/MyFlow"; // 내 일정 플로우 페이지
-import WatchFlow from "./pages/WatchFlow"; // 플로우 구경하기
-import ScrapFlow from "./pages/ScrapFlow"; // 스크랩 한 플로우 보기
-import MoreMyflow from "./pages/MoreMyflow"; // 내가 만든 일정플로우 더보기
-import MoreWatchFlow from "./pages/MoreWatchFlow"; // 다른 사람이 만든 일정플로우 더보기
-import MoreScrapFlow from "./pages/MoreScrapFlow"; // 스크랩 한 일정플로우 더보기
-import Login from "./components/Login";
-import LoginLoading from "./pages/LoginLoading"; // 로그인 시 로딩 페이지
-import GlobalStyle from "./GlobalStyles"; // 전역 스타일
-import useLoginModalStore from "./stores/loginModalStore";
-import cryingAvab from "./assets/main/cryingAvab.svg";
-import styled from "styled-components";
-import theme from "./styles/theme";
-import { ThemeProvider } from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Header from './components/Header';
+import Footer1 from './components/Footer/Footer1';
+import Footer2 from './components/Footer/Footer2';
+import Footer3 from './components/Footer/Footer3';
+import Main from './pages/Main';
+import MyPage from './pages/Mypage';
+import FavoriteRecreation from './pages/FavoriteRecreation';
+import SearchList from './pages/SearchList';
+import FlowWrite from './pages/FlowWrite'; // 플로우 만들기 페이지
+import FlowWriteDetail from './pages/FlowWriteDetail'; // 플로우 만들기 상세 페이지
+import FlowWriteRecommend from './pages/FlowWriteRecommend'; // 플로우 만들기 추천 페이지
+import FlowWriteContent from './pages/FlowWriteContent'; // 플로우 만들기 내용 페이지
+import RecreationDetail from './pages/RecreationDetail'; // 레크레이션 상세정보 페이지
+import MyFlow from './pages/MyFlow'; // 내 일정 플로우 페이지
+import WatchFlow from './pages/WatchFlow'; // 플로우 구경하기
+import ScrapFlow from './pages/ScrapFlow'; // 스크랩 한 플로우 보기
+import MoreMyflow from './pages/MoreMyflow'; // 내가 만든 일정플로우 더보기
+import MoreWatchFlow from './pages/MoreWatchFlow'; // 다른 사람이 만든 일정플로우 더보기
+import MoreScrapFlow from './pages/MoreScrapFlow'; // 스크랩 한 일정플로우 더보기
+import Login from './components/Login';
+import LoginLoading from './pages/LoginLoading'; // 로그인 시 로딩 페이지
+import GlobalStyle from './GlobalStyles'; // 전역 스타일
+import useLoginModalStore from './stores/loginModalStore';
+import cryingAvab from './assets/main/cryingAvab.svg';
+import styled from 'styled-components';
+import theme from './styles/theme';
+import { ThemeProvider } from 'styled-components';
 
 function App() {
   const navigate = useNavigate();
@@ -68,10 +68,7 @@ function App() {
       {/* 스크랩 한 일정플로우 더보기 */}
       <Route path="/flow/morescrapflow/:title" element={<MoreScrapFlow />} />
       {/* 레크레이션 상세정보 페이지 */}
-      <Route
-        path="/recreation/detail/:recreationId"
-        element={<RecreationDetail />}
-      />
+      <Route path="/recreation/detail/:recreationId" element={<RecreationDetail />} />
       {/* 로그인 리다이렉트 페이지 */}
       <Route path="/api/auth/login/kakao" element={<LoginLoading />} />
     </Routes>
@@ -88,10 +85,10 @@ function App() {
     };
 
     handleResize(); // 초기 화면 크기 확인
-    window.addEventListener("resize", handleResize); // 화면 크기 변경 감지
+    window.addEventListener('resize', handleResize); // 화면 크기 변경 감지
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [isMobile]);
 
@@ -99,11 +96,11 @@ function App() {
     const currentPath = window.location.pathname;
     console.log(currentPath);
     if (
-      currentPath.startsWith("/flow/morewatchflow") ||
-      currentPath.startsWith("/recreation/detail")
+      currentPath.startsWith('/flow/morewatchflow') ||
+      currentPath.startsWith('/recreation/detail')
     ) {
       setSelectedFooter(<Footer2 />);
-    } else if (currentPath === "/" || currentPath.startsWith("/search")) {
+    } else if (currentPath === '/' || currentPath.startsWith('/search')) {
       setSelectedFooter(<Footer1 />);
     } else {
       setSelectedFooter(<Footer3 />);

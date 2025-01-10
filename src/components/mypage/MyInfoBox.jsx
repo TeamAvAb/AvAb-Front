@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import WarningIcon from "../../assets/mypage/WarnLogo.svg";
-import NicknameChangeModal from "../modal/NicknameChangeModal";
-import WithdrawModal from "../modal/WithdrawModal";
-import { privateAPI } from "../../apis/user";
-import LoadingSpinner from "../LoadingSpinner";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import WarningIcon from '../../assets/mypage/WarnLogo.svg';
+import NicknameChangeModal from '../modal/NicknameChangeModal';
+import WithdrawModal from '../modal/WithdrawModal';
+import { privateAPI } from '../../apis/user';
+import LoadingSpinner from '../LoadingSpinner';
 
 export default function MyInfoBox() {
   const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
-  const [nickname, setNickname] = useState("");
-  const [previousNickname, setPreviousNickname] = useState("");
-  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState('');
+  const [previousNickname, setPreviousNickname] = useState('');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [isGoOutModalOpen, setGoOutModalOpen] = useState(false);
 
@@ -23,7 +23,7 @@ export default function MyInfoBox() {
         setEmail(response.data.result.email);
         setLoading(false);
       } catch (error) {
-        console.log("내 정보 로드 요청 에러 : ", error);
+        console.log('내 정보 로드 요청 에러 : ', error);
       }
     };
     call();
@@ -34,19 +34,18 @@ export default function MyInfoBox() {
   };
 
   const handleNickname = (e, maxlength) => {
-    if (e.target.value.length > maxlength)
-      setNickname(e.target.value.substr(0, maxlength));
+    if (e.target.value.length > maxlength) setNickname(e.target.value.substr(0, maxlength));
     else setNickname(e.target.value);
   };
 
   const ChangeName = async () => {
-    if (nickname === "") return;
+    if (nickname === '') return;
     const response = await privateAPI.patch(`/api/users/me`, {
       username: nickname,
     });
     if (response.status === 200) {
       console.log(response.data);
-      setNickname("");
+      setNickname('');
       setPreviousNickname(nickname);
       setIsNicknameChangeModal(true);
     } else {
@@ -84,9 +83,7 @@ export default function MyInfoBox() {
             <OutBut onClick={openGoOututModal}>회원탈퇴</OutBut>
             <SaveBut onClick={ChangeName}>저장하기</SaveBut>
           </ButtonSection>
-          {isGoOutModalOpen && (
-            <WithdrawModal handleModal={setGoOutModalOpen} />
-          )}
+          {isGoOutModalOpen && <WithdrawModal handleModal={setGoOutModalOpen} />}
           {isNicknameChangeModalOpen && (
             <NicknameChangeModal handleModal={setIsNicknameChangeModal} />
           )}

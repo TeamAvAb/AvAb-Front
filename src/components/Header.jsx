@@ -1,37 +1,37 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import plus from "../assets/header/Icon.svg";
-import AvAb from "../assets/header/AvAb.png";
-import ProfileImg from "../assets/header/profileImg.png";
-import useLoginStore from "../stores/loginStore";
-import useLoginModalStore from "../stores/loginModalStore";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import plus from '../assets/header/Icon.svg';
+import AvAb from '../assets/header/AvAb.png';
+import ProfileImg from '../assets/header/profileImg.png';
+import useLoginStore from '../stores/loginStore';
+import useLoginModalStore from '../stores/loginModalStore';
 
 export default function Header() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
   const profieImg = () => {
-    if (localStorage.getItem("userImgage") !== null) {
-      return localStorage.getItem("userImgage");
+    if (localStorage.getItem('userImgage') !== null) {
+      return localStorage.getItem('userImgage');
     } else return ProfileImg;
   };
   const navigate = useNavigate();
   const ToMainpage = () => {
     navigate(`/`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToRecreation = () => {
     navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToFlowWrite = () => {
     navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
     if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else modalControl();
   };
 
@@ -58,7 +58,7 @@ const HeaderWrap = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
   position: relative;
   height: 67px;
 `;

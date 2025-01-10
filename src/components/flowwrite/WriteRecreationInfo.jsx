@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import fix from "../../assets/flowwrite/fix_flow_write.png";
-import deleteIcon from "../../assets/flowwrite/deleteIcon.png";
-import DetailKeywordModal from "../flowwrite/DetailKeywordModal";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import fix from '../../assets/flowwrite/fix_flow_write.png';
+import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
+import DetailKeywordModal from '../flowwrite/DetailKeywordModal';
 
 export default function WriteRecreationInfo({ num, onDelete }) {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [time, setTime] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
@@ -53,10 +53,10 @@ export default function WriteRecreationInfo({ num, onDelete }) {
   return (
     <div
       style={{
-        display: "flex",
-        gap: "8px",
-        alignItems: "end",
-        marginBottom: "8px",
+        display: 'flex',
+        gap: '8px',
+        alignItems: 'end',
+        marginBottom: '8px',
       }}
     >
       {isModalOpen && (
@@ -77,17 +77,17 @@ export default function WriteRecreationInfo({ num, onDelete }) {
             onChange={handleTitleChange}
             placeholder="레크레이션 제목 입력"
             style={{
-              fontSize: "20px",
-              fontStyle: "normal",
-              fontWeight: "700",
-              border: "none",
-              outline: "none",
+              fontSize: '20px',
+              fontStyle: 'normal',
+              fontWeight: '700',
+              border: 'none',
+              outline: 'none',
             }}
           />
           <img
             src={fix}
             alt="Fix"
-            style={{ width: "24px", height: "24px", cursor: "pointer" }}
+            style={{ width: '24px', height: '24px', cursor: 'pointer' }}
             onClick={handleDeleteClick}
           />
         </RecreationTitle>
@@ -105,13 +105,13 @@ export default function WriteRecreationInfo({ num, onDelete }) {
               type="text"
               placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
               style={{
-                width: "90%",
-                height: "18px",
-                backgroundColor: "#E9EBED",
+                width: '90%',
+                height: '18px',
+                backgroundColor: '#E9EBED',
               }}
             />
           ) : (
-            <div style={{ width: "90%", display: "flex" }}>
+            <div style={{ width: '90%', display: 'flex' }}>
               {selectedKeywords.map((keyword, index) => (
                 <React.Fragment key={index}>
                   <StyledKeyword>
@@ -120,15 +120,15 @@ export default function WriteRecreationInfo({ num, onDelete }) {
                       src={deleteIcon}
                       alt="Delete"
                       style={{
-                        width: "20px",
-                        height: "20px",
-                        marginLeft: "5px",
-                        cursor: "pointer",
+                        width: '20px',
+                        height: '20px',
+                        marginLeft: '5px',
+                        cursor: 'pointer',
                       }}
                       onClick={(event) => handleDeleteKeyword(index, event)}
                     />
                   </StyledKeyword>
-                  {index !== selectedKeywords.length - 1 && " "}
+                  {index !== selectedKeywords.length - 1 && ' '}
                 </React.Fragment>
               ))}
             </div>
@@ -139,39 +139,39 @@ export default function WriteRecreationInfo({ num, onDelete }) {
         <PlayTime>
           <div
             style={{
-              fontSize: "16px",
-              fontStyle: "normal",
-              fontWeight: "500",
-              color: "#1B1D1F",
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              color: '#1B1D1F',
             }}
           >
             플레이까지
           </div>
           <div
             style={{
-              fontSize: "16px",
-              fontStyle: "normal",
-              fontWeight: "600",
-              color: "#1B1D1F",
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '600',
+              color: '#1B1D1F',
             }}
           >
             <PlayTimeInput
               type="text"
               value={time}
               onChange={handleTimeChange}
-              onFocus={() => setTime('')}  // 입력창에 포커스가 가면 기존 값 지우기
+              onFocus={() => setTime('')} // 입력창에 포커스가 가면 기존 값 지우기
               onBlur={() => {
                 if (time === '') {
                   setTime(10); // 입력창을 벗어날 때 값이 비어 있으면 기본값 10으로 설정
                 }
               }}
               style={{
-                fontSize: "16px",
-                fontStyle: "normal",
-                fontWeight: "600",
-                color: "#9FA4A9",
-                border: "none",
-                outline: "none",
+                fontSize: '16px',
+                fontStyle: 'normal',
+                fontWeight: '600',
+                color: '#9FA4A9',
+                border: 'none',
+                outline: 'none',
               }}
             />
             분
@@ -198,8 +198,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) =>
-    props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`};
+  top: ${(props) => (props.time === 10 ? '0' : `calc(-${props.time / 10 - 1} * 119.04px)`)};
   min-height: 119.004px;
 `;
 

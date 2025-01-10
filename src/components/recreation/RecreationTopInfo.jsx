@@ -1,35 +1,29 @@
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import RecreationContentBox from "./RecreationContentBox";
-import viewIcon from "../../assets/recreation/viewIcon.svg";
+import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import RecreationContentBox from './RecreationContentBox';
+import viewIcon from '../../assets/recreation/viewIcon.svg';
 
 export default function RecreationTopInfo({ recreationData }) {
   if (!recreationData || !recreationData.imageUrl) {
-    return (
-      <WarningMessage>
-        잘못된 접근입니다. 해당 레크레이션이 존재하지 않습니다.
-      </WarningMessage>
-    );
+    return <WarningMessage>잘못된 접근입니다. 해당 레크레이션이 존재하지 않습니다.</WarningMessage>;
   }
   const matchKeywords = (keywords) => {
     const keywordMap = {
-      QUICKNESS: "순발력",
-      SENSIBLE: "센스",
-      COOPERATIVE: "창의력",
-      ACTIVE: "협동",
-      BRAIN: "액티브",
-      PSYCHOLOGICAL: "두뇌",
-      LUCK: "심리",
-      COMMON_SENSE: "행운",
-      PREPARATION: "상식",
+      QUICKNESS: '순발력',
+      SENSIBLE: '센스',
+      COOPERATIVE: '창의력',
+      ACTIVE: '협동',
+      BRAIN: '액티브',
+      PSYCHOLOGICAL: '두뇌',
+      LUCK: '심리',
+      COMMON_SENSE: '행운',
+      PREPARATION: '상식',
     };
     const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
     return matchedWords.filter(Boolean);
   };
 
-  const keywords = recreationData
-    ? matchKeywords(recreationData.keywordList)
-    : [];
+  const keywords = recreationData ? matchKeywords(recreationData.keywordList) : [];
   return (
     <RecreationTopMenuContainer>
       <ImgMainWrap>
