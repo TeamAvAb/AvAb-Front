@@ -17,18 +17,17 @@ export default function FavBtn({ recreationId, isFav, className }) {
     if (!isLoggedIn) {
       modalControl();
       return;
-    } else {
-      try {
-        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
-        if (response.status === 201) {
-          setIsFavorite((prev) => !prev);
-          return;
-        } else {
-          console.log(response.data);
-        }
-      } catch (error) {
-        throw new Error('FavBtn Error');
+    }
+
+    try {
+      const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+      if (response.status === 201) {
+        setIsFavorite((prev) => !prev);
+      } else {
+        console.log(response.data);
       }
+    } catch (error) {
+      throw new Error('FavBtn Error');
     }
   };
   return (

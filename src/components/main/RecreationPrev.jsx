@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import arrow from '../../assets/main/nextSlide.svg';
 import starImg from '../../assets/main/starIcon.svg';
-import useLoginModalStore from '../../stores/loginModalStore.js';
-import useLoginStore from '../../stores/loginStore.js';
 import FavBtn from '../button/FavBtn';
 
 export default function RecreationPrev({ content }) {
-  const { modalControl } = useLoginModalStore((state) => state);
-  const { isLoggedIn } = useLoginStore((state) => state);
   const keywordParam = {
     COOPERATIVE: '협동',
     QUICKNESS: '순발력',
