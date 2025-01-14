@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-function useDeboucedEffect(func, delay, deps) {
+function useDebouncedEffect(func, delay, deps) {
   const callback = useCallback(func, [deps]);
 
   useEffect(() => {
@@ -14,4 +14,4 @@ function useDeboucedEffect(func, delay, deps) {
   }, [callback, delay]);
 }
 
-export default useDeboucedEffect;
+export default useDebouncedEffect;
