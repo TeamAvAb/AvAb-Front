@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
-import { privateAPI } from '../../apis/user';
 import styled from 'styled-components';
 import arrow from '../../assets/main/nextSlide.svg';
-import { ReactComponent as HeartImg } from '../../assets/main/heart.svg';
 import starImg from '../../assets/main/starIcon.svg';
 import useLoginModalStore from '../../stores/loginModalStore.js';
 import useLoginStore from '../../stores/loginStore.js';
+import FavBtn from '../button/FavBtn';
 
 export default function RecreationPrev({ content }) {
   const { modalControl } = useLoginModalStore((state) => state);
@@ -23,44 +22,28 @@ export default function RecreationPrev({ content }) {
     COMMON_SENSE: '상식',
     PREPARATION: '준비물',
   };
-  const [isFav, setIsFav] = useState(content.isFavorite);
   const navigator = useNavigate();
   const gotoDetail = (id) => {
     navigator(`/recreation/detail/${id}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  const addToFavorite = (e, id) => {
-    e.stopPropagation();
 
-    const call = async () => {
-      try {
-        const response = await privateAPI.post(`/api/recreations/${id}/favorites`);
-        console.log('즐겨찾기 추가/해제 응답 : ', response);
-        if (response.data.result.isFavorite === true) {
-          setIsFav(true);
-        } else if (response.data.result.isFavorite === false) {
-          setIsFav(false);
-        }
-      } catch (error) {
-        console.log('즐겨찾기 추가/해제 에러 : ', error);
-      }
-    };
-    if (isLoggedIn) {
-      call();
-    } else modalControl();
-  };
   return (
     <Categories>
       <Hashtag>#{content.hashtagList}</Hashtag>
       <RecreationExplain onClick={() => gotoDetail(content.id)}>
         <ImgSpace>
           <ExImg src={content.imageUrl}></ExImg>
-          <Favorite $isfav={isFav} onClick={(e) => addToFavorite(e, content.id)} />
+          <AbsoluteFavBtn isFav={content.isFavorite} recreationId={content.id} />
         </ImgSpace>
         <Explain>
           <Section1>
             {content.title}
-            <img src={arrow} style={{ width: '24px', height: '24px' }} />
+            <img
+              src={arrow}
+              style={{ width: '1.5rem', height: '1.5rem' }}
+              alt={`${content.title} 보러가기`}
+            />
           </Section1>
           <Section2>
             <div style={{ display: 'flex', gap: '5px' }}>
@@ -72,7 +55,7 @@ export default function RecreationPrev({ content }) {
               ))}
             </div>
             <Rate>
-              <img src={starImg} style={{ width: '16px', height: '16px' }} />
+              <img src={starImg} style={{ width: '1rem', height: '1rem' }} alt="별점" />
               {parseFloat(content.totalStars).toFixed(1)}
             </Rate>
           </Section2>
@@ -86,20 +69,19 @@ const Categories = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 69px;
   cursor: pointer;
 `;
 
 const Hashtag = styled.div`
-  border-radius: 30px;
-  width: 151px;
-  height: 57px;
+  border-radius: 9999px;
+  width: 9rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #5b6bbe;
   color: white;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
 `;
 
@@ -107,54 +89,44 @@ const RecreationExplain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 284px;
-  height: 309px;
-  margin-top: 20px;
-  border-radius: 20px;
-  background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-  box-shadow: 0px 10px 20px 3px rgba(27, 29, 31, 0.2);
+  width: 18rem;
+  height: 20rem;
+  margin-top: 1.2rem;
+  border-radius: 1.2rem;
+  background: ${({ theme }) => theme.color.grayscale07};
+  box-shadow: 0 0.6rem 1.2rem 0.2rem ${({ theme }) => theme.color.grayscale01}33;
 `;
 
 const ImgSpace = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 284px;
   position: relative;
+  flex: 1;
+  width: 100%;
 `;
 
 const ExImg = styled.img`
-  width: 120px;
-  width: 120px;
-  margin-top: 35px;
-`;
-const Favorite = styled(HeartImg)`
-  width: 42px;
-  height: 42px;
-  position: absolute;
-  top: 150px;
-  right: 20px;
-  fill: ${(props) => (props.$isfav === true ? '#FFAA29' : '#E9EBED')};
+  width: 7.5rem;
 `;
 
 const Explain = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0.25rem;
   justify-content: center;
   align-items: center;
   background-color: #b1beff;
-  width: 284px;
-  height: 112px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  width: 100%;
+  height: 7rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 `;
 
 const Section1 = styled.div`
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
+  color: ${({ theme }) => theme.color.grayscale01};
   text-align: center;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
   display: flex;
   flex-direction: row;
@@ -170,16 +142,23 @@ const Section2 = styled.div`
 `;
 
 const Keyword = styled.div`
-  color: var(--gray-scale-26282-b, #26282b);
+  color: ${({ theme }) => theme.color.grayscale02};
   font-size: 16px;
   font-weight: 400;
 `;
+
 const Rate = styled.span`
   display: flex;
   flex-direction: row;
   gap: 4px;
   align-items: center;
-  color: var(--gray-scale-26282-b, #26282b);
+  color: ${({ theme }) => theme.color.grayscale02};
   font-size: 16px;
   font-weight: 400;
+`;
+
+const AbsoluteFavBtn = styled(FavBtn)`
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
 `;

@@ -15,9 +15,10 @@ import deleteImg from '../../assets/main/deleteIcon.svg';
 import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
 import alertImg from '../../assets/main/alert.svg';
-import useDeboucedEffect from '../../hooks/useDeboucedEffect';
+import useDebouncedEffect from '../../hooks/useDebouncedEffect';
+import Button from '../button/Button';
 
-export default function Search() {
+export default function Search({ filtersOpen = false }) {
   // 검색어 및 키워드 저장
   const [searchKeyword, setSearchKeyword] = useState('');
   const [keyword, setKeyword] = useState([]);
@@ -69,16 +70,10 @@ export default function Search() {
   ];
 
   // 필터 더보기 메뉴
-  const [menu, setMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(filtersOpen);
   const openMenu = () => {
-    setMenu(!menu);
+    setIsMenuOpen(!isMenuOpen);
   };
-  useEffect(() => {
-    if (window.location.pathname === '/search/list') {
-      // 검색 리스트 페이지일 때는 열린 상태 유지
-      setMenu(true);
-    }
-  }, []);
 
   const onRemove = (category, id) => {
     if (category === keywordOptions) {
@@ -101,22 +96,27 @@ export default function Search() {
     string = string.replace(check, '');
     return string;
   };
-  const participValidCheck = (e) => {
-    const value = checkOnlyNumber(e.target.value);
-    if (value[0] == 0) {
+
+  const validateParticipants = (v) => {
+    const value = checkOnlyNumber(v);
+    if (value[0] === 0) {
       setParticipantsAlert(true);
       return;
     }
     if (value < 0 || value > participantsLimit) {
       setParticipantsAlert(true);
       return;
-    } else {
-      if (participantsAlert) setParticipantsAlert(false);
-      setParticipants(value);
     }
+
+    if (participantsAlert) {
+      setParticipantsAlert(false);
+    }
+
+    setParticipants(value);
   };
+
   // 1~participantsLimit 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
-  useDeboucedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
+  useDebouncedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
 
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
@@ -128,9 +128,10 @@ export default function Search() {
         <SelectedKeyword key={el}>
           <div>'{label[label.findIndex((i) => i.param === el)].value}' 포함</div>
           <img
+            alt={`${el.value} 삭제`}
             src={deleteImg}
             id={el}
-            style={{ width: "1rem"}}
+            style={{ width: '1rem' }}
             onClick={(e) => {
               e.stopPropagation();
               onRemove(label, el);
@@ -143,7 +144,7 @@ export default function Search() {
 
   // 초기화 함수
   const reset = () => {
-    setSearchKeyword([]);
+    setSearchKeyword('');
     setKeyword([]);
     setParticipants([]);
     setPlayTime([]);
@@ -180,7 +181,9 @@ export default function Search() {
   };
 
   const handleSearch = (e) => {
-    if (e.key === 'Enter') submit();
+    if (e.key === 'Enter') {
+      submit();
+    }
   };
 
   useEffect(() => {
@@ -208,18 +211,19 @@ export default function Search() {
           value={searchKeyword}
         />
         <img
+          alt="검색 돋보기"
           src={searchIconImg}
-          style={{ width: "3rem",marginRight: "1.2rem", cursor: "pointer" }}
+          style={{ width: '3rem', marginRight: '1.2rem', cursor: 'pointer' }}
           onClick={submit}
         />
       </SearchWordBox>
-      <SearchBox>
-        <Filters $menu={menu.toString()}>
+      <SearchBox filtersOpen={filtersOpen}>
+        <Filters $menu={isMenuOpen.toString()}>
           {/* 키워드 */}
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
             <KeywordBox id="keyword" onClick={() => setKeywordModal(true)}>
-              <img src={keywordImg} style={{ width: '20px', height: '20px' }} />
+              <img src={keywordImg} style={{ width: '20px', height: '20px' }} alt="" />
               {keyword.length === 0 ? (
                 '클릭하면 키워드 선택창이 나와요!'
               ) : (
@@ -234,13 +238,13 @@ export default function Search() {
             <Input
               placeholder="조별 인원을 입력해주세요."
               type="text"
-              onChange={(e) => participValidCheck(e)}
+              onChange={(e) => validateParticipants(e.target.value)}
               value={participants}
-              $alert={participantsAlert}
+              error={participantsAlert}
             />
             {participantsAlert && (
               <Alert>
-                <img src={alertImg} />
+                <img src={alertImg} alt="경고" />
                 <span>1부터 {participantsLimit}까지 입력해주세요.</span>
               </Alert>
             )}
@@ -258,81 +262,74 @@ export default function Search() {
             <RadioInput content={placeOptions} setOption={setPlace} selectedOption={place} />
           </Filter>
         </Filters>
-        <Filters>
-          <MoreFilters $isopen={menu}>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <img src={hrImg} />
-            </div>
+        <MoreFilters open={isMenuOpen}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <img src={hrImg} style={{ width: '25%' }} alt="" />
+          </div>
 
-            {/* 목적 */}
-            <Filter>
-              <LabelName htmlFor="purpose">목적</LabelName>
-              <KeywordBox id="purpose" onClick={() => setPurposeModal(true)}>
-                <img
-                  src={keywordImg}
-                  style={{ width: "1.2rem"}}
-                />
-                {purpose.length === 0 ? (
-                  '클릭하면 목적 선택창이 나와요!'
-                ) : (
-                  <SelectedKeywords>{renderKeyword(purposeOptions, purpose)}</SelectedKeywords>
-                )}
-              </KeywordBox>
-            </Filter>
+          {/* 목적 */}
+          <Filter>
+            <LabelName htmlFor="purpose">목적</LabelName>
+            <KeywordBox id="purpose" onClick={() => setPurposeModal(true)}>
+              <img src={keywordImg} style={{ width: '1.2rem' }} alt="" />
+              {purpose.length === 0 ? (
+                '클릭하면 목적 선택창이 나와요!'
+              ) : (
+                <SelectedKeywords>{renderKeyword(purposeOptions, purpose)}</SelectedKeywords>
+              )}
+            </KeywordBox>
+          </Filter>
 
-            {/* 성별 */}
-            <Filter>
-              <LabelName htmlFor="gender">성별</LabelName>
-              <RadioInput content={genderOptions} setOption={setGender} selectedOption={gender} />
-            </Filter>
+          {/* 성별 */}
+          <Filter>
+            <LabelName htmlFor="gender">성별</LabelName>
+            <RadioInput content={genderOptions} setOption={setGender} selectedOption={gender} />
+          </Filter>
 
-            {/* 연령대 */}
-            <Filter $last="true">
-              <LabelName htmlFor="age">연령대</LabelName>
-              <RadioInput content={ageOptions} setOption={setAge} selectedOption={age} />
-            </Filter>
-          </MoreFilters>
-        </Filters>
+          {/* 연령대 */}
+          <Filter>
+            <LabelName htmlFor="age">연령대</LabelName>
+            <RadioInput content={ageOptions} setOption={setAge} selectedOption={age} />
+          </Filter>
+          <div style={{ height: '1rem' }} />
+        </MoreFilters>
       </SearchBox>
 
-      {window.location.pathname === "/search/list" ? null : (
-          <MoreFiltersButton onClick={openMenu}>
-            {menu ? (
-                <>
-                  필터 접기
-                  <img
-                      style={{ width: "24px", height: "24px" }}
-                      src={arrowUpImg}
-                  />
-                </>
-            ) : (
-              <>
-                필터 더보기
-                <img style={{ width: '24px', height: '24px' }} src={arrowDownImg} />
-              </>
-            )}
-          </MoreFiltersButton>
+      {filtersOpen ? null : (
+        <MoreFiltersButton onClick={openMenu}>
+          {isMenuOpen ? (
+            <>
+              필터 접기
+              <img alt="필터 접기" style={{ width: '24px', height: '24px' }} src={arrowUpImg} />
+            </>
+          ) : (
+            <>
+              필터 더보기
+              <img alt="필터 더보기" style={{ width: '24px', height: '24px' }} src={arrowDownImg} />
+            </>
+          )}
+        </MoreFiltersButton>
       )}
       <BtnContainer>
-        <SearchBtns>
-          <Btn id="reset" onClick={reset}>
+        <SearchButtons>
+          <Button onClick={reset} border={true} backgroundColor="grayscale07">
             초기화
-          </Btn>
-          <Btn id="search" onClick={submit}>
+          </Button>
+          <Button onClick={submit} border={true} backgroundColor="grayscale01" color="main05">
             필터 적용
-          </Btn>
-        </SearchBtns>
+          </Button>
+        </SearchButtons>
       </BtnContainer>
 
       {keywordModal ? (
         <KeywordModal
-          $category="keyword"
+          category="keyword"
           content={keywordOptions}
           modalControl={setKeywordModal}
           keywordControl={setKeyword}
@@ -341,7 +338,7 @@ export default function Search() {
       ) : null}
       {purposeModal ? (
         <KeywordModal
-          $category="purpose"
+          category="purpose"
           content={purposeOptions}
           modalControl={setPurposeModal}
           keywordControl={setPurpose}
@@ -368,7 +365,7 @@ const SearchWordBox = styled.div`
   overflow: hidden;
   align-items: center;
   width: 32rem;
-  box-shadow: 0 0 1.2rem 0 rgba(27, 29, 31, 0.15);
+  box-shadow: 0 0 1.2rem 0 ${({ theme }) => `${theme.color.grayscale01}0F`};
   border-radius: 9999px;
   background: #fff;
   margin-bottom: 2rem;
@@ -383,7 +380,7 @@ const SearchWord = styled.input`
   align-items: center;
   gap: 3rem;
   background: #fff;
-  color: var(--gray-scale-464-c-52, #464c52);
+  color: ${({ theme }) => theme.color.grayscale03};
   font-size: 1.2rem;
   transition: max-height 0.3s ease-out;
   border: 0;
@@ -395,13 +392,13 @@ const SearchBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 1.2rem 1.2rem 0 0;
-  background: var(--main-d-9-d-9-d-9, #19297c);
+  border-radius: 1.2rem 1.2rem ${({ filtersOpen }) => (filtersOpen ? '1.2rem 1.2rem' : '0 0')};
+  background: ${({ theme }) => theme.color.main01};
 `;
 
 // 필터 설정 박스
 const Filters = styled.div`
-  margin: 1.5rem 3rem 0 1.5rem;
+  padding: 1.5rem 3rem 1.5rem 1.5rem;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -413,8 +410,7 @@ const Filter = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${(props) => (props.$last ? "1.5rem" : 0)};
-  color: #fff;
+  color: ${({ theme }) => theme.color.main05};
   font-size: 1.2rem;
   font-weight: 700;
   cursor: pointer;
@@ -430,8 +426,8 @@ const KeywordBox = styled.div`
   height: 3rem;
   border-radius: 9999px;
   padding-right: 0.5rem;
-  background: #fff;
-  color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
+  background: ${({ theme }) => theme.color.main05};
+  color: ${({ theme }) => theme.color.grayscale04};
   font-size: 1rem;
   font-weight: 400;
   display: flex;
@@ -441,9 +437,11 @@ const KeywordBox = styled.div`
   padding-left: 1.4rem;
   box-sizing: border-box;
   overflow-x: scroll;
+
   &::-webkit-scrollbar {
     display: none;
   }
+
   cursor: pointer;
 `;
 
@@ -460,7 +458,6 @@ const SelectedKeyword = styled.div`
   padding: 0.2rem 0.8rem;
   gap: 0.8rem;
   border-radius: 9999px;
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
   background: #d9d9d9;
 `;
 
@@ -468,16 +465,17 @@ const Input = styled.input`
   width: 16rem;
   height: 3rem;
   border-radius: 9999px;
-  outline: ${(props) => (props.$alert ? "3px solid #ffaa29" : "none")};
+  outline: ${({ error, theme }) => (error ? `3px solid ${theme.color.main04}` : 'none')};
   background: #fff;
   border: none;
-  color: var(--gray-scale-464-c-52, #464c52);
+  color: ${({ theme }) => theme.color.grayscale03};
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
   padding-left: 1.5rem;
+
   &::-webkit-inner-spin-button,
-  &::-webkit-out-spin-button {
+  &::-webkit-outer-spin-button {
     -webkit-appearance: none;
 
     -moz-appearance: none;
@@ -487,11 +485,12 @@ const Input = styled.input`
 `;
 
 const MoreFilters = styled.div`
+  padding: 0 3rem 0 1.5rem;
   display: inline-flex;
   flex-direction: column;
   gap: 1.5rem;
   overflow: hidden;
-  max-height: ${({ $isopen }) => ($isopen ? "1000px" : "0")};
+  max-height: ${({ open }) => (open ? '1000px' : '0')};
   transition: max-height 0.7s ease-in-out;
 `;
 
@@ -500,14 +499,14 @@ const MoreFiltersButton = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 4.2rem;
   border-radius: 0 0 1.2rem 1.2rem;
-  background: var(--main-scale-b-1-beff, #b1beff);
+  padding: 1.8rem 0;
+  background: ${({ theme }) => theme.color.secondary04};
   font-size: 1.25rem;
   font-weight: 700;
   gap: 0.5rem;
   cursor: pointer;
-  box-shadow: 0 1rem 1.2rem 0 rgba(27, 29, 31, 0.2);
+  box-shadow: ${({ theme }) => `0 1rem 1.2rem 0 ${theme.color.grayscale01}14`};
 `;
 
 // 버튼
@@ -517,32 +516,11 @@ const BtnContainer = styled.div`
   justify-content: end;
   margin-top: 2rem;
   margin-bottom: 2rem;
-`
-const SearchBtns = styled.div`
+`;
+
+const SearchButtons = styled.div`
   display: flex;
   gap: 2.5rem;
-`;
-const Btn = styled.button`
-  display: flex;
-  padding: 0.5rem 1.5rem;
-  justify-content: center;
-  align-items: center;
-  border-radius: 9999px;
-  border: 1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
-
-  &#reset {
-    background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
-    color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  }
-
-  &#search {
-    background: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-    color: #fff;
-  }
 `;
 
 const Alert = styled.div`

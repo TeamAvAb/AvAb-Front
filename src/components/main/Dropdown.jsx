@@ -6,8 +6,11 @@ import downIconImg from '../../assets/main/downIcon.svg';
 export default function DropdownMenu({ list, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
   const handleClickLi = (li) => {
-    if (selectedOption === li) setOption([]);
-    else setOption(li);
+    if (selectedOption === li) {
+      setOption([]);
+    } else {
+      setOption(li);
+    }
   };
   return (
     <DropdownContainer>
@@ -28,7 +31,7 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
       <DropdownButton onClick={myPageHandler} ref={myPageRef} selected={selectedOption}>
         {selectedOption.length === 0 ? '10' : selectedOption}
         분
-        <img src={downIconImg} style={{ width: "1.2rem" }} />
+        <img src={downIconImg} style={{ width: '1.2rem' }} alt="" />
       </DropdownButton>
     </DropdownContainer>
   );
@@ -37,10 +40,10 @@ export default function DropdownMenu({ list, setOption, selectedOption }) {
 const DropdownContainer = styled.div`
   width: 10rem;
   height: 3rem;
-  background: #fff;
+  background: ${({ theme }) => theme.color.main05};
   position: relative;
   text-align: center;
-  color: var(--gray-scale-9-fa-4-a-9, #9fa4a9);
+  color: ${({ theme }) => theme.color.grayscale04};
   border-radius: 9999px;
   font-size: 1rem;
 `;
@@ -59,12 +62,11 @@ const DropdownButton = styled.button`
   position: relative;
   background: #fff;
   font-size: 1rem;
-  color: ${(props) =>
-    props.selected.length === 0
-      ? 'var(--gray-scale-9-fa-4-a-9, #9FA4A9)'
-      : 'var(--gray-scale-464-c-52, #464C52)'};
+  color: ${({ selected, theme }) =>
+    selected.length === 0 ? theme.color.grayscale04 : theme.color.grayscale03};
+
   &:focus {
-    border: 1px solid var(--gray-scale-9-fa-4-a-9, #9fa4a9);
+    border: 1px solid ${({ theme }) => theme.color.grayscale04};
   }
 `;
 
@@ -84,9 +86,13 @@ const Menu = styled.div`
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -1.2rem);
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0.4s;
   overflow: auto;
   overflow-y: scroll;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -103,6 +109,7 @@ const Menu = styled.div`
 
 const Ul = styled.ul`
   height: 8rem;
+
   & > button {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -119,10 +126,7 @@ const Ul = styled.ul`
 
 const Li = styled.button`
   width: 100%;
-  color: ${(props) =>
-    props.selected
-      ? 'var(--gray-scale-464-c-52, #464C52)'
-      : 'var(--gray-scale-9-fa-4-a-9, #9FA4A9)'};
+  color: ${({ selected, theme }) => (selected ? theme.color.grayscale03 : theme.color.grayscale04)};
   border: none;
   background: #fff;
   font-size: 1rem;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 export default function RadioInput({ content, setOption, selectedOption }) {
@@ -25,11 +25,13 @@ export default function RadioInput({ content, setOption, selectedOption }) {
     </Options>
   );
 }
+
 const Options = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
 `;
+
 const Option = styled.button`
   height: 2.8rem;
   display: flex;
@@ -39,12 +41,9 @@ const Option = styled.button`
   border-radius: 9999px;
   box-sizing: border-box;
   padding: 0.8rem 1.8rem;
-  background: ${(props) => (props.selected ? 'var(--main-scale-b-1-beff, #B1BEFF)' : '#FFF')};
+  background: ${({ selected, theme }) => (selected ? theme.color.secondary04 : theme.color.main05)};
   text-align: center;
-  color: ${(props) =>
-    props.selected
-      ? "var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"
-      : "var(--gray-scale-9-fa-4-a-9, #9fa4a9)"};
+  color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;

@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function PurposeChip({ text }) {
-  return <Chip>{text}</Chip>;
+export default function PurposeChip({ text, className, onClick }) {
+  return (
+    <Chip onClick={onClick} className={className}>
+      {text}
+    </Chip>
+  );
 }
 
 const Chip = styled.div`

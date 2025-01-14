@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import rechoiceIcon from '../../assets/main/rechoiceIcon.svg';
+import Button from '../button/Button';
+import KeywordChip from '../chip/KeywordChip';
+import PurposeChip from '../chip/PurposeChip';
 
 export default function KeywordModal({
-  $category,
+  category,
   content,
   modalControl,
   keywordControl,
@@ -29,33 +32,47 @@ export default function KeywordModal({
     keywordControl(result);
     modalControl(false);
   };
+
+  const handleClose = () => {
+    modalControl(false);
+  };
+
   return (
     <Container>
       <Modal>
-        <Keywords $category={$category}>
-          {content.map((el) => (
-            <Keyword
-              $category={$category}
-              key={el.param}
-              onClick={() => handleSingleSelect(el.param)}
-              selected={result.includes(el.param)}
-            >
-              {el.value}
-            </Keyword>
-          ))}
+        <Keywords category={category}>
+          {content.map((el) =>
+            category === 'keyword' ? (
+              <Keyword
+                key={el.param}
+                onClick={() => handleSingleSelect(el.param)}
+                selected={result.includes(el.param)}
+                text={el.value}
+              />
+            ) : (
+              <Purpose
+                key={el.param}
+                onClick={() => handleSingleSelect(el.param)}
+                selected={result.includes(el.param)}
+                text={el.value}
+              />
+            ),
+          )}
         </Keywords>
         <SetModal>
-          <ModalBtn type="close" onClick={() => modalControl(false)}>
+          <Button border size="small" onClick={handleClose}>
             닫기
-          </ModalBtn>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '49px' }}>
-            <Reset onClick={handleReset}>
-              <img src={rechoiceIcon} style={{ width: '42px', height: '42px' }} />
-              초기화
-            </Reset>
-            <ModalBtn type="done" onClick={handleSubmit}>
+          </Button>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Button size="small" onClick={handleReset}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img src={rechoiceIcon} style={{ width: '42px', height: '42px' }} alt="초기화" />
+                초기화
+              </div>
+            </Button>
+            <Button backgroundColor="main02" color="main05" onClick={handleSubmit}>
               선택 완료
-            </ModalBtn>
+            </Button>
           </div>
         </SetModal>
       </Modal>
@@ -69,85 +86,45 @@ const Container = styled.div`
   justify-content: center;
   position: fixed;
   top: 0;
-  background: var(--shadow, rgba(70, 76, 82, 0.5));
+  background: ${({ theme }) => theme.color.grayscale01}80;
   z-index: 10;
 `;
+
 const Modal = styled.div`
   position: absolute;
   top: 18rem;
   width: 48rem;
   border-radius: 1.2rem;
-  background: var(--main-ffffff, #fff);
+  background: ${({ theme }) => theme.color.main05};
 `;
+
 const Keywords = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  padding: ${(props) =>
-    props.$category == "keyword" ? "2.5rem 3rem" : "3.5rem 0"};
-  gap: ${(props) => (props.$category == "keyword" ? "1.2rem" : "1rem")};
+  padding: ${({ category }) => (category === 'keyword' ? '2.5rem 3rem' : '3.5rem 0')};
+  gap: ${({ category }) => (category === 'keyword' ? '1.2rem' : '1rem')};
   flex-wrap: wrap;
-  box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.2) inset;
+  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2) inset;
 `;
-const Keyword = styled.div`
-  display: flex;
-  padding: ${(props) =>
-    props.$category == "keyword" ? "0.6rem 2.5rem" : "1rem 2rem"};
-  justify-content: center;
-  align-items: center;
-  border: ${(props) =>
-    props.$category == 'keyword'
-      ? 'none'
-      : props.selected
-        ? '1px solid transparent'
-        : '1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)'};
-  border-radius: ${(props) => (props.$category == 'keyword' ? '5px' : '50px')};
-  background: ${(props) =>
-    props.selected
-      ? 'var(--main-a-0-ddff, #a0ddff)'
-      : props.$category === 'keyword'
-        ? 'var(--gray-scale-e-9-ebed, #E9EBED)'
-        : 'var(--gray-scale-f-7-f-8-f-9, #F7F8F9)'};
-  font-size: ${(props) => (props.$category == 'keyword' ? '16px' : '20px')};
-  font-weight: ${(props) => (props.$category == 'keyword' ? '400' : '700')};
-  line-height: normal;
+
+const Keyword = styled(KeywordChip)`
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.color.main03 : theme.color.grayscale06};
   cursor: pointer;
 `;
+
+const Purpose = styled(PurposeChip)`
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.color.main03 : theme.color.grayscale07};
+  cursor: pointer;
+  border: 1px solid ${({ theme, selected }) => (selected ? 'transparent' : theme.color.grayscale01)};
+`;
+
 const SetModal = styled.div`
   padding: 1rem 2rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-top: 1px solid var(--gray-scale-464-c-52, #464c52);
+  border-top: 1px solid ${({ theme }) => theme.color.grayscale03};
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2);
-`;
-const ModalBtn = styled.button`
-  height: 3.5rem;
-  display: flex;
-  padding: 1rem 2rem;
-  justify-content: center;
-  align-items: center;
-  border-radius: 9999px;
-  border: ${(props) =>
-    props.type === 'close' ? '1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f)' : 'none'};
-  background: ${(props) => (props.type === 'close' ? '#FFF' : 'var(--main-4036-ed, #4036ED)')};
-  color: ${(props) =>
-    props.type === 'close' ? 'var(--gray-scale-1-b-1-d-1-f, #1b1d1f);' : '#FFF'};
-  text-align: right;
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: 700;
-  cursor: pointer;
-`;
-const Reset = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: none;
-  background: var(--main-ffffff, #fff);
-  color: #000;
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: 700;
-  cursor: pointer;
 `;
