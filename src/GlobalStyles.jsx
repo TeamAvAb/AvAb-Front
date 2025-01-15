@@ -9,13 +9,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ${reset}
-  #root, #modal, button {
-    font-family: "Pretendard";
-    box-sizing: border-box;
-  }
-
   :root {
+    font-family: "Pretendard";
     color: ${({ theme }) => theme.color.grayscale01};
+    ${({ theme }) => theme.text.paragraph}
   }
 
   button {

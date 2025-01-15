@@ -1,12 +1,12 @@
-import React from "react";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
-import yellowStar from "../../../assets/recreation/yellowStar.svg";
-import FavBtn from "../../button/FavBtn";
-import arrowIcon from "../../../assets/Card/arrowIcon.svg";
-import HashtagChip from "../../chip/HashtagChip";
-import KeywordChip from "../../chip/KeywordChip";
-import keywordConverter from "../../../utils/keywordConverter";
+import React from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import yellowStar from '../../../assets/recreation/yellowStar.svg';
+import FavBtn from '../../button/FavBtn';
+import arrowIcon from '../../../assets/Card/arrowIcon.svg';
+import HashtagChip from '../../chip/HashtagChip';
+import KeywordChip from '../../chip/KeywordChip';
+import keywordConverter from '../../../utils/keywordConverter';
 
 export default function RecreationCardL({ content }) {
   const keywords = content.keywordList.map((keyword, idx) => (
@@ -16,7 +16,7 @@ export default function RecreationCardL({ content }) {
   const navigator = useNavigate();
   const ToRecreationDetail = (recreationId) => {
     navigator(`/recreation/detail/${recreationId}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -33,7 +33,7 @@ export default function RecreationCardL({ content }) {
         <Keywords>{keywords}</Keywords>
         <CardRow3>
           <img src={content.imageUrl} />
-          <FavBtn recreationId={content.id} isFav={content.isFavorite} />
+          <AbsoluteFavBtn recreationId={content.id} isFav={content.isFavorite} />
         </CardRow3>
       </CardContent>
       <MoreDetailBtn onClick={() => ToRecreationDetail(content.id)}>
@@ -51,7 +51,7 @@ const CardLayout = styled.div`
   gap: 1.44rem;
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.color.main05};
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
 `;
 const CardContent = styled.div`
   display: flex;
@@ -66,7 +66,6 @@ const CardRow2 = styled.div`
 const Keywords = styled.div`
   display: flex;
   gap: 1.06rem;
-  /* flex-wrap: wrap; */
 `;
 const CardTitle = styled.h4`
   ${({ theme }) => theme.text.h4}
@@ -85,6 +84,7 @@ const Rate = styled.span`
   ${({ theme }) => theme.text.small}
 `;
 const CardRow3 = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -104,10 +104,16 @@ const MoreDetailBtn = styled.button`
   background-color: ${({ theme }) => theme.color.secondary04};
   color: ${({ theme }) => theme.color.grayscale01};
   ${({ theme }) => theme.text.button};
-  border-radius: 0rem 0rem 1.25rem 1.25rem;
+  border-radius: 0 0 1.25rem 1.25rem;
   border: none;
 
   svg {
     display: block; /* inline 속성으로 인한 정렬 문제 제거 */
   }
+`;
+
+const AbsoluteFavBtn = styled(FavBtn)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
