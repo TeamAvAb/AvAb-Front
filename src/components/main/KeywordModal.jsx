@@ -60,13 +60,28 @@ export default function KeywordModal({
           )}
         </Keywords>
         <SetModal>
-          <Button border size="small" onClick={handleClose}>
+          <Button border onClick={handleClose}>
             닫기
           </Button>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <Button size="small" onClick={handleReset}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img src={rechoiceIcon} style={{ width: '42px', height: '42px' }} alt="초기화" />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Button onClick={handleReset}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  src={rechoiceIcon}
+                  style={{ width: '2.5rem', height: '2.5rem' }}
+                  alt="초기화"
+                />
                 초기화
               </div>
             </Button>
@@ -127,4 +142,5 @@ const SetModal = styled.div`
   justify-content: space-between;
   border-top: 1px solid ${({ theme }) => theme.color.grayscale03};
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2);
+  align-items: center;
 `;

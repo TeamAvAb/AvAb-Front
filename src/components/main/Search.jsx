@@ -318,10 +318,10 @@ export default function Search({ filtersOpen = false }) {
       )}
       <BtnContainer>
         <SearchButtons>
-          <Button onClick={reset} border={true} backgroundColor="grayscale07">
+          <Button onClick={reset} border backgroundColor="grayscale07" size="small">
             초기화
           </Button>
-          <Button onClick={submit} border={true} backgroundColor="grayscale01" color="main05">
+          <Button onClick={submit} border backgroundColor="grayscale01" color="main05" size="small">
             필터 적용
           </Button>
         </SearchButtons>
@@ -365,7 +365,7 @@ const SearchWordBox = styled.div`
   overflow: hidden;
   align-items: center;
   width: 32rem;
-  box-shadow: 0 0 1.2rem 0 ${({ theme }) => `${theme.color.grayscale01}0F`};
+  box-shadow: 0 0 1.2rem 0 ${({ theme }) => `${theme.color.grayscale01}26`};
   border-radius: 9999px;
   background: #fff;
   margin-bottom: 2rem;
