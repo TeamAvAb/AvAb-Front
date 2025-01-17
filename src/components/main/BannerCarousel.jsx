@@ -84,11 +84,13 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-prev {
-    left: calc(50% - 30rem - 1.5rem);
+    left: calc((100vw - 60rem) / 2 - 1.3rem);
+    width: 2.6rem;
   }
 
   .slick-next {
-    right: calc(50% - 30rem);
+    left: calc((100vw + 60rem) / 2 - 1.3rem);
+    width: 2.6rem;
   }
 
   .slick-dots {
