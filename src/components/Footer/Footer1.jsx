@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
+import FooterNav from './FooterNav';
+import Button from '../button/Button';
+import FooterCopyright from './FooterCopyright';
+import FooterContainer from './FooterContainer';
 
 export default function Footer() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -34,62 +38,40 @@ export default function Footer() {
     window.open('https://www.instagram.com/avab.ovo/', 'Avab Instagram');
   };
   return (
-    <Wrapper>
-      <Container>
-        <MainSection>
-          <OpinionImg src={FooterP}></OpinionImg>
-          <OpinionMsgContainer>
-            <OpinionMsg>
-              <BoldSpan>아브아브</BoldSpan>에게
-              <br />
-              의견을 보내주세요
-            </OpinionMsg>
-            <ContactButton onClick={ToInstagram}>의견 보내러 가기</ContactButton>
-          </OpinionMsgContainer>
-        </MainSection>
-        <FooterNav>
-          <Ul>
-            <Li onClick={ToMainpage}>마이페이지</Li>
-            <Li onClick={ToRecreation}>레크레이션</Li>
-            <Li onClick={ToFlowWrite}>일정플로우</Li>
-            <Li onClick={ToMypage}>마이페이지</Li>
-          </Ul>
-        </FooterNav>
-        <Bottom>
-          <Explain1>COPYRIGHT © Avab all rights reserved</Explain1>
-          <Explain2>Contact Us</Explain2>
-        </Bottom>
-      </Container>
-    </Wrapper>
+    <FooterContainer>
+      <MainSection>
+        <OpinionImg src={FooterP}></OpinionImg>
+        <OpinionMsgContainer>
+          <OpinionMsg>
+            <BoldSpan>아브아브</BoldSpan>에게
+            <br />
+            의견을 보내주세요
+          </OpinionMsg>
+          <Button onClick={ToInstagram} backgroundColor="main01" color="main05">
+            의견 보내러 가기
+          </Button>
+        </OpinionMsgContainer>
+      </MainSection>
+      <FooterNav />
+      <Divider />
+      <FooterCopyright />
+    </FooterContainer>
   );
 }
-
-const Wrapper = styled.footer`
-  margin-top: 6rem;
-  background: #ebe9ed;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-`;
 
 const MainSection = styled.section`
   display: flex;
   justify-content: end;
-  width: 67.5rem;
   position: relative;
   margin-bottom: 2rem;
+  width: 100%;
 `;
 
 const OpinionImg = styled.img`
   position: absolute;
   width: 26rem;
   left: 0;
-  top: -8rem;
+  bottom: -2rem;
 `;
 
 const OpinionMsgContainer = styled.div`
@@ -97,7 +79,6 @@ const OpinionMsgContainer = styled.div`
   flex-direction: column;
   align-items: end;
   gap: 1.5rem;
-  padding: 2rem 0;
   margin-right: 3rem;
 `;
 
@@ -112,56 +93,8 @@ const BoldSpan = styled.span`
   font-weight: 600;
 `;
 
-const ContactButton = styled.button`
-  display: flex;
-  justify-content: center;
-  padding: 1rem 2.5rem;
-  background-color: #081882;
-  color: white;
-  border: none;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
-`;
-
-const FooterNav = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 67.5rem;
-  border-bottom: 2px solid #9fa4a9;
-  padding: 1.5rem 0;
-  font-size: 1.5rem;
-`;
-
-const Ul = styled.ul`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Li = styled.li`
-  margin-left: 80px;
-  margin-right: 80px;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  width: 1080px;
-  margin-bottom: 40px;
-`;
-
-const Explain1 = styled.div`
-  margin-right: 53%;
-  margin-top: 20px;
-  color: #9fa4a9;
-`;
-
-const Explain2 = styled.div`
-  margin-top: 20px;
-  color: #9fa4a9;
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: ${({ theme }) => theme.color.grayscale04};
 `;
