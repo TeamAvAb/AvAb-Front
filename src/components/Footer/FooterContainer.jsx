@@ -9,7 +9,6 @@ export default function FooterContainer({ children }) {
 }
 
 const Wrapper = styled.footer`
-  margin-top: 6rem;
   background: ${({ theme }) => theme.color.grayscale06};
   display: flex;
   justify-content: center;

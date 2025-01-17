@@ -1,61 +1,35 @@
 import React from 'react';
 import FooterP from '../../assets/Footer/FooterP.svg';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useLoginStore from '../../stores/loginStore';
-import useLoginModalStore from '../../stores/loginModalStore';
 import FooterNav from './FooterNav';
 import Button from '../button/Button';
 import FooterCopyright from './FooterCopyright';
 import FooterContainer from './FooterContainer';
 
 export default function Footer() {
-  const { isLoggedIn } = useLoginStore((state) => state);
-  const { modalControl } = useLoginModalStore((state) => state);
-
-  const navigate = useNavigate();
-  const ToMainpage = () => {
-    navigate(`/`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const ToRecreation = () => {
-    navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const ToFlowWrite = () => {
-    navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const ToMypage = () => {
-    if (isLoggedIn) {
-      navigate(`/mypage/myinfo`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      modalControl();
-    }
-  };
-  const ToInstagram = () => {
-    window.open('https://www.instagram.com/avab.ovo/', 'Avab Instagram');
-  };
   return (
-    <FooterContainer>
-      <MainSection>
-        <OpinionImg src={FooterP}></OpinionImg>
-        <OpinionMsgContainer>
-          <OpinionMsg>
-            <BoldSpan>아브아브</BoldSpan>에게
-            <br />
-            의견을 보내주세요
-          </OpinionMsg>
-          <Button onClick={ToInstagram} backgroundColor="main01" color="main05">
-            의견 보내러 가기
-          </Button>
-        </OpinionMsgContainer>
-      </MainSection>
-      <FooterNav />
-      <Divider />
-      <FooterCopyright />
-    </FooterContainer>
+    <div style={{ marginTop: '8rem' }}>
+      <FooterContainer>
+        <MainSection>
+          <OpinionImg src={FooterP}></OpinionImg>
+          <OpinionMsgContainer>
+            <OpinionMsg>
+              <BoldSpan>아브아브</BoldSpan>에게
+              <br />
+              의견을 보내주세요
+            </OpinionMsg>
+            <a href="https://www.instagram.com/avab.ovo/" target="_blank">
+              <Button backgroundColor="main01" color="main05">
+                의견 보내러 가기
+              </Button>
+            </a>
+          </OpinionMsgContainer>
+        </MainSection>
+        <FooterNav />
+        <Divider />
+        <FooterCopyright />
+      </FooterContainer>
+    </div>
   );
 }
 
