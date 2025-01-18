@@ -1,29 +1,31 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const KeywordList = {
-  COOPERATIVE: "협동",
-  QUICKNESS: "순발력",
-  SENSIBLE: "센스",
-  BRAIN: "두뇌",
-  CREATIVE: "창의력",
-  ACTIVE: "액티브",
-  PSYCHOLOGICAL: "심리",
-  LUCK: "행운",
-  COMMON_SENSE: "상식",
-  PREPARATION: "준비물",
+  COOPERATIVE: '협동',
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  BRAIN: '두뇌',
+  CREATIVE: '창의력',
+  ACTIVE: '액티브',
+  PSYCHOLOGICAL: '심리',
+  LUCK: '행운',
+  COMMON_SENSE: '상식',
+  PREPARATION: '준비물',
 };
 
 export default function RecreationInfo({ recreation, num }) {
   console.log(recreation);
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: 'flex' }}>
       <Line time={recreation.playTime}></Line>
       <InfoBox time={recreation.playTime}>
         {/* 레크레이션 제목 */}
         <RecreationTitle>
           <Number>{num + 1}</Number>
-          <div style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700" }}>{recreation.title}</div>
+          <div style={{ fontSize: '20px', fontStyle: 'normal', fontWeight: '700' }}>
+            {recreation.title}
+          </div>
         </RecreationTitle>
 
         {/* 레크레이션 키워드 */}
@@ -35,8 +37,14 @@ export default function RecreationInfo({ recreation, num }) {
 
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "400", color: "#9FA4A9" }}>플레이까지</div>
-          <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>{recreation.playTime}분</div>
+          <div
+            style={{ fontSize: '16px', fontStyle: 'normal', fontWeight: '400', color: '#9FA4A9' }}
+          >
+            플레이까지
+          </div>
+          <div style={{ fontSize: '16px', fontStyle: 'normal', fontWeight: '600' }}>
+            {recreation.playTime}분
+          </div>
         </PlayTime>
       </InfoBox>
     </div>

@@ -1,47 +1,47 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Share from "../assets/moreflow/share.png";
-import Time from "../assets/moreflow/time.png";
-import User from "../assets/moreflow/user.png";
-import View from "../assets/moreflow/view.png";
-import Close from "../assets/myflow/close.png";
-import RecreationInfo from "../components/recreationInfo/RecreationInfo";
-import { useNavigate } from "react-router-dom";
-import { privateAPI } from "../apis/user";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Share from '../assets/moreflow/share.png';
+import Time from '../assets/moreflow/time.png';
+import User from '../assets/moreflow/user.png';
+import View from '../assets/moreflow/view.png';
+import Close from '../assets/myflow/close.png';
+import RecreationInfo from '../components/recreationInfo/RecreationInfo';
+import { useNavigate } from 'react-router-dom';
+import { privateAPI } from '../apis/user';
 
 const PurposeList = {
-  MT: "MT",
-  GATHERING: "모임",
-  WORKSHOP: "워크샵",
-  RETREAT: "수련회",
-  SPORTS_DAY: "체육대회",
+  MT: 'MT',
+  GATHERING: '모임',
+  WORKSHOP: '워크샵',
+  RETREAT: '수련회',
+  SPORTS_DAY: '체육대회',
 };
 
 const KeywordList = {
-  COOPERATIVE: "협동",
-  QUICKNESS: "순발력",
-  SENSIBLE: "센스",
-  BRAIN: "두뇌",
-  CREATIVE: "창의력",
-  ACTIVE: "액티브",
-  PSYCHOLOGICAL: "심리",
-  LUCK: "행운",
-  COMMON_SENSE: "상식",
-  PREPARATION: "준비물",
+  COOPERATIVE: '협동',
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  BRAIN: '두뇌',
+  CREATIVE: '창의력',
+  ACTIVE: '액티브',
+  PSYCHOLOGICAL: '심리',
+  LUCK: '행운',
+  COMMON_SENSE: '상식',
+  PREPARATION: '준비물',
 };
 
 const GenderList = {
-  MALE: "남성",
-  FEMALE: "여성",
+  MALE: '남성',
+  FEMALE: '여성',
 };
 
 const AgeList = {
-  UNDER_TEENAGER: "10대 미만",
-  TEENAGER: "10대",
-  TWENTIES: "20대",
-  THIRTIES: "30대",
-  FORTIES: "40대",
-  OVER_FIFTIES: "50대 이상",
+  UNDER_TEENAGER: '10대 미만',
+  TEENAGER: '10대',
+  TWENTIES: '20대',
+  THIRTIES: '30대',
+  FORTIES: '40대',
+  OVER_FIFTIES: '50대 이상',
 };
 
 export default function MoreMyFlow() {
@@ -60,11 +60,11 @@ export default function MoreMyFlow() {
     if (response.status === 200) {
       // 요청이 성공하면 상태 업데이트
       console.log(response.data);
-      alert("플로우가 성공적으로 삭제되었습니다.");
+      alert('플로우가 성공적으로 삭제되었습니다.');
       navigate(`/flow/my`);
     } else {
       // 요청이 실패하면 에러 처리
-      alert("삭제 실패");
+      alert('삭제 실패');
     }
   };
 
@@ -81,10 +81,10 @@ export default function MoreMyFlow() {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        console.log("URL copied to clipboard");
+        console.log('URL copied to clipboard');
       })
       .catch((err) => {
-        console.error("Could not copy text: ", err);
+        console.error('Could not copy text: ', err);
       });
   };
   // 공유 모달 창 닫기 위한 상태 변화 함수
@@ -95,7 +95,7 @@ export default function MoreMyFlow() {
 
   // moreData 가져오기
   const [data, setData] = useState([]);
-  const moreData = JSON.parse(localStorage.getItem("moreData"));
+  const moreData = JSON.parse(localStorage.getItem('moreData'));
   const id = moreData.id;
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export default function MoreMyFlow() {
 
   return (
     data.length !== 0 && (
-      <div style={{ backgroundColor: "#E9EBED" }}>
+      <div style={{ backgroundColor: '#E9EBED' }}>
         {/* 모달창 */}
         {modal ? (
           <ModalContainer>
@@ -148,7 +148,7 @@ export default function MoreMyFlow() {
           <img
             src={data.flowDetail.imageUrl}
             alt="플로우사진"
-            style={{ width: "250px", height: "250px", marginTop: "86px" }}
+            style={{ width: '250px', height: '250px', marginTop: '86px' }}
           />
           <TitleBox>
             <DetailTitleBox>
@@ -160,19 +160,19 @@ export default function MoreMyFlow() {
             <FlowBoxDetailBox>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: "38px", height: "38px" }} />
+                  <img src={Time} alt="시간" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: "38px", height: "38px" }} />
+                  <img src={View} alt="조회수" style={{ width: '38px', height: '38px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
               </FlowBoxDetails>
               <FlowBoxDetails>
                 <FlowBoxDetailImg>
-                  <img src={User} alt="사용자수" style={{ width: "24px", height: "24px" }} />
+                  <img src={User} alt="사용자수" style={{ width: '24px', height: '24px' }} />
                 </FlowBoxDetailImg>
                 <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
               </FlowBoxDetails>
@@ -193,14 +193,14 @@ export default function MoreMyFlow() {
             </FlowInfoTitle>
 
             <FlowInfoDetail>
-              <div style={{ width: "284px" }}>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
-                  <FlowInfo style={{ width: "28px" }}>목적</FlowInfo>
-                  <FlowInfo2 style={{ fontWeight: "400", maxWidth: "240px" }}>
-                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(", ")}
+              <div style={{ width: '284px' }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
+                  <FlowInfo style={{ width: '28px' }}>목적</FlowInfo>
+                  <FlowInfo2 style={{ fontWeight: '400', maxWidth: '240px' }}>
+                    {data.flowDetail.purposeList.map((p) => PurposeList[p]).join(', ')}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: 'flex' }}>
                   <FlowInfo>플레이 시간</FlowInfo>
                   <div>{data.flowDetail.totalPlayTime}분</div>
                 </div>
@@ -208,8 +208,8 @@ export default function MoreMyFlow() {
 
               <Line />
 
-              <div style={{ marginLeft: "29px" }}>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+              <div style={{ marginLeft: '29px' }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>키워드</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.keywordList.map((keyword) => (
@@ -217,7 +217,7 @@ export default function MoreMyFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>성별</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.gender.map((gender) => (
@@ -225,7 +225,7 @@ export default function MoreMyFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>연령대</FlowInfo>
                   <FlowInfo2>
                     {data.flowDetail.age.map((age) => (
@@ -233,7 +233,7 @@ export default function MoreMyFlow() {
                     ))}
                   </FlowInfo2>
                 </div>
-                <div style={{ display: "flex", marginBottom: "8px" }}>
+                <div style={{ display: 'flex', marginBottom: '8px' }}>
                   <FlowInfo>인원</FlowInfo>
                   <div>{data.flowDetail.participants}명</div>
                 </div>
@@ -276,7 +276,14 @@ export default function MoreMyFlow() {
             ) : (
               <></>
             )}
-            <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", marginBottom: "131px" }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '80px',
+                marginBottom: '131px',
+              }}
+            >
               <Delete onClick={() => setDel(true)}>삭제</Delete>
               <Change>수정</Change>
             </div>

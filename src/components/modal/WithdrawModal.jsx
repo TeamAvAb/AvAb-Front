@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import x from "../../assets/main/closeIcon.svg";
-import * as S from "./modal.style";
-import LogoutP from "../../assets/mypage/LogoutImg.svg";
-import patchUserDelete from "../../apis/patchUserDelete";
-import useLoginStore from "../../stores/loginStore";
-import { useNavigate } from "react-router";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import x from '../../assets/main/closeIcon.svg';
+import * as S from './modal.style';
+import LogoutP from '../../assets/mypage/LogoutImg.svg';
+import patchUserDelete from '../../apis/patchUserDelete';
+import useLoginStore from '../../stores/loginStore';
+import { useNavigate } from 'react-router';
 
 export default function WithdrawModal({ handleModal }) {
   const [withdrawComplete, setWithdrawComplete] = useState(false);
@@ -13,14 +13,14 @@ export default function WithdrawModal({ handleModal }) {
   const navigator = useNavigate();
   const completeWithdraw = () => {
     logout();
-    navigator("/");
+    navigator('/');
   };
 
   const apiCall = () => {
     if (patchUserDelete()) {
       setWithdrawComplete(true);
     } else {
-      console.log("patchUserDelete Fail");
+      console.log('patchUserDelete Fail');
     }
   };
   return (
@@ -31,9 +31,7 @@ export default function WithdrawModal({ handleModal }) {
             <>
               <S.TitleContainer>
                 <S.Title>탈퇴되었습니다</S.Title>
-                <S.SubTitle>
-                  계정 정보는 한달 동안 유효하니 다시 찾아주세요!
-                </S.SubTitle>
+                <S.SubTitle>계정 정보는 한달 동안 유효하니 다시 찾아주세요!</S.SubTitle>
               </S.TitleContainer>
               <LogoutImg src={LogoutP} />
               <S.BtnContainer>
@@ -46,8 +44,7 @@ export default function WithdrawModal({ handleModal }) {
               <S.TitleContainer>
                 <S.Title>회원탈퇴 하시게요?</S.Title>
                 <S.SubTitle>
-                  30일 이후에는 계정 및 데이터가 영구 삭제되며 복구가
-                  불가능합니다.
+                  30일 이후에는 계정 및 데이터가 영구 삭제되며 복구가 불가능합니다.
                 </S.SubTitle>
               </S.TitleContainer>
               <LogoutImg src={LogoutP} />

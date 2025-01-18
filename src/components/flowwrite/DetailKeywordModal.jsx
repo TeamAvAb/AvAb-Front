@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import rechoice from "../../assets/flowwrite/rechoice.png";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import rechoice from '../../assets/flowwrite/rechoice.png';
 
 const DetailKeywordModal = ({
   onClose,
   onSelectDetailKeywords,
   selectedKeywords: propSelectedDetailKeywords,
 }) => {
-  console.log(
-    "Selected Keywords in DetailKeywordModal:",
-    propSelectedDetailKeywords
-  );
+  console.log('Selected Keywords in DetailKeywordModal:', propSelectedDetailKeywords);
   const [detailSelectedKeywords, setDetailSelectedKeywords] = useState([]);
 
   useEffect(() => {
@@ -20,24 +17,22 @@ const DetailKeywordModal = ({
   // const keywordGroups = ['협동', '순발력', '센스', '두뇌', '창의력', '액티브', '심리', '행운', '상식', '준비물'];
 
   const DetailMappings = {
-    협동: "COOPERATIVE",
-    순발력: "QUICKNESS",
-    센스: "SENSIBLE",
-    두뇌: "BRAIN",
-    창의력: "CREATIVE",
-    액티브: "ACTIVE",
-    심리: "PSYCHOLOGICAL",
-    행운: "LUCK",
-    상식: "COMMON_SENSE",
-    준비물: "PREPARATION",
+    협동: 'COOPERATIVE',
+    순발력: 'QUICKNESS',
+    센스: 'SENSIBLE',
+    두뇌: 'BRAIN',
+    창의력: 'CREATIVE',
+    액티브: 'ACTIVE',
+    심리: 'PSYCHOLOGICAL',
+    행운: 'LUCK',
+    상식: 'COMMON_SENSE',
+    준비물: 'PREPARATION',
   };
 
   const handleKeywordClick = (keyword) => {
     console.log(`Keyword: ${keyword}`);
     if (detailSelectedKeywords.includes(keyword)) {
-      setDetailSelectedKeywords(
-        detailSelectedKeywords.filter((selected) => selected !== keyword)
-      );
+      setDetailSelectedKeywords(detailSelectedKeywords.filter((selected) => selected !== keyword));
     } else {
       setDetailSelectedKeywords([...detailSelectedKeywords, keyword]);
     }
@@ -65,13 +60,8 @@ const DetailKeywordModal = ({
       <ModalContent>
         <DetailKeywordWrap>
           {Object.keys(DetailMappings).map((keyword) => (
-            <DetailKeywordButton
-              key={keyword}
-              onClick={() => handleKeywordClick(keyword)}
-            >
-              <DetailKeywordSpan
-                clicked={detailSelectedKeywords.includes(keyword)}
-              >
+            <DetailKeywordButton key={keyword} onClick={() => handleKeywordClick(keyword)}>
+              <DetailKeywordSpan clicked={detailSelectedKeywords.includes(keyword)}>
                 {keyword}
               </DetailKeywordSpan>
             </DetailKeywordButton>
@@ -85,11 +75,7 @@ const DetailKeywordModal = ({
         <BottomContainer>
           <CloseButton onClick={onClose}>닫기</CloseButton>
           <RechoiceButton onClick={handleResetDetailKeywords}>
-            <img
-              src={rechoice}
-              alt="Rechoice"
-              style={{ width: "42px", height: "42px" }}
-            />
+            <img src={rechoice} alt="Rechoice" style={{ width: '42px', height: '42px' }} />
             초기화
           </RechoiceButton>
           <DetailKeywordSelectButton onClick={handleSelectDetailKeywords}>
@@ -143,7 +129,7 @@ const DetailKeywordSpan = styled.span`
   padding: 10px 40px;
   border-radius: 5px;
   border: 1px solid #e9ebed;
-  background-color: ${({ clicked }) => (clicked ? "#A0DDFF" : "#E9EBED")};
+  background-color: ${({ clicked }) => (clicked ? '#A0DDFF' : '#E9EBED')};
   justify-content: center;
   align-items: center;
   display: flex;

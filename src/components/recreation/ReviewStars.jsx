@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import yellowStar from "../../assets/recreation/yellowStar.svg";
-import greyStar from "../../assets/recreation/greyStar.svg";
+import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import yellowStar from '../../assets/recreation/yellowStar.svg';
+import greyStar from '../../assets/recreation/greyStar.svg';
 
 export default function ReviewStars({ onStarClick, selectedStars }) {
   // 별점 기본값 설정

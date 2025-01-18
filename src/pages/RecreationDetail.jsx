@@ -1,16 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
-import RecreationTopInfo from "../components/recreation/RecreationTopInfo";
-import RecreationMenuBar from "../components/recreation/RecreationMenuBar";
-import RecreationInformation from "../components/recreation/RecreationInformation";
-import RecreationReview from "../components/recreation/RecreationReview";
-import RecreationRelated from "../components/recreation/RecreationRelated";
-import RecreationFlow from "../components/recreation/RecreationFlow";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { publicAPI, privateAPI } from "../apis/user";
-import useLoginStore from "../stores/loginStore";
-import useLoginModalStore from "../stores/loginModalStore";
+import React, { useRef, useEffect, useState } from 'react';
+import RecreationTopInfo from '../components/recreation/RecreationTopInfo';
+import RecreationMenuBar from '../components/recreation/RecreationMenuBar';
+import RecreationInformation from '../components/recreation/RecreationInformation';
+import RecreationReview from '../components/recreation/RecreationReview';
+import RecreationRelated from '../components/recreation/RecreationRelated';
+import RecreationFlow from '../components/recreation/RecreationFlow';
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { publicAPI, privateAPI } from '../apis/user';
+import useLoginStore from '../stores/loginStore';
+import useLoginModalStore from '../stores/loginModalStore';
 export default function RecreationDetail() {
   const { recreationId } = useParams();
   const infoRef = useRef(null);
@@ -30,7 +30,7 @@ export default function RecreationDetail() {
         const api = isLoggedIn ? privateAPI : publicAPI;
         const response = await api.get(`/api/recreations/${recreationId}`);
         setRecreationData(response.data.result);
-        console.log("레크레이션 데이터 ", response.data.result);
+        console.log('레크레이션 데이터 ', response.data.result);
         setLoading(false); // 데이터 받아오기 성공
       } catch (error) {
         console.error(error);
@@ -51,62 +51,53 @@ export default function RecreationDetail() {
         <title>{recreationData.title} - 레크레이션 상세정보</title>
         <meta
           name="description"
-          content={`레크레이션 정보: ${
-            recreationData.summary
-          }. ${recreationData.purposeList
+          content={`레크레이션 정보: ${recreationData.summary}. ${recreationData.purposeList
             .map((purpose) => {
               const purposeMap = {
-                WORKSHOP: "워크샵",
-                SPORTS_DAY: "체육대회",
-                MT: "MT",
-                GATHERING: "모임",
-                RETREAT: "수련회",
+                WORKSHOP: '워크샵',
+                SPORTS_DAY: '체육대회',
+                MT: 'MT',
+                GATHERING: '모임',
+                RETREAT: '수련회',
               };
               return purposeMap[purpose] || purpose;
             })
-            .join(", ")} 진행 시간: ${recreationData.playTime}분`}
+            .join(', ')} 진행 시간: ${recreationData.playTime}분`}
         />
         <meta
           name="keywords"
-          content={`레크레이션, ${
-            recreationData.title
-          }, ${recreationData.keywordList
+          content={`레크레이션, ${recreationData.title}, ${recreationData.keywordList
             .map((keyword) => {
               const keywordMap = {
-                QUICKNESS: "순발력",
-                SENSIBLE: "센스",
-                COOPERATIVE: "창의력",
-                ACTIVE: "협동",
-                BRAIN: "액티브",
-                PSYCHOLOGICAL: "두뇌",
-                LUCK: "심리",
-                COMMON_SENSE: "행운",
-                PREPARATION: "상식",
+                QUICKNESS: '순발력',
+                SENSIBLE: '센스',
+                COOPERATIVE: '창의력',
+                ACTIVE: '협동',
+                BRAIN: '액티브',
+                PSYCHOLOGICAL: '두뇌',
+                LUCK: '심리',
+                COMMON_SENSE: '행운',
+                PREPARATION: '상식',
               };
               return keywordMap[keyword] || keyword;
             })
-            .join(", ")}`}
+            .join(', ')}`}
         />
-        <meta
-          property="og:title"
-          content={`${recreationData.title} - 레크레이션 상세정보`}
-        />
+        <meta property="og:title" content={`${recreationData.title} - 레크레이션 상세정보`} />
         <meta
           property="og:description"
-          content={`레크레이션 정보: ${
-            recreationData.summary
-          }. ${recreationData.purposeList
+          content={`레크레이션 정보: ${recreationData.summary}. ${recreationData.purposeList
             .map((purpose) => {
               const purposeMap = {
-                WORKSHOP: "워크샵",
-                SPORTS_DAY: "체육대회",
-                MT: "MT",
-                GATHERING: "모임",
-                RETREAT: "수련회",
+                WORKSHOP: '워크샵',
+                SPORTS_DAY: '체육대회',
+                MT: 'MT',
+                GATHERING: '모임',
+                RETREAT: '수련회',
               };
               return purposeMap[purpose] || purpose;
             })
-            .join(", ")} 진행 시간: ${recreationData.playTime}분`}
+            .join(', ')} 진행 시간: ${recreationData.playTime}분`}
         />
         <meta property="og:image" content={recreationData.imageUrl} />
         <meta
@@ -121,10 +112,7 @@ export default function RecreationDetail() {
       <RecreationDetailContainer>
         {recreationData ? (
           <>
-            <RecreationInformation
-              ref={infoRef}
-              recreationData={recreationData}
-            />
+            <RecreationInformation ref={infoRef} recreationData={recreationData} />
             <RecreationReview ref={reviewRef} recreationId={recreationId} />
             <RecreationRelated ref={relatedRef} recreationId={recreationId} />
             <RecreationFlow ref={flowRef} recreationId={recreationId} />

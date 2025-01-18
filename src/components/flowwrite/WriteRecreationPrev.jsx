@@ -1,48 +1,52 @@
-import React from "react";
-import styled from "styled-components";
-import arrow from "../../assets/main/nextSlide.svg";
-import heartImg from "../../assets/main/heart.svg";
-import starImg from "../../assets/main/starIcon.svg";
-import AddRecreationInfo from "./AddRecreationInfo";
+import React from 'react';
+import styled from 'styled-components';
+import arrow from '../../assets/main/nextSlide.svg';
+import heartImg from '../../assets/main/heart.svg';
+import starImg from '../../assets/main/starIcon.svg';
+import AddRecreationInfo from './AddRecreationInfo';
 
 const keywordMapping = {
-  QUICKNESS: "순발력",
-  SENSIBLE: "센스",
-  CREATIVE: "창의력",
-  COOPERATIVE: "협동",
-  ACTIVE: "액티브",
-  BRAIN: "두뇌",
-  PSYCHOLOGICAL: "심리",
-  LUCK: "행운",
-  COMMON_SENSE: "상식",
-  PREPARATION: "준비물",
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  CREATIVE: '창의력',
+  COOPERATIVE: '협동',
+  ACTIVE: '액티브',
+  BRAIN: '두뇌',
+  PSYCHOLOGICAL: '심리',
+  LUCK: '행운',
+  COMMON_SENSE: '상식',
+  PREPARATION: '준비물',
 };
 
-export default function WriteRecreationPrev({ content, handleAddRecommendFlow, handleAddScrapFlow }) {
+export default function WriteRecreationPrev({
+  content,
+  handleAddRecommendFlow,
+  handleAddScrapFlow,
+}) {
   const handleAddButtonClick = async () => {
-    console.log("추가하기 버튼을 눌렀을 때 id 값:", content.id);
-    console.log("버튼 클릭: handleAddScrapFlow:", handleAddScrapFlow);
+    console.log('추가하기 버튼을 눌렀을 때 id 값:', content.id);
+    console.log('버튼 클릭: handleAddScrapFlow:', handleAddScrapFlow);
     if (handleAddScrapFlow) {
       try {
         // handleAddScrapFlow 함수가 정의되어 있다면 호출
         const result = await handleAddScrapFlow(content.id); // handleAddScrapFlow 함수가 완료될 때까지 기다림
-        console.log("추가된 레크레이션 데이터:", result);
+        console.log('추가된 레크레이션 데이터:', result);
       } catch (error) {
-        console.error("handleAddScrapFlow 함수 호출 중 에러 발생:", error);
+        console.error('handleAddScrapFlow 함수 호출 중 에러 발생:', error);
       }
     } else {
-      console.error("handleAddScrapFlow 함수가 정의되지 않았습니다.");
+      console.error('handleAddScrapFlow 함수가 정의되지 않았습니다.');
     }
     if (handleAddRecommendFlow) {
       try {
         // handleAddRecommendFlow 함수가 정의되어 있다면 호출
         const result = await handleAddRecommendFlow(content.id); // handleAddRecommendFlow 함수가 완료될 때까지 기다림
-        console.log("추가된 레크레이션 데이터:", result);
+        console.log('추가된 레크레이션 데이터:', result);
       } catch (error) {
-        console.error("handleAddRecommendFlow 함수 호출 중 에러 발생:", error);
+        console.error('handleAddRecommendFlow 함수 호출 중 에러 발생:', error);
       }
     } else {
-      console.error("handleAddRecommendFlow 함수가 정의되지 않았습니다.");
+      console.error('handleAddRecommendFlow 함수가 정의되지 않았습니다.');
     }
   };
 
@@ -55,23 +59,26 @@ export default function WriteRecreationPrev({ content, handleAddRecommendFlow, h
             src={heartImg}
             alt="Heart"
             style={{
-              width: "42px",
-              height: "42px",
-              position: "absolute",
-              top: "150px",
-              right: "20px",
+              width: '42px',
+              height: '42px',
+              position: 'absolute',
+              top: '150px',
+              right: '20px',
             }}
           />
         </ImgSpace>
         <Explain>
           <Section1>
             {content.title}
-            <img src={arrow} alt="Arrow" style={{ width: "24px", height: "24px" }} />
+            <img src={arrow} alt="Arrow" style={{ width: '24px', height: '24px' }} />
           </Section1>
           <Section2>
-            <Keywords> {content.keywordList.map((keyword) => keywordMapping[keyword]).join(", ")}</Keywords>
+            <Keywords>
+              {' '}
+              {content.keywordList.map((keyword) => keywordMapping[keyword]).join(', ')}
+            </Keywords>
             <Rate>
-              <img src={starImg} alt="Star" style={{ width: "16px", height: "16px" }} />
+              <img src={starImg} alt="Star" style={{ width: '16px', height: '16px' }} />
               {content.totalStars}
             </Rate>
           </Section2>

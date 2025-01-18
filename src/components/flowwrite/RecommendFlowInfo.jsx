@@ -1,52 +1,66 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const keywordMap = {
-  QUICKNESS: "순발력",
-  SENSIBLE: "센스",
-  COOPERATIVE: "창의력",
-  ACTIVE: "협동",
-  BRAIN: "액티브",
-  PSYCHOLOGICAL: "두뇌",
-  LUCK: "심리",
-  COMMON_SENSE: "행운",
-  PREPARATION: "상식",
+  QUICKNESS: '순발력',
+  SENSIBLE: '센스',
+  COOPERATIVE: '창의력',
+  ACTIVE: '협동',
+  BRAIN: '액티브',
+  PSYCHOLOGICAL: '두뇌',
+  LUCK: '심리',
+  COMMON_SENSE: '행운',
+  PREPARATION: '상식',
 };
 
 export default function RecommendFlowInfo({ recreations }) {
   const mapKeywordsToKorean = (keywords) => {
-    return keywords.map(keyword => keywordMap[keyword]).filter(Boolean);
+    return keywords.map((keyword) => keywordMap[keyword]).filter(Boolean);
   };
 
-    return (
-      <div>
-        {recreations.map((recreation, index) => (
-          <div key={index}  style={{ display: "flex"}}>
-            <Line time={recreation.playTime}></Line>
-            <InfoBox time={recreation.playTime}>
-              {/* 레크레이션 제목 */}
-              <RecreationTitle>
-                <Number>{index + 1}</Number>
-                <div style={{ fontSize: "20px", fontStyle: "normal", fontWeight: "700" }}>{recreation.title}</div>
-              </RecreationTitle>
+  return (
+    <div>
+      {recreations.map((recreation, index) => (
+        <div key={index} style={{ display: 'flex' }}>
+          <Line time={recreation.playTime}></Line>
+          <InfoBox time={recreation.playTime}>
+            {/* 레크레이션 제목 */}
+            <RecreationTitle>
+              <Number>{index + 1}</Number>
+              <div style={{ fontSize: '20px', fontStyle: 'normal', fontWeight: '700' }}>
+                {recreation.title}
+              </div>
+            </RecreationTitle>
 
-              <KeywordBox>
-              {recreation.keywordList && mapKeywordsToKorean(recreation.keywordList).map((keyword, keywordIndex) => (
-                <Keyword key={keywordIndex}>{keyword}</Keyword>
-              ))}
+            <KeywordBox>
+              {recreation.keywordList &&
+                mapKeywordsToKorean(recreation.keywordList).map((keyword, keywordIndex) => (
+                  <Keyword key={keywordIndex}>{keyword}</Keyword>
+                ))}
             </KeywordBox>
-      
-              {/* 레크레이션 소요 시간 */}
-              <PlayTime>
-                <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "400", color: "#9FA4A9" }}>플레이까지</div>
-                <div style={{ fontSize: "16px", fontStyle: "normal", fontWeight: "600" }}>{recreation.playTime}분</div>
-              </PlayTime>
-            </InfoBox>
-          </div>
-        ))}
-      </div>
-    );
-  }  
+
+            {/* 레크레이션 소요 시간 */}
+            <PlayTime>
+              <div
+                style={{
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: '400',
+                  color: '#9FA4A9',
+                }}
+              >
+                플레이까지
+              </div>
+              <div style={{ fontSize: '16px', fontStyle: 'normal', fontWeight: '600' }}>
+                {recreation.playTime}분
+              </div>
+            </PlayTime>
+          </InfoBox>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const Line = styled.div`
   width: 0px;

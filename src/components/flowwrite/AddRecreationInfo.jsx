@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import fix from "../../assets/flowwrite/fix_flow_write.png";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import fix from '../../assets/flowwrite/fix_flow_write.png';
 
-export default function AddRecreationInfo({
-  num,
-  title,
-  playTime,
-  keywordList,
-  onDelete,
-}) {
+export default function AddRecreationInfo({ num, title, playTime, keywordList, onDelete }) {
   // const [title, setTitle] = useState("");
   const [time, setTime] = useState(10);
 
   const DetailMappings = {
-    COOPERATIVE: "협동",
-    QUICKNESS: "순발력",
-    SENSIBLE: "센스",
-    BRAIN: "두뇌",
-    CREATIVE: "창의력",
-    ACTIVE: "액티브",
-    PSYCHOLOGICAL: "심리",
-    LUCK: "행운",
-    COMMON_SENSE: "상식",
-    PREPARATION: "준비물",
+    COOPERATIVE: '협동',
+    QUICKNESS: '순발력',
+    SENSIBLE: '센스',
+    BRAIN: '두뇌',
+    CREATIVE: '창의력',
+    ACTIVE: '액티브',
+    PSYCHOLOGICAL: '심리',
+    LUCK: '행운',
+    COMMON_SENSE: '상식',
+    PREPARATION: '준비물',
   };
 
   useEffect(() => {
@@ -31,19 +25,16 @@ export default function AddRecreationInfo({
     const fetchRecreationData = async () => {
       try {
         // API를 호출하여 데이터 가져오기
-        const response = await axios.get(
-          "https://dev.avab.shop/api/recreations/recommended",
-          {
-            params: {
-              playTime: time,
-              purpose: "SPORTS_DAY",
-            },
-          }
-        );
-        console.log("API 응답 데이터:", response.data);
+        const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+          params: {
+            playTime: time,
+            purpose: 'SPORTS_DAY',
+          },
+        });
+        console.log('API 응답 데이터:', response.data);
         // 데이터에서 필요한 정보 추출
         const { title, keywordList, playTime } = response.data;
-        console.log("추가된 레크레이션 데이터:", {
+        console.log('추가된 레크레이션 데이터:', {
           title,
           keywordList,
           playTime,
@@ -53,14 +44,14 @@ export default function AddRecreationInfo({
         return { title, keywordList, playTime };
       } catch (error) {
         // 에러 발생 시 에러 처리
-        console.error("추가 중 오류 발생:", error);
+        console.error('추가 중 오류 발생:', error);
       }
     };
 
     // fetchRecreationData 함수 호출
     const fetchData = async () => {
       const data = await fetchRecreationData();
-      console.log("데이터:", data); // 받은 데이터 출력
+      console.log('데이터:', data); // 받은 데이터 출력
     };
 
     // fetchData 함수 호출
@@ -76,10 +67,10 @@ export default function AddRecreationInfo({
   return (
     <div
       style={{
-        display: "flex",
-        gap: "8px",
-        alignItems: "end",
-        marginBottom: "8px",
+        display: 'flex',
+        gap: '8px',
+        alignItems: 'end',
+        marginBottom: '8px',
       }}
     >
       <Line time={playTime}></Line>
@@ -91,36 +82,36 @@ export default function AddRecreationInfo({
             type="text"
             value={title}
             style={{
-              fontSize: "20px",
-              fontStyle: "normal",
-              fontWeight: "700",
-              border: "none",
-              outline: "none",
+              fontSize: '20px',
+              fontStyle: 'normal',
+              fontWeight: '700',
+              border: 'none',
+              outline: 'none',
             }}
           />
           <img
             src={fix}
             alt="Fix"
-            style={{ width: "24px", height: "24px", cursor: "pointer" }}
+            style={{ width: '24px', height: '24px', cursor: 'pointer' }}
             onClick={handleDeleteClick}
           />
         </RecreationTitle>
 
         <KeywordBox>
-          <div style={{ width: "90%", display: "flex" }}>
+          <div style={{ width: '90%', display: 'flex' }}>
             {keywordList.map((keyword, index) => (
               <StyledKeyword
                 key={index}
                 style={{
-                  padding: "5px 20px",
-                  width: "123px",
-                  height: "29px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#F0F0F0",
-                  borderRadius: "4px",
-                  marginRight: "8px",
+                  padding: '5px 20px',
+                  width: '123px',
+                  height: '29px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#F0F0F0',
+                  borderRadius: '4px',
+                  marginRight: '8px',
                 }}
               >
                 {DetailMappings[keyword]}
@@ -132,20 +123,20 @@ export default function AddRecreationInfo({
         <PlayTime>
           <div
             style={{
-              fontSize: "16px",
-              fontStyle: "normal",
-              fontWeight: "500",
-              color: "#1B1D1F",
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '500',
+              color: '#1B1D1F',
             }}
           >
             플레이까지
           </div>
           <div
             style={{
-              fontSize: "16px",
-              fontStyle: "normal",
-              fontWeight: "600",
-              color: "#1B1D1F",
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: '600',
+              color: '#1B1D1F',
             }}
           >
             {playTime} 분
@@ -172,8 +163,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  top: ${(props) =>
-    props.time === 10 ? "0" : `calc(-${props.time / 10 - 1} * 119.04px)`};
+  top: ${(props) => (props.time === 10 ? '0' : `calc(-${props.time / 10 - 1} * 119.04px)`)};
   min-height: 119.004px;
 `;
 

@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import React, { useState, forwardRef, useEffect } from "react";
-import ReviewStars from "./ReviewStars";
-import ReviewBox from "./ReviewBox";
-import RecreationPagination from "./RecreationPagination";
-import { publicAPI } from "../../apis/user";
-import { privateAPI } from "../../apis/user";
-import useLoginModalStore from "../../stores/loginModalStore";
-import useLoginStore from "../../stores/loginStore";
+import styled from 'styled-components';
+import React, { useState, forwardRef, useEffect } from 'react';
+import ReviewStars from './ReviewStars';
+import ReviewBox from './ReviewBox';
+import RecreationPagination from './RecreationPagination';
+import { publicAPI } from '../../apis/user';
+import { privateAPI } from '../../apis/user';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
 
 const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const { modalControl } = useLoginModalStore();
@@ -14,7 +14,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewData, setReviewData] = useState(0);
-  const [reviewInput, setReviewInput] = useState("");
+  const [reviewInput, setReviewInput] = useState('');
   const [selectedStars, setSelectedStars] = useState(0);
 
   const handleStarClick = (starCount) => {
@@ -25,18 +25,18 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
   // 리뷰 목록 받아오기
   const fetchReviews = async () => {
-    console.log("리뷰 목록 다시 받기");
+    console.log('리뷰 목록 다시 받기');
     try {
       const api = isLoggedIn ? privateAPI : publicAPI;
       const response = await api.get(
-        `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`
+        `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`,
       );
       console.log(response);
       setReviewListData(response.data.result.reviewList);
-      console.log("리뷰 리스트 데이터: ", response.data.result.reviewList);
+      console.log('리뷰 리스트 데이터: ', response.data.result.reviewList);
       setReviewData(response.data.result);
     } catch (error) {
-      console.error("리뷰데이터", error);
+      console.error('리뷰데이터', error);
     }
   };
 
@@ -60,32 +60,31 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
         },
         {
           headers: {
-            Accept: "*/*",
+            Accept: '*/*',
           },
-        }
+        },
       );
 
       // 리뷰 목록 업데이트
       fetchReviews();
 
-      alert("리뷰가 등록되었습니다");
+      alert('리뷰가 등록되었습니다');
       setSelectedStars(0);
-      setReviewInput("");
+      setReviewInput('');
     } catch (error) {
       console.error(error);
-      alert("리뷰 등록에 실패했습니다");
+      alert('리뷰 등록에 실패했습니다');
     }
   };
 
   // 좋아요 클릭 핸들러
   const handleLikeClick = async (id) => {
-    console.log("좋아요");
+    console.log('좋아요');
     if (isLoggedIn) {
-      const response = await privateAPI.post(
-        `/api/recreation-reviews/${id}/recommendations`,
-        { type: "GOOD" }
-      );
-      if (response.data?.code === "COMMON201") {
+      const response = await privateAPI.post(`/api/recreation-reviews/${id}/recommendations`, {
+        type: 'GOOD',
+      });
+      if (response.data?.code === 'COMMON201') {
         fetchReviews();
       } else {
         console.log(response.data);
@@ -95,13 +94,12 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
 
   // 싫어요 클릭 핸들러
   const handleDislikeClick = async (id) => {
-    console.log("싫어요");
+    console.log('싫어요');
     if (isLoggedIn) {
-      const response = await privateAPI.post(
-        `/api/recreation-reviews/${id}/recommendations`,
-        { type: "BAD" }
-      );
-      if (response.data?.code === "COMMON201") {
+      const response = await privateAPI.post(`/api/recreation-reviews/${id}/recommendations`, {
+        type: 'BAD',
+      });
+      if (response.data?.code === 'COMMON201') {
         fetchReviews();
       } else {
         console.log(response.data);
@@ -114,10 +112,7 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
       <TitleText>리뷰 및 평가 ({reviewListData.totalReviews})</TitleText>
       <StarBox>
         <SelectStar>별점을 선택해주세요</SelectStar>
-        <ReviewStars
-          onStarClick={handleStarClick}
-          selectedStars={selectedStars}
-        />
+        <ReviewStars onStarClick={handleStarClick} selectedStars={selectedStars} />
       </StarBox>
 
       <ReviewInputWrap>
@@ -128,16 +123,12 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
               value={reviewInput}
               onChange={(e) => setReviewInput(e.target.value)}
             ></ReviewInputBox>
-            <ReviewInputButton onClick={handleReviewSubmit}>
-              등록
-            </ReviewInputButton>
+            <ReviewInputButton onClick={handleReviewSubmit}>등록</ReviewInputButton>
           </>
         ) : (
           <>
             <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
-            <ReviewInputButton onClick={handleReviewSubmit}>
-              등록
-            </ReviewInputButton>
+            <ReviewInputButton onClick={handleReviewSubmit}>등록</ReviewInputButton>
           </>
         )}
       </ReviewInputWrap>
@@ -153,13 +144,9 @@ const RecreationReview = forwardRef(({ recreationId }, ref) => {
           dislike={review.badCount}
           handleLikeClick={handleLikeClick}
           handleDislikeClick={handleDislikeClick}
-          likeState={
-            review.recommendation?.isRecommended &&
-            review.recommendation?.type === "GOOD"
-          }
+          likeState={review.recommendation?.isRecommended && review.recommendation?.type === 'GOOD'}
           dislikeState={
-            review.recommendation?.isRecommended &&
-            review.recommendation?.type === "BAD"
+            review.recommendation?.isRecommended && review.recommendation?.type === 'BAD'
           }
         />
       ))}

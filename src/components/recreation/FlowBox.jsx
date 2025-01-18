@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import FlowRecreationBox from "./FlowRecreationBox";
-import { ReactComponent as ScrapIcon } from "../../assets/recreation/scrapIcon.svg";
-import { privateAPI } from "../../apis/user";
-import useLoginModalStore from "../../stores/loginModalStore";
-import useLoginStore from "../../stores/loginStore";
-export default function FlowBox({
-  num,
-  marginRight,
-  flowData,
-  flowRecreations,
-}) {
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import FlowRecreationBox from './FlowRecreationBox';
+import { ReactComponent as ScrapIcon } from '../../assets/recreation/scrapIcon.svg';
+import { privateAPI } from '../../apis/user';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
+export default function FlowBox({ num, marginRight, flowData, flowRecreations }) {
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
 
-  const [isScrapToggle, SetIsScrapToggle] = useState(
-    flowData?.isFavorite || false
-  );
+  const [isScrapToggle, SetIsScrapToggle] = useState(flowData?.isFavorite || false);
 
   const onHandleScrap = async (flowId) => {
     if (!isLoggedIn) {
@@ -26,8 +19,8 @@ export default function FlowBox({
     }
     try {
       const response = await privateAPI.post(`/api/flows/${flowId}/scraps`, {});
-      console.log("스크랩 완료: ", response);
-      if (response.data.code === "COMMON200") {
+      console.log('스크랩 완료: ', response);
+      if (response.data.code === 'COMMON200') {
         SetIsScrapToggle(!isScrapToggle);
       } else {
         console.log(response.data);
@@ -37,8 +30,8 @@ export default function FlowBox({
     }
   };
 
-  const scrapIconColor = isScrapToggle ? "#ffd446" : "#E9EBED";
-  console.log("플로우 레크레이션", flowRecreations);
+  const scrapIconColor = isScrapToggle ? '#ffd446' : '#E9EBED';
+  console.log('플로우 레크레이션', flowRecreations);
   return (
     <FlowBoxWrap marginRight={marginRight}>
       <TitleWrap>
@@ -47,10 +40,7 @@ export default function FlowBox({
         {flowRecreations &&
           flowRecreations.length > 0 && ( // 추천 플로우가 있을 때만 스크랩 아이콘 렌더링
             <IconWrap>
-              <ScrapIcon
-                fill={scrapIconColor}
-                onClick={() => onHandleScrap(flowData.id)}
-              />
+              <ScrapIcon fill={scrapIconColor} onClick={() => onHandleScrap(flowData.id)} />
             </IconWrap>
           )}
       </TitleWrap>
@@ -78,7 +68,7 @@ const FlowBoxWrap = styled.div`
   border-radius: 20px;
   border: 0.5px solid #9fa4a9;
   padding: 30px 34px;
-  margin-right: ${(props) => props.marginRight || "0px"};
+  margin-right: ${(props) => props.marginRight || '0px'};
 `;
 const TitleWrap = styled.div`
   display: flex;

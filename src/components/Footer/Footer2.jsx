@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useLoginStore from "../../stores/loginStore"
-import useLoginModalStore from "../../stores/loginModalStore";
+import useLoginStore from '../../stores/loginStore';
+import useLoginModalStore from '../../stores/loginModalStore';
 
 export default function Footer() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -22,9 +22,9 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const ToMypage = () => {
-   if (isLoggedIn) {
+    if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else modalControl();
   };
   return (
@@ -42,7 +42,7 @@ export default function Footer() {
         <Explain2>Contact Us</Explain2>
       </Bottom>
     </FooterWrap>
-  )
+  );
 }
 
 const FooterWrap = styled.footer`
@@ -59,7 +59,7 @@ const High = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 2px solid #9fa4a9;;
+  border-bottom: 2px solid #9fa4a9;
   width: 1080px;
 `;
 
@@ -78,22 +78,22 @@ const Details = styled.div`
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
-`
+`;
 
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   width: 1080px;
-`
+`;
 
-const Explain1 = styled.div` 
+const Explain1 = styled.div`
   margin-right: 53%;
   margin-top: 20px;
   color: #9fa4a9;
 `;
 
-const Explain2 = styled.div` 
+const Explain2 = styled.div`
   margin-top: 20px;
   color: #9fa4a9;
 `;

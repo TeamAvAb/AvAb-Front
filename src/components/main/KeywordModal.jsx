@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import rechoiceIcon from "../../assets/main/rechoiceIcon.svg";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import rechoiceIcon from '../../assets/main/rechoiceIcon.svg';
 
 export default function KeywordModal({
   $category,
@@ -21,7 +21,7 @@ export default function KeywordModal({
     }
   };
   const handleReset = () => {
-    setResult("");
+    setResult('');
   };
 
   const handleSubmit = () => {
@@ -48,12 +48,9 @@ export default function KeywordModal({
           <ModalBtn type="close" onClick={() => modalControl(false)}>
             닫기
           </ModalBtn>
-          <div style={{ display: "flex", flexDirection: "row", gap: "49px" }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '49px' }}>
             <Reset onClick={handleReset}>
-              <img
-                src={rechoiceIcon}
-                style={{ width: "42px", height: "42px" }}
-              />
+              <img src={rechoiceIcon} style={{ width: '42px', height: '42px' }} />
               초기화
             </Reset>
             <ModalBtn type="done" onClick={handleSubmit}>
@@ -86,33 +83,31 @@ const Keywords = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: ${(props) =>
-    props.$category == "keyword" ? "42px 49px" : "58px 0"};
-  gap: ${(props) => (props.$category == "keyword" ? "20px" : "15px")};
+  padding: ${(props) => (props.$category == 'keyword' ? '42px 49px' : '58px 0')};
+  gap: ${(props) => (props.$category == 'keyword' ? '20px' : '15px')};
   flex-wrap: wrap;
   box-shadow: 0px -2px 8px 0px rgba(0, 0, 0, 0.2) inset;
 `;
 const Keyword = styled.div`
   display: flex;
-  padding: ${(props) =>
-    props.$category == "keyword" ? "10px 40px" : "16px 34px"};
+  padding: ${(props) => (props.$category == 'keyword' ? '10px 40px' : '16px 34px')};
   justify-content: center;
   align-items: center;
   border: ${(props) =>
-    props.$category == "keyword"
-      ? "none"
+    props.$category == 'keyword'
+      ? 'none'
       : props.selected
-      ? "1px solid transparent"
-      : "1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)"};
-  border-radius: ${(props) => (props.$category == "keyword" ? "5px" : "50px")};
+        ? '1px solid transparent'
+        : '1px solid var(--gray-scale-1-b-1-d-1-f, #1B1D1F)'};
+  border-radius: ${(props) => (props.$category == 'keyword' ? '5px' : '50px')};
   background: ${(props) =>
     props.selected
-      ? "var(--main-a-0-ddff, #a0ddff)"
-      : props.$category === "keyword"
-      ? "var(--gray-scale-e-9-ebed, #E9EBED)"
-      : "var(--gray-scale-f-7-f-8-f-9, #F7F8F9)"};
-  font-size: ${(props) => (props.$category == "keyword" ? "16px" : "20px")};
-  font-weight: ${(props) => (props.$category == "keyword" ? "400" : "700")};
+      ? 'var(--main-a-0-ddff, #a0ddff)'
+      : props.$category === 'keyword'
+        ? 'var(--gray-scale-e-9-ebed, #E9EBED)'
+        : 'var(--gray-scale-f-7-f-8-f-9, #F7F8F9)'};
+  font-size: ${(props) => (props.$category == 'keyword' ? '16px' : '20px')};
+  font-weight: ${(props) => (props.$category == 'keyword' ? '400' : '700')};
   line-height: normal;
   cursor: pointer;
 `;
@@ -131,15 +126,10 @@ const ModalBtn = styled.button`
   align-items: center;
   border-radius: 50px;
   border: ${(props) =>
-    props.type === "close"
-      ? "1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f)"
-      : "none"};
-  background: ${(props) =>
-    props.type === "close" ? "#FFF" : "var(--main-4036-ed, #4036ED)"};
+    props.type === 'close' ? '1px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f)' : 'none'};
+  background: ${(props) => (props.type === 'close' ? '#FFF' : 'var(--main-4036-ed, #4036ED)')};
   color: ${(props) =>
-    props.type === "close"
-      ? "var(--gray-scale-1-b-1-d-1-f, #1b1d1f);"
-      : "#FFF"};
+    props.type === 'close' ? 'var(--gray-scale-1-b-1-d-1-f, #1b1d1f);' : '#FFF'};
   text-align: right;
   font-size: 20px;
   font-style: normal;

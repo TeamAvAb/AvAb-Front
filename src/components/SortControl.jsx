@@ -1,26 +1,21 @@
-import React from "react";
-import useDetectClose from "../hooks/main/useDetectClose";
-import arrow from "../assets/searchlist/dropdownArrow.svg";
-import styled, { css } from "styled-components";
-export default function SortControl({
-  setOption,
-  selectedOption,
-  marginright,
-  isFlow,
-}) {
+import React from 'react';
+import useDetectClose from '../hooks/main/useDetectClose';
+import arrow from '../assets/searchlist/dropdownArrow.svg';
+import styled, { css } from 'styled-components';
+export default function SortControl({ setOption, selectedOption, marginright, isFlow }) {
   const [dropdownOpen, containerRef, containerHandler] = useDetectClose(false);
   const optionConverter = (option) => {
-    if (option === "LIKE" || option === "SCRAP") return "인기순";
-    else if (option === "VIEW") return "조회 많은순";
-    else if (option === "RECENT") return "최신순";
+    if (option === 'LIKE' || option === 'SCRAP') return '인기순';
+    else if (option === 'VIEW') return '조회 많은순';
+    else if (option === 'RECENT') return '최신순';
   };
   return (
     <DropdownContainer $marginright={marginright}>
       <Menu $isdropped={dropdownOpen}>
         <Ul>
-          <Li onClick={() => setOption(isFlow ? "SCRAP" : "LIKE")}>인기순</Li>
-          <Li onClick={() => setOption("VIEW")}>조회 많은순</Li>
-          <Li onClick={() => setOption("RECENT")}>최신순</Li>
+          <Li onClick={() => setOption(isFlow ? 'SCRAP' : 'LIKE')}>인기순</Li>
+          <Li onClick={() => setOption('VIEW')}>조회 많은순</Li>
+          <Li onClick={() => setOption('RECENT')}>최신순</Li>
         </Ul>
       </Menu>
       <DropdownButton ref={containerRef} onClick={containerHandler}>
@@ -38,7 +33,7 @@ const DropdownContainer = styled.div`
   font-style: normal;
   font-weight: 400;
   margin-left: auto;
-  margin-right: ${(props) => (props.marginright ? props.marginright : "43px")};
+  margin-right: ${(props) => (props.marginright ? props.marginright : '43px')};
   z-index: 1;
 `;
 
@@ -77,7 +72,10 @@ const Menu = styled.div`
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -20px);
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0.4s;
   overflow: hidden;
 
   border-radius: 20px;

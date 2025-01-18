@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Pagination from "react-js-pagination";
-import prevButton from "../../assets/myflow/moveLeft.png";
-import nextButton from "../../assets/myflow/moveRight.png";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Pagination from 'react-js-pagination';
+import prevButton from '../../assets/myflow/moveLeft.png';
+import nextButton from '../../assets/myflow/moveRight.png';
 
 export default function RecreationPagination({
   itemsPerPage,
@@ -19,15 +19,15 @@ export default function RecreationPagination({
     <>
       <PaginationBox>
         <Pagination
-          firstPageText={""}
-          lastPageText={""}
+          firstPageText={''}
+          lastPageText={''}
           prevPageText={
             <img
               src={prevButton}
               alt="prev"
               style={{
-                filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
-                marginRight: "7px",
+                filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
+                marginRight: '7px',
               }}
             />
           }
@@ -36,8 +36,8 @@ export default function RecreationPagination({
               src={nextButton}
               alt="next"
               style={{
-                filter: "drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))",
-                marginLeft: "7px",
+                filter: 'drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15))',
+                marginLeft: '7px',
               }}
             />
           }

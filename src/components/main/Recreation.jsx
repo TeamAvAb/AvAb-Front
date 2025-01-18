@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import starIcon from "../../assets/mypage/mingcute_star-fill.svg";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import starIcon from '../../assets/mypage/mingcute_star-fill.svg';
 
-import { privateAPI } from "../../apis/user";
-import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
-import useLoginStore from "../../stores/loginStore";
-import useLoginModalStore from "../../stores/loginModalStore";
+import { privateAPI } from '../../apis/user';
+import { ReactComponent as HeartImg } from '../../assets/main/heart.svg';
+import useLoginStore from '../../stores/loginStore';
+import useLoginModalStore from '../../stores/loginModalStore';
 
 export default function Recreation({ content }) {
   const navigate = useNavigate();
@@ -14,20 +14,20 @@ export default function Recreation({ content }) {
   const { modalControl } = useLoginModalStore();
   const ToRecreationDetail = (recreationId) => {
     navigate(`/recreation/detail/${recreationId}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const keywordParam = {
-    COOPERATIVE: "협동",
-    QUICKNESS: "순발력",
-    SENSIBLE: "센스",
-    BRAIN: "두뇌",
-    CREATIVE: "창의력",
-    ACTIVE: "액티브",
-    PSYCHOLOGICAL: "심리",
-    LUCK: "행운",
-    COMMON_SENSE: "상식",
-    PREPARATION: "준비물",
+    COOPERATIVE: '협동',
+    QUICKNESS: '순발력',
+    SENSIBLE: '센스',
+    BRAIN: '두뇌',
+    CREATIVE: '창의력',
+    ACTIVE: '액티브',
+    PSYCHOLOGICAL: '심리',
+    LUCK: '행운',
+    COMMON_SENSE: '상식',
+    PREPARATION: '준비물',
   };
 
   //즐겨찾기 등록, 취소
@@ -35,17 +35,15 @@ export default function Recreation({ content }) {
   const addToFavorite = (id) => {
     const call = async () => {
       try {
-        const response = await privateAPI.post(
-          `/api/recreations/${id}/favorites`
-        );
-        console.log("즐겨찾기 추가/해제 응답 : ", response);
+        const response = await privateAPI.post(`/api/recreations/${id}/favorites`);
+        console.log('즐겨찾기 추가/해제 응답 : ', response);
         if (response.data.result.isFavorite === true) {
           setIsFav(true);
         } else if (response.data.result.isFavorite === false) {
           setIsFav(false);
         }
       } catch (error) {
-        console.log("즐겨찾기 추가/해제 에러 : ", error);
+        console.log('즐겨찾기 추가/해제 에러 : ', error);
       }
     };
 
@@ -71,10 +69,7 @@ export default function Recreation({ content }) {
           <KeyWord>{keywordParam[content.keywordList[2]]}</KeyWord>
         </KeyWords>
         <ImgSpace>
-          <ExImg
-            src={content.imageUrl}
-            onClick={() => ToRecreationDetail(content.id)}
-          />
+          <ExImg src={content.imageUrl} onClick={() => ToRecreationDetail(content.id)} />
           <Favorite $isfav={isFav} onClick={() => addToFavorite(content.id)} />
         </ImgSpace>
         <Explain onClick={() => ToRecreationDetail(content.id)}>
@@ -180,7 +175,7 @@ const Favorite = styled(HeartImg)`
   margin-left: 50px;
   margin-top: 120px;
   cursor: pointer;
-  fill: ${(props) => (props.$isfav === true ? "#FFAA29" : "#E9EBED")};
+  fill: ${(props) => (props.$isfav === true ? '#FFAA29' : '#E9EBED')};
 `;
 
 const Explain = styled.div`

@@ -1,50 +1,48 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
-import { privateAPI } from "../../apis/user";
-import styled from "styled-components";
-import arrow from "../../assets/main/nextSlide.svg";
-import { ReactComponent as HeartImg } from "../../assets/main/heart.svg";
-import starImg from "../../assets/main/starIcon.svg";
-import useLoginModalStore from "../../stores/loginModalStore.js";
-import useLoginStore from "../../stores/loginStore.js";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { privateAPI } from '../../apis/user';
+import styled from 'styled-components';
+import arrow from '../../assets/main/nextSlide.svg';
+import { ReactComponent as HeartImg } from '../../assets/main/heart.svg';
+import starImg from '../../assets/main/starIcon.svg';
+import useLoginModalStore from '../../stores/loginModalStore.js';
+import useLoginStore from '../../stores/loginStore.js';
 
 export default function RecreationPrev({ content }) {
   const { modalControl } = useLoginModalStore((state) => state);
   const { isLoggedIn } = useLoginStore((state) => state);
   const keywordParam = {
-    COOPERATIVE: "협동",
-    QUICKNESS: "순발력",
-    SENSIBLE: "센스",
-    BRAIN: "두뇌",
-    CREATIVE: "창의력",
-    ACTIVE: "액티브",
-    PSYCHOLOGICAL: "심리",
-    LUCK: "행운",
-    COMMON_SENSE: "상식",
-    PREPARATION: "준비물",
+    COOPERATIVE: '협동',
+    QUICKNESS: '순발력',
+    SENSIBLE: '센스',
+    BRAIN: '두뇌',
+    CREATIVE: '창의력',
+    ACTIVE: '액티브',
+    PSYCHOLOGICAL: '심리',
+    LUCK: '행운',
+    COMMON_SENSE: '상식',
+    PREPARATION: '준비물',
   };
   const [isFav, setIsFav] = useState(content.isFavorite);
   const navigator = useNavigate();
   const gotoDetail = (id) => {
     navigator(`/recreation/detail/${id}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const addToFavorite = (e, id) => {
     e.stopPropagation();
 
     const call = async () => {
       try {
-        const response = await privateAPI.post(
-          `/api/recreations/${id}/favorites`
-        );
-        console.log("즐겨찾기 추가/해제 응답 : ", response);
+        const response = await privateAPI.post(`/api/recreations/${id}/favorites`);
+        console.log('즐겨찾기 추가/해제 응답 : ', response);
         if (response.data.result.isFavorite === true) {
           setIsFav(true);
         } else if (response.data.result.isFavorite === false) {
           setIsFav(false);
         }
       } catch (error) {
-        console.log("즐겨찾기 추가/해제 에러 : ", error);
+        console.log('즐겨찾기 추가/해제 에러 : ', error);
       }
     };
     if (isLoggedIn) {
@@ -57,27 +55,24 @@ export default function RecreationPrev({ content }) {
       <RecreationExplain onClick={() => gotoDetail(content.id)}>
         <ImgSpace>
           <ExImg src={content.imageUrl}></ExImg>
-          <Favorite
-            $isfav={isFav}
-            onClick={(e) => addToFavorite(e, content.id)}
-          />
+          <Favorite $isfav={isFav} onClick={(e) => addToFavorite(e, content.id)} />
         </ImgSpace>
         <Explain>
           <Section1>
             {content.title}
-            <img src={arrow} style={{ width: "24px", height: "24px" }} />
+            <img src={arrow} style={{ width: '24px', height: '24px' }} />
           </Section1>
           <Section2>
-            <div style={{ display: "flex", gap: "5px" }}>
+            <div style={{ display: 'flex', gap: '5px' }}>
               {content.keywordList.map((keyword) => (
                 <Keyword key={keyword}>
                   {keywordParam[keyword]}
-                  {content.keywordList.indexOf(keyword) === 2 ? null : ","}
+                  {content.keywordList.indexOf(keyword) === 2 ? null : ','}
                 </Keyword>
               ))}
             </div>
             <Rate>
-              <img src={starImg} style={{ width: "16px", height: "16px" }} />
+              <img src={starImg} style={{ width: '16px', height: '16px' }} />
               {parseFloat(content.totalStars).toFixed(1)}
             </Rate>
           </Section2>
@@ -140,7 +135,7 @@ const Favorite = styled(HeartImg)`
   position: absolute;
   top: 150px;
   right: 20px;
-  fill: ${(props) => (props.$isfav === true ? "#FFAA29" : "#E9EBED")};
+  fill: ${(props) => (props.$isfav === true ? '#FFAA29' : '#E9EBED')};
 `;
 
 const Explain = styled.div`
