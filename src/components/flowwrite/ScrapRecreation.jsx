@@ -30,8 +30,6 @@ export default function ScrapRecreation({ content, handleAddScrapFlow }) {
     },
   };
 
-  console.log('handleAddScrapFlow in ScrapRecreation:', handleAddScrapFlow);
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <StyledSlider ref={slider} {...settings}>
