@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import fix from '../../assets/flowwrite/fix_flow_write.png';
 import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
+import warn from "../../assets/flowwrite/warn.png";
 import DetailKeywordModal from '../flowwrite/DetailKeywordModal';
 
 export default function WriteRecreationInfo({ num, onDelete }) {
@@ -9,6 +10,7 @@ export default function WriteRecreationInfo({ num, onDelete }) {
   const [time, setTime] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [isWarningVisible, setIsWarningVisible] = useState(false);
 
   const handleTitleChange = (e) => {
     // 사용자 입력이 변경될 때마다 title 상태 업데이트
@@ -20,9 +22,17 @@ export default function WriteRecreationInfo({ num, onDelete }) {
     setTime(e.target.value);
   };
 
-  const handleDeleteClick = () => {
-    // onDelete 함수를 호출하여 해당 InfoBox를 삭제합니다.
+  const confirmDelete = () => {
     onDelete(num);
+    setIsWarningVisible(false); // 경고창 닫기
+  };
+
+  const handleDeleteClick = () => {
+    setIsWarningVisible(true); // 경고창 표시
+  };
+
+  const cancelDelete = () => {
+    setIsWarningVisible(false); // 경고창 닫기
   };
 
   const handleDetailSearchClick = () => {
@@ -36,29 +46,23 @@ export default function WriteRecreationInfo({ num, onDelete }) {
   };
 
   const handleSelectDetailKeywords = (keywords) => {
+    // if (onSelectDetailKeywords) { // 함수가 전달되었는지 확인
+    //   onSelectDetailKeywords(keywords);  // 부모 컴포넌트의 함수를 호출
+    // }
     setSelectedKeywords(keywords);
     handleCloseModal();
     setIsModalOpen(true);
   };
 
   const handleDeleteKeyword = (index, event) => {
-    // Prevent the click event from propagating to the parent container (PurposeSearch)
     event.stopPropagation();
-
     const updatedKeywords = [...selectedKeywords];
     updatedKeywords.splice(index, 1);
     setSelectedKeywords(updatedKeywords);
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '8px',
-        alignItems: 'end',
-        marginBottom: '8px',
-      }}
-    >
+    <div style={{ display: 'flex', gap: '8px', alignItems: 'end', marginBottom: '8px' }}>
       {isModalOpen && (
         <DetailKeywordModal
           onClose={handleCloseModal}
@@ -66,6 +70,25 @@ export default function WriteRecreationInfo({ num, onDelete }) {
           selectedKeywords={selectedKeywords}
         />
       )}
+
+      {isWarningVisible && (
+              <WarningBox>
+                <WarningIcon src={warn} alt="Warning" />
+                <div style={{ textAlign: 'center', lineHeight: '1.5' }}>
+                  삭제하시겠습니까?<br />
+                  작업을 되돌릴 수 없습니다.
+                </div>
+                <WarningButtons>
+                  <WarningButton onClick={confirmDelete} style={{ backgroundColor: '#ffaa29', color: '#fff' }}>
+                    확인
+                  </WarningButton>
+                  <WarningButton onClick={cancelDelete} style={{ backgroundColor: '#6c757d', color: '#fff' }}>
+                    취소
+                  </WarningButton>
+                </WarningButtons>
+              </WarningBox>
+            )}
+
       <Line time={time}></Line>
       <InfoBox time={time}>
         {/* 레크레이션 제목 */}
@@ -119,12 +142,7 @@ export default function WriteRecreationInfo({ num, onDelete }) {
                     <img
                       src={deleteIcon}
                       alt="Delete"
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        marginLeft: '5px',
-                        cursor: 'pointer',
-                      }}
+                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
                       onClick={(event) => handleDeleteKeyword(index, event)}
                     />
                   </StyledKeyword>
@@ -137,24 +155,8 @@ export default function WriteRecreationInfo({ num, onDelete }) {
 
         {/* 레크레이션 소요 시간 */}
         <PlayTime>
-          <div
-            style={{
-              fontSize: '16px',
-              fontStyle: 'normal',
-              fontWeight: '500',
-              color: '#1B1D1F',
-            }}
-          >
-            플레이까지
-          </div>
-          <div
-            style={{
-              fontSize: '16px',
-              fontStyle: 'normal',
-              fontWeight: '600',
-              color: '#1B1D1F',
-            }}
-          >
+          <div style={{ fontSize: '16px', fontWeight: '500', color: '#1B1D1F' }}>플레이까지</div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: '#1B1D1F' }}>
             <PlayTimeInput
               type="text"
               value={time}
@@ -181,6 +183,56 @@ export default function WriteRecreationInfo({ num, onDelete }) {
     </div>
   );
 }
+
+const WarningBox = styled.div`
+  width: 290px;
+  padding: 20px;
+  margin-left: 116px;
+  background-color: #464c52;
+  color: #ffaa29;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: 400;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 20px solid #464c52;
+  }
+`;
+
+const WarningIcon = styled.img`
+  width: 16px;
+  height: 14px;
+  margin-bottom: 8px;
+`;
+
+const WarningButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const WarningButton = styled.button`
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+`;
 
 const Line = styled.div`
   width: 0px;

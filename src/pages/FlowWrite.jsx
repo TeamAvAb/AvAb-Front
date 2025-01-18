@@ -9,6 +9,7 @@ import write4 from "../assets/flowwrite/write_4.png";
 import line from "../assets/flowwrite/line.png";
 import check from "../assets/flowwrite/check.png";
 import deleteIcon from "../assets/flowwrite/deleteIcon.png";
+import warn from "../assets/flowwrite/warn.png";
 import { Helmet } from "react-helmet";
 
 const keywordMappings = {
@@ -28,23 +29,39 @@ export default function FlowWrite() {
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
-    const savedValue = localStorage.getItem("playTime");
-    if (savedValue) {
-      setSavedPlayTime(savedValue);
+    const savedKeywords = localStorage.getItem("selectedKeywords");
+    const savedTime = localStorage.getItem("playTime");
+
+    if (savedKeywords) {
+      const englishKeywords = JSON.parse(savedKeywords);
+      const koreanKeywords = englishKeywords.map(keyword => {
+      return Object.keys(keywordMappings).find(key => keywordMappings[key] === keyword);
+    });
+    
+    setSelectedKeywords(koreanKeywords);
+    }
+    if (savedTime) {
+      setSavedPlayTime(savedTime);
+      setPlayTime(savedTime);
     }
   }, []);
 
   const handleNextClick = () => {
-    if (!selectedKeywords.length || !playTime) {
-      setShowWarning(true);
+    if (!selectedKeywords.length) {
+      setShowWarning("레크레이션 목적을 선택해주세요.");
       return;
     }
-
+  
+    if (!playTime) {
+      setShowWarning("시간을 10분 단위로 입력해주세요.");
+      return;
+    }
+  
     if (parseInt(playTime, 10) % 10 !== 0) {
       setShowWarning("시간을 10분 단위로 입력해주세요.");
       return;
     }
-
+  
     const englishKeywords = selectedKeywords.map(
       (keyword) => keywordMappings[keyword]
     );
@@ -170,7 +187,12 @@ export default function FlowWrite() {
               onChange={(e) => setPlayTime(e.target.value)}
             />
           </PlayTime>
-          {showWarning && <WarningBox>{showWarning}</WarningBox>}
+          {showWarning && (
+          <WarningBox>
+            <WarningIcon src={warn} alt="Warning" />
+            {showWarning}
+          </WarningBox>
+        )}
           <OutButton onClick={handleBeforeClick}>페이지 나가기</OutButton>
           <NextButton onClick={handleNextClick}>다음으로</NextButton>
         </div>
@@ -318,15 +340,35 @@ const PlayInput = styled.input`
 
 const WarningBox = styled.div`
   width: 290px;
-  height: 24px;
+  padding: 20px;
   margin-left: 116px;
-  margin-top: 15px;
-  color: #ffaa29;
   background-color: #464c52;
-  border-radius: 20px;
-  padding: 23px 22px;
+  color: #ffaa29;
+  border-radius: 20px 20px 20px 20px;
   font-size: 20px;
   font-weight: 400;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 20px solid #464c52;
+  }
+`;
+const WarningIcon = styled.img`
+  width: 16px;
+  height: 14px;
+  margin-right: 8px;
 `;
 
 const OutButton = styled.button`

@@ -10,9 +10,9 @@ import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
 import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx';
-// import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
+import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx';
-// import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
+import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
 import WriteSelectedRecreationInfo from '../components/flowwrite/WriteSelectedRecreationInfo.jsx';
 import WriteRecreationInfo from '../components/flowwrite/WriteRecreationInfo.jsx';
 import AddRecreationInfo from '../components/flowwrite/AddRecreationInfo.jsx';
@@ -125,17 +125,17 @@ export default function FlowWriteContent() {
   // 정렬을 위한 함수
   const ageOrder = (age) => {
     switch (age) {
-      case '10대 미만':
+      case 'UNDER_TEENAGER':
         return 0;
-      case '10대':
+      case 'TEENAGER':
         return 1;
-      case '20대':
+      case 'TWENTIES':
         return 2;
-      case '30대':
+      case 'THIRTIES':
         return 3;
-      case '40대':
+      case 'FORTIES':
         return 4;
-      case '50대 이상':
+      case 'OVER_FIFTIES':
         return 5;
       default:
         return 6;
@@ -181,7 +181,9 @@ export default function FlowWriteContent() {
   };
 
   const handleBeforeClick = () => {
-    setSaveModal(<WithoutSaving onClose={() => setSaveModal(null)} />);
+    navigate('/flow/write/recommend');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
+    //setSaveModal(<WithoutSaving onClose={() => setSaveModal(null)} />);
   };
 
   const handleSaveClick = () => {
@@ -263,11 +265,27 @@ export default function FlowWriteContent() {
     setFlowTitle(e.target.value);
   };
 
-  const handleAddFlow = async () => {
-    // 커스텀 플로우 박스 추가
+  const handleAddFlow = async() => {
+    console.log('Add Flow Button clicked');
     setInfoBoxes((prevInfoBoxes) => [...prevInfoBoxes, <WriteRecreationInfo />]);
     setNumOfRecreationInfo(numOfRecreationInfo + 1);
+    // 새로운 플로우 박스를 추가하고 초기 키워드를 전달
+    // setInfoBoxes((prevInfoBoxes) => [
+    //   ...prevInfoBoxes,
+    //   { id: prevInfoBoxes.length, keywords: [] }, // 초기 키워드가 비어있는 객체 추가
+    // ]);
   };
+
+  const handleSelectDetailKeywords = (index, keywords) => {
+    // 각 플로우 박스에 대해 선택된 키워드를 업데이트
+    setSelectedKeywords((prevKeywords) => {
+      const newKeywords = [...prevKeywords];
+      newKeywords[index] = keywords;
+      return newKeywords;
+    });
+  };
+
+  const [recommendFlows, setRecommendFlows] = useState([]); // 저장된 레크레이션 데이터를 관리
 
   const handleAddRecommendFlow = async (id) => {
     try {
@@ -308,6 +326,7 @@ export default function FlowWriteContent() {
   };
 
   const handleAddScrapFlow = async (id) => {
+    console.log('Scrap Flow Button clicked');
     try {
       console.log('API 호출 전');
       const response = await axios.get(
@@ -415,7 +434,7 @@ export default function FlowWriteContent() {
                 <div>세부정보</div>
               </ContentInfo>
               <ContentInfoDetail>
-                <div style={{ marginLeft: '20px', marginTop: '56px' }}>
+                <div style={{ marginTop: '56px' }}>
                   <div style={{ display: 'flex', marginBottom: '8px' }}>
                     <div
                       style={{
@@ -428,7 +447,9 @@ export default function FlowWriteContent() {
                       목적
                     </div>
                     <div>
-                      <div>{selectedKeywords.join(', ')}</div>
+                      <div style={{ width: '228px' }}>
+                        {selectedKeywords.join(', ')}
+                      </div>
                     </div>
                   </div>
                   <div style={{ display: 'flex' }}>
@@ -460,7 +481,7 @@ export default function FlowWriteContent() {
                     >
                       키워드
                     </div>
-                    <div>
+                    <div style={{ width: '198px' }}>
                       {selectedDetailKeywords.map((keyword) => DetailMappings[keyword]).join(', ')}
                     </div>
                   </div>
@@ -477,7 +498,7 @@ export default function FlowWriteContent() {
                     </div>
                     <div>
                       {selectedGenders
-                        .map((gender) => (gender === 'F' ? '여성' : '남성'))
+                        .map((gender) => (gender === 'FEMALE' ? '여성' : '남성'))
                         .join(', ')}
                     </div>
                   </div>
@@ -492,7 +513,7 @@ export default function FlowWriteContent() {
                     >
                       연령대
                     </div>
-                    <div>
+                    <div style={{ width: '198px' }}>
                       {sortedAges
                         .map((age) =>
                           age === 'UNDER_TEENAGER'
@@ -501,7 +522,7 @@ export default function FlowWriteContent() {
                               ? '10대'
                               : age === 'TWENTIES'
                                 ? '20대'
-                                : age === 'THIRITES'
+                                : age === 'THIRTIES'
                                   ? '30대'
                                   : age === 'FORTIES'
                                     ? '40대'
@@ -716,6 +737,7 @@ const ContentInfoDetail = styled.div`
   background: #f7f8f9;
   margin-left: 20px;
   display: flex;
+  justify-content: center
 `;
 
 const ContentTitleInput = styled.input`
@@ -765,7 +787,7 @@ const Line = styled.div`
   border: 0.25px solid #cacdd2;
   height: 100px;
   margin-top: 29px;
-  margin-left: 169px;
+  margin-left: 20px;
   margin-right: 20px;
 `;
 
