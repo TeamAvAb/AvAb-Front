@@ -1,14 +1,19 @@
-import React from "react";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
-import yellowStar from "../../../assets/recreation/yellowStar.svg";
-import FavBtn from "../../button/FavBtn";
-import arrowIcon from "../../../assets/Card/arrowIcon.svg";
-import HashtagChip from "../../chip/HashtagChip";
-import KeywordChip from "../../chip/KeywordChip";
-import keywordConverter from "../../../utils/keywordConverter";
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import yellowStar from '../../../assets/recreation/yellowStar.svg';
+import FavBtn from '../../button/FavBtn';
+import arrowIcon from '../../../assets/Card/arrowIcon.svg';
+import HashtagChip from '../../chip/HashtagChip';
+import KeywordChip from '../../chip/KeywordChip';
+import keywordConverter from '../../../utils/keywordConverter';
+import useLoginModalStore from '../../../stores/loginModalStore';
+import useLoginStore from '../../../stores/loginStore';
+import { privateAPI } from '../../../apis/user';
 export default function RecreationCardL({ content }) {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isFav, setIsFav] = useState(content.isFavorite);
   const keywords = content.keywordList.map((keyword, idx) => (
     <KeywordChip text={keywordConverter(keyword)} key={idx} />
   ));
@@ -16,7 +21,26 @@ export default function RecreationCardL({ content }) {
   const navigator = useNavigate();
   const ToRecreationDetail = (recreationId) => {
     navigator(`/recreation/detail/${recreationId}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleFavClick = async (recreationId) => {
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    } else {
+      try {
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        if (response.status === 201) {
+          setIsFav((prev) => !prev);
+          return;
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        throw new Error('FavBtn Error');
+      }
+    }
   };
 
   return (
@@ -33,7 +57,11 @@ export default function RecreationCardL({ content }) {
         <Keywords>{keywords}</Keywords>
         <CardRow3>
           <img src={content.imageUrl} />
-          <FavBtn recreationId={content.id} isFav={content.isFavorite} />
+          <FavBtn
+            recreationId={content.id}
+            isFav={isFav}
+            onClick={() => handleFavClick(content.id)}
+          />
         </CardRow3>
       </CardContent>
       <MoreDetailBtn onClick={() => ToRecreationDetail(content.id)}>
