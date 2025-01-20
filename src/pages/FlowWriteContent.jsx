@@ -286,45 +286,56 @@ export default function FlowWriteContent() {
   };
 
   const [recommendFlows, setRecommendFlows] = useState([]); // 저장된 레크레이션 데이터를 관리
+  const [isEditable, setIsEditable] = useState(true); // isEditable 상태 관리
+
+  // InfoBox 삭제 함수 정의
+  const handleDeleteInfoBox = (num) => {
+    setInfoBoxes((prevInfoBoxes) => {
+      return prevInfoBoxes.filter((_, index) => index !== num);
+    });
+  };
 
   const handleAddRecommendFlow = async (id) => {
     try {
       const savedPlayTime = localStorage.getItem('playTime');
       if (!savedPlayTime) {
-        // playTime이 없는 경우에 대한 처리
         console.error('playTime이 저장되어 있지 않습니다.');
         return;
       }
+  
       const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
-      // API를 호출하여 데이터 가져오기
       const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
         params: {
           playTime: savedPlayTime,
           purpose: englishKeywords.join(','),
         },
       });
-      // 데이터에서 필요한 정보 추출
+  
       const data = response.data.result.find((item) => item.id === id);
-      if (data) {
-        const { title, keywordList, playTime } = data;
-        console.log('추가된 추천 레크레이션 데이터:', {
-          title,
-          keywordList,
-          playTime,
-        });
-        // 추출한 정보를 저장
-        return { title, keywordList, playTime };
-      } else {
+      if (!data) {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
-        return null;
+        return;
       }
+  
+      const { title, keywordList, playTime } = data;
+  
+      // InfoBox 추가
+      setInfoBoxes((prevInfoBoxes) => [
+        ...prevInfoBoxes,
+        <WriteRecreationInfo 
+          title={title} 
+          keywords={keywordList} 
+          playTime={playTime} 
+          isEditable={false}  // handleAddRecommendFlow로 생성된 박스만 수정 불가
+          onDelete={handleDeleteInfoBox}
+        />,
+      ]);
+      console.log('추가된 추천 레크레이션 데이터:', { title, keywordList, playTime });
     } catch (error) {
-      // 에러 발생 시 에러 처리
       console.error('추가 중 오류 발생:', error);
-      return null;
     }
   };
-
+  
   const handleAddScrapFlow = async (id) => {
     console.log('Scrap Flow Button clicked');
     try {

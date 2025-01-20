@@ -5,22 +5,47 @@ import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
 import warn from "../../assets/flowwrite/warn.png";
 import DetailKeywordModal from '../flowwrite/DetailKeywordModal';
 
-export default function WriteRecreationInfo({ num, onDelete }) {
-  const [title, setTitle] = useState('');
-  const [time, setTime] = useState(10);
+export default function WriteRecreationInfo({ num, title, keywords, playTime, isEditable, onDelete }) {
+  const [localTitle, setLocalTitle] = useState(title || '');
+  const [localTime, setLocalTime] = useState(playTime || 10);
+  const [localKeywords, setLocalKeywords] = useState(keywords || []);
+  const [isWarningVisible, setIsWarningVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
-  const [isWarningVisible, setIsWarningVisible] = useState(false);
+
+  const keywordMapping = {
+    COOPERATIVE: '협동',
+    QUICKNESS: '순발력',
+    SENSIBLE: '센스',
+    BRAIN: '두뇌',
+    CREATIVE: '창의력',
+    ACTIVE: '액티브',
+    PSYCHOLOGICAL: '심리',
+    LUCK: '행운',
+    COMMON_SENSE: '상식',
+    PREPARATION: '준비물',
+  };
 
   const handleTitleChange = (e) => {
-    // 사용자 입력이 변경될 때마다 title 상태 업데이트
-    setTitle(e.target.value);
+    if (isEditable || !title) { // isEditable이 true일 때만, 또는 title이 없을 때
+      console.log('Title changed:', e.target.value); // 입력값 확인
+      setLocalTitle(e.target.value); // 사용자가 수정할 수 있도록
+    }
   };
 
   const handleTimeChange = (e) => {
-    // 사용자 입력이 변경될 때마다 time 상태 업데이트
-    setTime(e.target.value);
+    if (isEditable || !playTime) { // isEditable이 true일 때만, 또는 playTime이 없을 때
+      console.log('Time changed:', e.target.value); // 입력값 확인
+      setLocalTime(e.target.value); // 사용자가 수정할 수 있도록
+    }
   };
+
+  useEffect(() => {
+    // 데이터가 없다면 기본값으로 설정하고, 이 경우에도 편집 가능하도록 설정
+    if (!title) setLocalTitle('');
+    if (!playTime) setLocalTime(10);
+    if (!keywords) setLocalKeywords([]);
+  }, [title, playTime, keywords]);
 
   const confirmDelete = () => {
     onDelete(num);
@@ -46,9 +71,6 @@ export default function WriteRecreationInfo({ num, onDelete }) {
   };
 
   const handleSelectDetailKeywords = (keywords) => {
-    // if (onSelectDetailKeywords) { // 함수가 전달되었는지 확인
-    //   onSelectDetailKeywords(keywords);  // 부모 컴포넌트의 함수를 호출
-    // }
     setSelectedKeywords(keywords);
     handleCloseModal();
     setIsModalOpen(true);
@@ -72,31 +94,30 @@ export default function WriteRecreationInfo({ num, onDelete }) {
       )}
 
       {isWarningVisible && (
-              <WarningBox>
-                <WarningIcon src={warn} alt="Warning" />
-                <div style={{ textAlign: 'center', lineHeight: '1.5' }}>
-                  삭제하시겠습니까?<br />
-                  작업을 되돌릴 수 없습니다.
-                </div>
-                <WarningButtons>
-                  <WarningButton onClick={confirmDelete} style={{ backgroundColor: '#ffaa29', color: '#fff' }}>
-                    확인
-                  </WarningButton>
-                  <WarningButton onClick={cancelDelete} style={{ backgroundColor: '#6c757d', color: '#fff' }}>
-                    취소
-                  </WarningButton>
-                </WarningButtons>
-              </WarningBox>
-            )}
+        <WarningBox>
+          <WarningIcon src={warn} alt="Warning" />
+          <div style={{ textAlign: 'center', lineHeight: '1.5' }}>
+            삭제하시겠습니까?<br />
+            작업을 되돌릴 수 없습니다.
+          </div>
+          <WarningButtons>
+            <WarningButton onClick={confirmDelete} style={{ backgroundColor: '#ffaa29', color: '#fff' }}>
+              확인
+            </WarningButton>
+            <WarningButton onClick={cancelDelete} style={{ backgroundColor: '#6c757d', color: '#fff' }}>
+              취소
+            </WarningButton>
+          </WarningButtons>
+        </WarningBox>
+      )}
 
-      <Line time={time}></Line>
-      <InfoBox time={time}>
-        {/* 레크레이션 제목 */}
+      <Line time={localTime}></Line>
+      <InfoBox time={localTime}>
         <RecreationTitle>
           <Number>{num + 1}</Number>
           <RecreationTitleInput
             type="text"
-            value={title}
+            value={localTitle}
             onChange={handleTitleChange}
             placeholder="레크레이션 제목 입력"
             style={{
@@ -106,6 +127,7 @@ export default function WriteRecreationInfo({ num, onDelete }) {
               border: 'none',
               outline: 'none',
             }}
+            disabled={!(isEditable || !title)} // title이 없으면 입력 가능
           />
           <img
             src={fix}
@@ -124,15 +146,27 @@ export default function WriteRecreationInfo({ num, onDelete }) {
 
         <KeywordBox onClick={handleDetailSearchClick}>
           {selectedKeywords.length === 0 ? (
-            <KeywordInput
-              type="text"
-              placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
-              style={{
-                width: '90%',
-                height: '18px',
-                backgroundColor: '#E9EBED',
-              }}
-            />
+            isEditable || !keywords ? (
+              <KeywordInput
+                type="text"
+                placeholder="이곳을 클릭하여 3개의 키워드를 선택해주세요."
+                style={{
+                  width: '90%',
+                  height: '18px',
+                  backgroundColor: '#E9EBED',
+                }}
+                disabled={!(isEditable || !keywords)} // keywords가 없으면 입력 가능
+              />
+            ) : (
+              // API에서 키워드를 받아올 때
+              <div style={{ display: 'flex', gap: '8px', width: '90%' }}>
+                {keywords.map((keyword, index) => (
+                  <StyledKeyword key={index}>
+                    {keywordMapping[keyword] || keyword}
+                  </StyledKeyword>
+                ))}
+              </div>
+            )
           ) : (
             <div style={{ width: '90%', display: 'flex' }}>
               {selectedKeywords.map((keyword, index) => (
@@ -142,8 +176,13 @@ export default function WriteRecreationInfo({ num, onDelete }) {
                     <img
                       src={deleteIcon}
                       alt="Delete"
-                      style={{ width: '20px', height: '20px', marginLeft: '5px', cursor: 'pointer' }}
-                      onClick={(event) => handleDeleteKeyword(index, event)}
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        marginLeft: '5px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={(e) => handleDeleteKeyword(index, e)}
                     />
                   </StyledKeyword>
                   {index !== selectedKeywords.length - 1 && ' '}
@@ -153,18 +192,17 @@ export default function WriteRecreationInfo({ num, onDelete }) {
           )}
         </KeywordBox>
 
-        {/* 레크레이션 소요 시간 */}
         <PlayTime>
           <div style={{ fontSize: '16px', fontWeight: '500', color: '#1B1D1F' }}>플레이까지</div>
           <div style={{ fontSize: '16px', fontWeight: '600', color: '#1B1D1F' }}>
             <PlayTimeInput
               type="text"
-              value={time}
+              value={localTime}
               onChange={handleTimeChange}
-              onFocus={() => setTime('')} // 입력창에 포커스가 가면 기존 값 지우기
+              onFocus={() => setLocalTime('')} // 입력창에 포커스가 가면 기존 값 지우기
               onBlur={() => {
-                if (time === '') {
-                  setTime(10); // 입력창을 벗어날 때 값이 비어 있으면 기본값 10으로 설정
+                if (localTime === '') {
+                  setLocalTime(10); // 입력창을 벗어날 때 값이 비어 있으면 기본값 10으로 설정
                 }
               }}
               style={{
@@ -174,7 +212,9 @@ export default function WriteRecreationInfo({ num, onDelete }) {
                 color: '#9FA4A9',
                 border: 'none',
                 outline: 'none',
+                textAlign: 'right',
               }}
+              disabled={!(isEditable || !playTime)} // playTime이 없으면 입력 가능
             />
             분
           </div>
@@ -271,7 +311,7 @@ const RecreationTitleInput = styled.input`
 `;
 
 const PlayTimeInput = styled.input`
-  width: 20px;
+  width: 30px;
   &::placeholder {
     color: #9fa4a9;
   }
@@ -328,6 +368,13 @@ const KeywordInput = styled.input`
   &:focus::placeholder {
     color: transparent;
   }
+  
+  /* 비활성화 상태일 때의 스타일 */
+  ${({ disabled }) => disabled && `
+    background-color: #E9EBED;
+    color: #9fa4a9;
+    cursor: not-allowed;
+  `}
 `;
 
 const StyledKeyword = styled.span`
