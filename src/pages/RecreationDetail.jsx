@@ -1,16 +1,16 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import RecreationTopInfo from '../components/recreation/RecreationTopInfo';
 import RecreationMenuBar from '../components/recreation/RecreationMenuBar';
-import RecreationInformation from '../components/recreation/RecreationInformation';
-import RecreationReview from '../components/recreation/RecreationReview';
-import RecreationRelated from '../components/recreation/RecreationRelated';
-import RecreationFlow from '../components/recreation/RecreationFlow';
+import RecreationInfoSection from '../components/recreation/RecreationInfoSection';
+import RecreationReviewSection from '../components/recreation/RecreationReviewSection';
+import RecreationRelatedSection from '../components/recreation/RecreationRelatedSection';
+import RecreationRelatedFlowSection from '../components/recreation/RecreationRelatedFlowSection';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { publicAPI, privateAPI } from '../apis/user';
+import { privateAPI, publicAPI } from '../apis/user';
 import useLoginStore from '../stores/loginStore';
-import useLoginModalStore from '../stores/loginModalStore';
+
 export default function RecreationDetail() {
   const { recreationId } = useParams();
   const infoRef = useRef(null);
@@ -19,7 +19,6 @@ export default function RecreationDetail() {
   const flowRef = useRef(null);
   const scrollRefs = useRef([infoRef, reviewRef, relatedRef, flowRef]);
   const { isLoggedIn } = useLoginStore((state) => state);
-  const { modalControl } = useLoginModalStore((state) => state);
   const [recreationData, setRecreationData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -112,10 +111,10 @@ export default function RecreationDetail() {
       <RecreationDetailContainer>
         {recreationData ? (
           <>
-            <RecreationInformation ref={infoRef} recreationData={recreationData} />
-            <RecreationReview ref={reviewRef} recreationId={recreationId} />
-            <RecreationRelated ref={relatedRef} recreationId={recreationId} />
-            <RecreationFlow ref={flowRef} recreationId={recreationId} />
+            <RecreationInfoSection ref={infoRef} recreationData={recreationData} />
+            <RecreationReviewSection ref={reviewRef} recreationId={recreationId} />
+            <RecreationRelatedSection ref={relatedRef} recreationId={recreationId} />
+            <RecreationRelatedFlowSection ref={flowRef} recreationId={recreationId} />
           </>
         ) : (
           <div></div> // 데이터가 없는 경우
@@ -125,6 +124,9 @@ export default function RecreationDetail() {
   );
 }
 const RecreationDetailContainer = styled.div`
-  background-color: #e9ebed;
-  padding: 32px 89px 60px 89px;
+  background-color: ${({ theme }) => theme.color.grayscale07};
+  padding: 2rem 5.5rem 4rem 5.5rem;
+  display: flex;
+  gap: 3.5rem;
+  flex-direction: column;
 `;

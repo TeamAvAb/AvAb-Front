@@ -13,7 +13,7 @@ import useLoginStore from '../stores/loginStore';
 import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
 import { privateAPI, publicAPI } from '../apis/user';
 
-export default function SearchList({}) {
+export default function RecreationSearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const location = useLocation();
   const param = location.search + '&';
@@ -92,7 +92,7 @@ export default function SearchList({}) {
       </Helmet>
       <Container>
         <Search filtersOpen />
-        <Recreations>
+        <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
             <SortControl
@@ -138,7 +138,7 @@ export default function SearchList({}) {
               />
             </>
           )}
-        </Recreations>
+        </RecreationsContainer>
       </Container>
     </>
   );
@@ -151,7 +151,7 @@ const Container = styled.div`
   margin-top: 2rem;
 `;
 
-const Recreations = styled.div`
+const RecreationsContainer = styled.div`
   width: 86rem;
   display: flex;
   flex-direction: column;

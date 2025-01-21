@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 export default function RecreationMenuBar({ scrollRefs }) {
@@ -67,19 +67,16 @@ const RecreationMenuBarContainer = styled.div`
   z-index: 1;
   display: flex;
   align-items: center;
-  border-bottom: 0.5px solid var(--gray-scale-cacdd-2, #cacdd2);
+  border-bottom: 1px solid ${({ theme }) => theme.color.grayscale05};
 `;
 
 const NavBtn = styled.button`
-  border-bottom: 0.5px solid #cacdd2;
-  color: #1b1d1f;
-  font-size: 24px;
-  font-weight: 400;
+  ${({ theme }) => theme.text.nav}
   display: flex;
   align-items: center;
   padding: 19px 0px 19px 88px;
-  border: none;
   background-color: white;
+
   &.active {
     font-weight: bold;
   }

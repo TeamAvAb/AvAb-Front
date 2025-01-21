@@ -48,6 +48,7 @@ export default function KeywordModal({
                 onClick={() => handleSingleSelect(el.param)}
                 selected={result.includes(el.param)}
                 text={el.value}
+                width="17%"
               />
             ) : (
               <Purpose
@@ -71,19 +72,8 @@ export default function KeywordModal({
             }}
           >
             <Button onClick={handleReset}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <img
-                  src={rechoiceIcon}
-                  style={{ width: '2.5rem', height: '2.5rem' }}
-                  alt="초기화"
-                />
-                초기화
-              </div>
+              <img src={rechoiceIcon} style={{ width: '2.5rem', height: '2.5rem' }} alt="초기화" />
+              초기화
             </Button>
             <Button backgroundColor="main02" color="main05" onClick={handleSubmit}>
               선택 완료
@@ -115,8 +105,8 @@ const Modal = styled.div`
 
 const Keywords = styled.div`
   display: flex;
-  justify-content: center;
-  padding: ${({ category }) => (category === 'keyword' ? '2.5rem 3rem' : '3.5rem 0')};
+  justify-content: space-between;
+  padding: ${({ category }) => (category === 'keyword' ? '2.5rem' : '3.5rem 0')};
   gap: ${({ category }) => (category === 'keyword' ? '1.2rem' : '1rem')};
   flex-wrap: wrap;
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2) inset;

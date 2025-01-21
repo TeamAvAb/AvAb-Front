@@ -31,31 +31,25 @@ export default function FooterNav() {
   };
 
   return (
-    <Container>
-      <Ul>
-        <Li onClick={goToMain}>메인페이지</Li>
-        <Li onClick={goToRecreation}>레크레이션</Li>
-        <Li onClick={goToFlow}>일정플로우</Li>
-        <Li onClick={goToMyPage}>마이페이지</Li>
-      </Ul>
-    </Container>
+    <Ul>
+      <Li onClick={goToMain}>메인페이지</Li>
+      <Li onClick={goToRecreation}>레크레이션</Li>
+      <Li onClick={goToFlow}>일정플로우</Li>
+      <Li onClick={goToMyPage}>마이페이지</Li>
+    </Ul>
   );
 }
 
-const Container = styled.div`
+const Ul = styled.ul`
   display: flex;
   justify-content: center;
   padding: 1.5rem 0;
   font-size: 1.5rem;
   width: 100%;
-`;
-
-const Ul = styled.ul`
-  display: flex;
+  gap: 8rem;
 `;
 
 const Li = styled.li`
   ${({ theme }) => theme.text.nav};
-  margin: 0 5rem;
   cursor: pointer;
 `;

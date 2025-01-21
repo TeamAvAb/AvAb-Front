@@ -1,221 +1,138 @@
 import styled from 'styled-components';
-import React, { useState, forwardRef, useEffect } from 'react';
-import ReviewStars from './ReviewStars';
-import ReviewBox from './ReviewBox';
-import RecreationPagination from './RecreationPagination';
-import { publicAPI } from '../../apis/user';
+import React, { useState } from 'react';
+import yellowStar from '../../assets/recreation/yellowStar.svg';
+import greyStar from '../../assets/recreation/greyStar.svg';
+import { ReactComponent as GoodIcon } from '../../assets/recreation/good.svg';
+import { ReactComponent as BadIcon } from '../../assets/recreation/bad.svg';
+import Button from '../button/Button';
+import { getRelativeTimeText } from '../../utils/time';
 import { privateAPI } from '../../apis/user';
 import useLoginModalStore from '../../stores/loginModalStore';
 import useLoginStore from '../../stores/loginStore';
 
-const RecreationReview = forwardRef(({ recreationId }, ref) => {
+export default function RecreationReview({ review }) {
+  const [recommendation, setRecommendation] = useState(review.recommendation);
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
-  const [reviewListData, setReviewListData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [reviewData, setReviewData] = useState(0);
-  const [reviewInput, setReviewInput] = useState('');
-  const [selectedStars, setSelectedStars] = useState(0);
 
-  const handleStarClick = (starCount) => {
-    setSelectedStars(starCount);
-  };
-
-  const itemsPerPage = 2;
-
-  // 리뷰 목록 받아오기
-  const fetchReviews = async () => {
-    console.log('리뷰 목록 다시 받기');
-    try {
-      const api = isLoggedIn ? privateAPI : publicAPI;
-      const response = await api.get(
-        `/api/recreations/${recreationId}/reviews?page=${currentPage - 1}`,
+  const handleRecommendationClick = async (type) => {
+    if (isLoggedIn) {
+      const response = await privateAPI.post(
+        `/api/recreation-reviews/${review.reviewId}/recommendations`,
+        {
+          type,
+        },
       );
-      console.log(response);
-      setReviewListData(response.data.result.reviewList);
-      console.log('리뷰 리스트 데이터: ', response.data.result.reviewList);
-      setReviewData(response.data.result);
-    } catch (error) {
-      console.error('리뷰데이터', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchReviews();
-  }, [currentPage, recreationId]);
-
-  // 리뷰 작성
-  const handleReviewSubmit = async () => {
-    if (!isLoggedIn) {
+      if (response.data?.code === 'COMMON201') {
+        setRecommendation((prev) => ({ ...prev, type }));
+      } else {
+        console.log(response.data);
+      }
+    } else {
       modalControl();
-      return;
-    }
-
-    try {
-      await privateAPI.post(
-        `/api/recreations/${recreationId}/reviews`,
-        {
-          stars: selectedStars,
-          contents: reviewInput,
-        },
-        {
-          headers: {
-            Accept: '*/*',
-          },
-        },
-      );
-
-      // 리뷰 목록 업데이트
-      fetchReviews();
-
-      alert('리뷰가 등록되었습니다');
-      setSelectedStars(0);
-      setReviewInput('');
-    } catch (error) {
-      console.error(error);
-      alert('리뷰 등록에 실패했습니다');
     }
   };
 
-  // 좋아요 클릭 핸들러
-  const handleLikeClick = async (id) => {
-    console.log('좋아요');
-    if (isLoggedIn) {
-      const response = await privateAPI.post(`/api/recreation-reviews/${id}/recommendations`, {
-        type: 'GOOD',
-      });
-      if (response.data?.code === 'COMMON201') {
-        fetchReviews();
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= review.stars) {
+        stars.push(<img key={i} src={yellowStar} alt="star" />);
       } else {
-        console.log(response.data);
+        stars.push(<img key={i} src={greyStar} alt="star" />);
       }
-    } else modalControl();
-  };
+    }
 
-  // 싫어요 클릭 핸들러
-  const handleDislikeClick = async (id) => {
-    console.log('싫어요');
-    if (isLoggedIn) {
-      const response = await privateAPI.post(`/api/recreation-reviews/${id}/recommendations`, {
-        type: 'BAD',
-      });
-      if (response.data?.code === 'COMMON201') {
-        fetchReviews();
-      } else {
-        console.log(response.data);
-      }
-    } else modalControl();
+    return stars;
   };
 
   return (
-    <RecreationReviewContainer ref={ref}>
-      <TitleText>리뷰 및 평가 ({reviewListData.totalReviews})</TitleText>
-      <StarBox>
-        <SelectStar>별점을 선택해주세요</SelectStar>
-        <ReviewStars onStarClick={handleStarClick} selectedStars={selectedStars} />
-      </StarBox>
-
-      <ReviewInputWrap>
-        {isLoggedIn ? (
-          <>
-            <ReviewInputBox
-              placeholder="리뷰를 작성하세요."
-              value={reviewInput}
-              onChange={(e) => setReviewInput(e.target.value)}
-            ></ReviewInputBox>
-            <ReviewInputButton onClick={handleReviewSubmit}>등록</ReviewInputButton>
-          </>
-        ) : (
-          <>
-            <ReviewInputBox placeholder="로그인 한 후 리뷰를 작성할 수 있습니다."></ReviewInputBox>
-            <ReviewInputButton onClick={handleReviewSubmit}>등록</ReviewInputButton>
-          </>
-        )}
-      </ReviewInputWrap>
-
-      {reviewListData.map((review) => (
-        <ReviewBox
-          reviewId={review.reviewId}
-          starNum={review.stars}
-          nickname={review.author.username}
-          date={review.createdAt}
-          review={review.contents}
-          like={review.goodCount}
-          dislike={review.badCount}
-          handleLikeClick={handleLikeClick}
-          handleDislikeClick={handleDislikeClick}
-          likeState={review.recommendation?.isRecommended && review.recommendation?.type === 'GOOD'}
-          dislikeState={
-            review.recommendation?.isRecommended && review.recommendation?.type === 'BAD'
-          }
-        />
-      ))}
-      {/* 리뷰 리스트가 있을 때만 페이지네이션 표시 */}
-      {reviewListData.length > 0 && (
-        <RecreationPagination
-          itemsPerPage={itemsPerPage}
-          totalItems={reviewData.totalReviews}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPageNum={reviewData.totalPages}
-        />
-      )}
-    </RecreationReviewContainer>
+    <div>
+      <ReviewStarsContainer>
+        <StarsWrap>{renderStars()}</StarsWrap>
+        <StarNum>{review.stars}/5</StarNum>
+      </ReviewStarsContainer>
+      <NicknameDateBox>
+        <Nickname>{review.author.username}</Nickname>
+        <Divider />
+        <CreatedAt>{getRelativeTimeText(review.createdAt)}</CreatedAt>
+      </NicknameDateBox>
+      <ReviewContent>{review.contents}</ReviewContent>
+      <ReviewRecommendationButtonContainer>
+        <RecommendationButton
+          active={recommendation && recommendation.type === 'GOOD'}
+          onClick={() => handleRecommendationClick('GOOD')}
+        >
+          <GoodIcon />
+          {review.goodCount}
+        </RecommendationButton>
+        <RecommendationButton
+          active={recommendation && recommendation.type === 'BAD'}
+          onClick={() => handleRecommendationClick('BAD')}
+        >
+          <BadIcon />
+          {review.badCount}
+        </RecommendationButton>
+      </ReviewRecommendationButtonContainer>
+    </div>
   );
-});
-export default RecreationReview;
+}
 
-const RecreationReviewContainer = styled.div`
-  background-color: white;
-  padding: 40px 44px;
-  border-radius: 20px;
-  border: 0.5px solid #cacdd2;
-  margin-bottom: 60px;
-`;
-
-const TitleText = styled.div`
-  color: #1b1d1f;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 13px;
-`;
-
-const StarBox = styled.div`
+const ReviewStarsContainer = styled.div`
   display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
 `;
 
-const SelectStar = styled.div`
-  color: #9fa4a9;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 30px;
+const StarsWrap = styled.div`
+  display: flex;
+  gap: 0.3rem;
 `;
 
-const ReviewInputWrap = styled.div`
-  margin: 29px 0px;
-`;
-const ReviewInputBox = styled.input`
-  width: 897px;
-  padding: 16px 19px;
-  border: 0.5px solid #9fa4a9;
-  font-size: 20px;
-  font-weight: 400;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  outline: none;
+const StarNum = styled.span`
+  display: flex;
+  align-items: center;
+  ${({ theme }) => theme.text.small}
 `;
 
-const ReviewInputButton = styled.button`
-  width: 124px;
-  height: 69px;
-  flex-shrink: 0;
-  border-radius: 0px 20px 20px 0px;
-  background: #8896df;
-  color: #fff;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 700;
-  border: none;
-  height: 58px;
-  cursor: pointer;
+const NicknameDateBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const Nickname = styled.span`
+  color: ${({ theme }) => theme.color.grayscale03};
+  ${({ theme }) => theme.text.h5};
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  height: 1.6rem;
+  background: ${({ theme }) => theme.color.grayscale05};
+`;
+
+const CreatedAt = styled.div`
+  color: ${({ theme }) => theme.color.grayscale04};
+  ${({ theme }) => theme.text.small}
+`;
+
+const ReviewContent = styled.div`
+  margin: 1rem 0;
+  ${({ theme }) => theme.text.paragraph}
+`;
+
+const RecommendationButton = styled(Button)`
+  padding: 0.8rem 1.2rem;
+  border: 1px solid
+    ${({ theme, active }) => (active ? theme.color.secondary03 : theme.color.grayscale04)};
+  color: ${({ theme, active }) => (active ? theme.color.main05 : theme.color.grayscale04)};
+  gap: 0.5rem;
+  background: ${({ theme, active }) => (active ? theme.color.secondary03 : 'transparent')};
+`;
+
+const ReviewRecommendationButtonContainer = styled.div`
+  display: flex;
+  gap: 2.5rem;
 `;

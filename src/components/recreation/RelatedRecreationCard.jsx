@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React from 'react';
 import RecreationContentBox from './RecreationContentBox';
 import { Link, useNavigate } from 'react-router-dom';
-export default function RelatedRecreationBox({
+
+export default function RelatedRecreationCard({
   hashtag,
   recreationTitle,
   keywords,
@@ -44,7 +45,6 @@ export default function RelatedRecreationBox({
         to={'/recreation/detail/' + relatedId}
         onClick={() => {
           window.scrollTo(0, 0); // 페이지 이동 전에 스크롤을 맨 위로 이동
-          navigate('/recreation/detail/' + relatedId);
         }}
       >
         상세 페이지 보러가기 {'>'}
@@ -55,27 +55,26 @@ export default function RelatedRecreationBox({
 
 const RelatedRecreationContainer = styled.div`
   display: flex;
-  border-radius: 20px;
-  border: 0.5px solid #9fa4a9;
-  margin-bottom: 20px;
+  border-radius: 1.2rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale05};
 `;
+
 const BoxWrap = styled.div`
   display: flex;
-  border-radius: 20px;
-  padding: 30px 0px 30px 40px;
+  border-radius: 1.2rem;
+  padding: 1.8rem 0 1.8rem 2.5rem;
 `;
+
 const DetailLinkButton = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  border-radius: 0px 20px 20px 0px;
-  background: #b1beff;
+  border-radius: 0 1.2rem 1.2rem 0;
+  background: ${({ theme }) => theme.color.secondary04};
   border: none;
-  cursor: pointer;
-  color: #1b1d1f;
   text-align: center;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-left: auto;
-  padding: 0px 82px;
+  padding: 0 5rem;
 `;
