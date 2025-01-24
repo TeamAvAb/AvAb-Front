@@ -3,11 +3,11 @@ import useLoginStore from '../stores/loginStore';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
-import PopularCarousel from '../components/main/PopularCarousel';
-import Carousel from '../components/main/Carousel';
+import PopularRecreationCarousel from '../components/main/PopularRecreationCarousel';
+import BannerCarousel from '../components/main/BannerCarousel';
 
 import character from '../assets/main/character.png';
-import blankImg from '../assets/main/blankImg.png';
+import characterImg from '../assets/main/character.png';
 import plusIconImg from '../assets/main/plusIcon.svg';
 import intro from '../assets/main/introImg.png';
 
@@ -16,7 +16,6 @@ import mtImg from '../assets/main/banner2_mt.png';
 import gatherImg from '../assets/main/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
-import characterImg from '../assets/main/character.png';
 
 export default function Main() {
   const navigator = useNavigate();
@@ -74,90 +73,78 @@ export default function Main() {
           <img
             src={character}
             style={{
-              width: '370px',
-              height: '308px',
-              marginLeft: '-15px',
+              height: '20rem',
             }}
+            alt="돋보기를 든 아브브"
           />
         </Recommend>
         <Search />
 
-        <Popular>
+        <div>
           <PopularHeader>
             <HeaderTitle>요즘 인기 레크레이션 한눈에 보기</HeaderTitle>
             <More onClick={goToSearchList}>
               더보기
-              <img src={plusIconImg} style={{ width: '24px', height: '24px' }} />
+              <img src={plusIconImg} style={{ width: '1.5rem' }} alt="더보기" />
             </More>
           </PopularHeader>
-          <PopularCarousel />
-        </Popular>
+          <PopularRecreationCarousel />
+        </div>
       </Container>
-      <Carousel content={banner} />
+      <BannerCarousel contents={banner} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <img src={intro} />
+        <img src={intro} alt="아브아브 설명" />
       </div>
     </>
   );
 }
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--BG, linear-gradient(180deg, rgba(160, 221, 255, 0.4) 0%, #fff 67.9%));
+  background: ${({ theme }) => `linear-gradient(180deg, ${theme.color.main03}66 0%, #fff 67.9%)`};
   overflow: hidden;
 `;
+
 const Recommend = styled.div`
+  margin-right: 8rem;
   display: flex;
   flex-direction: row;
   align-items: end;
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  font-size: 72px;
-  margin-top: 8px;
-  margin-bottom: 90px;
-  margin-left: 59.5px;
-  margin-right: 120.5px;
-`;
-const Comment = styled.div`
-  width: 434px;
-  height: 272px;
-  justify-content: center;
-  align-items: center;
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  font-size: 72px;
-  font-style: normal;
-  font-weight: 400;
-  margin-right: -15px;
+  font-size: 4.5rem;
 `;
 
-const Popular = styled.div`
-  width: 957px;
-  height: 659px;
-  margin-top: 135px;
-  margin-bottom: 90px;
+const Comment = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+  text-align: left;
 `;
+
 const PopularHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
+
 const HeaderTitle = styled.span`
-  color: #000;
-  font-size: 36px;
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 700;
 `;
+
 const More = styled.button`
-  height: 24px;
+  height: 1.5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   border: none;
   background: transparent;
-  color: #000;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
 `;

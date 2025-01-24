@@ -5,32 +5,33 @@ import { privateAPI } from '../../apis/user';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 
-export default function FavBtn({ recreationId, isFav }) {
+export default function FavBtn({ recreationId, isFav, className }) {
   const [isFavorite, setIsFavorite] = useState(isFav);
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
   const theme = useContext(ThemeContext);
 
-  const handleClick = async () => {
+  const handleClick = async (event) => {
+    event.stopPropagation();
+
     if (!isLoggedIn) {
       modalControl();
       return;
-    } else {
-      try {
-        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
-        if (response.status === 201) {
-          setIsFavorite((prev) => !prev);
-          return;
-        } else {
-          console.log(response.data);
-        }
-      } catch (error) {
-        throw new Error('FavBtn Error');
+    }
+
+    try {
+      const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+      if (response.status === 201) {
+        setIsFavorite((prev) => !prev);
+      } else {
+        console.log(response.data);
       }
+    } catch (error) {
+      throw new Error('FavBtn Error');
     }
   };
   return (
-    <IconWrapper onClick={() => handleClick(recreationId)}>
+    <IconWrapper onClick={(event) => handleClick(event)} className={className}>
       <Icon fill={isFavorite ? theme.color.main04 : theme.color.grayscale06} />
     </IconWrapper>
   );

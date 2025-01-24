@@ -1,6 +1,6 @@
 const theme = {
   color: {
-    main01: '#4036ED', // navy
+    main01: '#19297C', // navy
     main02: '#4036ED', // blue
     main03: '#A0DDFF', // sky blue
     main04: '#FFAA29', // orange

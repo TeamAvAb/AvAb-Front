@@ -1,9 +1,9 @@
 import rightArrowImage from '../../assets/main/nextArrowIcon.svg';
 import styled from 'styled-components';
 
-export default function RightArrow() {
+export default function RightArrow({ onClick }) {
   return (
-    <ArrowButton>
+    <ArrowButton onClick={onClick}>
       <img src={rightArrowImage} alt="다음" />
     </ArrowButton>
   );
