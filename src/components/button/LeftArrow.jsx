@@ -17,5 +17,5 @@ const ArrowButton = styled.button`
   border: 1px solid black;
   border-radius: 9999px;
   padding-top: 5px;
-  filter: drop-shadow(0px 5px 10px rgba(27, 29, 31, 0.15));
+  filter: ${({ theme }) => `drop-shadow(0 5px 10px ${theme.color.grayscale01}14)`};
 `;

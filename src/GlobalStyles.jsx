@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  :root {
+    color: ${({ theme }) => theme.color.grayscale01};
+  }
+
   button {
     cursor: pointer;
     border: none;

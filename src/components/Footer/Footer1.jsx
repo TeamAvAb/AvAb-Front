@@ -26,116 +26,120 @@ export default function Footer() {
     if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
   const ToInstagram = () => {
     window.open('https://www.instagram.com/avab.ovo/', 'Avab Instagram');
   };
   return (
-    <FooterWrap>
-      <FooterHigh>
-        <High1>
-          <NoneImg src={FooterP}></NoneImg>
-        </High1>
-        <High2>
-          <Section1>아브아브</Section1>
-          <Section2>
-            에게
-            <br />
-            의견을 보내주세요
-          </Section2>
-          <ContactBut onClick={ToInstagram}>의견 보내러 가기</ContactBut>
-        </High2>
-      </FooterHigh>
-      <Middle>
-        <DetailsWrap>
-          <Details onClick={ToMainpage}>메인페이지</Details>
-          <Details onClick={ToRecreation}>레크레이션</Details>
-          <Details onClick={ToFlowWrite}>일정플로우</Details>
-          <Details onClick={ToMypage}>마이페이지</Details>
-        </DetailsWrap>
-      </Middle>
-      <Bottom>
-        <Explain1>COPYRIGHT © Avab all rights reserved</Explain1>
-        <Explain2>Contact Us</Explain2>
-      </Bottom>
-    </FooterWrap>
+    <Wrapper>
+      <Container>
+        <MainSection>
+          <OpinionImg src={FooterP}></OpinionImg>
+          <OpinionMsgContainer>
+            <OpinionMsg>
+              <BoldSpan>아브아브</BoldSpan>에게
+              <br />
+              의견을 보내주세요
+            </OpinionMsg>
+            <ContactButton onClick={ToInstagram}>의견 보내러 가기</ContactButton>
+          </OpinionMsgContainer>
+        </MainSection>
+        <FooterNav>
+          <Ul>
+            <Li onClick={ToMainpage}>마이페이지</Li>
+            <Li onClick={ToRecreation}>레크레이션</Li>
+            <Li onClick={ToFlowWrite}>일정플로우</Li>
+            <Li onClick={ToMypage}>마이페이지</Li>
+          </Ul>
+        </FooterNav>
+        <Bottom>
+          <Explain1>COPYRIGHT © Avab all rights reserved</Explain1>
+          <Explain2>Contact Us</Explain2>
+        </Bottom>
+      </Container>
+    </Wrapper>
   );
 }
 
-const FooterWrap = styled.footer`
-  position: relative;
-  height: 577px;
-  background-image: linear-gradient(to bottom, white 104px, #e9ebed 104px, #e9ebed 577px);
+const Wrapper = styled.footer`
+  margin-top: 6rem;
+  background: #ebe9ed;
+`;
+
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 `;
 
-const FooterHigh = styled.div`
+const MainSection = styled.section`
   display: flex;
-  justify-content: center;
-  height: 425px;
+  justify-content: end;
+  width: 67.5rem;
+  position: relative;
+  margin-bottom: 2rem;
 `;
 
-const High1 = styled.div`
-  margin-right: 230px;
+const OpinionImg = styled.img`
+  position: absolute;
+  width: 26rem;
+  left: 0;
+  top: -8rem;
 `;
 
-const NoneImg = styled.img`
-  width: 421px;
-  height: 421px;
+const OpinionMsgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  margin-right: 3rem;
 `;
 
-const High2 = styled.div`
-  margin-top: 154px;
-  height: 114px;
-  width: 344px;
+const OpinionMsg = styled.span`
+  font-size: 3rem;
+  text-align: right;
+  line-height: 1.2;
 `;
 
-const Section1 = styled.span`
-  font-size: 40px;
+const BoldSpan = styled.span`
+  font-size: 3rem;
   font-weight: 600;
-  margin-left: 80px;
 `;
 
-const Section2 = styled.span`
-  font-size: 40px;
-`;
-
-const ContactBut = styled.button`
+const ContactButton = styled.button`
   display: flex;
   justify-content: center;
-  padding: 15px 10px;
-  width: 179px;
-  margin-top: 40px;
-  margin-left: 90px;
+  padding: 1rem 2.5rem;
   background-color: #081882;
   color: white;
   border: none;
-  border-radius: 30px;
+  border-radius: 9999px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.2rem;
   font-weight: 600;
 `;
 
-const Middle = styled.div`
+const FooterNav = styled.div`
   display: flex;
   justify-content: center;
-  width: 1080px;
+  width: 67.5rem;
   border-bottom: 2px solid #9fa4a9;
+  padding: 1.5rem 0;
+  font-size: 1.5rem;
 `;
 
-const DetailsWrap = styled.div`
+const Ul = styled.ul`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1030px;
-  height: 67px;
+  justify-content: space-between;
 `;
 
-const Details = styled.div`
+const Li = styled.li`
   margin-left: 80px;
   margin-right: 80px;
   font-size: 18px;

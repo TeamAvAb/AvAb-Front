@@ -11,6 +11,6 @@ export default function RecreationTripleSet({ dataset }) {
 
 const RecreationSetContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 22px;
+  justify-content: space-between;
+  padding: 2rem;
 `;
