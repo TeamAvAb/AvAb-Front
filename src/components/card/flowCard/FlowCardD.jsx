@@ -8,7 +8,7 @@ import userImg from '../../../assets/Card/userIcon.svg';
 import purposeConverter from '../../../utils/purposeConverter';
 import { useNavigate } from 'react-router';
 
-export default function FlowCardD({ content, children }) {
+export default function FlowCardD({ content, children, ismine }) {
   const navigate = useNavigate();
 
   const moveToMoreWatchFlow = (moreData) => {
@@ -22,9 +22,9 @@ export default function FlowCardD({ content, children }) {
         <CardColumn className="left">
           <PurposeChip text={purposeConverter(content.purpose[0])} />
           <Title>{content.title}</Title>
-          <img src={content.imageUrl} alt="플로우 사진" width="8.8rem" />
+          <img src={content.imageUrl} alt="플로우 사진" />
         </CardColumn>
-        <CardColumn>
+        <CardColumn className="right">
           <BtnBox>{children}</BtnBox>
           <Info>
             <li>
@@ -35,10 +35,12 @@ export default function FlowCardD({ content, children }) {
               <img src={viewImg} alt="조회수" />
               <span>{content.viewCount}</span>
             </li>
-            <li>
-              <img src={pencilImg} alt="제작자" />
-              <span>{content.author.username}</span>
-            </li>
+            {ismine !== 'true' && (
+              <li>
+                <img src={pencilImg} alt="제작자" />
+                <span>{content.author.username}</span>
+              </li>
+            )}
             <li>
               <img src={userImg} alt="스크랩" />
               <span>{content.scrapCount}</span>
@@ -68,7 +70,6 @@ const CardContent = styled.div`
 const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
   img {
     width: 8.8rem;
@@ -76,6 +77,9 @@ const CardColumn = styled.div`
 
   &.left {
     gap: 1.44rem;
+  }
+  &.right {
+    gap: 3.38rem;
   }
 `;
 const Title = styled.h4`
@@ -90,6 +94,7 @@ const BtnBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+  gap: 0.62rem;
 `;
 const Info = styled.ul`
   img {
