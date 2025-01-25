@@ -33,7 +33,7 @@ const DropdownContainer = styled.div`
   font-style: normal;
   font-weight: 400;
   margin-left: auto;
-  margin-right: ${(props) => (props.marginright ? props.marginright : '43px')};
+  margin-right: ${(props) => (props.$marginright ? props.$marginright : '43px')};
   z-index: 1;
 `;
 
