@@ -73,8 +73,9 @@ const DropdownButton = styled.button`
   justify-content: center;
   gap: 0.8rem;
   border: none;
-  font-size: 1rem;
   z-index: 2;
+  ${({ theme }) => theme.text.paragraph};
+  font-weight: 700;
 `;
 
 const Menu = styled.ul`

@@ -95,12 +95,7 @@ export default function RecreationSearchList({}) {
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
-            <SortControl
-              setOption={setOrder}
-              selectedOption={order}
-              marginright="43px"
-              isFlow={false}
-            />
+            <SortControl setOption={setOrder} selectedOption={order} isFlow={false} />
           </ResultHeaderContainer>
           {loading ? (
             <LoadingSpinner
