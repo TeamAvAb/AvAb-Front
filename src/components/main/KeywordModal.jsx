@@ -106,7 +106,7 @@ const Modal = styled.div`
 const Keywords = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: ${({ category }) => (category === 'keyword' ? '2.5rem' : '3.5rem 0')};
+  padding: ${({ category }) => (category === 'keyword' ? '2.5rem' : '3.5rem')};
   gap: ${({ category }) => (category === 'keyword' ? '1.2rem' : '1rem')};
   flex-wrap: wrap;
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2) inset;
