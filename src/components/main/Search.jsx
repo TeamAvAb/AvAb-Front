@@ -124,21 +124,19 @@ export default function Search({ filtersOpen = false }) {
 
   const renderKeyword = (label, selected) => {
     return selected.map((el) => (
-      <>
-        <SelectedKeyword key={el}>
-          <div>'{label[label.findIndex((i) => i.param === el)].value}' 포함</div>
-          <img
-            alt={`${el.value} 삭제`}
-            src={deleteImg}
-            id={el}
-            style={{ width: '1rem' }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove(label, el);
-            }}
-          />
-        </SelectedKeyword>
-      </>
+      <SelectedKeyword key={el}>
+        <span>'{label[label.findIndex((i) => i.param === el)].value}' 포함</span>
+        <img
+          alt={`${el.value} 삭제`}
+          src={deleteImg}
+          id={el}
+          style={{ width: '1rem' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(label, el);
+          }}
+        />
+      </SelectedKeyword>
     ));
   };
 
@@ -318,10 +316,10 @@ export default function Search({ filtersOpen = false }) {
       )}
       <BtnContainer>
         <SearchButtons>
-          <Button onClick={reset} border backgroundColor="grayscale07" size="small">
+          <Button onClick={reset} border backgroundColor="grayscale07" size="sm">
             초기화
           </Button>
-          <Button onClick={submit} border backgroundColor="grayscale01" color="main05" size="small">
+          <Button onClick={submit} border backgroundColor="grayscale01" color="main05" size="sm">
             필터 적용
           </Button>
         </SearchButtons>
@@ -367,7 +365,7 @@ const SearchWordBox = styled.div`
   width: 32rem;
   box-shadow: 0 0 1.2rem 0 ${({ theme }) => `${theme.color.grayscale01}26`};
   border-radius: 9999px;
-  background: #fff;
+  background: ${({ theme }) => theme.color.main05};
   margin-bottom: 2rem;
 `;
 
@@ -379,29 +377,29 @@ const SearchWord = styled.input`
   display: block;
   align-items: center;
   gap: 3rem;
-  background: #fff;
+  background: ${({ theme }) => theme.color.main05};
   color: ${({ theme }) => theme.color.grayscale03};
-  font-size: 1.2rem;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.3s ease-in-out;
   border: 0;
   outline: none;
+  ${({ theme }) => theme.text.paragraph};
 `;
 
 // 필터링 박스
-const SearchBox = styled.div`
+const SearchBox = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 1.2rem 1.2rem ${({ filtersOpen }) => (filtersOpen ? '1.2rem 1.2rem' : '0 0')};
   background: ${({ theme }) => theme.color.main01};
+  width: 62rem;
 `;
 
 // 필터 설정 박스
 const Filters = styled.div`
   padding: 1.5rem 3rem 1.5rem 1.5rem;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 1.4rem;
 `;
 
@@ -411,9 +409,8 @@ const Filter = styled.div`
   flex-direction: row;
   align-items: center;
   color: ${({ theme }) => theme.color.main05};
-  font-size: 1.2rem;
-  font-weight: 700;
   cursor: pointer;
+  ${({ theme }) => theme.text.h5};
 `;
 
 const LabelName = styled.label`
@@ -428,27 +425,30 @@ const KeywordBox = styled.div`
   padding-right: 0.5rem;
   background: ${({ theme }) => theme.color.main05};
   color: ${({ theme }) => theme.color.grayscale04};
-  font-size: 1rem;
-  font-weight: 400;
+  ${({ theme }) => theme.text.small};
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   align-items: center;
   padding-left: 1.4rem;
-  box-sizing: border-box;
-  overflow-x: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
   cursor: pointer;
+
+  width: 100%;
+  overflow: hidden;
 `;
 
 const SelectedKeywords = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.8rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 100%;
 `;
 
 const SelectedKeyword = styled.div`
@@ -458,7 +458,8 @@ const SelectedKeyword = styled.div`
   padding: 0.2rem 0.8rem;
   gap: 0.8rem;
   border-radius: 9999px;
-  background: #d9d9d9;
+  background: #d9d9d9; // 디자인 시스템에 없는 색상
+  color: ${({ theme }) => theme.color.grayscale01};
 `;
 
 const Input = styled.input`
@@ -466,12 +467,10 @@ const Input = styled.input`
   height: 3rem;
   border-radius: 9999px;
   outline: ${({ error, theme }) => (error ? `3px solid ${theme.color.main04}` : 'none')};
-  background: #fff;
+  background: ${({ theme }) => theme.color.main05};
   border: none;
   color: ${({ theme }) => theme.color.grayscale03};
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
+  ${({ theme }) => theme.text.small};
   padding-left: 1.5rem;
 
   &::-webkit-inner-spin-button,
@@ -502,8 +501,7 @@ const MoreFiltersButton = styled.div`
   border-radius: 0 0 1.2rem 1.2rem;
   padding: 1.8rem 0;
   background: ${({ theme }) => theme.color.secondary04};
-  font-size: 1.25rem;
-  font-weight: 700;
+  ${({ theme }) => theme.text.h5};
   gap: 0.5rem;
   cursor: pointer;
   box-shadow: ${({ theme }) => `0 1rem 1.2rem 0 ${theme.color.grayscale01}14`};
@@ -528,6 +526,6 @@ const Alert = styled.div`
   gap: 0.5rem;
   align-items: baseline;
   margin-left: 1rem;
-  color: #ffaa29;
-  font-size: 1rem;
+  color: ${({ theme }) => theme.color.main04};
+  ${({ theme }) => theme.text.small};
 `;
