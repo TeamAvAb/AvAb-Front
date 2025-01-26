@@ -37,8 +37,6 @@ function App() {
     <Routes>
       {/* 메인 */}
       <Route path="/" element={<Main />} />
-      {/* 레크레이션 탭 */}
-      <Route path="/search/list" element={<RecreationSearchList />} />
       {/* 마이 페이지 내 정보 */}
       <Route path="/mypage/myinfo" element={<MyPage />} />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
