@@ -26,6 +26,7 @@ import useLoginModalStore from './stores/loginModalStore';
 import cryingAvab from './assets/main/cryingAvab.svg';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
+import NotFound from './pages/NotFound';
 
 function App() {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ function App() {
       <Route path="/recreation/detail/:recreationId" element={<RecreationDetail />} />
       {/* 로그인 리다이렉트 페이지 */}
       <Route path="/api/auth/login/kakao" element={<LoginLoading />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 
@@ -90,13 +92,12 @@ function App() {
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    console.log(currentPath);
     if (
       currentPath.startsWith('/flow/morewatchflow') ||
       currentPath.startsWith('/recreation/detail')
     ) {
       setSelectedFooter(<Footer2 />);
-    } else if (currentPath === '/' || currentPath.startsWith('/search')) {
+    } else if (currentPath === '/' || currentPath === '/search/list') {
       setSelectedFooter(<Footer1 />);
     } else {
       setSelectedFooter(<Footer3 />);
@@ -105,25 +106,23 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <GlobalStyle />
-        <Header />
-        {modalOpen ? <Login /> : null}
+      <GlobalStyle />
+      <Header />
+      {modalOpen ? <Login /> : null}
 
-        {/* 모바일 화면일 경우 메시지 표시 */}
-        {isMobile ? (
-          <MobileOverlay>
-            <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
-            <SubMessage>PC로 접속해주세요.</SubMessage>
-            <Image src={cryingAvab} alt="Crying Avatar" />
-          </MobileOverlay>
-        ) : (
-          <>
-            {routes}
-            {selectedFooter}
-          </>
-        )}
-      </div>
+      {/* 모바일 화면일 경우 메시지 표시 */}
+      {isMobile ? (
+        <MobileOverlay>
+          <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
+          <SubMessage>PC로 접속해주세요.</SubMessage>
+          <Image src={cryingAvab} alt="Crying Avatar" />
+        </MobileOverlay>
+      ) : (
+        <>
+          <main className="main">{routes}</main>
+          {selectedFooter}
+        </>
+      )}
     </ThemeProvider>
   );
 }

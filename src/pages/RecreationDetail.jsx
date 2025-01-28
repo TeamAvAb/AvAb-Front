@@ -3,13 +3,14 @@ import RecreationTopInfo from '../components/recreation/RecreationTopInfo';
 import RecreationMenuBar from '../components/recreation/RecreationMenuBar';
 import RecreationInfoSection from '../components/recreation/RecreationInfoSection';
 import RecreationReviewSection from '../components/recreation/RecreationReviewSection';
-import RecreationRelatedSection from '../components/recreation/RecreationRelatedSection';
+import RelatedRecreationSection from '../components/recreation/RelatedRecreationSection';
 import RecreationRelatedFlowSection from '../components/recreation/RecreationRelatedFlowSection';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { privateAPI, publicAPI } from '../apis/user';
 import useLoginStore from '../stores/loginStore';
+import NotFound from './NotFound';
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -42,6 +43,10 @@ export default function RecreationDetail() {
 
   if (loading) {
     return <div></div>; // 로딩 중일 때
+  }
+
+  if (!recreationData) {
+    return <NotFound />;
   }
 
   return (
@@ -113,7 +118,7 @@ export default function RecreationDetail() {
           <>
             <RecreationInfoSection ref={infoRef} recreationData={recreationData} />
             <RecreationReviewSection ref={reviewRef} recreationId={recreationId} />
-            <RecreationRelatedSection ref={relatedRef} recreationId={recreationId} />
+            <RelatedRecreationSection ref={relatedRef} recreationId={recreationId} />
             <RecreationRelatedFlowSection ref={flowRef} recreationId={recreationId} />
           </>
         ) : (
