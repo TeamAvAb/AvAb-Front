@@ -1,26 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
+import Button from '../button/Button';
 
 export default function Banner({ contents }) {
   const colors = [
     {
-      background: '#4036ed',
-      text: '#e9ebed',
-      buttonBackground: '#f7f8f9',
-      buttonText: '#1b1d1f',
+      background: 'main02',
+      text: 'grayscale06',
+      buttonBackground: 'grayscale07',
+      buttonText: 'grayscale01',
     },
     {
-      background: '#ffaa29',
-      text: '#1b1d1f',
-      buttonBackground: '#26282b',
-      buttonText: '#fff',
+      background: 'main04',
+      text: 'grayscale01',
+      buttonBackground: 'grayscale02',
+      buttonText: 'main05',
     },
     {
-      background: '#a0ddff',
-      text: '#1b1d1f',
-      buttonBackground: '#26282b',
-      buttonText: '#fff',
+      background: 'main03',
+      text: 'grayscale01',
+      buttonBackground: 'grayscale02',
+      buttonText: 'main05',
     },
   ];
 
@@ -31,9 +32,9 @@ export default function Banner({ contents }) {
   };
 
   return (
-    <Container backgroundColor={colors[contents.index].background}>
+    <Container $backgroundColor={colors[contents.index].background}>
       <Left>
-        <Title color={colors[contents.index].text}>
+        <Title $color={colors[contents.index].text}>
           {contents.keyword} 레크레이션을 찾으시나요?
         </Title>
         <Description color={colors[contents.index].text}>
@@ -59,7 +60,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 3rem 6rem 3rem 6rem;
-  background: ${({ backgroundColor }) => backgroundColor};
+  background: ${({ $backgroundColor, theme }) => theme.color[$backgroundColor]};
   border-radius: 1.4rem;
   box-shadow: 0 0 4rem 1rem rgba(0, 0, 0, 0.2);
 `;
@@ -72,7 +73,7 @@ const Left = styled.div`
 
 const Title = styled.span`
   margin-bottom: 0.8rem;
-  color: ${({ color }) => color};
+  color: ${({ $color, theme }) => theme.color[$color]};
   font-size: 1.5rem;
   font-weight: 700;
   text-align: left;
@@ -80,20 +81,7 @@ const Title = styled.span`
 
 const Description = styled.span`
   margin-bottom: 1.5rem;
-  color: ${({ color }) => color};
+  color: ${({ $color, theme }) => theme.color[$color]};
   font-size: 1.2rem;
   font-weight: 400;
-`;
-
-const Button = styled.button`
-  width: max-content;
-  padding: 1rem 2rem;
-  text-align: center;
-  border: none;
-  border-radius: 9999px;
-  background: ${({ backgroundColor }) => backgroundColor};
-  color: ${({ color }) => color};
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
 `;
