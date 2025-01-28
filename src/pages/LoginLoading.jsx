@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { privateAPI, publicAPI } from '../apis/user';
 import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
-import useLoginModalStore from '../stores/loginModalStore';
 import WithdrawRollbackModal from '../components/modal/WithdrawRollbackModal';
 import useModal from '../hooks/useModal';
 
 export default function LoginLoading() {
   const { isLoggedIn, setIsLoggedIn, setUserId, setAccessToken, setRefreshToken } = useLoginStore();
-  const { modalControl } = useLoginModalStore();
   const code = new URL(window.location.href).searchParams.get('code');
   const redirectURL = new URL(window.location.href).searchParams.get('state');
   const navigator = useNavigate();
@@ -50,9 +48,12 @@ export default function LoginLoading() {
           setUserId(response.data.result.userId);
           setAccessToken(response.data.result.accessToken);
           setRefreshToken(response.data.result.refreshToken);
-          if (redirectURL === '/api/auth/login/kakao')
-            navigator('/'); // 탈퇴 복구에서 이어지는 로그인
-          else navigator(redirectURL);
+          if (redirectURL === '/api/auth/login/kakao') {
+            navigator('/');
+          } // 탈퇴 복구에서 이어지는 로그인
+          else {
+            navigator(redirectURL);
+          }
         }
       }
     } catch (error) {
