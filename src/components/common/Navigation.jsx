@@ -1,41 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
+import { scrollToTop } from '../../utils/windowUtils';
+import SITE_URL from '../../constants/url';
 
 export default function Navigation() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
 
-  const navigate = useNavigate();
-  const goToMain = () => {
-    navigate(`/`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const goToRecreation = () => {
-    navigate(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const goToFlow = () => {
-    navigate(`/flow/watch`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const goToMyPage = () => {
-    if (isLoggedIn) {
-      navigate(`/mypage/myinfo`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
+  const handleClickMyPage = () => {
+    if (!isLoggedIn) {
       modalControl();
+    } else {
+      scrollToTop();
     }
   };
 
   return (
     <Ul>
-      <Li onClick={goToMain}>메인페이지</Li>
-      <Li onClick={goToRecreation}>레크레이션</Li>
-      <Li onClick={goToFlow}>일정플로우</Li>
-      <Li onClick={goToMyPage}>마이페이지</Li>
+      <Li onClick={scrollToTop}>
+        <Link to={SITE_URL.MAIN}>메인페이지</Link>
+      </Li>
+      <Li onClick={scrollToTop}>
+        <Link to={SITE_URL.RECREATION_SEARCH_LIST}>레크레이션</Link>
+      </Li>
+      <>
+        <Li onClick={scrollToTop}>
+          <Link to={SITE_URL.FLOW}>일정플로우</Link>
+        </Li>
+      </>
+      <Li onClick={handleClickMyPage}>
+        <Link to={isLoggedIn ? SITE_URL.MY_INFO : ''}>마이페이지</Link>
+      </Li>
     </Ul>
   );
 }
