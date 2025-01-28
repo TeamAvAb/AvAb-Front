@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import arrow from '../../assets/main/nextSlide.svg';
 import starImg from '../../assets/main/starIcon.svg';
-import FavBtn from '../button/FavBtn';
+import FavBtn from '../common/button/FavBtn';
 
 export default function RecreationPrev({ content }) {
   const keywordParam = {

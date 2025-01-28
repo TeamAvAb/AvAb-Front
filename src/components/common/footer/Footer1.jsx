@@ -1,12 +1,12 @@
 import React from 'react';
-import FooterP from '../../assets/Footer/FooterP.svg';
+import FooterP from '../../../assets/Footer/FooterP.svg';
 import styled from 'styled-components';
-import FooterNav from './FooterNav';
 import Button from '../button/Button';
 import FooterCopyright from './FooterCopyright';
 import FooterContainer from './FooterContainer';
+import Navigation from '../Navigation';
 
-export default function Footer() {
+export default function Footer1() {
   return (
     <div style={{ marginTop: '8rem' }}>
       <FooterContainer>
@@ -25,7 +25,7 @@ export default function Footer() {
             </a>
           </OpinionMsgContainer>
         </MainSection>
-        <FooterNav />
+        <Navigation />
         <Divider />
         <FooterCopyright />
       </FooterContainer>

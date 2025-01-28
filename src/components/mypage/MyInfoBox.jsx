@@ -4,7 +4,7 @@ import WarningIcon from '../../assets/mypage/WarnLogo.svg';
 import NicknameChangeModal from '../modal/NicknameChangeModal';
 import WithdrawModal from '../modal/WithdrawModal';
 import { privateAPI } from '../../apis/user';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function MyInfoBox() {
   const [isNicknameChangeModalOpen, setIsNicknameChangeModal] = useState(false);
@@ -34,12 +34,17 @@ export default function MyInfoBox() {
   };
 
   const handleNickname = (e, maxlength) => {
-    if (e.target.value.length > maxlength) setNickname(e.target.value.substr(0, maxlength));
-    else setNickname(e.target.value);
+    if (e.target.value.length > maxlength) {
+      setNickname(e.target.value.substr(0, maxlength));
+    } else {
+      setNickname(e.target.value);
+    }
   };
 
   const ChangeName = async () => {
-    if (nickname === '') return;
+    if (nickname === '') {
+      return;
+    }
     const response = await privateAPI.patch(`/api/users/me`, {
       username: nickname,
     });
@@ -120,6 +125,7 @@ const MyInput = styled.input`
   &.account {
     color: #cacdd2;
   }
+
   &::placeholder {
     color: #cacdd2;
   }

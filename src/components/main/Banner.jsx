@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import Button from '../button/Button';
+import Button from '../common/button/Button';
 
 export default function Banner({ contents }) {
   const colors = [

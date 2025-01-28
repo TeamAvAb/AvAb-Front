@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React, { forwardRef } from 'react';
-import PurposeChip from '../chip/PurposeChip';
 import RecreationInfo from './RecreationInfo';
 import RecreationAdditionalInfo from './RecreationAdditionalInfo';
+import PurposeChip from '../common/chip/PurposeChip';
 
 const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
   const getPlaceText = () => {

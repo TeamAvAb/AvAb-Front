@@ -1,19 +1,21 @@
 import React from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import character from '../assets/main/login_character.png';
-import closeImg from '../assets/main/closeIcon.svg';
-import useLoginModalStore from '../stores/loginModalStore';
+import character from '../../assets/main/login_character.png';
+import closeImg from '../../assets/main/closeIcon.svg';
+import useLoginModalStore from '../../stores/loginModalStore';
 
-export default function Login() {
+export default function LoginModal() {
   const { pathname } = useLocation();
   const { modalControl } = useLoginModalStore((state) => state);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   let REDIRECT_URI = null;
 
-  if (window.location.href.startsWith('http://localhost:3000/'))
+  if (window.location.href.startsWith('http://localhost:3000/')) {
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
-  else REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+  } else {
+    REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+  }
 
   let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
   const toKakaoLogin = () => {
@@ -36,7 +38,14 @@ export default function Login() {
             </Comment>
             <Button onClick={toKakaoLogin}>간편 로그인하기</Button>
           </Text>
-          <img src={character} style={{ width: '249px', height: '286px', objectFit: 'cover' }} />
+          <img
+            src={character}
+            style={{
+              width: '249px',
+              height: '286px',
+              objectFit: 'cover',
+            }}
+          />
         </Content>
         <Controls>
           <Control onClick={modalControl}>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 
-export default function FooterNav() {
+export default function Navigation() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
 
@@ -45,11 +45,9 @@ const Ul = styled.ul`
   justify-content: center;
   padding: 1.5rem 0;
   font-size: 1.5rem;
-  width: 100%;
   gap: 8rem;
 `;
 
 const Li = styled.li`
   ${({ theme }) => theme.text.nav};
-  cursor: pointer;
 `;

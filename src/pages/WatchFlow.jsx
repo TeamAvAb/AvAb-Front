@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PenguinImg from '../assets/watchflow/penguin.png';
 import Flow from '../components/flow/FlowBox.jsx';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../components/pagination/Pagination.jsx';
-import { publicAPI, privateAPI } from '../apis/user.js';
-import SortControl from '../components/SortControl.jsx';
+import { privateAPI, publicAPI } from '../apis/user.js';
 import useLoginModalStore from '../stores/loginModalStore.js';
 import useLoginStore from '../stores/loginStore.js';
+import SortControl from '../components/common/SortControl';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
@@ -15,16 +15,25 @@ export default function WatchFlow() {
 
   const navigate = useNavigate();
   const moveToMy = () => {
-    if (isLoggedIn) navigate(`/flow/my`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/my`);
+    } else {
+      modalControl();
+    }
   };
   const moveToScrap = () => {
-    if (isLoggedIn) navigate(`/flow/scrap`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/scrap`);
+    } else {
+      modalControl();
+    }
   };
   const moveToMakeFlow = () => {
-    if (isLoggedIn) navigate(`/flow/write`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/write`);
+    } else {
+      modalControl();
+    }
   };
 
   // 데이터 가져오기

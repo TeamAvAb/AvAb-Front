@@ -1,19 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import plus from '../assets/header/Icon.svg';
-import AvAb from '../assets/header/AvAb.png';
-import ProfileImg from '../assets/header/profileImg.png';
-import useLoginStore from '../stores/loginStore';
-import useLoginModalStore from '../stores/loginModalStore';
+import plus from '../../assets/header/Icon.svg';
+import AvAb from '../../assets/header/AvAb.png';
+import ProfileImg from '../../assets/header/profileImg.png';
+import useLoginStore from '../../stores/loginStore';
+import useLoginModalStore from '../../stores/loginModalStore';
+import Navigation from './Navigation';
 
 export default function Header() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
-  const profieImg = () => {
+  const profileImage = () => {
     if (localStorage.getItem('userImgage') !== null) {
       return localStorage.getItem('userImgage');
-    } else return ProfileImg;
+    } else {
+      return ProfileImg;
+    }
   };
   const navigate = useNavigate();
   const ToMainpage = () => {
@@ -32,41 +35,39 @@ export default function Header() {
     if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
 
   return (
-    <HeaderWrap>
+    <HeaderContainer>
       <LogoImg src={AvAb} onClick={ToMainpage} />
-      <HeaderDetail onClick={ToMainpage}>메인페이지</HeaderDetail>
-      <HeaderDetail onClick={ToRecreation}>레크레이션</HeaderDetail>
-      <HeaderDetail onClick={ToFlowWrite}>일정플로우</HeaderDetail>
-      <HeaderDetail onClick={ToMypage}>마이페이지</HeaderDetail>
+      <Navigation />
       {isLoggedIn ? (
-        <LogoutImg src={profieImg()} onClick={ToMypage} />
+        <LogoutImg src={profileImage()} onClick={ToMypage} />
       ) : (
         <>
           <PlusImg src={plus} />
           <Login onClick={() => modalControl()}>로그인</Login>
         </>
       )}
-    </HeaderWrap>
+    </HeaderContainer>
   );
 }
 
-const HeaderWrap = styled.header`
+const HeaderContainer = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   position: relative;
-  height: 67px;
+  height: 4rem;
 `;
 
 const LogoImg = styled.img`
-  width: 200px;
-  height: 40px;
-  margin-right: 55px;
+  width: 12.5rem;
+  margin-right: 3.5rem;
   cursor: pointer;
 `;
 

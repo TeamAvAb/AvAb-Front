@@ -1,17 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import yellowStar from '../../../assets/recreation/yellowStar.svg';
+import yellowStar from '../../../../assets/recreation/yellowStar.svg';
 import FavBtn from '../../button/FavBtn';
-import arrowIcon from '../../../assets/Card/arrowIcon.svg';
 import HashtagChip from '../../chip/HashtagChip';
 import KeywordChip from '../../chip/KeywordChip';
-import keywordConverter from '../../../utils/keywordConverter';
+import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
+import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
 
 export default function RecreationCardL({ content }) {
-  const keywords = content.keywordList.map((keyword, idx) => (
-    <KeywordChip text={keywordConverter(keyword)} key={idx} />
-  ));
+  const renderKeywords = () => {
+    const keywords = getTranslatedKeywords(content.keywordList);
+    return keywords.map((keyword) => <KeywordChip key={keyword} text={keyword} />);
+  };
 
   const navigator = useNavigate();
   const ToRecreationDetail = (recreationId) => {
@@ -30,7 +31,7 @@ export default function RecreationCardL({ content }) {
             <Rate>{parseFloat(content.totalStars).toFixed(1)}</Rate>
           </RateDiv>
         </CardRow2>
-        <Keywords>{keywords}</Keywords>
+        <Keywords>{renderKeywords()}</Keywords>
         <CardRow3>
           <img src={content.imageUrl} />
           <AbsoluteFavBtn recreationId={content.id} isFav={content.isFavorite} />
@@ -38,7 +39,7 @@ export default function RecreationCardL({ content }) {
       </CardContent>
       <MoreDetailBtn onClick={() => ToRecreationDetail(content.id)}>
         자세히 보기
-        <img src={arrowIcon} />
+        <img src={arrowIcon} alt="" />
       </MoreDetailBtn>
     </CardLayout>
   );

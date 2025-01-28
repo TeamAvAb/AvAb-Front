@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import KeywordChip from '../chip/KeywordChip';
-import { getTranslatedKeywords } from '../../constants/keyword';
+import KeywordChip from '../common/chip/KeywordChip';
+import { getTranslatedKeywords } from '../../utils/keywordUtils';
 
 export default function FlowRecreation({ index, recreationTitle, keywords, playTime }) {
   const renderKeywords = () =>

@@ -16,7 +16,7 @@ import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
 import alertImg from '../../assets/main/alert.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
-import Button from '../button/Button';
+import Button from '../common/button/Button';
 
 export default function Search({ filtersOpen = false }) {
   // 검색어 및 키워드 저장

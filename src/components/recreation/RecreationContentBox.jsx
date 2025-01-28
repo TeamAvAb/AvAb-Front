@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import React from 'react';
 import yellowStar from '../../assets/recreation/yellowStar.svg';
-import HashtagChip from '../chip/HashtagChip';
-import FavBtn from '../button/FavBtn';
-import KeywordChip from '../chip/KeywordChip';
 import viewIcon from '../../assets/recreation/viewIcon.svg';
+import HashtagChip from '../common/chip/HashtagChip';
+import FavBtn from '../common/button/FavBtn';
+import KeywordChip from '../common/chip/KeywordChip';
 
 export default function RecreationContentBox({
   recreationId,

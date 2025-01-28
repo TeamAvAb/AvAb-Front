@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import rechoiceIcon from '../../assets/main/rechoiceIcon.svg';
-import Button from '../button/Button';
-import KeywordChip from '../chip/KeywordChip';
-import PurposeChip from '../chip/PurposeChip';
+import Button from '../common/button/Button';
+import KeywordChip from '../common/chip/KeywordChip';
+import PurposeChip from '../common/chip/PurposeChip';
 
 export default function KeywordModal({
   category,

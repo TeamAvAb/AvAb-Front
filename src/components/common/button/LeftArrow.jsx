@@ -1,4 +1,4 @@
-import leftArrowImage from '../../assets/main/prevArrowIcon.svg';
+import leftArrowImage from '../../../assets/main/prevArrowIcon.svg';
 import React from 'react';
 import styled from 'styled-components';
 

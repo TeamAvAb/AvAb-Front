@@ -1,4 +1,4 @@
-export const KEYWORD = {
+const KEYWORD = {
   QUICKNESS: '순발력',
   SENSIBLE: '센스',
   COOPERATIVE: '창의력',
@@ -10,4 +10,4 @@ export const KEYWORD = {
   PREPARATION: '상식',
 };
 
-export const getTranslatedKeywords = (keywords) => keywords.map((keyword) => KEYWORD[keyword]);
+export default KEYWORD;

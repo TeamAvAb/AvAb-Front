@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { ReactComponent as Icon } from '../../assets/recreation/heartIcon.svg';
-import { privateAPI } from '../../apis/user';
-import useLoginStore from '../../stores/loginStore';
-import useLoginModalStore from '../../stores/loginModalStore';
+import { ReactComponent as Icon } from '../../../assets/recreation/heartIcon.svg';
+import useLoginStore from '../../../stores/loginStore';
+import useLoginModalStore from '../../../stores/loginModalStore';
+import { privateAPI } from '../../../apis/user';
 
 export default function FavBtn({ recreationId, isFav, className }) {
   const [isFavorite, setIsFavorite] = useState(isFav);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { privateAPI, publicAPI } from '../apis/user';
-import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
 import WithdrawRollbackModal from '../components/modal/WithdrawRollbackModal';
 import useModal from '../hooks/useModal';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export default function LoginLoading() {
   const { isLoggedIn, setIsLoggedIn, setUserId, setAccessToken, setRefreshToken } = useLoginStore();

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import cryingAvab from '../assets/main/cryingAvab.svg';
 import { Helmet } from 'react-helmet';
-import Button from '../components/button/Button';
 import { Link } from 'react-router-dom';
+import Button from '../components/common/button/Button';
 
 export default function NotFound() {
   return (

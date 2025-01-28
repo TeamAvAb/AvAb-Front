@@ -3,15 +3,15 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
-import SortControl from '../components/SortControl';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 
 import { Helmet } from 'react-helmet';
 
-import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
-import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
 import { privateAPI, publicAPI } from '../apis/user';
+import SortControl from '../components/common/SortControl';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import RecreationCardL from '../components/common/card/recreationCard/RecreationCardL';
 
 export default function RecreationSearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);

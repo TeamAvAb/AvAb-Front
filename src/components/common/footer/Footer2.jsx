@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import FooterNav from './FooterNav';
 import FooterCopyright from './FooterCopyright';
 import FooterContainer from './FooterContainer';
+import Navigation from '../Navigation';
 
 export default function Footer2() {
   return (
     <FooterContainer>
-      <FooterNav />
+      <Navigation />
       <Divider />
       <FooterCopyright />
     </FooterContainer>

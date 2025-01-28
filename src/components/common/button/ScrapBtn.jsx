@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { ReactComponent as Icon } from '../../assets/Card/scrapIcon.svg';
-import { privateAPI } from '../../apis/user';
-import useLoginStore from '../../stores/loginStore';
-import useLoginModalStore from '../../stores/loginModalStore';
+import { ReactComponent as Icon } from '../../../assets/Card/scrapIcon.svg';
+import useLoginStore from '../../../stores/loginStore';
+import useLoginModalStore from '../../../stores/loginModalStore';
+import { privateAPI } from '../../../apis/user';
 
 export default function ScrapBtn({ flowId, isScrap, className }) {
   const [isScrapped, setIsScrapped] = useState(isScrap);
@@ -20,7 +20,6 @@ export default function ScrapBtn({ flowId, isScrap, className }) {
         const response = await privateAPI.post(`/api/flows/${flowId}/scraps`);
         if (response.status === 200) {
           setIsScrapped((prev) => !prev);
-          return;
         } else {
           console.log(response.data);
         }

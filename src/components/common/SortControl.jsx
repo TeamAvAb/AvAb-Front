@@ -1,7 +1,7 @@
 import React from 'react';
-import useDetectClose from '../hooks/main/useDetectClose';
-import arrow from '../assets/searchlist/dropdownArrow.svg';
+import arrow from '../../assets/searchlist/dropdownArrow.svg';
 import styled, { css } from 'styled-components';
+import useDetectClose from '../../hooks/main/useDetectClose';
 
 export default function SortControl({ setOption, selectedOption, isFlow }) {
   const [dropdownOpen, containerRef, containerHandler] = useDetectClose(false);

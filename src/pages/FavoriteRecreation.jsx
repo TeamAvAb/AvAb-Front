@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { privateAPI } from '../apis/user';
 
@@ -7,8 +7,8 @@ import FavoritesBox from '../components/mypage/FavoritesBox';
 import Pagination from '../components/pagination/Pagination';
 import LogoutP from '../assets/mypage/LogoutImg.svg';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
-import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export default function FavoriteRecreation() {
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -78,8 +78,11 @@ export default function FavoriteRecreation() {
   // 즐겨찾기를 해제해서 페이지 수가 줄어들 경우 처리
   useEffect(() => {
     if (datas.length === 0) {
-      if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-      else setCurrentPage(0);
+      if (currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      } else {
+        setCurrentPage(0);
+      }
     }
   }, [datas]);
 

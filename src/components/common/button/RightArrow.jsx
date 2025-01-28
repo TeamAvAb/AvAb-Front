@@ -1,4 +1,4 @@
-import rightArrowImage from '../../assets/main/nextArrowIcon.svg';
+import rightArrowImage from '../../../assets/main/nextArrowIcon.svg';
 import styled from 'styled-components';
 
 export default function RightArrow({ onClick }) {

@@ -10,8 +10,8 @@ import nextSlide from '../../assets/main/nextSlide.svg';
 import wholeSlide from '../../assets/main/wholeSlide.svg';
 import currentSlide from '../../assets/main/currentSlide.svg';
 import useLoginStore from '../../stores/loginStore';
-import LeftArrow from '../button/LeftArrow';
-import RightArrow from '../button/RightArrow';
+import LeftArrow from '../common/button/LeftArrow';
+import RightArrow from '../common/button/RightArrow';
 
 export default function PopularRecreationCarousel() {
   const { isLoggedIn } = useLoginStore((state) => state);
