@@ -4,11 +4,11 @@ import RelatedRecreationCard from './RelatedRecreationCard';
 import { privateAPI, publicAPI } from '../../apis/user';
 import useLoginStore from '../../stores/loginStore.js';
 
-const RecreationRelatedSection = forwardRef(({ recreationId }, ref) => {
+const RelatedRecreationSection = forwardRef(({ recreationId }, ref) => {
   const [relatedData, setRelatedData] = useState([]);
   const { isLoggedIn } = useLoginStore((state) => state);
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchRelated = async () => {
       try {
         const api = isLoggedIn ? privateAPI : publicAPI;
         const response = await api.get(`/api/recreations/${recreationId}/related/recreations`);
@@ -19,14 +19,16 @@ const RecreationRelatedSection = forwardRef(({ recreationId }, ref) => {
       }
     };
 
-    fetchReviews();
+    fetchRelated();
   }, [recreationId]);
+
   return (
-    <RecreationRelatedContainer ref={ref}>
+    <RelatedRecreationContainer ref={ref}>
       <TitleText>연관 레크레이션</TitleText>
       <SubText>해당 레크레이션과 함께 사용할 수 있어요!</SubText>
       {relatedData.map((related) => (
         <RelatedRecreationCard
+          key={related.id}
           hashtag={related.hashtagList}
           recreationTitle={related.title}
           keywords={related.keywordList}
@@ -35,13 +37,13 @@ const RecreationRelatedSection = forwardRef(({ recreationId }, ref) => {
           relatedId={related.id}
         />
       ))}
-    </RecreationRelatedContainer>
+    </RelatedRecreationContainer>
   );
 });
 
-export default RecreationRelatedSection;
+export default RelatedRecreationSection;
 
-const RecreationRelatedContainer = styled.div`
+const RelatedRecreationContainer = styled.div`
   background-color: white;
   padding: 2.5rem;
   border-radius: 1.25rem;
