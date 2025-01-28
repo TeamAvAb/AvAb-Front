@@ -11,11 +11,11 @@ export default function Button({
 }) {
   return (
     <StyledButton
-      backgroundColor={backgroundColor}
-      color={color}
-      border={border}
+      $backgroundColor={backgroundColor}
+      $color={color}
+      $border={border}
+      $size={size}
       onClick={onClick}
-      size={size}
       className={className}
     >
       {children}
@@ -29,15 +29,20 @@ const buttonPadding = {
 };
 
 const StyledButton = styled.button`
-  background-color: ${({ backgroundColor, theme }) => theme.color[backgroundColor]};
+  background-color: ${({ $backgroundColor, theme }) => theme.color[$backgroundColor]};
   border-radius: 9999px;
-  color: ${({ color, theme }) => theme.color[color]};
-  padding: ${({ size }) => buttonPadding[size]};
+  color: ${({ $color, theme }) => theme.color[$color]};
+  padding: ${({ $size }) => buttonPadding[$size]};
   font-size: ${({ theme }) => theme.text.button.fontSize};
   font-weight: ${({ theme }) => theme.text.button.fontWeight};
-  border: ${({ border, theme }) => (border ? `1px solid ${theme.color.grayscale01}` : 'none')};
+  border: ${({ $border, theme, $backgroundColor }) =>
+    $border
+      ? `1px solid ${theme.color.grayscale01}`
+      : `1px solid ${theme.color[$backgroundColor]}`};
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+  width: fit-content;
+  height: fit-content;
 `;
