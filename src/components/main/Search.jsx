@@ -215,7 +215,7 @@ export default function Search({ filtersOpen = false }) {
           onClick={submit}
         />
       </SearchWordBox>
-      <SearchBox filtersOpen={filtersOpen}>
+      <SearchBox $filtersOpen={filtersOpen}>
         <Filters $menu={isMenuOpen.toString()}>
           {/* 키워드 */}
           <Filter>
@@ -238,7 +238,7 @@ export default function Search({ filtersOpen = false }) {
               type="text"
               onChange={(e) => validateParticipants(e.target.value)}
               value={participants}
-              error={participantsAlert}
+              $error={participantsAlert}
             />
             {participantsAlert && (
               <Alert>
@@ -390,7 +390,7 @@ const SearchBox = styled.form`
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 1.2rem 1.2rem ${({ filtersOpen }) => (filtersOpen ? '1.2rem 1.2rem' : '0 0')};
+  border-radius: 1.2rem 1.2rem ${({ $filtersOpen }) => ($filtersOpen ? '1.2rem 1.2rem' : '0 0')};
   background: ${({ theme }) => theme.color.main01};
   width: 62rem;
 `;
@@ -466,7 +466,7 @@ const Input = styled.input`
   width: 16rem;
   height: 3rem;
   border-radius: 9999px;
-  outline: ${({ error, theme }) => (error ? `3px solid ${theme.color.main04}` : 'none')};
+  outline: ${({ $error, theme }) => ($error ? `3px solid ${theme.color.main04}` : 'none')};
   background: ${({ theme }) => theme.color.main05};
   border: none;
   color: ${({ theme }) => theme.color.grayscale03};
