@@ -13,6 +13,7 @@ const Wrapper = styled.footer`
   display: flex;
   justify-content: center;
   padding: 2rem 0;
+  min-height: 2rem;
 `;
 
 const Container = styled.div`
