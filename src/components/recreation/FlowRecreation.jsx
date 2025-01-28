@@ -1,27 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import KeywordChip from '../chip/KeywordChip';
+import { getTranslatedKeywords } from '../../constants/keyword';
 
 export default function FlowRecreation({ index, recreationTitle, keywords, playTime }) {
-  const matchKeywords = (keywords) => {
-    const keywordMap = {
-      QUICKNESS: '순발력',
-      SENSIBLE: '센스',
-      COOPERATIVE: '창의력',
-      ACTIVE: '협동',
-      BRAIN: '액티브',
-      PSYCHOLOGICAL: '두뇌',
-      LUCK: '심리',
-      COMMON_SENSE: '행운',
-      PREPARATION: '상식',
-    };
-    const matchedWords = keywords.map((keyword) => keywordMap[keyword]);
-    return matchedWords.filter(Boolean);
-  };
-
-  const keys = Array.isArray(keywords) ? matchKeywords(keywords) : [];
-
-  const renderKeywords = () => keys.map((keyword) => <KeywordChip text={keyword} />);
+  const renderKeywords = () =>
+    getTranslatedKeywords(keywords).map((keyword) => <KeywordChip key={keyword} text={keyword} />);
 
   const height = (playTime / 10) * 8;
   return (
