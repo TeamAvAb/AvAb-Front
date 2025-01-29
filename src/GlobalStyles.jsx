@@ -8,13 +8,14 @@ const GlobalStyle = createGlobalStyle`
     src: local('Pretendard Regular') url(${Pretendard}) format("woff");
   }
 
-  ${reset}
-  #root, #modal, button {
-    font-family: "Pretendard";
-    box-sizing: border-box;
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
+  ${reset}
   :root {
+    font-family: "Pretendard", sans-serif;
     color: ${({ theme }) => theme.color.grayscale01};
   }
 

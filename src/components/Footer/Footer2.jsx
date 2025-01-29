@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
+import FooterNav from './FooterNav';
+import FooterCopyright from './FooterCopyright';
+import FooterContainer from './FooterContainer';
 
 export default function Footer() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -25,29 +28,21 @@ export default function Footer() {
     if (isLoggedIn) {
       navigate(`/mypage/myinfo`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
   return (
-    <FooterWrap>
-      <High>
-        <DetailsWrap>
-          <Details onClick={ToMainpage}>메인페이지</Details>
-          <Details onClick={ToRecreation}>레크레이션</Details>
-          <Details onClick={ToFlowWrite}>일정플로우</Details>
-          <Details onClick={ToMypage}>마이페이지</Details>
-        </DetailsWrap>
-      </High>
-      <Bottom>
-        <Explain1>COPYRIGHT © Avab all rights reserved</Explain1>
-        <Explain2>Contact Us</Explain2>
-      </Bottom>
-    </FooterWrap>
+    <FooterContainer>
+      <FooterNav />
+      <Divider />
+      <FooterCopyright />
+    </FooterContainer>
   );
 }
 
 const FooterWrap = styled.footer`
   position: relative;
-  height: 208px;
   background-color: #e9ebed;
   display: flex;
   flex-direction: column;
@@ -96,4 +91,10 @@ const Explain1 = styled.div`
 const Explain2 = styled.div`
   margin-top: 20px;
   color: #9fa4a9;
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: ${({ theme }) => theme.color.grayscale04};
 `;

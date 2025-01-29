@@ -5,7 +5,7 @@ import { privateAPI } from '../../apis/user';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 
-export default function ScrapBtn({ flowId, isScrap }) {
+export default function ScrapBtn({ flowId, isScrap, className }) {
   const [isScrapped, setIsScrapped] = useState(isScrap);
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
@@ -30,7 +30,7 @@ export default function ScrapBtn({ flowId, isScrap }) {
     }
   };
   return (
-    <IconWrapper onClick={() => handleClick(flowId)}>
+    <IconWrapper onClick={() => handleClick(flowId)} className={className}>
       <Icon fill={isScrapped ? theme.color.main04 : theme.color.grayscale06} />
     </IconWrapper>
   );
