@@ -14,8 +14,8 @@ export default function Header() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
   const getProfileImage = () => {
-    if (localStorage.getItem('userImgage') !== null) {
-      return localStorage.getItem('userImgage');
+    if (localStorage.getItem('userImage') !== null) {
+      return localStorage.getItem('userImage');
     } else {
       return fallbackProfileImage;
     }

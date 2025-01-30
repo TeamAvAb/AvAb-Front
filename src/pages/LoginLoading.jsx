@@ -65,7 +65,7 @@ export default function LoginLoading() {
     const response = await privateAPI.get('/api/users/me');
     if (response.data.isSuccess) {
       console.log(response.data);
-      localStorage.setItem('userimage', response.data.result.profileImage);
+      localStorage.setItem('userImage', response.data.result.profileImage);
     }
   };
 
