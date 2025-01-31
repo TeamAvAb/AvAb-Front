@@ -27,6 +27,7 @@ const RecreationRelatedSection = forwardRef(({ recreationId }, ref) => {
       <SubText>해당 레크레이션과 함께 사용할 수 있어요!</SubText>
       {relatedData.map((related) => (
         <RelatedRecreationCard
+          key={related.id}
           hashtag={related.hashtagList}
           recreationTitle={related.title}
           keywords={related.keywordList}
