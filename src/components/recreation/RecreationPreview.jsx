@@ -5,27 +5,22 @@ import viewIcon from '../../assets/recreation/viewIcon.svg';
 import HashtagChip from '../common/chip/HashtagChip';
 import FavBtn from '../common/button/FavBtn';
 import KeywordChip from '../common/chip/KeywordChip';
+import { getTranslatedKeywords } from '../../utils/keywordUtils';
 
-export default function RecreationContentBox({
-  recreationId,
-  hashtag,
-  recreationTitle,
-  keywords,
-  starRate,
-  isFavorite,
-  viewCount,
-}) {
-  const formattedStarRate = parseFloat(starRate).toFixed(1);
+export default function RecreationPreview({ recreation, showViewCount = true }) {
+  const formattedStarRate = parseFloat(recreation.totalStars).toFixed(1);
+
+  console.log(recreation);
 
   return (
     <RecreationOverview>
       <Top>
         <HashTagFavBtn>
-          <HashtagChip text={hashtag} />
-          <FavBtn recreationId={recreationId} isFav={isFavorite} />
+          <HashtagChip text={recreation.hashtagList} />
+          <FavBtn recreationId={recreation.id} isFav={recreation.isFavorite} />
         </HashTagFavBtn>
         <TitleStar>
-          <RecreationTitle>{recreationTitle}</RecreationTitle> {/* 레크레이션 제목 */}
+          <RecreationTitle>{recreation.title}</RecreationTitle> {/* 레크레이션 제목 */}
           <Star>
             <img src={yellowStar} alt="star icon" />
             {formattedStarRate}
@@ -33,17 +28,17 @@ export default function RecreationContentBox({
           {/* 별점*/}
         </TitleStar>
         <Keywords>
-          {keywords.map((keyword) => (
+          {getTranslatedKeywords(recreation.keywordList).map((keyword) => (
             <KeywordChip text={keyword} key={keyword} />
           ))}
         </Keywords>
       </Top>
 
       {/* 키워드 */}
-      {viewCount && (
+      {showViewCount && (
         <ViewBox>
           <ViewIcon src={viewIcon} />
-          <ViewText>{viewCount}</ViewText>
+          <ViewText>{recreation.viewCount}</ViewText>
         </ViewBox>
       )}
     </RecreationOverview>
