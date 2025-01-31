@@ -5,19 +5,22 @@ import yellowStar from '../../../../assets/recreation/yellowStar.svg';
 import FavBtn from '../../button/FavBtn';
 import HashtagChip from '../../chip/HashtagChip';
 import KeywordChip from '../../chip/KeywordChip';
-import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
+import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
+import SITE_URL from '../../../../constants/url';
+import { scrollToTop } from '../../../../utils/windowUtils';
 
 export default function RecreationCardL({ content }) {
   const renderKeywords = () => {
-    const keywords = getTranslatedKeywords(content.keywordList);
-    return keywords.map((keyword) => <KeywordChip key={keyword} text={keyword} />);
+    return getTranslatedKeywords(content.keywordList).map((keyword) => (
+      <KeywordChip key={keyword} text={keyword} />
+    ));
   };
 
-  const navigator = useNavigate();
-  const ToRecreationDetail = (recreationId) => {
-    navigator(`/recreation/detail/${recreationId}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const navigate = useNavigate();
+  const toRecreationDetail = (recreationId) => {
+    navigate(SITE_URL.RECREATION_DETAIL(recreationId));
+    scrollToTop();
   };
 
   return (
@@ -37,7 +40,7 @@ export default function RecreationCardL({ content }) {
           <AbsoluteFavBtn recreationId={content.id} isFav={content.isFavorite} />
         </CardRow3>
       </CardContent>
-      <MoreDetailBtn onClick={() => ToRecreationDetail(content.id)}>
+      <MoreDetailBtn onClick={() => toRecreationDetail(content.id)}>
         자세히 보기
         <img src={arrowIcon} alt="" />
       </MoreDetailBtn>

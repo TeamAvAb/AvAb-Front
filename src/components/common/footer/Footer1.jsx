@@ -18,7 +18,7 @@ export default function Footer1() {
               <br />
               의견을 보내주세요
             </OpinionMsg>
-            <a href="https://www.instagram.com/avab.ovo/" target="_blank">
+            <a href="https://www.instagram.com/avab.ovo/" target="_blank" rel="noreferrer">
               <Button backgroundColor="main01" color="main05">
                 의견 보내러 가기
               </Button>
