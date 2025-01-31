@@ -97,15 +97,15 @@ export default function MyFlow() {
               {datas.map((data) => (
                 <FlowCardD content={data} ismine="true">
                   <>
-                    <Button backgroundColor="grayscale01" color="main05" size="tiny">
+                    <Button backgroundColor="grayscale01" color="main05" border size="xs">
                       수정
                     </Button>
                     <Button
+                      onClick={() => handleDeleteClick(data.id)}
                       backgroundColor="main05"
                       color="grayscale04"
-                      border="border"
-                      onClick={() => handleDeleteClick(data.id)}
-                      size="tiny"
+                      border
+                      size="xs"
                     >
                       삭제
                     </Button>

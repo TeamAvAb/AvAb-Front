@@ -24,6 +24,7 @@ export default function Button({
 }
 
 const buttonPadding = {
+  xs: '0.5rem 1.25rem',
   sm: '0.5rem 1.5rem',
   md: '1rem 2rem',
 };
