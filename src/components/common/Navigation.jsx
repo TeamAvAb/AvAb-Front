@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 import { scrollToTop } from '../../utils/windowUtils';
@@ -10,10 +10,12 @@ export default function Navigation() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
 
+  const navigate = useNavigate();
   const handleClickMyPage = () => {
     if (!isLoggedIn) {
       modalControl();
     } else {
+      navigate(SITE_URL.MY_INFO);
       scrollToTop();
     }
   };
@@ -31,9 +33,7 @@ export default function Navigation() {
           <Link to={SITE_URL.FLOW}>일정플로우</Link>
         </Li>
       </>
-      <Li onClick={handleClickMyPage}>
-        <Link to={isLoggedIn ? SITE_URL.MY_INFO : ''}>마이페이지</Link>
-      </Li>
+      <Li onClick={handleClickMyPage}>마이페이지</Li>
     </Ul>
   );
 }
