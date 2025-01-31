@@ -386,7 +386,7 @@ const SearchWord = styled.input`
 `;
 
 // 필터링 박스
-const SearchBox = styled.form`
+const SearchBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
