@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import RecreationContentBox from './RecreationContentBox';
-import viewIcon from '../../assets/recreation/viewIcon.svg';
 
 export default function RecreationTopInfo({ recreationData }) {
   if (!recreationData || !recreationData.imageUrl) {
@@ -27,7 +26,7 @@ export default function RecreationTopInfo({ recreationData }) {
   return (
     <RecreationTopMenuContainer>
       <ImgMainWrap>
-        <MainImage src={recreationData.imageUrl}></MainImage>
+        <MainImage src={recreationData.imageUrl} alt={recreationData.title} />
         {/* 레크레이션 정보 */}
         <div>
           <RecreationContentBox
@@ -37,11 +36,8 @@ export default function RecreationTopInfo({ recreationData }) {
             keywords={keywords}
             starRate={recreationData.totalStars}
             isFavorite={recreationData.isFavorite}
+            viewCount={recreationData.viewCount}
           />
-          <ViewBox>
-            <ViewIcon src={viewIcon} />
-            <ViewText>{recreationData.viewCount}</ViewText>
-          </ViewBox>
         </div>
       </ImgMainWrap>
     </RecreationTopMenuContainer>
@@ -49,35 +45,20 @@ export default function RecreationTopInfo({ recreationData }) {
 }
 
 const RecreationTopMenuContainer = styled.div`
-  height: 403px;
-  background-color: #a0ddff;
+  padding: 3rem 0;
+  background-color: ${({ theme }) => theme.color.main03};
   display: flex;
   align-items: center;
   justify-content: center;
 `;
+
 const ImgMainWrap = styled.div`
   display: flex;
-`;
-const ViewBox = styled.div`
-  margin: 51px 17px 0px 0px;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-`;
-const ViewIcon = styled.img`
-  margin-right: 8px;
-  float: right;
-`;
-const ViewText = styled.div`
-  color: #26282b;
-  text-align: right;
-  font-size: 16px;
-  font-weight: 400;
+  gap: 16rem;
 `;
 
 const MainImage = styled.img`
-  width: 250px;
-  margin-right: 250px;
+  width: 16rem;
 `;
 
 const WarningMessage = styled.div`

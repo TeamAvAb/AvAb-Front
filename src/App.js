@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Footer1 from './components/Footer/Footer1';
@@ -8,7 +7,7 @@ import Footer3 from './components/Footer/Footer3';
 import Main from './pages/Main';
 import MyPage from './pages/Mypage';
 import FavoriteRecreation from './pages/FavoriteRecreation';
-import SearchList from './pages/SearchList';
+import RecreationSearchList from './pages/RecreationSearchList';
 import FlowWrite from './pages/FlowWrite'; // 플로우 만들기 페이지
 import FlowWriteDetail from './pages/FlowWriteDetail'; // 플로우 만들기 상세 페이지
 import FlowWriteRecommend from './pages/FlowWriteRecommend'; // 플로우 만들기 추천 페이지
@@ -25,9 +24,8 @@ import LoginLoading from './pages/LoginLoading'; // 로그인 시 로딩 페이�
 import GlobalStyle from './GlobalStyles'; // 전역 스타일
 import useLoginModalStore from './stores/loginModalStore';
 import cryingAvab from './assets/main/cryingAvab.svg';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
-import { ThemeProvider } from 'styled-components';
 
 function App() {
   const navigate = useNavigate();
@@ -39,14 +37,12 @@ function App() {
     <Routes>
       {/* 메인 */}
       <Route path="/" element={<Main />} />
-      {/* 레크레이션 탭 */}
-      <Route path="/search/list" element={<SearchList />} />
       {/* 마이 페이지 내 정보 */}
       <Route path="/mypage/myinfo" element={<MyPage />} />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
       <Route path="/mypage/favorites" element={<FavoriteRecreation />} />
       {/* 검색 리스트 페이지 */}
-      <Route path="/search/list" element={<SearchList />} />
+      <Route path="/search/list" element={<RecreationSearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
       <Route path="/flow/write" element={<FlowWrite />} />
       {/* 플로우 만들기 상세 페이지 */}

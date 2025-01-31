@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { privateAPI, publicAPI } from '../apis/user';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
 import SortControl from '../components/SortControl';
@@ -13,8 +11,9 @@ import { Helmet } from 'react-helmet';
 import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
 import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
+import { privateAPI, publicAPI } from '../apis/user';
 
-export default function SearchList({}) {
+export default function RecreationSearchList({}) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const location = useLocation();
   const param = location.search + '&';
@@ -92,17 +91,11 @@ export default function SearchList({}) {
         />
       </Helmet>
       <Container>
-        <Recommend />
-        <Search />
-        <Popular>
+        <Search filtersOpen />
+        <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
-            <SortControl
-              setOption={setOrder}
-              selectedOption={order}
-              marginright="43px"
-              isFlow={false}
-            />
+            <SortControl setOption={setOrder} selectedOption={order} isFlow={false} />
           </ResultHeaderContainer>
           {loading ? (
             <LoadingSpinner
@@ -115,17 +108,21 @@ export default function SearchList({}) {
               }
             />
           ) : datas.length === 0 ? (
-            <MyFlowNoneBox>
-              <MyFlowNoneImg src={noScrapImg} />
-              <MyFlowNoneDetail>
-                <div style={{ fontSize: '28px', fontWeight: 'bold' }}>검색결과가 없습니다!</div>
-                <div style={{ fontSize: '22px', marginTop: '8px' }}>다시 검색해보세요.</div>
-              </MyFlowNoneDetail>
-            </MyFlowNoneBox>
+            <NoData>
+              <NoDataImg src={noScrapImg} />
+              <NoDataDescription>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>검색 결과가 없습니다!</div>
+                <div style={{ marginTop: '0.5rem', fontSize: '1.25rem' }}>
+                  다른 조건으로 검색해보세요.
+                </div>
+              </NoDataDescription>
+            </NoData>
           ) : (
             <>
               <RecreationWrapper>
-                {datas && datas.map((data) => <RecreationCardL content={data} key={data.id} />)}
+                {datas.map((data) => (
+                  <RecreationCardL content={data} key={data.id} />
+                ))}
               </RecreationWrapper>
 
               <Pagination
@@ -136,7 +133,7 @@ export default function SearchList({}) {
               />
             </>
           )}
-        </Popular>
+        </RecreationsContainer>
       </Container>
     </>
   );
@@ -146,65 +143,53 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-const Recommend = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 56px;
-  color: var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  font-size: 72px;
-  margin-top: 90px;
-  margin-bottom: 40px;
+  margin-top: 2rem;
 `;
 
-const Popular = styled.div`
-  width: 1363px;
-  margin-top: 100px;
+const RecreationsContainer = styled.div`
+  width: 86rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const ResultHeaderContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 55px;
+  margin-bottom: 3.5rem;
 `;
+
 const ResultHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #000;
-  font-size: 42px;
-  font-style: normal;
-  font-weight: 700;
-  width: 312px;
-  height: 57px;
-  margin-bottom: 50px;
+  ${({ theme }) => theme.text.h2}
+  margin-bottom: 3rem;
 `;
 
 //레크레이션 찾기
 const RecreationWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  row-gap: 20px;
-  column-gap: 30px;
+  row-gap: 1.2rem;
+  column-gap: 1.8rem;
+  margin-bottom: 3rem;
 `;
 
 //검색 결과가 없는 경우
-const MyFlowNoneBox = styled.div`
+const NoData = styled.div`
   width: 100%;
   text-align: center;
 `;
 
-const MyFlowNoneImg = styled.img`
-  width: 150px;
-  height: 150px;
+const NoDataImg = styled.img`
+  width: 9rem;
 `;
 
-const MyFlowNoneDetail = styled.div`
+const NoDataDescription = styled.div`
   width: 100%;
-  margin: 40px 0 60px;
+  margin-top: 1rem;
   text-align: center;
 `;

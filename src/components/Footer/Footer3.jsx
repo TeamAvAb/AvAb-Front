@@ -1,22 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import FooterContainer from './FooterContainer';
+import FooterCopyright from './FooterCopyright';
 
 export default function Footer() {
   return (
-    <FooterWrap>
-      <Content>COPYRIGHT © Avab all rights reserved</Content>
-    </FooterWrap>
+    <FooterContainer>
+      <FooterCopyright onlyCopyright />
+    </FooterContainer>
   );
 }
-
-const FooterWrap = styled.footer`
-  position: relative;
-  height: 83px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e9ebed;
-`;
 
 const Content = styled.div`
   color: #9fa4a9;

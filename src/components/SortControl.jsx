@@ -2,26 +2,58 @@ import React from 'react';
 import useDetectClose from '../hooks/main/useDetectClose';
 import arrow from '../assets/searchlist/dropdownArrow.svg';
 import styled, { css } from 'styled-components';
-export default function SortControl({ setOption, selectedOption, marginright, isFlow }) {
+
+export default function SortControl({ setOption, selectedOption, isFlow }) {
   const [dropdownOpen, containerRef, containerHandler] = useDetectClose(false);
+  const recreationOptions = [
+    {
+      name: '인기순',
+      value: 'LIKE',
+    },
+    {
+      name: '조회 많은순',
+      value: 'VIEW',
+    },
+    {
+      name: '최신순',
+      value: 'RECENT',
+    },
+  ];
+
+  const flowOptions = [
+    {
+      name: '인기순',
+      value: 'SCRAP',
+    },
+    {
+      name: '조회 많은순',
+      value: 'VIEW',
+    },
+    {
+      name: '최신순',
+      value: 'RECENT',
+    },
+  ];
   const optionConverter = (option) => {
-    if (option === 'LIKE' || option === 'SCRAP') return '인기순';
-    else if (option === 'VIEW') return '조회 많은순';
-    else if (option === 'RECENT') return '최신순';
+    return (isFlow ? flowOptions : recreationOptions).find((el) => el.value === option).name;
   };
   return (
-    <DropdownContainer $marginright={marginright}>
-      <Menu $isdropped={dropdownOpen}>
-        <Ul>
-          <Li onClick={() => setOption(isFlow ? 'SCRAP' : 'LIKE')}>인기순</Li>
-          <Li onClick={() => setOption('VIEW')}>조회 많은순</Li>
-          <Li onClick={() => setOption('RECENT')}>최신순</Li>
-        </Ul>
-      </Menu>
+    <DropdownContainer>
       <DropdownButton ref={containerRef} onClick={containerHandler}>
         {optionConverter(selectedOption)}
-        <img src={arrow} />
+        <img src={arrow} alt="" />
       </DropdownButton>
+      <Menu $open={dropdownOpen}>
+        {(isFlow ? flowOptions : recreationOptions).map((option) => (
+          <Li
+            key={option.value}
+            onClick={() => setOption(option.value)}
+            selected={selectedOption === option.value}
+          >
+            {option.name}
+          </Li>
+        ))}
+      </Menu>
     </DropdownContainer>
   );
 }
@@ -29,105 +61,62 @@ export default function SortControl({ setOption, selectedOption, marginright, is
 const DropdownContainer = styled.div`
   position: relative;
   text-align: center;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
   margin-left: auto;
-  margin-right: ${(props) => (props.$marginright ? props.$marginright : '43px')};
   z-index: 1;
 `;
 
 const DropdownButton = styled.button`
-  cursor: pointer;
-  width: 142px;
-  border-radius: 50px;
   text-align: center;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  position: relative;
-  background: #fff;
+  gap: 0.8rem;
   border: none;
-
-  color: #000000;
-
-  font-size: 20px;
-  font-style: normal;
+  z-index: 2;
+  ${({ theme }) => theme.text.paragraph};
   font-weight: 700;
-  line-height: normal;
 `;
 
-const Menu = styled.div`
+const Menu = styled.ul`
+  transform: translateY(-1.2rem);
+  right: 0;
+  width: 8rem;
+  padding: 1rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 36px;
-  left: 50%;
-  width: 142px;
-  flex-shrink: 0;
-  padding: 20px 0;
+  top: 2rem;
   background: #fff;
-  box-sizing: border-box;
-  text-align: center;
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, -20px);
   transition:
     opacity 0.4s ease,
     transform 0.4s ease,
     visibility 0.4s;
-  overflow: hidden;
 
-  border-radius: 20px;
-  border: 0.7px solid var(--gray-scale-1-b-1-d-1-f, #1b1d1f);
-  background: var(--main-ffffff, #fff);
+  border-radius: 1.2rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale01};
 
-  ${({ $isdropped }) =>
-    $isdropped &&
+  ${({ $open }) =>
+    $open &&
     css`
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, 0);
-      left: 50%;
+      transform: translateY(0);
     `};
 `;
 
-const Ul = styled.ul`
-  & > button {
-    padding-top: 7.5px;
-    padding-bottom: 7.5px;
-  }
-
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-`;
-
-const Li = styled.button`
-  width: 100%;
-  color: #9fa4a9;
-  border: none;
-  background: #fff;
-
+const Li = styled.li`
+  color: ${({ theme, selected }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
   text-align: center;
 
-  font-size: 20px;
-  font-style: normal;
-  font-weight: ${(props) => (props.selected ? 700 : 500)};
-  line-height: normal;
+  ${({ theme }) => theme.text.h5};
 
   &:hover {
-    font-style: normal;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 24px;
-
-    color: #1b1d1f;
+    color: ${({ theme }) => theme.color.grayscale01};
   }
+
+  transition: color 0.4s ease;
 `;

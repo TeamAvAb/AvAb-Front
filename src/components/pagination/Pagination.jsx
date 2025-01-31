@@ -10,7 +10,7 @@ export default function Pagination({ currentPage, pageNum, setCurrentPage, scrol
   }
 
   const movePage = (page) => {
-    window.scrollTo({ top: scrollLocation || 0, behavior: 'smooth' }); // 페이지 이동 시 리스트의 최상단으로 이동(scrollLocation 지정 안되었을 경우 페이지의 최상단으로 이동)
+    scrollLocation && window.scrollTo({ top: scrollLocation, behavior: 'smooth' });
     setCurrentPage(page);
   };
 

@@ -121,6 +121,7 @@ const Comment = styled.div`
   margin-right: 2rem;
   margin-bottom: 1rem;
   text-align: left;
+  line-height: 1.2;
 `;
 
 const PopularHeader = styled.div`

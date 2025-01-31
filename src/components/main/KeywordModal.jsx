@@ -48,6 +48,7 @@ export default function KeywordModal({
                 onClick={() => handleSingleSelect(el.param)}
                 selected={result.includes(el.param)}
                 text={el.value}
+                width="17%"
               />
             ) : (
               <Purpose
@@ -60,15 +61,19 @@ export default function KeywordModal({
           )}
         </Keywords>
         <SetModal>
-          <Button border size="small" onClick={handleClose}>
+          <Button border onClick={handleClose}>
             닫기
           </Button>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <Button size="small" onClick={handleReset}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img src={rechoiceIcon} style={{ width: '42px', height: '42px' }} alt="초기화" />
-                초기화
-              </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Button onClick={handleReset}>
+              <img src={rechoiceIcon} style={{ width: '2.5rem', height: '2.5rem' }} alt="초기화" />
+              초기화
             </Button>
             <Button backgroundColor="main02" color="main05" onClick={handleSubmit}>
               선택 완료
@@ -100,8 +105,8 @@ const Modal = styled.div`
 
 const Keywords = styled.div`
   display: flex;
-  justify-content: center;
-  padding: ${({ category }) => (category === 'keyword' ? '2.5rem 3rem' : '3.5rem 0')};
+  justify-content: space-between;
+  padding: ${({ category }) => (category === 'keyword' ? '2.5rem' : '3.5rem')};
   gap: ${({ category }) => (category === 'keyword' ? '1.2rem' : '1rem')};
   flex-wrap: wrap;
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2) inset;
@@ -127,4 +132,5 @@ const SetModal = styled.div`
   justify-content: space-between;
   border-top: 1px solid ${({ theme }) => theme.color.grayscale03};
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2);
+  align-items: center;
 `;
