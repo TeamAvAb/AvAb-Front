@@ -1,38 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function RadioInput({ content, setOption, selectedOption }) {
-  const handleSelect = (param) => {
-    const isSelected = selectedOption.includes(param);
+export default function RadioInput({ options, setOption, selectedOption }) {
+  const handleOptionClick = (option) => {
+    const isSelected = selectedOption.includes(option);
     if (isSelected) {
-      setOption(selectedOption.filter((el) => el !== param));
+      setOption(selectedOption.filter((el) => el !== option));
     } else {
-      setOption((prev) => [...prev, param]);
+      setOption((prev) => [...prev, option]);
     }
   };
 
   return (
     <Options>
-      {content.map((el) => (
+      {options.map((option) => (
         <Option
-          key={el.id}
-          onClick={() => handleSelect(el.param)}
-          selected={selectedOption.includes(el.param)}
+          key={option.key}
+          onClick={() => handleOptionClick(option)}
+          selected={selectedOption.includes(option)}
         >
-          {el.value}
+          {option.value}
         </Option>
       ))}
     </Options>
   );
 }
 
-const Options = styled.div`
+const Options = styled.ul`
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
 `;
 
-const Option = styled.button`
+const Option = styled.li`
   height: 2.8rem;
   display: flex;
   justify-content: center;
@@ -44,7 +44,5 @@ const Option = styled.button`
   background: ${({ selected, theme }) => (selected ? theme.color.secondary04 : theme.color.main05)};
   text-align: center;
   color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
 `;

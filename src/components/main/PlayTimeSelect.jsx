@@ -3,34 +3,38 @@ import styled, { css } from 'styled-components';
 import useDetectClose from '../../hooks/main/useDetectClose';
 import downIconImg from '../../assets/main/downIcon.svg';
 
-export default function DropdownMenu({ list, setOption, selectedOption }) {
+export default function PlayTimeSelect({ options, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
-  const handleClickLi = (li) => {
-    if (selectedOption === li) {
-      setOption([]);
+  const handleOptionClick = (option) => {
+    if (selectedOption === option) {
+      setOption(null);
     } else {
-      setOption(li);
+      setOption(option);
     }
   };
   return (
     <DropdownContainer>
-      <Menu $isdropped={dropdownOpen}>
+      <Menu $open={dropdownOpen}>
         <Ul>
-          {list.map((li) => (
+          {options.map((opt) => (
             <Li
-              key={li}
-              value={li}
-              onClick={() => handleClickLi(li)}
-              selected={selectedOption === li}
+              key={opt}
+              value={opt}
+              onClick={() => handleOptionClick(opt)}
+              selected={selectedOption === opt}
             >
-              {li}분
+              {opt}분
             </Li>
           ))}
         </Ul>
       </Menu>
-      <DropdownButton onClick={myPageHandler} ref={myPageRef} selected={selectedOption}>
-        {selectedOption.length === 0 ? '10' : selectedOption}
-        분
+      <DropdownButton
+        onClick={myPageHandler}
+        ref={myPageRef}
+        $selected={!!selectedOption}
+        type="button"
+      >
+        {selectedOption ? `${selectedOption}분` : '선택하세요.'}
         <img src={downIconImg} style={{ width: '1.2rem' }} alt="" />
       </DropdownButton>
     </DropdownContainer>
@@ -60,10 +64,11 @@ const DropdownButton = styled.button`
   justify-content: space-between;
   padding: 0 1rem;
   position: relative;
-  background: #fff;
-  font-size: 1rem;
-  color: ${({ selected, theme }) =>
-    selected.length === 0 ? theme.color.grayscale04 : theme.color.grayscale03};
+  color: ${({ $selected, theme }) =>
+    $selected ? theme.color.grayscale01 : theme.color.grayscale04};
+  ${({ theme }) => theme.text.small};
+  z-index: 5;
+  background: ${({ theme }) => theme.color.main05};
 
   &:focus {
     border: 1px solid ${({ theme }) => theme.color.grayscale04};
@@ -97,8 +102,8 @@ const Menu = styled.div`
     display: none;
   }
 
-  ${({ $isdropped }) =>
-    $isdropped &&
+  ${({ $open }) =>
+    $open &&
     css`
       opacity: 1;
       visibility: visible;
@@ -109,22 +114,12 @@ const Menu = styled.div`
 
 const Ul = styled.ul`
   height: 8rem;
-
-  & > button {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 `;
 
-const Li = styled.button`
+const Li = styled.li`
   width: 100%;
   color: ${({ selected, theme }) => (selected ? theme.color.grayscale03 : theme.color.grayscale04)};
   border: none;
@@ -133,4 +128,5 @@ const Li = styled.button`
   font-style: normal;
   font-weight: 400;
   cursor: pointer;
+  padding: 0.5rem 0;
 `;
