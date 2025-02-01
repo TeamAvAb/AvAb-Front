@@ -43,10 +43,30 @@ export default function FlowWriteDetail() {
     ['50대 이상', 'OVER_FIFTIES'],
   ];
 
-  // 로컬 스토리지에 selectedDetailKeywords 상태를 저장
+  // 로컬 스토리지에 상태를 저장
   useEffect(() => {
-    localStorage.setItem('selectedDetailKeywords', JSON.stringify(selectedDetailKeywords));
-  }, [selectedDetailKeywords]);
+    const savedGenders = localStorage.getItem("selectedGenders");
+    const savedAges = localStorage.getItem("selectedAges");
+    const savedGroupSize = localStorage.getItem("selectedGroupSize");
+    const savedDetailKeywords = localStorage.getItem("selectedDetailKeywords");
+
+    if (savedGenders) {
+      setSelectedGenders(JSON.parse(savedGenders));
+    }
+    if (savedAges) {
+      setSelectedAges(JSON.parse(savedAges));
+    }
+    if (savedGroupSize) {
+      setSelectedGroupSize(savedGroupSize);
+    }
+    if (savedDetailKeywords) {
+      const englishKeywords = JSON.parse(savedDetailKeywords);
+      const koreanKeywords = englishKeywords.map(keyword => {
+        return Object.keys(DetailMappings).find(key => DetailMappings[key] === keyword);
+      });
+      setSelectedDetailKeywords(koreanKeywords);
+    }
+  }, []);
 
   const handleNextClick = () => {
     localStorage.setItem('selectedGenders', JSON.stringify(selectedGenders));
@@ -60,10 +80,10 @@ export default function FlowWriteDetail() {
   };
 
   const handleBeforeClick = () => {
-    localStorage.removeItem('selectedGenders');
-    localStorage.removeItem('selectedAges');
-    localStorage.removeItem('selectedGroupSize');
-    localStorage.removeItem('selectedDetailKeywords');
+    //localStorage.removeItem('selectedGenders');
+    //localStorage.removeItem('selectedAges');
+    //localStorage.removeItem('selectedGroupSize');
+    //localStorage.removeItem('selectedDetailKeywords');
     navigate('/flow/write');
     window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤 최상단으로 이동
   };
