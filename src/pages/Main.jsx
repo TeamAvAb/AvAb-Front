@@ -16,13 +16,15 @@ import mtImg from '../assets/main/banner2_mt.png';
 import gatherImg from '../assets/main/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
+import { scrollToTop } from '../utils/windowUtils';
 
 export default function Main() {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const goToSearchList = () => {
-    navigator(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/search/list`);
+    scrollToTop();
   };
+
   const banner = [
     {
       index: 0,

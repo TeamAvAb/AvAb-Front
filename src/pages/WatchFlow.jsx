@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { publicAPI, privateAPI } from '../apis/user.js';
+import { privateAPI, publicAPI } from '../apis/user.js';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from '../components/pagination/Pagination.jsx';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
-import FlowCardD from '../components/card/flowCard/FlowCardD.jsx';
-import ScrapBtn from '../components/button/ScrapBtn.jsx';
-import SortControl from '../components/SortControl.jsx';
-import useLoginStore from '../stores/loginStore.js';
 import useLoginModalStore from '../stores/loginModalStore.js';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 import penguinImg from '../assets/watchflow/penguin.png';
 import useLoginStore from '../stores/loginStore.js';
 import SortControl from '../components/common/SortControl';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import ScrapBtn from '../components/common/button/ScrapBtn';
+import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
@@ -101,7 +99,9 @@ export default function WatchFlow() {
       } catch (error) {
         throw new Error('ScrapBtn Error in WatchFlow', error);
       }
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
 
   // 초기 렌더링 및 페이지, 정렬 옵션 변경에 따른 데이터 페칭
@@ -242,6 +242,7 @@ const FlowMakeBtn = styled.button`
   font-weight: ${({ theme }) => theme.text.h2.fontWeight};
   color: ${({ theme }) => theme.color.main05};
   cursor: pointer;
+
   &:hover {
     background-color: ${({ theme }) => theme.color.main02};
     transition: 0.2s;

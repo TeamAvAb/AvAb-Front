@@ -8,7 +8,7 @@ export default function RelatedRecreationCard({ recreation }) {
   return (
     <RelatedRecreationContainer>
       <BoxWrap>
-        <RecreationPreview recreation={recreation} />
+        <RecreationPreview recreation={recreation} showViewCount={false} />
       </BoxWrap>
       <DetailLinkButton to={`/recreation/detail/${recreation.id}`} onClick={scrollToTop}>
         상세 페이지 보러가기 {'>'}

@@ -9,10 +9,9 @@ import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
 import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import SITE_URL from '../../../../constants/url';
 import { scrollToTop } from '../../../../utils/windowUtils';
-
-import useLoginModalStore from '../../../stores/loginModalStore';
-import useLoginStore from '../../../stores/loginStore';
-import { privateAPI } from '../../../apis/user';
+import useLoginStore from '../../../../stores/loginStore';
+import useLoginModalStore from '../../../../stores/loginModalStore';
+import { privateAPI } from '../../../../apis/user';
 
 export default function RecreationCardL({ content }) {
   const renderKeywords = () =>

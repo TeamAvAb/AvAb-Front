@@ -6,32 +6,33 @@ import FavBtn from '../../button/FavBtn';
 import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
 import { scrollToTop } from '../../../../utils/windowUtils';
 import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
-import keywordConverter from '../../../utils/keywordConverter';
-import useLoginModalStore from '../../../stores/loginModalStore';
-import useLoginStore from '../../../stores/loginStore';
-import { privateAPI } from '../../../apis/user';
+import useLoginStore from '../../../../stores/loginStore';
+import useLoginModalStore from '../../../../stores/loginModalStore';
+import { privateAPI } from '../../../../apis/user';
 
-export default function RecreationCardS({ content }) {
-  const navigate = useNavigate();
-  const toRecreationDetail = (recreationId, e) => {
-    e.stopPropagation();
-    navigate(`/recreation/detail/${recreationId}`);
-    scrollToTop();
 export default function RecreationCardS({ content, refetch }) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
   const [isFav, setIsFav] = useState(content.isFavorite);
 
+  const navigate = useNavigate();
+  const toRecreationDetail = (recreationId, e) => {
+    e.stopPropagation();
+    navigate(`/recreation/detail/${recreationId}`);
+    scrollToTop();
+  };
+
   const handleFavClick = async (recreationId) => {
     if (!isLoggedIn) {
       modalControl();
-      return;
     } else {
       try {
         const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
         if (response.status === 201) {
           setIsFav((prev) => !prev);
-          if (refetch) refetch(); // 즐겨찾는 레크레이션 페이지 리렌더링 요청
+          if (refetch) {
+            refetch();
+          } // 즐겨찾는 레크레이션 페이지 리렌더링 요청
           return;
         } else {
           console.log(response.data);
@@ -40,6 +41,7 @@ export default function RecreationCardS({ content, refetch }) {
         throw new Error('FavBtn Error');
       }
     }
+  };
 
   const handleDetailClick = (e) => {
     e.stopPropagation();
@@ -51,13 +53,13 @@ export default function RecreationCardS({ content, refetch }) {
   return (
     <CardLayout>
       <CardContent>
-        <img src={content.imageUrl} />
+        <img src={content.imageUrl} alt={content.title} />
         <FavBtn isFav={isFav} onClick={() => handleFavClick(content.id)} />
       </CardContent>
       <CardSection onClick={handleDetailClick}>
         <TitleDiv>
           <Title>{content.title} </Title>
-          <img src={arrowIcon} />
+          <img src={arrowIcon} alt="" />
         </TitleDiv>
         <KeywordsAndRateBox>
           <Keywords>{renderKeywords()}</Keywords>
@@ -118,15 +120,18 @@ const TitleDiv = styled.div`
   align-items: center;
   gap: 0.25rem;
 `;
+
 const Title = styled.h5`
   ${({ theme }) => theme.text.h5}
 `;
+
 const KeywordsAndRateBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
+
 const Keywords = styled.div`
   display: flex;
   ${({ theme }) => theme.text.small}
