@@ -57,11 +57,7 @@ export default function RecreationCardL({ content }) {
         <Keywords>{keywords}</Keywords>
         <CardRow3>
           <img src={content.imageUrl} />
-          <FavBtn
-            recreationId={content.id}
-            isFav={isFav}
-            onClick={() => handleFavClick(content.id)}
-          />
+          <FavBtn isFav={isFav} onClick={() => handleFavClick(content.id)} />
         </CardRow3>
       </CardContent>
       <MoreDetailBtn onClick={() => ToRecreationDetail(content.id)}>
