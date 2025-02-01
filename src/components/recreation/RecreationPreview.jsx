@@ -14,19 +14,17 @@ export default function RecreationPreview({ recreation, showViewCount = true }) 
   const formattedStarRate = parseFloat(recreation.totalStars).toFixed(1);
 
   const { isLoggedIn } = useLoginStore((state) => state);
+  const [isFav, setIsFav] = useState(recreation.isFavorite);
   const { modalControl } = useLoginModalStore();
-  const [isFav, setIsFav] = useState(isFavorite);
 
-  const handleFavClick = async (recreationId) => {
+  const handleFavClick = async () => {
     if (!isLoggedIn) {
       modalControl();
-      return;
     } else {
       try {
-        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        const response = await privateAPI.post(`/api/recreations/${recreation.id}/favorites`);
         if (response.status === 201) {
           setIsFav((prev) => !prev);
-          return;
         } else {
           console.log(response.data);
         }
@@ -35,14 +33,13 @@ export default function RecreationPreview({ recreation, showViewCount = true }) 
       }
     }
   };
-  console.log('Recreation Content Box 버그버그..', recreationId);
 
   return (
     <RecreationOverview>
       <Top>
         <HashTagFavBtn>
           <HashtagChip text={recreation.hashtagList} />
-          <FavBtn recreationId={recreation.id} isFav={recreation.isFavorite} />
+          <FavBtn isFav={isFav} onClick={handleFavClick} />
         </HashTagFavBtn>
         <TitleStar>
           <RecreationTitle>{recreation.title}</RecreationTitle> {/* 레크레이션 제목 */}
