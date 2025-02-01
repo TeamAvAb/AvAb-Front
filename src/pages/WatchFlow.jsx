@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import PenguinImg from '../assets/watchflow/penguin.png';
-import Flow from '../components/flow/FlowBox.jsx';
+import { publicAPI, privateAPI } from '../apis/user.js';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Pagination from '../components/pagination/Pagination.jsx';
-import { privateAPI, publicAPI } from '../apis/user.js';
+import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import FlowCardD from '../components/card/flowCard/FlowCardD.jsx';
+import ScrapBtn from '../components/button/ScrapBtn.jsx';
+import SortControl from '../components/SortControl.jsx';
+import useLoginStore from '../stores/loginStore.js';
 import useLoginModalStore from '../stores/loginModalStore.js';
+import noScrapImg from '../assets/scrapflow/noScrap.png';
+import penguinImg from '../assets/watchflow/penguin.png';
 import useLoginStore from '../stores/loginStore.js';
 import SortControl from '../components/common/SortControl';
 
@@ -43,171 +48,245 @@ export default function WatchFlow() {
   // 현재 페이지 상태
   const [currentPage, setCurrentPage] = useState(0);
   // 전체 페이지 수
-  const [pages, setPages] = useState(1);
-  // 스크랩 변화 감지 함수
-  const [scrap, setScrap] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   // 필터링 옵션
   const [order, setOrder] = useState('RECENT');
-  // 처음 렌더링 시에만 데이터 불러오기
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      if (isLoggedIn) {
+
+  // 로딩 상태 변화시키면서 데이터 가져오기
+  const getData = async () => {
+    setLoading(true);
+    if (isLoggedIn) {
+      try {
         const response = await privateAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
         setDatas(response.data.result.flowList);
-        setPages(response.data.result.totalPages);
-      } else {
+        setTotalPages(response.data.result.totalPages);
+      } catch (error) {
+        throw new Error('플로우 구경하기 데이터 받아오기 실패');
+      }
+    } else {
+      try {
         const response = await publicAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
         setDatas(response.data.result.flowList);
-        setPages(response.data.result.totalPages);
+        setTotalPages(response.data.result.totalPages);
+      } catch (error) {
+        throw new Error('플로우 구경하기 데이터 받아오기 실패');
       }
-      setLoading(false);
-    };
-    fetchData();
-    setScrap(false);
-  }, [currentPage, scrap, order]);
+    }
+    setLoading(false);
+  };
 
+  // 로딩 상태 변화 없이 데이터 가져오기(스크랩 후 페칭 시 사용)
+  const fetchData = async () => {
+    if (isLoggedIn) {
+      const response = await privateAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
+      setDatas(response.data.result.flowList);
+      setTotalPages(response.data.result.totalPages);
+    } else {
+      const response = await publicAPI.get(`/api/flows?page=${currentPage}&sortBy=${order}`);
+      setDatas(response.data.result.flowList);
+      setTotalPages(response.data.result.totalPages);
+    }
+  };
+
+  const handleScrapBtnClick = async (id) => {
+    if (isLoggedIn) {
+      try {
+        const response = await privateAPI.post(`/api/flows/${id}/scraps`);
+        if (response.status === 200) {
+          fetchData();
+          return;
+        } else {
+          console.log('플로우 스크랩 실패', response.data);
+        }
+      } catch (error) {
+        throw new Error('ScrapBtn Error in WatchFlow', error);
+      }
+    } else modalControl();
+  };
+
+  // 초기 렌더링 및 페이지, 정렬 옵션 변경에 따른 데이터 페칭
   useEffect(() => {
-    console.log(datas);
-  }, [datas]);
+    getData();
+  }, [currentPage, order]);
 
   return (
-    <MyFlowWrap>
+    <Page>
       {/* 플로우 왼쪽 메뉴바 */}
-      <MyFlowMenuContainer>
-        <MyFlowMenuTitle>일정플로우</MyFlowMenuTitle>
-        <MyFlowMenuBox style={{ backgroundColor: '#B1BEFF' }}>플로우 구경하기</MyFlowMenuBox>
-        <MyFlowMenuBox onClick={moveToMy}>내가 만든 일정플로우</MyFlowMenuBox>
-        <MyFlowMenuBox onClick={moveToScrap}>스크랩 일정 플로우</MyFlowMenuBox>
-      </MyFlowMenuContainer>
+      <SubNavbar>
+        <NavbarTitle>일정플로우</NavbarTitle>
+        <NavbarOption className="current">플로우 구경하기</NavbarOption>
+        <NavbarOption onClick={moveToMy}>내가 만든 일정플로우</NavbarOption>
+        <NavbarOption onClick={moveToScrap}>스크랩 일정 플로우</NavbarOption>
+      </SubNavbar>
 
       {/* 플로우 구경하기 */}
-      <MyFlowContainer>
-        <div>
-          <ContainerHeader>
-            <MyFlowBoxContainer>
-              <MyFlowBoxImage src={PenguinImg} />
-              <TitleBox>
-                <MyFlowBoxTitle onClick={moveToMakeFlow}>일정플로우 만들기</MyFlowBoxTitle>
-              </TitleBox>
-            </MyFlowBoxContainer>
-            <SortControl
-              setOption={setOrder}
-              selectedOption={order}
-              marginright="24px"
-              isFlow={true}
+      <MainSection>
+        <FlowMakeBox>
+          <FlowMakeCharacter src={penguinImg} />
+          <FlowMakeBtn onClick={moveToMakeFlow}>일정플로우 만들기</FlowMakeBtn>
+        </FlowMakeBox>
+        <SortControl setOption={setOrder} selectedOption={order} marginright="24px" isFlow={true} />
+        {loading ? (
+          <LoadingSpinner
+            comment={
+              <span>
+                데이터를 불러오는 중입니다.
+                <br />
+                잠시만 기다려주세요.
+              </span>
+            }
+          />
+        ) : datas && datas.length > 0 ? (
+          <>
+            <FlowBox>
+              {datas.map((data) => (
+                <FlowCardD content={data}>
+                  <ScrapBtn
+                    flowId={data.id}
+                    isScrap={data.isScraped}
+                    onClick={() => handleScrapBtnClick(data.id)}
+                  />
+                </FlowCardD>
+              ))}
+            </FlowBox>
+            <Pagination
+              currentPage={currentPage}
+              pageNum={totalPages}
+              setCurrentPage={setCurrentPage}
             />
-          </ContainerHeader>
-          {/* 플로우 데이터 불러온 부분 - Component */}
-          <WatchFlowBoxParent>
-            {datas && <Flow datas={datas} setScrap={setScrap} />}
-          </WatchFlowBoxParent>
-        </div>
-
-        {/* 페이지번호 */}
-        <Pagination currentPage={currentPage} pageNum={pages} setCurrentPage={setCurrentPage} />
-      </MyFlowContainer>
-      <RightSide />
-    </MyFlowWrap>
+          </>
+        ) : (
+          <NoneAlertBox>
+            <NoneAlertImg src={noScrapImg} />
+            <NoneAlertTextBox>
+              <NoneAlertText className="title"> 일정플로우가 없습니다!</NoneAlertText>
+              <NoneAlertText>지금 바로 일정플로우를 만들어보세요.</NoneAlertText>
+            </NoneAlertTextBox>
+          </NoneAlertBox>
+        )}
+      </MainSection>
+      <PageMarginRight />
+    </Page>
   );
 }
 
-const MyFlowWrap = styled.div`
+const Page = styled.div`
   display: flex;
-  background-color: #f7f8f9;
 `;
 
-const RightSide = styled.div`
-  width: 5.7325%;
-  background-color: #f7f8f9;
-`;
-
-// 일정플로우-구경하기 왼쪽메뉴바 > ~ MyFlowMenuBox
-const MyFlowMenuContainer = styled.div`
-  width: 320px;
-  height: 713px;
+// 왼쪽 네비게이션바
+const SubNavbar = styled.aside`
+  width: 20rem;
   box-sizing: border-box;
-  font-size: 22px;
-  border: solid #cacdd2 1px;
+  border: 0.5px solid ${({ theme }) => theme.color.grayscale05};
   border-bottom: none;
-  border-right: solid #cacdd2 1px;
-  color: #1b1d1f;
-  background-color: white;
+  background-color: ${({ theme }) => theme.color.main05};
+  font-size: ${({ theme }) => theme.text.nav.fontSize};
+  font-weight: ${({ theme }) => theme.text.nav.fontWeight};
+  color: ${({ theme }) => theme.color.grayscale01};
 `;
-
-const MyFlowMenuTitle = styled.div`
-  width: 260px;
-  padding: 30px;
-  font-size: 22px;
+const NavbarTitle = styled.div`
+  height: 5.56rem;
+  box-sizing: border-box;
+  padding: 1.87rem;
+  border-bottom: 1px solid ${({ theme }) => theme.color.grayscale05};
 `;
-
-const MyFlowMenuBox = styled.div`
-  text-align: center;
+const NavbarOption = styled.div`
+  width: 20rem;
+  height: 4.18rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 0.5px solid ${({ theme }) => theme.color.grayscale05};
+  box-sizing: border-box;
   cursor: pointer;
-  padding: 20px;
-  width: 280px;
-  border-bottom: solid #cacdd2 1px;
+
+  &.current {
+    background-color: ${({ theme }) => theme.color.secondary04};
+    font-weight: 700;
+  }
 `;
 
-const MyFlowContainer = styled.div`
-  background-color: white;
-  padding-top: 30px;
+const MainSection = styled.main`
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
-  border-right: 0.5px solid #cacdd2;
-`;
-const ContainerHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  padding: 1.88rem 8.38rem 7rem;
+  border-right: 0.5px solid ${({ theme }) => theme.color.grayscale05};
 `;
 
-// 일정플로우 만들기 부분
-const MyFlowBoxContainer = styled.div`
+// 플로우 만들기 (캐릭터 + 버튼)
+const FlowMakeBox = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
+  margin-right: auto;
 `;
-
-const MyFlowBoxImage = styled.img`
-  width: 199.65px;
-  height: 199.65px;
+const FlowMakeCharacter = styled.img`
+  width: 12.47rem;
   z-index: 2;
 `;
-
-const TitleBox = styled.div`
-  background-color: #19297c;
-  border-radius: 15vh;
-  width: 527px;
-  height: 109px;
+const FlowMakeBtn = styled.button`
+  position: absolute;
+  left: 10.94rem;
+  width: 32.93rem;
+  height: 6.81rem;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
-  position: relative;
-  left: -23.65px;
+  border-radius: 6.25rem;
+  background-color: ${({ theme }) => theme.color.main01};
+  font-size: ${({ theme }) => theme.text.h2.fontSize};
+  font-weight: ${({ theme }) => theme.text.h2.fontWeight};
+  color: ${({ theme }) => theme.color.main05};
   cursor: pointer;
-
   &:hover {
-    background-color: #4036ed;
+    background-color: ${({ theme }) => theme.color.main02};
     transition: 0.2s;
   }
 `;
 
 // 플로우 박스 - Grid
-const WatchFlowBoxParent = styled.div`
+const FlowBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 370px);
-  row-gap: 20px;
-  column-gap: 120px;
-  margin-top: 39px;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 1.25rem;
+  column-gap: 7.5rem;
+  margin: 2.44rem 0 5.08rem;
 `;
 
-const MyFlowBoxTitle = styled.div`
-  color: white;
-  width: 343px;
-  height: 57px;
-  font-weight: bold;
-  font-size: 47px;
+// 일정플로우 없는 경우
+const NoneAlertBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  text-align: center;
+`;
+const NoneAlertImg = styled.img`
+  width: 7.5rem;
+`;
+const NoneAlertTextBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+const NoneAlertText = styled.span`
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
+
+  &.title {
+    font-size: ${({ theme }) => theme.text.h4.fontSize};
+    font-weight: ${({ theme }) => theme.text.h4.fontWeight};
+  }
+`;
+
+// 오른쪽 여백
+const PageMarginRight = styled.div`
+  width: 5.7325%;
+  background-color: #f7f8f9;
 `;

@@ -3,12 +3,12 @@ import useLoginStore from '../stores/loginStore';
 
 // 인증이 필요없는 요청
 export const publicAPI = axios.create({
-  baseURL: 'https://dev.api.avab.site/',
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 //인증이 필요한 요청
 export const privateAPI = axios.create({
-  baseURL: 'https://dev,api.avab.site/',
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 // 리프레시 토큰 요청 함수
@@ -18,7 +18,7 @@ export async function postRefreshToken() {
     const refreshToken = loginStorage.state.refreshToken;
     console.log('현재 저장된 리프레시 토큰', refreshToken);
     const response = await axios.post(
-      'https://dev.avab.shop/api/auth/refresh',
+      `${process.env.REACT_APP_API_URL}api/auth/refresh`,
       {},
       {
         headers: {

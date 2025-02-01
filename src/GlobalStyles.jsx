@@ -19,6 +19,10 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.color.grayscale01};
   }
 
+  :root {
+    color: ${({ theme }) => theme.color.grayscale01};
+  }
+
   button {
     cursor: pointer;
     border: none;

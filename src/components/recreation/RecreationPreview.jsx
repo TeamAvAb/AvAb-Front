@@ -1,16 +1,41 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import React from 'react';
 import yellowStar from '../../assets/recreation/yellowStar.svg';
 import viewIcon from '../../assets/recreation/viewIcon.svg';
 import HashtagChip from '../common/chip/HashtagChip';
 import FavBtn from '../common/button/FavBtn';
 import KeywordChip from '../common/chip/KeywordChip';
 import { getTranslatedKeywords } from '../../utils/keywordUtils';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
+import { privateAPI } from '../../apis/user';
 
 export default function RecreationPreview({ recreation, showViewCount = true }) {
   const formattedStarRate = parseFloat(recreation.totalStars).toFixed(1);
 
-  console.log(recreation);
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isFav, setIsFav] = useState(isFavorite);
+
+  const handleFavClick = async (recreationId) => {
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    } else {
+      try {
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        if (response.status === 201) {
+          setIsFav((prev) => !prev);
+          return;
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        throw new Error('FavBtn Error');
+      }
+    }
+  };
+  console.log('Recreation Content Box 버그버그..', recreationId);
 
   return (
     <RecreationOverview>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import yellowStar from '../../../../assets/recreation/yellowStar.svg';
@@ -6,6 +6,10 @@ import FavBtn from '../../button/FavBtn';
 import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
 import { scrollToTop } from '../../../../utils/windowUtils';
 import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
+import keywordConverter from '../../../utils/keywordConverter';
+import useLoginModalStore from '../../../stores/loginModalStore';
+import useLoginStore from '../../../stores/loginStore';
+import { privateAPI } from '../../../apis/user';
 
 export default function RecreationCardS({ content }) {
   const navigate = useNavigate();
@@ -13,7 +17,29 @@ export default function RecreationCardS({ content }) {
     e.stopPropagation();
     navigate(`/recreation/detail/${recreationId}`);
     scrollToTop();
-  };
+export default function RecreationCardS({ content, refetch }) {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isFav, setIsFav] = useState(content.isFavorite);
+
+  const handleFavClick = async (recreationId) => {
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    } else {
+      try {
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        if (response.status === 201) {
+          setIsFav((prev) => !prev);
+          if (refetch) refetch(); // 즐겨찾는 레크레이션 페이지 리렌더링 요청
+          return;
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        throw new Error('FavBtn Error');
+      }
+    }
 
   const handleDetailClick = (e) => {
     e.stopPropagation();
@@ -26,7 +52,7 @@ export default function RecreationCardS({ content }) {
     <CardLayout>
       <CardContent>
         <img src={content.imageUrl} />
-        <FavBtn recreationId={content.id} isFav={content.isFavorite} />
+        <FavBtn isFav={isFav} onClick={() => handleFavClick(content.id)} />
       </CardContent>
       <CardSection onClick={handleDetailClick}>
         <TitleDiv>

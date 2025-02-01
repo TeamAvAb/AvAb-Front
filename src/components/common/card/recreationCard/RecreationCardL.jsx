@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import yellowStar from '../../../../assets/recreation/yellowStar.svg';
@@ -10,11 +10,18 @@ import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import SITE_URL from '../../../../constants/url';
 import { scrollToTop } from '../../../../utils/windowUtils';
 
+import useLoginModalStore from '../../../stores/loginModalStore';
+import useLoginStore from '../../../stores/loginStore';
+import { privateAPI } from '../../../apis/user';
+
 export default function RecreationCardL({ content }) {
   const renderKeywords = () =>
     getTranslatedKeywords(content.keywordList).map((keyword) => (
       <KeywordChip key={keyword} text={keyword} />
     ));
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isFav, setIsFav] = useState(content.isFavorite);
 
   const navigate = useNavigate();
   const toRecreationDetail = (recreationId) => {
@@ -25,6 +32,25 @@ export default function RecreationCardL({ content }) {
   const handleDetailClick = (e) => {
     e.stopPropagation();
     toRecreationDetail(content.id);
+  };
+
+  const handleFavClick = async (recreationId) => {
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    } else {
+      try {
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        if (response.status === 201) {
+          setIsFav((prev) => !prev);
+          return;
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        throw new Error('FavBtn Error');
+      }
+    }
   };
 
   return (
@@ -41,7 +67,7 @@ export default function RecreationCardL({ content }) {
         <Keywords>{renderKeywords()}</Keywords>
         <CardRow2>
           <img src={content.imageUrl} alt="레크레이션 이미지" />
-          <FavBtn recreationId={content.id} isFav={content.isFavorite} />
+          <FavBtn isFav={isFav} onClick={() => handleFavClick(content.id)} />
         </CardRow2>
       </CardContent>
       <MoreDetailBtn onClick={handleDetailClick}>
