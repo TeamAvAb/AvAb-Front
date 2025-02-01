@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import PurposeChip from '../../chip/PurposeChip';
-import timeImg from '../../../assets/Card/timeIcon.svg';
-import viewImg from '../../../assets/watchflow/view.png'; // svg로 수정 필요
-import pencilImg from '../../../assets/Card/pencilIcon.svg';
-import userImg from '../../../assets/Card/userIcon.svg';
-import purposeConverter from '../../../utils/purposeConverter';
+import timeImg from '../../../../assets/Card/timeIcon.svg';
+import viewImg from '../../../../assets/watchflow/view.png'; // svg로 수정 필요
+import pencilImg from '../../../../assets/Card/pencilIcon.svg';
+import userImg from '../../../../assets/Card/userIcon.svg';
 import { useNavigate } from 'react-router';
+import { getTranslatedPurposes } from '../../../../utils/purposeUtils';
+import PurposeChip from '../../chip/PurposeChip';
 
-export default function FlowCardD({ content, children, ismine }) {
+export default function FlowCardD({ content, children, isOwner }) {
   const navigate = useNavigate();
 
   const moveToMoreWatchFlow = (moreData) => {
@@ -20,7 +20,7 @@ export default function FlowCardD({ content, children, ismine }) {
     <CardLayout>
       <CardContent>
         <CardColumn className="left">
-          <PurposeChip text={purposeConverter(content.purpose[0])} />
+          <PurposeChip text={getTranslatedPurposes(content.purpose)[0]} />
           <Title>{content.title}</Title>
           <img src={content.imageUrl} alt="플로우 사진" />
         </CardColumn>
@@ -35,7 +35,7 @@ export default function FlowCardD({ content, children, ismine }) {
               <img src={viewImg} alt="조회수" />
               <span>{content.viewCount}</span>
             </li>
-            {ismine !== 'true' && (
+            {isOwner !== 'true' && (
               <li>
                 <img src={pencilImg} alt="제작자" />
                 <span>{content.author.username}</span>
@@ -78,6 +78,7 @@ const CardColumn = styled.div`
   &.left {
     gap: 1.44rem;
   }
+
   &.right {
     gap: 3.38rem;
   }
@@ -101,12 +102,14 @@ const Info = styled.ul`
     width: 2.6rem;
     object-fit: none;
   }
+
   li {
     width: 5.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   span {
     ${({ theme }) => theme.text.small}
   }
