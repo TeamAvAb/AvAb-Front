@@ -71,15 +71,7 @@ export default function LoginLoading() {
 
   return (
     <>
-      <LoadingSpinner
-        comment={
-          <span>
-            로그인 중입니다.
-            <br />
-            잠시만 기다려주세요.
-          </span>
-        }
-      />
+      <LoadingSpinner />
       <ModalWrapper
         children={
           <WithdrawRollbackModal

@@ -127,15 +127,7 @@ export default function WatchFlow() {
         </FlowMakeBox>
         <SortControl setOption={setOrder} selectedOption={order} marginright="24px" isFlow={true} />
         {loading ? (
-          <LoadingSpinner
-            comment={
-              <span>
-                데이터를 불러오는 중입니다.
-                <br />
-                잠시만 기다려주세요.
-              </span>
-            }
-          />
+          <LoadingSpinner />
         ) : datas && datas.length > 0 ? (
           <>
             <FlowBox>
