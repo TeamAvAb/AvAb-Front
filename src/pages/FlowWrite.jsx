@@ -187,14 +187,18 @@ export default function FlowWrite() {
               onChange={(e) => setPlayTime(e.target.value)}
             />
           </PlayTime>
-          {showWarning && (
-          <WarningBox>
-            <WarningIcon src={warn} alt="Warning" />
-            {showWarning}
-          </WarningBox>
-        )}
           <OutButton onClick={handleBeforeClick}>페이지 나가기</OutButton>
-          <NextButton onClick={handleNextClick}>다음으로</NextButton>
+          <NextButton onClick={handleNextClick}>
+            다음으로
+            {showWarning && (
+            <WarningWrapper>
+              <WarningBox>
+                <WarningIcon src={warn} alt="Warning" />
+                {showWarning}
+              </WarningBox>
+            </WarningWrapper>
+          )}
+            </NextButton>
         </div>
       </FlowwriteBasic>
     </FlowWriteWrap>
@@ -338,19 +342,26 @@ const PlayInput = styled.input`
   }
 `;
 
+const WarningWrapper = styled.div`
+  display: flex;
+  justify-content: center;  // 중앙 정렬
+  margin-bottom: 10px;      // 버튼과의 간격 조정
+`;
+
 const WarningBox = styled.div`
-  width: 290px;
-  padding: 20px;
-  margin-left: 116px;
+  width: 320px;
+  padding: 23px;
   background-color: #464c52;
   color: #ffaa29;
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 20px;
   font-size: 20px;
   font-weight: 400;
   position: absolute;
   z-index: 1;
   display: flex;
+  justify-content: center;
   align-items: center;
+  bottom: 70px;
 
   &::after {
     content: '';
@@ -400,6 +411,7 @@ const NextButton = styled.button`
   color: #fff;
   cursor: pointer;
   margin-left: 60px;
+  position: relative;
 
   &:hover {
     background-color: #3530ed;
