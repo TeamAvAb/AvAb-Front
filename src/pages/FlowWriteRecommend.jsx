@@ -61,7 +61,7 @@ export default function FlowWriteRecommend() {
 
       console.log('Fetching flow data...'); // API 호출 준비 로그
       try {
-        const response = await axios.get(`https://dev.avab.shop/api/flows/recommended`, {
+        const response = await axios.get(`https://dev.api.avab.site/api/flows/recommended`, {
           params: {
             playTime: playTime, // 플레이 시간 사용
             purpose: selectedKeywords.join(','),
@@ -347,7 +347,6 @@ const Select2Button = styled.button`
 
 const Recommend2 = styled(RecommendBase)`
   width: 552px;
-  margin-left: 25px;
   position: relative;
   margin-bottom: 0;
 

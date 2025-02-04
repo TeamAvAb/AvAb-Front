@@ -304,7 +304,7 @@ export default function FlowWriteContent() {
       }
   
       const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
-      const response = await axios.get('https://dev.avab.shop/api/recreations/recommended', {
+      const response = await axios.get('https://dev.api.avab.site/api/recreations/recommended', {
         params: {
           playTime: savedPlayTime,
           purpose: englishKeywords.join(','),
@@ -341,7 +341,7 @@ export default function FlowWriteContent() {
     try {
       console.log('API 호출 전');
       const response = await axios.get(
-        `https://dev.avab.shop/api/users/me/favorites/recreations?page=0`,
+        `https://dev.api.avab.site/api/users/me/favorites/recreations?page=0`,
         {
           headers: {
             Accept: '*/*',
