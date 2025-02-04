@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { privateAPI } from '../apis/user';
-
-import FavoritesBox from '../components/mypage/FavoritesBox';
+import RecreationCardWHashtag from '../components/card/recreationCard/RecreationCardWHashtag';
 import Pagination from '../components/pagination/Pagination';
 import LogoutP from '../assets/mypage/LogoutImg.svg';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
@@ -17,10 +16,6 @@ export default function FavoriteRecreation() {
 
   const handleMyInfoClick = () => {
     navigate(`/mypage/myinfo`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const handleFavoritesClick = () => {
-    navigate(`/mypage/favorites`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -83,11 +78,6 @@ export default function FavoriteRecreation() {
     }
   }, [datas]);
 
-  // 즐겨찾기 변경 시 목록을 업데이트하는 함수
-  const onFavoriteChange = () => {
-    fetchData(); // 데이터를 다시 불러옴
-  };
-
   return (
     <Container>
       {/*왼쪽 메뉴바*/}
@@ -95,9 +85,7 @@ export default function FavoriteRecreation() {
         <Title>마이페이지</Title>
         <MenuList>
           <MenuItem onClick={handleMyInfoClick}>내 정보</MenuItem>
-          <MenuItem style={{ backgroundColor: '#B1BEFF' }} onClick={handleFavoritesClick}>
-            즐겨 찾는 레크레이션
-          </MenuItem>
+          <MenuItem style={{ backgroundColor: '#B1BEFF' }}>즐겨 찾는 레크레이션</MenuItem>
           <MenuItem onClick={openLogoutModal}>로그아웃</MenuItem>
         </MenuList>
       </SideBar>
@@ -121,7 +109,7 @@ export default function FavoriteRecreation() {
               <FavoritesParent>
                 {datas &&
                   datas.map((data) => (
-                    <FavoritesBox content={data} onFavoriteChange={onFavoriteChange} />
+                    <RecreationCardWHashtag content={data} refetch={fetchData} />
                   ))}
               </FavoritesParent>
               <Pagination
@@ -227,8 +215,8 @@ const RecreationTitle = styled.div`
 const FavoritesParent = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 284px);
-  row-gap: 20px;
-  column-gap: 30px;
+  row-gap: 1.25rem;
+  column-gap: 1.44rem;
   margin-top: 39px;
 `;
 

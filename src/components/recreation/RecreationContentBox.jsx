@@ -1,10 +1,13 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import React from 'react';
 import yellowStar from '../../assets/recreation/yellowStar.svg';
 import HashtagChip from '../chip/HashtagChip';
 import FavBtn from '../button/FavBtn';
 import KeywordChip from '../chip/KeywordChip';
 import viewIcon from '../../assets/recreation/viewIcon.svg';
+import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginStore from '../../stores/loginStore';
+import { privateAPI } from '../../apis/user';
 
 export default function RecreationContentBox({
   recreationId,
@@ -15,14 +18,37 @@ export default function RecreationContentBox({
   isFavorite,
   viewCount,
 }) {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isFav, setIsFav] = useState(isFavorite);
   const formattedStarRate = parseFloat(starRate).toFixed(1);
+
+  const handleFavClick = async (recreationId) => {
+    if (!isLoggedIn) {
+      modalControl();
+      return;
+    } else {
+      try {
+        const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
+        if (response.status === 201) {
+          setIsFav((prev) => !prev);
+          return;
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        throw new Error('FavBtn Error');
+      }
+    }
+  };
+  console.log('Recreation Content Box 버그버그..', recreationId);
 
   return (
     <RecreationOverview>
       <Top>
         <HashTagFavBtn>
           <HashtagChip text={hashtag} />
-          <FavBtn recreationId={recreationId} isFav={isFavorite} />
+          <FavBtn onClick={() => handleFavClick(recreationId)} isFav={isFav} />
         </HashTagFavBtn>
         <TitleStar>
           <RecreationTitle>{recreationTitle}</RecreationTitle> {/* 레크레이션 제목 */}
