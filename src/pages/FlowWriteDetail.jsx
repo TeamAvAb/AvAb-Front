@@ -12,6 +12,7 @@ import deleteIcon from '../assets/flowwrite/deleteIcon.png';
 
 import imgGo3 from '../assets/flowwrite/ImgGo3.png';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
+import vector_move from '../assets/flowwrite/vector_move.png';
 
 const DetailMappings = {
   협동: 'COOPERATIVE',
@@ -267,11 +268,13 @@ export default function FlowWriteDetail() {
                         입력한 정보를 바탕으로{'\n'}아브아브가 추천한 플로우예요!
                       </CardGo3SubText>
                     </CardGoTextContainer>
+                    <ArrowIcon1 src={vector_move} alt="arrow" />
                   </CardGoContainer>
                 </CardGoRecommend>
                 <CardGoContent onClick={handleGo4Click}>
                   <CardGoContainer>
                     <CardGoTextContainer>
+                    <ArrowIcon2 src={vector_move} alt="arrow" />
                       <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
                       <CardGo4SubText>
                         원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!
@@ -504,6 +507,29 @@ const JoinPeopleInput = styled.input`
 const CardContainer = styled.div`
   display: flex;
   gap: 20px;
+  width: 1124px;
+`;
+
+const ArrowIcon1 = styled.img`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;  /* 기본적으로 숨김 */
+  transition: opacity 0.3s ease-in-out;
+`;
+
+const ArrowIcon2 = styled.img`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(-1); /* 좌우 반전 */
+  opacity: 0;  /* 기본적으로 숨김 */
+  transition: opacity 0.3s ease-in-out;
 `;
 
 const CardGoRecommend = styled.div`
@@ -522,7 +548,10 @@ const CardGoRecommend = styled.div`
 
   &:hover {
     box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15); /* 호버 시 그림자 효과 */
-    width: calc(502px + 118px); /* 너비 증가 */
+  }
+
+  &:hover ${ArrowIcon1} {
+    opacity: 1;
   }
 `;
 
@@ -571,7 +600,10 @@ const CardGoContent = styled.div`
 
   &:hover {
     box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15); /* 호버 시 그림자 효과 */
-    width: calc(502px + 118px); /* 너비 증가 */
+  }
+  
+  &:hover ${ArrowIcon2} {
+    opacity: 1;
   }
 `;
 
@@ -602,13 +634,22 @@ const CardContainerWrapper = styled.div`
 const CardInteractionContainer = styled.div`
   display: flex;
   gap: 20px;
+  width: 100%;
 
-  ${CardGoRecommend}:hover + ${CardGoContent} {
-    width: calc(502px - 118px); /* Recommend 카드 호버 시 Content 카드 너비 감소 */
+  &:hover ${CardGoRecommend}:hover {
+    flex: 1.2; /* hover한 카드가 커짐 */
   }
 
-  ${CardGoContent}:hover + ${CardGoRecommend} {
-    width: calc(502px - 118px); /* Content 카드 호버 시 Recommend 카드 너비 감소 */
+  &:hover ${CardGoRecommend}:not(:hover) {
+    flex: 0.8; /* hover하지 않은 카드는 줄어듦 */
+  }
+
+  &:hover ${CardGoContent}:hover {
+    flex: 1.2;
+  }
+
+  &:hover ${CardGoContent}:not(:hover) {
+    flex: 0.8;
   }
 `;
 
