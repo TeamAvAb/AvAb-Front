@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c0c1ae41.css",
-    "main.js": "/static/js/main.456fdb75.js",
+    "main.js": "/static/js/main.ed81ba9a.js",
     "static/media/ImgGo3.png": "/static/media/ImgGo3.56168aa424b248b62ae1.png",
     "static/media/banner1_workshop.png": "/static/media/banner1_workshop.9c8a9bd9a97b72774920.png",
     "static/media/banner2_mt.png": "/static/media/banner2_mt.e03ad99a22feee53df36.png",
@@ -21,7 +21,6 @@
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "index.html": "/index.html",
     "static/media/starIcon.svg": "/static/media/starIcon.f72218abd34f24f4484474548ace5dfd.svg",
-    "static/media/mingcute_star-fill.svg": "/static/media/mingcute_star-fill.a5542aeb8a7d97f2eebfce3cfe19fef0.svg",
     "static/media/yellowStar.svg": "/static/media/yellowStar.a5542aeb8a7d97f2eebfce3cfe19fef0.svg",
     "static/media/greyStar.svg": "/static/media/greyStar.ec9d2f48bed8f198221feeda4515db2f.svg",
     "static/media/alert.svg": "/static/media/alert.13212e2f1529c55d2e3c2d8b00c2ccdd.svg",
@@ -38,15 +37,18 @@
     "static/media/prevSlide.svg": "/static/media/prevSlide.8273b6b0d18a39a043ca397b836426df.svg",
     "static/media/nextSlide.svg": "/static/media/nextSlide.811156cbc8f10ba2fde47d0c83e20b2c.svg",
     "static/media/prevArrowIcon.svg": "/static/media/prevArrowIcon.deb1876bb16e5567f499a615c846e9f7.svg",
+    "static/media/X.svg": "/static/media/X.7e9f296c5904c097dfbb0fe715b67b73.svg",
     "static/media/rechoiceIcon.svg": "/static/media/rechoiceIcon.b5828d0f479f0f2daa01354de261733b.svg",
     "static/media/arrowDownIcon.svg": "/static/media/arrowDownIcon.cf48dd1d57c34ac8973f0e3a72e5e2b4.svg",
     "static/media/arrowUpIcon.svg": "/static/media/arrowUpIcon.3c2bde516b7421c250bf5aafc94bbe6c.svg",
     "static/media/viewIcon.svg": "/static/media/viewIcon.872dfe67cef5d938c01161650ab03c43.svg",
+    "static/media/userIcon.svg": "/static/media/userIcon.2d430ede416a0d293fd83c101233b6c6.svg",
     "static/media/scrapIcon.svg": "/static/media/scrapIcon.987e1c77385ab4ca7091d8e6d25eee1b.svg",
     "static/media/plusIcon.svg": "/static/media/plusIcon.acad72e648790c8f0de99b51be68036c.svg",
-    "static/media/timeIcon.svg": "/static/media/timeIcon.728e9a56d266004e30b23e396925bf96.svg",
+    "static/media/timeIcon.svg": "/static/media/timeIcon.044486c7f6f86449f2ee9ffd424e3eae.svg",
     "static/media/dropdownArrow.svg": "/static/media/dropdownArrow.d31b66d15f1d1fd8ae047bffe9fddf56.svg",
     "static/media/checkIcon.svg": "/static/media/checkIcon.526d7591779cdf14d25c004e71f4f390.svg",
+    "static/media/pencilIcon.svg": "/static/media/pencilIcon.a988125263e15cd516efda0d699b9010.svg",
     "static/media/heart.svg": "/static/media/heart.ce389ae0d34dd150feba6618549f119f.svg",
     "static/media/heartIcon.svg": "/static/media/heartIcon.ab523df5c1c8a5b3485cf3c80d4176e8.svg",
     "static/media/deleteIcon.svg": "/static/media/deleteIcon.b8d2e997623c92fbf4f3194c5e412a6f.svg",
@@ -59,10 +61,10 @@
     "static/media/bannerDotCurrent.svg": "/static/media/bannerDotCurrent.8dea6dbaa65909c05aa6dcd3bd58c1c7.svg",
     "static/media/bannerDotDefault.svg": "/static/media/bannerDotDefault.2782aea4f1b6f737e63aaf8a03e12c54.svg",
     "main.c0c1ae41.css.map": "/static/css/main.c0c1ae41.css.map",
-    "main.456fdb75.js.map": "/static/js/main.456fdb75.js.map"
+    "main.ed81ba9a.js.map": "/static/js/main.ed81ba9a.js.map"
   },
   "entrypoints": [
     "static/css/main.c0c1ae41.css",
-    "static/js/main.456fdb75.js"
+    "static/js/main.ed81ba9a.js"
   ]
 }
