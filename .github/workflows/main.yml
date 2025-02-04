@@ -37,6 +37,7 @@ jobs:
           echo "REACT_APP_REST_API_KEY=${{ secrets.REACT_APP_REST_API_KEY }}" >> .env
           echo "REACT_APP_REDIRECT_URL=${{ secrets.REACT_APP_REDIRECT_URL }}" >> .env
           echo "REACT_APP_REDIRECT_URL_LOCAL=${{ secrets.REACT_APP_REDIRECT_URL_LOCAL }}" >> .env
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> .env
 
       - name: Build project
         run: npm run build
