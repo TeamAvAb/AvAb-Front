@@ -21,7 +21,7 @@ export default function FlowRecreation({ index, recreationTitle, keywords, playT
 
   const keys = Array.isArray(keywords) ? matchKeywords(keywords) : [];
 
-  const renderKeywords = () => keys.map((keyword) => <KeywordChip text={keyword} />);
+  const renderKeywords = () => keys.map((keyword) => <KeywordChip text={keyword} key={keyword} />);
 
   const height = (playTime / 10) * 8;
   return (

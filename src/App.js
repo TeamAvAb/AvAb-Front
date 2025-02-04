@@ -90,7 +90,6 @@ function App() {
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    console.log(currentPath);
     if (
       currentPath.startsWith('/flow/morewatchflow') ||
       currentPath.startsWith('/recreation/detail')
