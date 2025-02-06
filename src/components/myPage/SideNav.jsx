@@ -54,13 +54,13 @@ const Title = styled.div`
   border-bottom: solid ${({ theme }) => theme.color.grayscale05} 1px;
 `;
 
-const MenuList = styled.div`
+const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const MenuItem = styled.button`
+const MenuItem = styled.li`
   width: 100%;
   text-align: center;
   padding: 20px;
@@ -69,4 +69,5 @@ const MenuItem = styled.button`
   font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
   background-color: ${({ $selected, theme }) =>
     $selected ? theme.color.secondary04 : 'transparent'};
+  cursor: pointer;
 `;
