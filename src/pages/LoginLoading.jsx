@@ -70,8 +70,8 @@ export default function LoginLoading() {
   };
 
   return (
-    <>
-      <LoadingSpinner />
+    <div style={{ height: 'calc(100vh - 11rem' }}>
+      <LoadingSpinner height="full" />
       <ModalWrapper
         children={
           <WithdrawRollbackModal
@@ -80,7 +80,7 @@ export default function LoginLoading() {
             setRollbackState={setRollbackState}
           />
         }
-      ></ModalWrapper>
-    </>
+      />
+    </div>
   );
 }
