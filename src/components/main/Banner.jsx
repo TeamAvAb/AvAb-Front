@@ -37,7 +37,7 @@ export default function Banner({ contents }) {
         <Title $color={colors[contents.index].text}>
           {contents.keyword} 레크레이션을 찾으시나요?
         </Title>
-        <Description color={colors[contents.index].text}>
+        <Description $color={colors[contents.index].text}>
           <span style={{ fontWeight: '700' }}>{contents.keyword}</span> 키워드로 작성된 레크레이션을
           보러가세요.
         </Description>
@@ -68,7 +68,6 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.color.grayscale06};
 `;
 
 const Title = styled.span`
