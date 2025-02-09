@@ -4,11 +4,11 @@ import yellowStar from '../../assets/recreation/yellowStar.svg';
 import greyStar from '../../assets/recreation/greyStar.svg';
 import { ReactComponent as GoodIcon } from '../../assets/recreation/good.svg';
 import { ReactComponent as BadIcon } from '../../assets/recreation/bad.svg';
-import Button from '../button/Button';
-import { getRelativeTimeText } from '../../utils/time';
+import { getRelativeTimeText } from '../../utils/timeUtils';
 import { privateAPI } from '../../apis/user';
 import useLoginModalStore from '../../stores/loginModalStore';
 import useLoginStore from '../../stores/loginStore';
+import Button from '../common/button/Button';
 
 export default function RecreationReview({ review }) {
   const [recommendation, setRecommendation] = useState(review.recommendation);

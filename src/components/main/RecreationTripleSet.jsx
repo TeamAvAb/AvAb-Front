@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import RecreationCardWHashtag from '../card/recreationCard/RecreationCardWHashtag';
+import RecreationCardWHashtag from '../common/card/recreationCard/RecreationCardWHashtag';
+
 export default function RecreationTripleSet({ dataset }) {
   return (
     <RecreationSetContainer>

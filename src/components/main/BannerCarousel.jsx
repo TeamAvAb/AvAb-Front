@@ -5,9 +5,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import currentDotImg from '../../assets/main/bannerDotCurrent.svg';
 import defaultDotImg from '../../assets/main/bannerDotDefault.svg';
-import LeftArrow from '../button/LeftArrow';
-import RightArrow from '../button/RightArrow';
 import Banner from './Banner';
+import LeftArrow from '../common/button/LeftArrow';
+import RightArrow from '../common/button/RightArrow';
 
 // 이전 배너 화살표
 function PrevArrow({ className, onClick }) {

@@ -10,12 +10,12 @@ import nextSlide from '../../assets/main/nextSlide.svg';
 import wholeSlide from '../../assets/main/wholeSlide.svg';
 import currentSlide from '../../assets/main/currentSlide.svg';
 import useLoginStore from '../../stores/loginStore';
-import LeftArrow from '../button/LeftArrow';
-import RightArrow from '../button/RightArrow';
+import LeftArrow from '../common/button/LeftArrow';
+import RightArrow from '../common/button/RightArrow';
 
 export default function PopularRecreationCarousel() {
   const { isLoggedIn } = useLoginStore((state) => state);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
@@ -76,12 +76,12 @@ export default function PopularRecreationCarousel() {
       }}
     >
       <StyledSlider ref={slider} {...settings}>
-        {data && data.map((banner) => <RecreationTripleSet dataset={banner} key={banner.id} />)}
+        {data && data.map((banner, index) => <RecreationTripleSet dataset={banner} key={index} />)}
       </StyledSlider>
       <SlideIndex $index={slideIndex + 1}>
         <ProgressBar>
           <WholeSlide src={wholeSlide} />
-          <CurrentSlide src={currentSlide} index={slideIndex + 1} />
+          <CurrentSlide src={currentSlide} $index={slideIndex + 1} />
         </ProgressBar>
         <SlideControl>
           <img
@@ -171,7 +171,7 @@ const WholeSlide = styled.img`
 const CurrentSlide = styled.img`
   position: absolute;
   top: -1px;
-  left: ${({ index }) => (index === 1 ? '0' : index === 2 ? '15.7rem' : '31.5rem')};
+  left: ${({ $index }) => ($index === 1 ? '0' : $index === 2 ? '15.7rem' : '31.5rem')};
   transition: left 1.3s ease-in-out;
 `;
 

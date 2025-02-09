@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
-import SortControl from '../components/SortControl';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 
 import { Helmet } from 'react-helmet';
 
-import LoadingSpinner from '../components/LoadingSpinner';
 import useLoginStore from '../stores/loginStore';
-import RecreationCardL from '../components/card/recreationCard/RecreationCardL';
 import { privateAPI, publicAPI } from '../apis/user';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import RecreationCardL from '../components/common/card/recreationCard/RecreationCardL';
+import qs from 'qs';
+import SortControl from '../components/common/SortControl';
 
-export default function RecreationSearchList({}) {
+export default function RecreationSearchList() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const location = useLocation();
-  const param = location.search + '&';
+  const initialParams = useMemo(
+    () => qs.parse(location.search, { ignoreQueryPrefix: true, parseArrays: true }),
+    [location.search],
+  );
 
   // 데이터 가져오기
   const [datas, setDatas] = useState([]);
@@ -36,46 +40,20 @@ export default function RecreationSearchList({}) {
     const call = async () => {
       setLoading(true);
       try {
-        if (location.search === '') {
-          if (isLoggedIn) {
-            const response = await privateAPI.get(
-              `/api/recreations?page=${currentPage}&sortBy=${order}`,
-            );
-            console.log('전체 레크:', response);
-            setDatas(response.data.result.recreationList);
-            setPages(response.data.result.totalPages);
-          } else {
-            const response = await publicAPI.get(
-              `/api/recreations?page=${currentPage}&sortBy=${order}`,
-            );
-            console.log('전체 레크:', response);
-            setDatas(response.data.result.recreationList);
-            setPages(response.data.result.totalPages);
-          }
-        } else {
-          if (isLoggedIn) {
-            const response = await privateAPI.get(
-              requestURL + param + `sortBy=${order}&page=${currentPage}`,
-            );
-            console.log('전체 레크:', response);
-            setDatas(response.data.result.recreationList);
-            setPages(response.data.result.totalPages);
-          } else {
-            const response = await publicAPI.get(
-              requestURL + param + `sortBy=${order}&page=${currentPage}`,
-            );
-            console.log('전체 레크:', response);
-            setDatas(response.data.result.recreationList);
-            setPages(response.data.result.totalPages);
-          }
-        }
+        const api = isLoggedIn ? privateAPI : publicAPI;
+        const params = { ...initialParams, page: currentPage, sortBy: order };
+
+        const response = await api.get(requestURL, { params });
+        setDatas(response.data.result.recreationList);
+        setPages(response.data.result.totalPages);
+
         setLoading(false);
       } catch (error) {
         console.log('레크레이션 로드 요청 에러 : ', error);
       }
     };
     call();
-  }, [location, currentPage, order]);
+  }, [currentPage, order, isLoggedIn, initialParams]);
   return (
     <>
       <Helmet>
@@ -91,7 +69,7 @@ export default function RecreationSearchList({}) {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen />
+        <Search filtersOpen initialParams={initialParams} />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const useDetectClose = (initialState) => {
   const [isOpen, setIsOpen] = useState(initialState);

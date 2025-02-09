@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import LeftArrow from '../button/LeftArrow';
-import RightArrow from '../button/RightArrow';
+import LeftArrow from '../common/button/LeftArrow';
+import RightArrow from '../common/button/RightArrow';
 
 export default function Pagination({ currentPage, pageNum, setCurrentPage, scrollLocation }) {
   const pageN = [];

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import FlowRecreation from './FlowRecreation';
-import ScrapBtn from '../button/ScrapBtn';
+import ScrapBtn from '../common/button/ScrapBtn';
 
 export default function FlowCard({ index, flowData, flowRecreations }) {
   return (

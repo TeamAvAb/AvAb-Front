@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Share from '../assets/moreflow/share.png';
 import Time from '../assets/moreflow/time.png';
@@ -65,7 +65,9 @@ export default function MoreWatchFlow() {
         // 요청이 실패하면 에러 처리
         console.log(response.data);
       }
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
 
   // 삭제 버튼 모달창을 위한 상태
@@ -81,7 +83,7 @@ export default function MoreWatchFlow() {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        console.log('URL copied to clipboard');
+        console.log('Url copied to clipboard');
       })
       .catch((err) => {
         console.error('Could not copy text: ', err);

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { publicAPI, privateAPI } from '../apis/user';
+import React, { useEffect, useState } from 'react';
+import { privateAPI, publicAPI } from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from '../components/pagination/Pagination';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
-import FlowCardD from '../components/card/flowCard/FlowCardD';
-import Button from '../components/button/Button';
 import useModal from '../hooks/useModal';
 import FlowDeleteModal from '../components/modal/FlowDeleteModal';
 import useLoginStore from '../stores/loginStore';
 import useLoginModalStore from '../stores/loginModalStore';
 import penguinImg from '../assets/myflow/penguin.png';
 import noFlowImg from '../assets/myflow/noFlow.png';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import Button from '../components/common/button/Button';
+import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 
 export default function MyFlow() {
   const { modalControl } = useLoginModalStore();
@@ -20,16 +20,25 @@ export default function MyFlow() {
 
   const navigate = useNavigate();
   const moveToWatch = () => {
-    if (isLoggedIn) navigate(`/flow/watch`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/watch`);
+    } else {
+      modalControl();
+    }
   };
   const moveToScrap = () => {
-    if (isLoggedIn) navigate(`/flow/scrap`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/scrap`);
+    } else {
+      modalControl();
+    }
   };
   const moveToMakeFlow = () => {
-    if (isLoggedIn) navigate(`/flow/write`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/write`);
+    } else {
+      modalControl();
+    }
   };
 
   // 데이터 가져오기
@@ -95,7 +104,7 @@ export default function MyFlow() {
           <>
             <FlowBox>
               {datas.map((data) => (
-                <FlowCardD content={data} ismine="true">
+                <FlowCardD content={data} isOwner="true">
                   <>
                     <Button backgroundColor="grayscale01" color="main05" border size="xs">
                       수정
@@ -203,6 +212,7 @@ const FlowMakeBtn = styled.button`
   font-weight: ${({ theme }) => theme.text.h2.fontWeight};
   color: ${({ theme }) => theme.color.main05};
   cursor: pointer;
+
   &:hover {
     background-color: ${({ theme }) => theme.color.main02};
     transition: 0.2s;

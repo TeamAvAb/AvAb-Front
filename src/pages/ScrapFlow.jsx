@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { publicAPI, privateAPI } from '../apis/user';
+import React, { useEffect, useState } from 'react';
+import { privateAPI, publicAPI } from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from '../components/pagination/Pagination';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
-import FlowCardD from '../components/card/flowCard/FlowCardD';
-import ScrapBtn from '../components/button/ScrapBtn';
 import useLoginStore from '../stores/loginStore';
 import useLoginModalStore from '../stores/loginModalStore';
 import penguinImg from '../assets/scrapflow/penguin.png';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import ScrapBtn from '../components/common/button/ScrapBtn';
+import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 
 export default function ScrapFlow() {
   const { modalControl } = useLoginModalStore();
@@ -17,16 +17,25 @@ export default function ScrapFlow() {
 
   const navigate = useNavigate();
   const moveToWatch = () => {
-    if (isLoggedIn) navigate(`/flow/watch`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/watch`);
+    } else {
+      modalControl();
+    }
   };
   const moveToMy = () => {
-    if (isLoggedIn) navigate(`/flow/my`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/my`);
+    } else {
+      modalControl();
+    }
   };
   const moveToMakeFlow = () => {
-    if (isLoggedIn) navigate(`/flow/write`);
-    else modalControl();
+    if (isLoggedIn) {
+      navigate(`/flow/write`);
+    } else {
+      modalControl();
+    }
   };
 
   // 데이터 가져오기
@@ -65,7 +74,9 @@ export default function ScrapFlow() {
       } catch (error) {
         throw new Error('ScrapBtn Error in WatchFlow', error);
       }
-    } else modalControl();
+    } else {
+      modalControl();
+    }
   };
 
   // 초기 렌더링 및 페이지 변경에 따른 데이터 페칭
@@ -76,8 +87,11 @@ export default function ScrapFlow() {
   // 스크랩을 해제해서 페이지 수가 줄어들 경우 처리
   useEffect(() => {
     if (totalPages === 1) {
-      if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-      else setCurrentPage(0);
+      if (currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      } else {
+        setCurrentPage(0);
+      }
     }
   }, [totalPages]);
 
@@ -212,6 +226,7 @@ const FlowMakeBtn = styled.button`
   font-weight: ${({ theme }) => theme.text.h2.fontWeight};
   color: ${({ theme }) => theme.color.main05};
   cursor: pointer;
+
   &:hover {
     background-color: ${({ theme }) => theme.color.main02};
     transition: 0.2s;

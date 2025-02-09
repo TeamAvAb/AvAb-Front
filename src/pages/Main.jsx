@@ -16,13 +16,15 @@ import mtImg from '../assets/main/banner2_mt.png';
 import gatherImg from '../assets/main/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
+import { scrollToTop } from '../utils/windowUtils';
 
 export default function Main() {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const goToSearchList = () => {
-    navigator(`/search/list`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/search/list`);
+    scrollToTop();
   };
+
   const banner = [
     {
       index: 0,
@@ -108,7 +110,7 @@ const Container = styled.div`
 `;
 
 const Recommend = styled.div`
-  margin-right: 8rem;
+  margin-right: 4rem;
   display: flex;
   flex-direction: row;
   align-items: end;
@@ -118,10 +120,10 @@ const Recommend = styled.div`
 const Comment = styled.div`
   font-style: normal;
   font-weight: 400;
-  margin-right: 2rem;
   margin-bottom: 1rem;
   text-align: left;
   line-height: 1.2;
+  margin-right: -1rem;
 `;
 
 const PopularHeader = styled.div`

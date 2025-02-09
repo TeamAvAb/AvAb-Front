@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { publicAPI } from '../../apis/user';
 import qs from 'qs';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import KeywordModal from './KeywordModal';
-import Dropdown from './Dropdown';
+import PlayTimeSelect from './PlayTimeSelect';
 import RadioInput from './RadioInput';
 
 import searchIconImg from '../../assets/main/searchIcon.svg';
@@ -16,58 +16,100 @@ import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
 import alertImg from '../../assets/main/alert.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
-import Button from '../button/Button';
+import Button from '../common/button/Button';
+import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
+import KEYWORD from '../../constants/enum/keyword';
+import PURPOSE from '../../constants/enum/purpose';
+import GENDER from '../../constants/enum/gender';
+import AGE from '../../constants/enum/age';
+import PLACE from '../../constants/enum/place';
+import { scrollToTop } from '../../utils/windowUtils';
 
-export default function Search({ filtersOpen = false }) {
+export default function Search({ filtersOpen = false, initialParams = {} }) {
+  const getInitialKeywords = (keywords) => {
+    if (!keywords) {
+      return [];
+    }
+
+    if (Array.isArray(keywords)) {
+      return keywords.map((keyword) => KEYWORD[keyword]).filter((v) => v);
+    }
+
+    return [KEYWORD[keywords]].filter((v) => v);
+  };
+
+  const getInitialPurpose = (purposes) => {
+    if (!purposes) {
+      return [];
+    }
+
+    if (Array.isArray(purposes)) {
+      return purposes.map((purpose) => PURPOSE[purpose]).filter((v) => v);
+    }
+
+    return [PURPOSE[purposes]].filter((v) => v);
+  };
+
+  const getInitialPlaces = (places) => {
+    if (!places) {
+      return [];
+    }
+
+    if (Array.isArray(places)) {
+      return places.map((place) => PLACE[place]).filter((v) => v);
+    }
+
+    return [PLACE[places]].filter((v) => v);
+  };
+
+  const getInitialGenders = (genders) => {
+    if (!genders) {
+      return [];
+    }
+
+    if (Array.isArray(genders)) {
+      return genders.map((gender) => GENDER[gender]).filter((v) => v);
+    }
+
+    return [GENDER[genders]].filter((v) => v);
+  };
+
+  const getInitialAges = (ages) => {
+    if (!ages) {
+      return [];
+    }
+
+    if (Array.isArray(ages)) {
+      return ages.map((age) => AGE[age]).filter((v) => v);
+    }
+
+    return [AGE[ages]].filter((v) => v);
+  };
+
+  const params = {
+    searchKeyword: initialParams.searchKeyword ?? '',
+    keyword: getInitialKeywords(initialParams.keyword),
+    participants: initialParams.participants ?? '',
+    playTime: initialParams.playTime ?? null,
+    place: getInitialPlaces(initialParams.place),
+    purpose: getInitialPurpose(initialParams.purpose),
+    gender: getInitialGenders(initialParams.gender),
+    age: getInitialAges(initialParams.age),
+  };
+
   // 검색어 및 키워드 저장
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [keyword, setKeyword] = useState([]);
-  const [participants, setParticipants] = useState([]);
-  const [playTime, setPlayTime] = useState([]);
-  const [place, setPlace] = useState([]);
-  const [purpose, setPurpose] = useState([]);
-  const [gender, setGender] = useState([]);
-  const [age, setAge] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState(params.searchKeyword);
+  const [keyword, setKeyword] = useState(params.keyword);
+  const [participants, setParticipants] = useState(params.participants);
+  const [playTime, setPlayTime] = useState(params.playTime);
+  const [place, setPlace] = useState(params.place);
+  const [purpose, setPurpose] = useState(params.purpose);
+  const [gender, setGender] = useState(params.gender);
+  const [age, setAge] = useState(params.age);
   const [participantsAlert, setParticipantsAlert] = useState(false);
 
-  // 검색 옵션
-  const keywordOptions = [
-    { id: 0, value: '협동', param: 'COOPERATIVE' },
-    { id: 1, value: '순발력', param: 'QUICKNESS' },
-    { id: 2, value: '센스', param: 'SENSIBLE' },
-    { id: 3, value: '두뇌', param: 'BRAIN' },
-    { id: 4, value: '창의력', param: 'CREATIVE' },
-    { id: 5, value: '액티브', param: 'ACTIVE' },
-    { id: 6, value: '심리', param: 'PSYCHOLOGICAL' },
-    { id: 7, value: '행운', param: 'LUCK' },
-    { id: 8, value: '상식', param: 'COMMON_SENSE' },
-    { id: 9, value: '준비물', param: 'PREPARATION' },
-  ];
   const participantsLimit = 20;
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
-  const placeOptions = [
-    { id: 0, value: '실내', param: 'INDOOR' },
-    { id: 1, value: '실외', param: 'OUTDOOR' },
-  ];
-  const purposeOptions = [
-    { id: 0, value: '워크샵', param: 'WORKSHOP' },
-    { id: 1, value: '체육대회', param: 'SPORTS_DAY' },
-    { id: 2, value: 'MT', param: 'MT' },
-    { id: 3, value: '모임', param: 'GATHERING' },
-    { id: 4, value: '수련회', param: 'RETREAT' },
-  ];
-  const genderOptions = [
-    { id: 0, value: '여성', param: 'FEMALE' },
-    { id: 1, value: '남성', param: 'MALE' },
-  ];
-  const ageOptions = [
-    { id: 0, value: '10대 미만', param: 'UNDER_TEENAGER' },
-    { id: 1, value: '10대', param: 'TEENAGER' },
-    { id: 2, value: '20대', param: 'TWENTIES' },
-    { id: 3, value: '30대', param: 'THIRTIES' },
-    { id: 4, value: '40대', param: 'FORTIES' },
-    { id: 5, value: '50대 이상', param: 'OVER_FIFTIES' },
-  ];
 
   // 필터 더보기 메뉴
   const [isMenuOpen, setIsMenuOpen] = useState(filtersOpen);
@@ -75,19 +117,11 @@ export default function Search({ filtersOpen = false }) {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const onRemove = (category, id) => {
-    if (category === keywordOptions) {
-      setKeyword(
-        keyword.filter((el) => {
-          return el !== id;
-        }),
-      );
-    } else if (category === purposeOptions) {
-      setPurpose(
-        purpose.filter((el) => {
-          return el !== id;
-        }),
-      );
+  const handleRemoveClick = (category, targetValue) => {
+    if (category === KEYWORD_CATEGORY.KEYWORD) {
+      setKeyword(keyword.filter((el) => el.key !== targetValue.key));
+    } else {
+      setPurpose(purpose.filter((el) => el.key !== targetValue.key));
     }
   };
 
@@ -122,10 +156,10 @@ export default function Search({ filtersOpen = false }) {
   const [keywordModal, setKeywordModal] = useState(false);
   const [purposeModal, setPurposeModal] = useState(false);
 
-  const renderKeyword = (label, selected) => {
+  const renderKeyword = (category, selected) => {
     return selected.map((el) => (
-      <SelectedKeyword key={el}>
-        <span>'{label[label.findIndex((i) => i.param === el)].value}' 포함</span>
+      <SelectedKeyword key={el.key}>
+        <span>{el.value} 포함</span>
         <img
           alt={`${el.value} 삭제`}
           src={deleteImg}
@@ -133,7 +167,7 @@ export default function Search({ filtersOpen = false }) {
           style={{ width: '1rem' }}
           onClick={(e) => {
             e.stopPropagation();
-            onRemove(label, el);
+            handleRemoveClick(category, el);
           }}
         />
       </SelectedKeyword>
@@ -144,8 +178,8 @@ export default function Search({ filtersOpen = false }) {
   const reset = () => {
     setSearchKeyword('');
     setKeyword([]);
-    setParticipants([]);
-    setPlayTime([]);
+    setParticipants('');
+    setPlayTime(null);
     setPlace([]);
     setPurpose([]);
     setGender([]);
@@ -153,29 +187,28 @@ export default function Search({ filtersOpen = false }) {
   };
 
   // 필터 적용
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   publicAPI.defaults.paramsSerializer = (params) => {
     return qs.stringify(params, { arrayFormat: 'repeat' });
   };
   const submit = async () => {
     const params = {
       searchKeyword: searchKeyword,
-      keyword: keyword,
+      keyword: keyword.map((el) => el.key),
       participants: participants,
       playTime: playTime,
-      place: place,
-      purpose: purpose,
-      gender: gender,
-      age: age,
+      place: place.map((el) => el.key),
+      purpose: purpose.map((el) => el.key),
+      gender: gender.map((el) => el.key),
+      age: age.map((el) => el.key),
     };
 
+    console.log(params);
+
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
-    try {
-      navigator(`/search/list?${param}`, { state: param });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {
-      console.log(error);
-    }
+
+    navigate(`/search/list?${param}`);
+    scrollToTop();
   };
 
   const handleSearch = (e) => {
@@ -183,20 +216,6 @@ export default function Search({ filtersOpen = false }) {
       submit();
     }
   };
-
-  useEffect(() => {
-    const currentURL = new URLSearchParams(window.location.search);
-    if (currentURL.size !== 0) {
-      setSearchKeyword(currentURL.get('searchKeyword'));
-      setKeyword(currentURL.getAll('keyword'));
-      setParticipants(currentURL.get('participants'));
-      setPlayTime(currentURL.getAll('playTime'));
-      setPlace(currentURL.getAll('place'));
-      setPurpose(currentURL.getAll('purpose'));
-      setAge(currentURL.getAll('age'));
-      setGender(currentURL.getAll('gender'));
-    }
-  }, [window.location.href]);
 
   return (
     <SearchEngine>
@@ -215,7 +234,7 @@ export default function Search({ filtersOpen = false }) {
           onClick={submit}
         />
       </SearchWordBox>
-      <SearchBox filtersOpen={filtersOpen}>
+      <SearchBox $filtersOpen={filtersOpen}>
         <Filters $menu={isMenuOpen.toString()}>
           {/* 키워드 */}
           <Filter>
@@ -225,7 +244,9 @@ export default function Search({ filtersOpen = false }) {
               {keyword.length === 0 ? (
                 '클릭하면 키워드 선택창이 나와요!'
               ) : (
-                <SelectedKeywords>{renderKeyword(keywordOptions, keyword)}</SelectedKeywords>
+                <SelectedKeywords>
+                  {renderKeyword(KEYWORD_CATEGORY.KEYWORD, keyword)}
+                </SelectedKeywords>
               )}
             </KeywordBox>
           </Filter>
@@ -238,7 +259,7 @@ export default function Search({ filtersOpen = false }) {
               type="text"
               onChange={(e) => validateParticipants(e.target.value)}
               value={participants}
-              error={participantsAlert}
+              $error={participantsAlert}
             />
             {participantsAlert && (
               <Alert>
@@ -251,16 +272,24 @@ export default function Search({ filtersOpen = false }) {
           {/* 진행 시간*/}
           <Filter>
             <LabelName htmlFor="playTime">진행 시간</LabelName>
-            <Dropdown list={playTimeOptions} setOption={setPlayTime} selectedOption={playTime} />
+            <PlayTimeSelect
+              options={playTimeOptions}
+              setOption={setPlayTime}
+              selectedOption={playTime}
+            />
           </Filter>
 
           {/* 장소 */}
           <Filter>
             <LabelName htmlFor="place">장소</LabelName>
-            <RadioInput content={placeOptions} setOption={setPlace} selectedOption={place} />
+            <RadioInput
+              options={Object.values(PLACE)}
+              setOption={setPlace}
+              selectedOption={place}
+            />
           </Filter>
         </Filters>
-        <MoreFilters open={isMenuOpen}>
+        <MoreFilters $open={isMenuOpen}>
           <div
             style={{
               width: '100%',
@@ -279,7 +308,9 @@ export default function Search({ filtersOpen = false }) {
               {purpose.length === 0 ? (
                 '클릭하면 목적 선택창이 나와요!'
               ) : (
-                <SelectedKeywords>{renderKeyword(purposeOptions, purpose)}</SelectedKeywords>
+                <SelectedKeywords>
+                  {renderKeyword(KEYWORD_CATEGORY.PURPOSE, purpose)}
+                </SelectedKeywords>
               )}
             </KeywordBox>
           </Filter>
@@ -287,13 +318,17 @@ export default function Search({ filtersOpen = false }) {
           {/* 성별 */}
           <Filter>
             <LabelName htmlFor="gender">성별</LabelName>
-            <RadioInput content={genderOptions} setOption={setGender} selectedOption={gender} />
+            <RadioInput
+              options={Object.values(GENDER)}
+              setOption={setGender}
+              selectedOption={gender}
+            />
           </Filter>
 
           {/* 연령대 */}
           <Filter>
             <LabelName htmlFor="age">연령대</LabelName>
-            <RadioInput content={ageOptions} setOption={setAge} selectedOption={age} />
+            <RadioInput options={Object.values(AGE)} setOption={setAge} selectedOption={age} />
           </Filter>
           <div style={{ height: '1rem' }} />
         </MoreFilters>
@@ -327,8 +362,8 @@ export default function Search({ filtersOpen = false }) {
 
       {keywordModal ? (
         <KeywordModal
-          category="keyword"
-          content={keywordOptions}
+          category={KEYWORD_CATEGORY.KEYWORD}
+          content={Object.values(KEYWORD)}
           modalControl={setKeywordModal}
           keywordControl={setKeyword}
           selectedOption={keyword}
@@ -336,8 +371,8 @@ export default function Search({ filtersOpen = false }) {
       ) : null}
       {purposeModal ? (
         <KeywordModal
-          category="purpose"
-          content={purposeOptions}
+          category={KEYWORD_CATEGORY.PURPOSE}
+          content={Object.values(PURPOSE)}
           modalControl={setPurposeModal}
           keywordControl={setPurpose}
           selectedOption={purpose}
@@ -390,7 +425,7 @@ const SearchBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 1.2rem 1.2rem ${({ filtersOpen }) => (filtersOpen ? '1.2rem 1.2rem' : '0 0')};
+  border-radius: 1.2rem 1.2rem ${({ $filtersOpen }) => ($filtersOpen ? '1.2rem 1.2rem' : '0 0')};
   background: ${({ theme }) => theme.color.main01};
   width: 62rem;
 `;
@@ -408,33 +443,30 @@ const Filter = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: ${({ theme }) => theme.color.main05};
+  color: ${({ theme }) => theme.color.grayscale04};
   cursor: pointer;
-  ${({ theme }) => theme.text.h5};
+  ${({ theme }) => theme.text.small};
 `;
 
 const LabelName = styled.label`
   text-align: start;
   width: 7.5rem;
+  ${({ theme }) => theme.text.h5};
+  color: ${({ theme }) => theme.color.main05};
 `;
 
 const KeywordBox = styled.div`
   flex: 1;
   height: 3rem;
   border-radius: 9999px;
-  padding-right: 0.5rem;
+  padding-right: 1rem;
   background: ${({ theme }) => theme.color.main05};
   color: ${({ theme }) => theme.color.grayscale04};
-  ${({ theme }) => theme.text.small};
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   align-items: center;
   padding-left: 1.4rem;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   cursor: pointer;
 
@@ -449,6 +481,10 @@ const SelectedKeywords = styled.div`
   overflow-x: auto;
   white-space: nowrap;
   width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SelectedKeyword = styled.div`
@@ -466,7 +502,7 @@ const Input = styled.input`
   width: 16rem;
   height: 3rem;
   border-radius: 9999px;
-  outline: ${({ error, theme }) => (error ? `3px solid ${theme.color.main04}` : 'none')};
+  outline: ${({ $error, theme }) => ($error ? `3px solid ${theme.color.main04}` : 'none')};
   background: ${({ theme }) => theme.color.main05};
   border: none;
   color: ${({ theme }) => theme.color.grayscale03};
@@ -481,6 +517,10 @@ const Input = styled.input`
 
     appearance: none;
   }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.color.grayscale04};
+  }
 `;
 
 const MoreFilters = styled.div`
@@ -489,7 +529,7 @@ const MoreFilters = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   overflow: hidden;
-  max-height: ${({ open }) => (open ? '1000px' : '0')};
+  max-height: ${({ $open }) => ($open ? '1000px' : '0')};
   transition: max-height 0.7s ease-in-out;
 `;
 
