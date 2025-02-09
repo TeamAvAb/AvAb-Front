@@ -45,4 +45,5 @@ const Option = styled.li`
   text-align: center;
   color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
   cursor: pointer;
+  width: max-content;
 `;
