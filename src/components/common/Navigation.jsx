@@ -28,11 +28,9 @@ export default function Navigation() {
       <Li onClick={scrollToTop}>
         <Link to={SITE_URL.RECREATION_SEARCH_LIST}>레크레이션</Link>
       </Li>
-      <>
-        <Li onClick={scrollToTop}>
-          <Link to={SITE_URL.FLOW}>일정플로우</Link>
-        </Li>
-      </>
+      <Li onClick={scrollToTop}>
+        <Link to={SITE_URL.FLOW}>일정플로우</Link>
+      </Li>
       <Li onClick={handleClickMyPage}>마이페이지</Li>
     </Ul>
   );
@@ -48,4 +46,5 @@ const Ul = styled.ul`
 
 const Li = styled.li`
   ${({ theme }) => theme.text.nav};
+  cursor: pointer;
 `;
