@@ -6,7 +6,7 @@ const KEYWORD = {
   // 창의력
   CREATIVE: { key: 'CREATIVE', value: '창의력' },
   // 협력
-  COOPERATIVE: { key: 'COOPERATIVE', value: '협력' },
+  COOPERATIVE: { key: 'COOPERATIVE', value: '협동' },
   // 액티브
   ACTIVE: { key: 'ACTIVE', value: '액티브' },
   // 두뇌
