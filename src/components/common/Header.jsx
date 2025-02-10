@@ -13,11 +13,8 @@ export default function Header() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore((state) => state);
   const getProfileImage = () => {
-    if (localStorage.getItem('userImage') !== null) {
-      return localStorage.getItem('userImage');
-    } else {
-      return fallbackProfileImage;
-    }
+    const profileImage = localStorage.getItem('userImage');
+    return profileImage === 'null' ? fallbackProfileImage : profileImage;
   };
 
   return (
