@@ -71,7 +71,7 @@ export default function LoginLoading() {
 
   return (
     <div style={{ height: 'calc(100vh - 11rem' }}>
-      <LoadingSpinner height="full" />
+      <LoadingSpinner />
       <ModalWrapper
         children={
           <WithdrawRollbackModal
