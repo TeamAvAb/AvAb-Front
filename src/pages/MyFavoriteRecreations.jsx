@@ -32,6 +32,16 @@ export default function MyFavoriteRecreations() {
     }
   };
 
+  useEffect(() => {
+    if (recreations.length === 0) {
+      if (currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      } else {
+        setCurrentPage(0);
+      }
+    }
+  }, [recreations]);
+
   // 첫 렌더링 및 페이지 변경 시 데이터를 불러옴
   useEffect(() => {
     fetchData();
@@ -113,4 +123,5 @@ const RecreationList = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4.5rem;
+  padding-bottom: 2rem;
 `;
