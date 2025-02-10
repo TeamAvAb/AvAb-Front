@@ -16,6 +16,8 @@ export default function MyInfoBox() {
   const [saveMyInfoModalOpen, setSaveMyInfoModalOpen] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
 
+  const NICKNAME_MAX_LENGTH = 10;
+
   useEffect(() => {
     const call = async () => {
       setLoading(true);
@@ -36,7 +38,7 @@ export default function MyInfoBox() {
   };
 
   const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
+    setNickname(e.target.value.slice(0, NICKNAME_MAX_LENGTH));
   };
 
   const handleSaveClick = async () => {
@@ -73,7 +75,7 @@ export default function MyInfoBox() {
             value={nickname}
             onChange={handleNicknameChange}
             placeholder={previousNickname}
-            maxLength={10}
+            maxLength={NICKNAME_MAX_LENGTH}
           />
           <WarnSpace>
             <WarnImg src={WarningIcon} />
