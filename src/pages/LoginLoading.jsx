@@ -70,16 +70,8 @@ export default function LoginLoading() {
   };
 
   return (
-    <>
-      <LoadingSpinner
-        comment={
-          <span>
-            로그인 중입니다.
-            <br />
-            잠시만 기다려주세요.
-          </span>
-        }
-      />
+    <div style={{ height: 'calc(100vh - 11rem' }}>
+      <LoadingSpinner />
       <ModalWrapper
         children={
           <WithdrawRollbackModal
@@ -88,7 +80,7 @@ export default function LoginLoading() {
             setRollbackState={setRollbackState}
           />
         }
-      ></ModalWrapper>
-    </>
+      />
+    </div>
   );
 }

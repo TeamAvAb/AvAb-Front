@@ -76,15 +76,7 @@ export default function RecreationSearchList() {
             <SortControl setOption={setOrder} selectedOption={order} isFlow={false} />
           </ResultHeaderContainer>
           {loading ? (
-            <LoadingSpinner
-              comment={
-                <span>
-                  레크레이션을 불러오고 있습니다.
-                  <br />
-                  잠시만 기다려주세요.
-                </span>
-              }
-            />
+            <LoadingSpinner height="lg" />
           ) : datas.length === 0 ? (
             <NoData>
               <NoDataImg src={noScrapImg} />
@@ -139,10 +131,7 @@ const ResultHeaderContainer = styled.div`
   margin-bottom: 3.5rem;
 `;
 
-const ResultHeader = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const ResultHeader = styled.h1`
   ${({ theme }) => theme.text.h2}
   margin-bottom: 3rem;
 `;

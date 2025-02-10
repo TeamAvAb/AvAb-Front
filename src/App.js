@@ -1,8 +1,8 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Main from './pages/Main';
-import MyPage from './pages/Mypage';
-import FavoriteRecreation from './pages/FavoriteRecreation';
+import MyPage from './pages/MyPage';
+import MyFavoriteRecreations from './pages/MyFavoriteRecreations';
 import RecreationSearchList from './pages/RecreationSearchList';
 import FlowWrite from './pages/FlowWrite'; // 플로우 만들기 페이지
 import FlowWriteDetail from './pages/FlowWriteDetail'; // 플로우 만들기 상세 페이지
@@ -41,7 +41,7 @@ function App() {
       {/* 마이 페이지 내 정보 */}
       <Route path="/mypage/myinfo" element={<MyPage />} />
       {/* 마이 페이지 즐겨찾는 레크레이션 */}
-      <Route path="/mypage/favorites" element={<FavoriteRecreation />} />
+      <Route path="/mypage/favorites" element={<MyFavoriteRecreations />} />
       {/* 검색 리스트 페이지 */}
       <Route path="/search/list" element={<RecreationSearchList />} />
       {/* 플로우 만들기 기본 페이지 */}
