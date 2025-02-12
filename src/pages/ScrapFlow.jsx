@@ -8,7 +8,6 @@ import useLoginModalStore from '../stores/loginModalStore';
 import penguinImg from '../assets/scrapflow/penguin.png';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import ScrapBtn from '../components/common/button/ScrapBtn';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 
 export default function ScrapFlow() {
@@ -49,34 +48,13 @@ export default function ScrapFlow() {
 
   const fetchData = async () => {
     setLoading(true);
-    if (isLoggedIn) {
-      const response = await privateAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
-      setDatas(response.data.result.flowList);
-      setTotalPages(response.data.result.totalPages);
-    } else {
-      const response = await publicAPI.get(`/api/users/me/scraps/flows?page=${currentPage}`);
-      setDatas(response.data.result.flowList);
-      setTotalPages(response.data.result.totalPages);
-    }
-    setLoading(false);
-  };
 
-  const handleScrapBtnClick = async (id) => {
-    if (isLoggedIn) {
-      try {
-        const response = await privateAPI.post(`/api/flows/${id}/scraps`);
-        if (response.status === 200) {
-          fetchData();
-          return;
-        } else {
-          console.log('플로우 스크랩 실패', response.data);
-        }
-      } catch (error) {
-        throw new Error('ScrapBtn Error in WatchFlow', error);
-      }
-    } else {
-      modalControl();
-    }
+    const api = isLoggedIn ? privateAPI : publicAPI;
+    const response = await api.get(`/api/users/me/scraps/flows?page=${currentPage}`);
+    setDatas(response.data.result.flowList);
+    setTotalPages(response.data.result.totalPages);
+
+    setLoading(false);
   };
 
   // 초기 렌더링 및 페이지 변경에 따른 데이터 페칭
@@ -116,13 +94,7 @@ export default function ScrapFlow() {
           <>
             <FlowBox>
               {datas.map((data) => (
-                <FlowCardD content={data}>
-                  <ScrapBtn
-                    flowId={data.id}
-                    isScrap={data.isScraped}
-                    onClick={() => handleScrapBtnClick(data.id)}
-                  />
-                </FlowCardD>
+                <FlowCardD key={data.id} content={data} refetch={fetchData} />
               ))}
             </FlowBox>
             <Pagination

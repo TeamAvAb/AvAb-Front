@@ -9,12 +9,11 @@ import penguinImg from '../assets/watchflow/penguin.png';
 import useLoginStore from '../stores/loginStore.js';
 import SortControl from '../components/common/SortControl';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import ScrapBtn from '../components/common/button/ScrapBtn';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
-  const { isLoggedIn } = useLoginStore((state) => state);
+  const { isLoggedIn, userId } = useLoginStore((state) => state);
 
   const navigate = useNavigate();
   const moveToMy = () => {
@@ -86,24 +85,6 @@ export default function WatchFlow() {
     }
   };
 
-  const handleScrapBtnClick = async (id) => {
-    if (isLoggedIn) {
-      try {
-        const response = await privateAPI.post(`/api/flows/${id}/scraps`);
-        if (response.status === 200) {
-          fetchData();
-          return;
-        } else {
-          console.log('플로우 스크랩 실패', response.data);
-        }
-      } catch (error) {
-        throw new Error('ScrapBtn Error in WatchFlow', error);
-      }
-    } else {
-      modalControl();
-    }
-  };
-
   // 초기 렌더링 및 페이지, 정렬 옵션 변경에 따른 데이터 페칭
   useEffect(() => {
     getData();
@@ -132,13 +113,7 @@ export default function WatchFlow() {
           <>
             <FlowBox>
               {datas.map((data) => (
-                <FlowCardD content={data}>
-                  <ScrapBtn
-                    flowId={data.id}
-                    isScrap={data.isScraped}
-                    onClick={() => handleScrapBtnClick(data.id)}
-                  />
-                </FlowCardD>
+                <FlowCardD key={data.id} content={data} isOwner={data.author.id === userId} />
               ))}
             </FlowBox>
             <Pagination
