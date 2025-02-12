@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
-import Share from '../assets/moreflow/share.png';
-import Time from '../assets/moreflow/time.png';
-import User from '../assets/moreflow/user.png';
-import View from '../assets/moreflow/view.png';
-import Write from '../assets/moreflow/write.png';
-import Scrap from '../assets/moreflow/scrap.png';
-import Scrap2 from '../assets/moreflow/scrap2.png';
 import Close from '../assets/myflow/close.png';
 import RecreationInfo from '../components/recreationInfo/RecreationInfo';
 import { Helmet } from 'react-helmet';
-import useLoginModalStore from '../stores/loginModalStore';
 import useLoginStore from '../stores/loginStore';
 import { useLocation } from 'react-router-dom';
+import FlowInfoSection from '../components/flowDetails/FlowInfoSection';
 
 const PurposeList = {
   MT: 'MT',
@@ -50,40 +43,27 @@ const AgeList = {
   OVER_FIFTIES: '50대 이상',
 };
 
-export default function MoreWatchFlow() {
-  const { modalControl } = useLoginModalStore();
+export default function FlowDetails() {
   const { isLoggedIn } = useLoginStore((state) => state);
 
-  const [scrap, setScrap] = useState(false);
-  // 스크랩 상태 변경
-  const DoScrap = async (id) => {
-    if (isLoggedIn) {
-      const response = await privateAPI.post(`/api/flows/${id}/scraps`);
-      if (response.status === 200) {
-        // 요청이 성공하면 상태 업데이트
-        console.log(response.data);
-        setScrap(true);
-      } else {
-        // 요청이 실패하면 에러 처리
-        console.log(response.data);
-      }
-    } else {
-      modalControl();
-    }
-  };
+  const location = useLocation();
+  const id = location.pathname.split('/')[3];
 
-  // 삭제 버튼 모달창을 위한 상태
   const [share, setShare] = useState(false);
   const [modal, setModal] = useState(false);
+  const [data, setData] = useState([]);
+
+  // 삭제 버튼 모달창을 위한 상태
+
   // 모달 창 열기 위한 상태 변화 함수
   const OpenModal = () => {
     setModal(true);
   };
   // 공유 버튼 누를 시 상태 변화 함수
-  const ShareBtn = () => {
+  const handleShareClick = () => {
     setShare(true);
     navigator.clipboard
-      .writeText(window.location.href)
+      .writeText(location.href)
       .then(() => {
         console.log('Url copied to clipboard');
       })
@@ -98,35 +78,23 @@ export default function MoreWatchFlow() {
   };
 
   // moreData 가져오기
-  const [data, setData] = useState([]);
-  const location = useLocation();
-  const id = location.pathname.split('/')[3];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (isLoggedIn) {
-          const response = await privateAPI.get(`/api/flows/${id}`);
-          setData(response.data.result);
-        } else {
-          const response = await publicAPI.get(`/api/flows/${id}`);
-          setData(response.data.result);
-        }
+        const api = isLoggedIn ? privateAPI : publicAPI;
+        const response = await api.get(`/api/flows/${id}`);
+        setData(response.data.result);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-    setScrap(false);
-  }, [id, scrap]);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  }, [id]);
 
   return (
     data.length !== 0 && (
-      <div style={{ backgroundColor: '#E9EBED' }}>
+      <>
         <Helmet>
           <title>{`${data.flowDetail.title} - AvAb | 레크레이션 플로우 공유`}</title>
           <meta
@@ -135,87 +103,10 @@ export default function MoreWatchFlow() {
           />
         </Helmet>
         {/* 모달창 */}
-        {modal ? (
-          <ModalContainer>
-            <ModalBox>
-              <CloseBtn onClick={close}>
-                <img src={Close} alt="닫기" />
-              </CloseBtn>
-              <ModalBoxDetail>
-                <div>
-                  <ModalTitle>
-                    일정 플로우를
-                    <br />
-                    공유하세요!
-                  </ModalTitle>
-                </div>
-                {share ? (
-                  <AfterCopyBtn>복사 완료</AfterCopyBtn>
-                ) : (
-                  <BeforeCopyBtn onClick={ShareBtn}>링크 복사하기</BeforeCopyBtn>
-                )}
-              </ModalBoxDetail>
-            </ModalBox>
-          </ModalContainer>
-        ) : (
-          <></>
-        )}
 
-        <TitleContainer>
-          <img
-            src={data.flowDetail.imageUrl}
-            alt="플로우사진"
-            style={{ width: '250px', height: '250px', marginTop: '86px' }}
-          />
-          <TitleBox>
-            <DetailTitleBox>
-              <KeyWord>{PurposeList[data.flowDetail.purposeList[0]]}</KeyWord>
-              <ScrapImg onClick={() => DoScrap(id)}>
-                {data.flowDetail.isFavorite ? (
-                  <img src={Scrap2} alt="스크랩" />
-                ) : (
-                  <img src={Scrap} alt="스크랩" />
-                )}
-              </ScrapImg>
-            </DetailTitleBox>
-            <FlowName>{data.flowDetail.title}</FlowName>
+        <FlowInfoSection flow={data.flowDetail} />
 
-            {/* 플로우 세부사항 - 시간,조회수,작성자,사용자수 */}
-            <FlowBoxDetailBox>
-              <FlowBoxDetails>
-                <FlowBoxDetailImg>
-                  <img src={Time} alt="시간" style={{ width: '38px', height: '38px' }} />
-                </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.flowDetail.totalPlayTime}</FlowBoxDetail>
-              </FlowBoxDetails>
-              <FlowBoxDetails>
-                <FlowBoxDetailImg>
-                  <img src={View} alt="조회수" style={{ width: '38px', height: '38px' }} />
-                </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.flowDetail.viewCount}</FlowBoxDetail>
-              </FlowBoxDetails>
-              <FlowBoxDetails>
-                <FlowBoxDetailImg>
-                  <img src={Write} alt="작성자" style={{ width: '35px', height: '35px' }} />
-                </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.flowDetail.author.username}</FlowBoxDetail>
-              </FlowBoxDetails>
-              <FlowBoxDetails>
-                <FlowBoxDetailImg>
-                  <img src={User} alt="사용자수" style={{ width: '24px', height: '24px' }} />
-                </FlowBoxDetailImg>
-                <FlowBoxDetail>{data.flowDetail.scrapCount}</FlowBoxDetail>
-              </FlowBoxDetails>
-            </FlowBoxDetailBox>
-
-            {/* 공유버튼 */}
-            <ShareImg onClick={OpenModal}>
-              <img src={Share} alt="공유하기" />
-            </ShareImg>
-          </TitleBox>
-        </TitleContainer>
-
-        <FlowInfoContainer>
+        <div>
           <FlowInfoBox>
             <FlowInfoTitle>
               <div>기본정보</div>
@@ -281,8 +172,34 @@ export default function MoreWatchFlow() {
               </RecreationBox>
             </FlowContainer>
           </FlowInfoBox>
-        </FlowInfoContainer>
-      </div>
+        </div>
+
+        {modal ? (
+          <ModalContainer>
+            <ModalBox>
+              <CloseBtn onClick={close}>
+                <img src={Close} alt="닫기" />
+              </CloseBtn>
+              <ModalBoxDetail>
+                <div>
+                  <ModalTitle>
+                    일정 플로우를
+                    <br />
+                    공유하세요!
+                  </ModalTitle>
+                </div>
+                {share ? (
+                  <AfterCopyBtn>복사 완료</AfterCopyBtn>
+                ) : (
+                  <BeforeCopyBtn onClick={handleShareClick}>링크 복사하기</BeforeCopyBtn>
+                )}
+              </ModalBoxDetail>
+            </ModalBox>
+          </ModalContainer>
+        ) : (
+          <></>
+        )}
+      </>
     )
   );
 }
@@ -373,104 +290,6 @@ const AfterCopyBtn = styled.div`
   font-weight: 700;
   color: #4036ed;
   text-align: center;
-`;
-
-const TitleContainer = styled.div`
-  height: 403px;
-  background-color: #8896df;
-  display: flex;
-  justify-content: center;
-`;
-
-const TitleBox = styled.div`
-  width: 372px;
-  height: 251px;
-  gap: -24px;
-  margin-top: 86px;
-  margin-left: 251px;
-  position: relative;
-`;
-
-const DetailTitleBox = styled.div`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const KeyWord = styled.div`
-  padding: 16px 34px;
-  gap: 10px;
-  border-radius: 50px;
-  background: #a0ddff;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  text-align: center;
-  color: #1b1d1f;
-`;
-
-const ScrapImg = styled.div`
-  width: 42px;
-  height: 42px;
-  position: absolute;
-  left: 330px;
-  cursor: pointer;
-`;
-
-const FlowName = styled.div`
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  color: #1b1d1f;
-  margin-top: 22px;
-`;
-
-const FlowBoxDetailBox = styled.div`
-  margin-left: 279px;
-  margin-top: -28px;
-`;
-
-const FlowBoxDetails = styled.div`
-  width: 100%;
-  height: 42px;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const FlowBoxDetail = styled.div`
-  width: 93px;
-  height: 42px;
-  font-size: 16px;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-`;
-
-const FlowBoxDetailImg = styled.div`
-  width: 42px;
-  height: 42px;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-`;
-
-const ShareImg = styled.div`
-  width: 42px;
-  height: 42px;
-  margin-top: -55px;
-  cursor: pointer;
-`;
-
-const FlowInfoContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
 `;
 
 const FlowInfoBox = styled.div`
