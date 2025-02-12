@@ -11,26 +11,14 @@ import SortControl from '../components/common/SortControl';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ScrapBtn from '../components/common/button/ScrapBtn';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
+import SideNavLayout from '../layout/SideNavLayout.jsx';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
 
   const navigate = useNavigate();
-  const moveToMy = () => {
-    if (isLoggedIn) {
-      navigate(`/flow/my`);
-    } else {
-      modalControl();
-    }
-  };
-  const moveToScrap = () => {
-    if (isLoggedIn) {
-      navigate(`/flow/scrap`);
-    } else {
-      modalControl();
-    }
-  };
+
   const moveToMakeFlow = () => {
     if (isLoggedIn) {
       navigate(`/flow/write`);
@@ -110,16 +98,7 @@ export default function WatchFlow() {
   }, [currentPage, order]);
 
   return (
-    <Page>
-      {/* 플로우 왼쪽 메뉴바 */}
-      <SubNavbar>
-        <NavbarTitle>일정플로우</NavbarTitle>
-        <NavbarOption className="current">플로우 구경하기</NavbarOption>
-        <NavbarOption onClick={moveToMy}>내가 만든 일정플로우</NavbarOption>
-        <NavbarOption onClick={moveToScrap}>스크랩 일정 플로우</NavbarOption>
-      </SubNavbar>
-
-      {/* 플로우 구경하기 */}
+    <SideNavLayout selectedPage="watch-flow" parentTab="flow">
       <MainSection>
         <FlowMakeBox>
           <FlowMakeCharacter src={penguinImg} />
@@ -157,47 +136,9 @@ export default function WatchFlow() {
           </NoneAlertBox>
         )}
       </MainSection>
-      <PageMarginRight />
-    </Page>
+    </SideNavLayout>
   );
 }
-
-const Page = styled.div`
-  display: flex;
-`;
-
-// 왼쪽 네비게이션바
-const SubNavbar = styled.aside`
-  width: 20rem;
-  box-sizing: border-box;
-  border: 0.5px solid ${({ theme }) => theme.color.grayscale05};
-  border-bottom: none;
-  background-color: ${({ theme }) => theme.color.main05};
-  font-size: ${({ theme }) => theme.text.nav.fontSize};
-  font-weight: ${({ theme }) => theme.text.nav.fontWeight};
-  color: ${({ theme }) => theme.color.grayscale01};
-`;
-const NavbarTitle = styled.div`
-  height: 5.56rem;
-  box-sizing: border-box;
-  padding: 1.87rem;
-  border-bottom: 1px solid ${({ theme }) => theme.color.grayscale05};
-`;
-const NavbarOption = styled.div`
-  width: 20rem;
-  height: 4.18rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 0.5px solid ${({ theme }) => theme.color.grayscale05};
-  box-sizing: border-box;
-  cursor: pointer;
-
-  &.current {
-    background-color: ${({ theme }) => theme.color.secondary04};
-    font-weight: 700;
-  }
-`;
 
 const MainSection = styled.main`
   display: flex;

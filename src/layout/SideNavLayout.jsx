@@ -1,10 +1,12 @@
 import styled from 'styled-components';
-import SideNav from './SideNav';
+import MyPageSideNav from '../components/myPage/MyPageSideNav';
+import FlowTabSideNav from '../components/flow/FlowTabSideNav';
 
-export default function Page({ children, selectedPage }) {
+export default function SideNavLayout({ children, selectedPage, parentTab }) {
   return (
     <Container>
-      <SideNav selectedPage={selectedPage} />
+      {parentTab === 'my-page' && <MyPageSideNav selectedPage={selectedPage} />}
+      {parentTab === 'flow' && <FlowTabSideNav selectedPage={selectedPage} />}
       <Content>{children}</Content>
     </Container>
   );

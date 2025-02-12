@@ -5,7 +5,7 @@ import Pagination from '../components/pagination/Pagination';
 import noScrapImg from '../assets/scrapflow/noScrap.png';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import RecreationCardWHashtag from '../components/common/card/recreationCard/RecreationCardWHashtag';
-import Page from '../components/./myPage/Page';
+import SideNavLayout from '../layout/SideNavLayout';
 
 export default function MyFavoriteRecreations() {
   // 데이터 가져오기
@@ -48,7 +48,7 @@ export default function MyFavoriteRecreations() {
   }, [currentPage]);
 
   return (
-    <Page selectedPage="favorites">
+    <SideNavLayout selectedPage="favorites" parentTab="my-page">
       {/*중앙 부분*/}
       <RecreationWrap>
         <RecreationTitle id="move">즐겨 찾는 레크레이션</RecreationTitle>
@@ -75,7 +75,7 @@ export default function MyFavoriteRecreations() {
           </NoDataContainer>
         )}
       </RecreationWrap>
-    </Page>
+    </SideNavLayout>
   );
 }
 
