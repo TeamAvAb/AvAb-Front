@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import timeImg from '../../../../assets/Card/timeIcon.svg';
-import viewImg from '../../../../assets/watchflow/view.png'; // svg로 수정 필요
-import pencilImg from '../../../../assets/Card/pencilIcon.svg';
-import userImg from '../../../../assets/Card/userIcon.svg';
 import { useNavigate } from 'react-router';
 import { getTranslatedPurposes } from '../../../../utils/purposeUtils';
 import PurposeChip from '../../chip/PurposeChip';
@@ -12,6 +8,7 @@ import { privateAPI } from '../../../../apis/user';
 import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import Button from '../../button/Button';
+import FlowMetadata from '../../FlowMetadata';
 
 export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -78,26 +75,12 @@ export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) 
           ) : (
             <ScrapBtn flowId={content.id} isScrap={isScrap} onClick={handleScrapBtnClick} />
           )}
-          <Info>
-            <li>
-              <img src={timeImg} alt="소요시간" />
-              <span>{content.totalPlayTime}분</span>
-            </li>
-            <li>
-              <img src={viewImg} alt="조회수" />
-              <span>{content.viewCount}</span>
-            </li>
-            {!isOwner && (
-              <li>
-                <img src={pencilImg} alt="제작자" />
-                <span>{content.author.username}</span>
-              </li>
-            )}
-            <li>
-              <img src={userImg} alt="스크랩" />
-              <span>{content.scrapCount}</span>
-            </li>
-          </Info>
+          <FlowMetadata
+            totalPlayTime={content.totalPlayTime}
+            viewCount={content.viewCount}
+            author={isOwner ? null : content.author.username}
+            scrapCount={content.scrapCount}
+          />
         </CardColumn>
       </CardContent>
       <MoreDetailBtn onClick={handleDetailClick}>자세히 보기</MoreDetailBtn>
@@ -125,12 +108,12 @@ const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
 
-  img {
-    width: 10rem;
-  }
-
   &.left {
     gap: 1.44rem;
+
+    img {
+      width: 10rem;
+    }
   }
 
   &.right {
