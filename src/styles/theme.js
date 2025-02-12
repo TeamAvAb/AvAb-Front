@@ -28,6 +28,7 @@ const theme = {
     h5: { fontSize: '1.25rem', fontWeight: 700 },
     paragraph: { fontSize: '1.25rem', fontWeight: 400 },
     small: { fontSize: '1rem', fontWeight: 400 },
+    smallBold: { fontSize: '1rem', fontWeight: 600 },
     button: { fontSize: '1.25rem', fontWeight: 700 },
     nav: { fontSize: '1.5rem', fontWeight: 400 },
   },
