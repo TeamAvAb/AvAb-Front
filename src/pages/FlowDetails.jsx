@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import FlowInfoSection from '../components/flowDetails/FlowInfoSection';
 import FlowSummarySection from '../components/flowDetails/FlowSummarySection';
 import FlowRecreationSection from '../components/flowDetails/FlowRecreationSection';
+import NotFound from './NotFound';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export default function FlowDetails() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -14,7 +16,8 @@ export default function FlowDetails() {
   const location = useLocation();
   const id = location.pathname.split('/')[3];
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,10 +27,20 @@ export default function FlowDetails() {
         setData(response.data.result);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, [id]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!data) {
+    return <NotFound />;
+  }
 
   return (
     data.length !== 0 && (
