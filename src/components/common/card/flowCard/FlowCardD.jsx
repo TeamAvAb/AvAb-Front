@@ -14,15 +14,17 @@ import useLoginModalStore from '../../../../stores/loginModalStore';
 import Button from '../../button/Button';
 
 export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) {
-  const navigate = useNavigate();
-
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
   const [isScrap, setIsScrap] = useState(content.isScraped);
 
-  const moveToMoreWatchFlow = (moreData) => {
-    localStorage.setItem('moreData', JSON.stringify(moreData));
-    navigate(`/flow/morewatchflow/${moreData.title}`);
+  const navigate = useNavigate();
+  const navigateToFlowDetails = () => {
+    navigate(`/flow/morewatchflow/${content.id}`);
+  };
+
+  const handleDetailClick = () => {
+    navigateToFlowDetails();
   };
 
   const handleScrapBtnClick = async () => {
@@ -98,7 +100,7 @@ export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) 
           </Info>
         </CardColumn>
       </CardContent>
-      <MoreDetailBtn onClick={() => moveToMoreWatchFlow(content)}>자세히 보기</MoreDetailBtn>
+      <MoreDetailBtn onClick={handleDetailClick}>자세히 보기</MoreDetailBtn>
     </CardLayout>
   );
 }
