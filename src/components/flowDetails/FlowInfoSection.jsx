@@ -106,7 +106,7 @@ const FlowImage = styled.img`
   width: 15rem;
 `;
 
-const Title = styled.div`
+const Title = styled.h1`
   ${({ theme }) => theme.text.h4};
   margin-top: 1.4rem;
 `;
