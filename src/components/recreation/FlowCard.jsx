@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import FlowRecreation from './FlowRecreation';
 import ScrapBtn from '../common/button/ScrapBtn';
+import FlowRecreationList from '../common/FlowRecreationList';
 
 export default function FlowCard({ index, flowData, flowRecreations }) {
   return (
@@ -11,24 +11,14 @@ export default function FlowCard({ index, flowData, flowRecreations }) {
         <FlowTitle>{flowData?.title}</FlowTitle>
         <ScrapButton flowId={flowData.id} isScrap={flowData.isFavorite} />
       </TitleWrap>
-      <RecreationList>
-        {flowRecreations.map((recreations, index) => (
-          <FlowRecreation
-            key={index}
-            index={index}
-            recreationTitle={recreations.title}
-            keywords={recreations.keywordList}
-            playTime={recreations.playTime}
-          />
-        ))}
-      </RecreationList>
+      <ListWrap>
+        <FlowRecreationList recreations={flowRecreations} />
+      </ListWrap>
     </FlowCardContainer>
   );
 }
 
 const FlowCardContainer = styled.div`
-  align-items: center;
-  justify-content: center;
   width: 32rem;
   border-radius: 1.2rem;
   border: 1px solid ${({ theme }) => theme.color.grayscale04};
@@ -65,9 +55,6 @@ const ScrapButton = styled(ScrapBtn)`
   justify-content: end;
 `;
 
-const RecreationList = styled.ol`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0 4rem 0 2rem;
+const ListWrap = styled.div`
+  padding-left: 2rem;
 `;
