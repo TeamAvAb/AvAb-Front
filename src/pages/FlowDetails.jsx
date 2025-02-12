@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
-import Close from '../assets/myflow/close.png';
 import RecreationInfo from '../components/recreationInfo/RecreationInfo';
 import { Helmet } from 'react-helmet';
 import useLoginStore from '../stores/loginStore';
@@ -49,35 +48,7 @@ export default function FlowDetails() {
   const location = useLocation();
   const id = location.pathname.split('/')[3];
 
-  const [share, setShare] = useState(false);
-  const [modal, setModal] = useState(false);
   const [data, setData] = useState([]);
-
-  // 삭제 버튼 모달창을 위한 상태
-
-  // 모달 창 열기 위한 상태 변화 함수
-  const OpenModal = () => {
-    setModal(true);
-  };
-  // 공유 버튼 누를 시 상태 변화 함수
-  const handleShareClick = () => {
-    setShare(true);
-    navigator.clipboard
-      .writeText(location.href)
-      .then(() => {
-        console.log('Url copied to clipboard');
-      })
-      .catch((err) => {
-        console.error('Could not copy text: ', err);
-      });
-  };
-  // 삭제 모달 창 닫기 위한 상태 변화 함수
-  const close = () => {
-    setModal(false);
-    setShare(false);
-  };
-
-  // moreData 가져오기
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,7 +77,7 @@ export default function FlowDetails() {
 
         <FlowInfoSection flow={data.flowDetail} />
 
-        <div>
+        <FlowDetailsMainSection>
           <FlowInfoBox>
             <FlowInfoTitle>
               <div>기본정보</div>
@@ -172,125 +143,11 @@ export default function FlowDetails() {
               </RecreationBox>
             </FlowContainer>
           </FlowInfoBox>
-        </div>
-
-        {modal ? (
-          <ModalContainer>
-            <ModalBox>
-              <CloseBtn onClick={close}>
-                <img src={Close} alt="닫기" />
-              </CloseBtn>
-              <ModalBoxDetail>
-                <div>
-                  <ModalTitle>
-                    일정 플로우를
-                    <br />
-                    공유하세요!
-                  </ModalTitle>
-                </div>
-                {share ? (
-                  <AfterCopyBtn>복사 완료</AfterCopyBtn>
-                ) : (
-                  <BeforeCopyBtn onClick={handleShareClick}>링크 복사하기</BeforeCopyBtn>
-                )}
-              </ModalBoxDetail>
-            </ModalBox>
-          </ModalContainer>
-        ) : (
-          <></>
-        )}
+        </FlowDetailsMainSection>
       </>
     )
   );
 }
-
-// 모달창
-const ModalContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  background: rgba(70, 76, 82, 0.5);
-  z-index: 999;
-`;
-
-const ModalBox = styled.div`
-  width: 440px;
-  height: 435px;
-  border-radius: 20px;
-  background: white;
-  position: fixed;
-  top: 215px;
-  left: 50%;
-  transform: translate(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalBoxDetail = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 60px;
-`;
-
-const CloseBtn = styled.div`
-  width: 42px;
-  height: 42px;
-  position: absolute;
-  top: 20px;
-  left: 378px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const ModalTitle = styled.div`
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 8px;
-`;
-
-const BeforeCopyBtn = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  width: 223px;
-  padding: 15px 34px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  background: #4036ed;
-  color: white;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  text-align: center;
-  cursor: pointer;
-`;
-
-const AfterCopyBtn = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  height: 54px;
-  width: 223px;
-  padding: 15px 34px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  border: 1px solid #4036ed;
-  background: white;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  color: #4036ed;
-  text-align: center;
-`;
 
 const FlowInfoBox = styled.div`
   display: flex;
@@ -382,4 +239,11 @@ const RecreationBox = styled.div`
   gap: 8px;
   align-items: flex-start;
   margin-bottom: 8px;
+`;
+
+const FlowDetailsMainSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 8rem;
 `;

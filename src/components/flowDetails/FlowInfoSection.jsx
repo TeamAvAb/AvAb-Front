@@ -8,10 +8,17 @@ import { privateAPI } from '../../apis/user';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 import FlowMetadata from '../common/FlowMetadata';
+import useModal from '../../hooks/useModal';
+import FlowShareModal from '../modal/FlowShareModal';
 
 export default function FlowInfoSection({ flow }) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
+  const {
+    ModalWrapper,
+    openModal: openFlowShareModal,
+    closeModal: closeFlowShareModal,
+  } = useModal();
 
   const [scrap, setScrap] = useState(flow.isScraped);
 
@@ -31,8 +38,13 @@ export default function FlowInfoSection({ flow }) {
     }
   };
 
-  const handleScrapClick = () => {
-    toggleScrap();
+  const handleScrapClick = async () => {
+    await toggleScrap();
+  };
+
+  // 공유 버튼 누를 시 상태 변화 함수
+  const handleShareClick = () => {
+    openFlowShareModal();
   };
 
   return (
@@ -44,7 +56,7 @@ export default function FlowInfoSection({ flow }) {
             <PurposeChip text={getTranslatedPurposes(flow.purposeList)[0]} />
             <Title>{flow.title}</Title>
           </div>
-          <ShareImg src={shareIcon} />
+          <ShareImg src={shareIcon} onClick={handleShareClick} />
         </Column>
         <Column className="left">
           <ScrapBtn isScrap={scrap} onClick={handleScrapClick} />
@@ -56,6 +68,10 @@ export default function FlowInfoSection({ flow }) {
           />
         </Column>
       </FlowInfoContainer>
+
+      <ModalWrapper close={closeFlowShareModal}>
+        <FlowShareModal close={closeFlowShareModal} />
+      </ModalWrapper>
     </Container>
   );
 }
