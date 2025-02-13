@@ -206,7 +206,7 @@ export default function FlowWriteContent() {
         const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
 
         const response = await axios.get(
-          'http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended',
+          'http://dev.api.avab.site/api/recreations/recommended',
           {
             params: {
               playTime: savedPlayTime,
