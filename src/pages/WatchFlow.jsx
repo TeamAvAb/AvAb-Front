@@ -91,7 +91,9 @@ export default function WatchFlow() {
       totalPages={totalPages}
       handlePaginationClick={setCurrentPage}
     >
-      <SortControl setOption={setOrder} selectedOption={order} marginright="24px" isFlow={true} />
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
+        <SortControl setOption={setOrder} selectedOption={order} isFlow />
+      </div>
       {!loading && datas && datas.length > 0 ? (
         <>
           <FlowBox>

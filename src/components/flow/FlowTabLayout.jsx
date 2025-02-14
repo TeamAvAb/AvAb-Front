@@ -34,7 +34,7 @@ export default function FlowTabLayout({
     <SideNavLayout selectedPage={selectedPage} parentTab="flow">
       <MainSection>
         <ButtonSection>
-          <img src={penguin} />
+          <CharacterImg src={penguin} />
           <FlowMakeBtn onClick={moveToMakeFlow} backgroundColor="main01" color="main05" size="lg">
             일정플로우 만들기
           </FlowMakeBtn>
@@ -72,6 +72,10 @@ const ButtonSection = styled.div`
   align-items: center;
   position: relative;
   left: -5rem;
+`;
+const CharacterImg = styled.img`
+  width: 12.4rem;
+  margin-bottom: -1.5rem;
 `;
 const FlowMakeBtn = styled(Button)`
   padding: 1.6rem 5.7rem;
