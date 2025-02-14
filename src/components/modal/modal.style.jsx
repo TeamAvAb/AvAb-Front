@@ -1,11 +1,23 @@
 import styled from 'styled-components';
+import Button from '../common/button/Button';
 
+const Backdrop = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(70, 76, 82, 0.5);
+  z-index: 999;
+`;
 const Modal = styled.div`
   width: 440px;
   height: 435px;
   display: flex;
   justify-content: center;
-  margin-top: 230px;
   position: relative;
   background-color: #f7f8f9;
   border-radius: 20px;
@@ -28,24 +40,20 @@ const Content = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 const Title = styled.h1`
-  color: #000;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.h3.fontSize};
+  font-weight: ${({ theme }) => theme.text.h3.fontWeight};
   text-align: center;
-  font-family: Pretendard;
-  font-size: 2.16rem;
-  font-style: normal;
-  font-weight: 700;
   line-height: normal;
 `;
 const SubTitle = styled.span`
-  color: #000;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
   text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
   line-height: normal;
 `;
 const BtnContainer = styled.div`
@@ -60,41 +68,17 @@ const BtnContainer = styled.div`
     flex-direction: row;
   }
 `;
-const BtnF = styled.button`
-  width: 80%;
-  border-radius: 50px;
-  border: none;
-  background: var(--main-4036-ed, #4036ed);
-  padding: 0.75em;
-  color: var(--main-ffffff, #fff);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
+const BtnF = styled(Button)`
+  width: 70%;
   &.btn-row {
-    width: auto;
+    width: 8.6rem;
     flex: 1;
   }
 `;
-const BtnB = styled.button`
-  width: 80%;
-  border-radius: 50px;
-  border: 1px solid var(--gray-scale-464-c-52, #464c52);
-  background: var(--main-ffffff, #fff);
-  padding: 0.75em;
-  color: var(--gray-scale-464-c-52, #464c52);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
+const BtnB = styled(Button)`
+  width: 70%;
   &.btn-row {
-    width: auto;
+    width: 8.6rem;
     flex: 1;
   }
 `;
@@ -105,4 +89,15 @@ const CloseBtn = styled.img`
   cursor: pointer;
 `;
 
-export { Modal, Content, TitleContainer, Title, SubTitle, BtnContainer, BtnF, BtnB, CloseBtn };
+export {
+  Backdrop,
+  Modal,
+  Content,
+  TitleContainer,
+  Title,
+  SubTitle,
+  BtnContainer,
+  BtnF,
+  BtnB,
+  CloseBtn,
+};
