@@ -173,6 +173,16 @@ const Info = styled.ul`
   }
 `;
 
+const InfoText = styled.span`
+  flex: 1;
+  text-align: right;
+  padding-left: 3px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const MoreDetailBtn = styled.button`
   height: 4.75rem;
   display: flex;

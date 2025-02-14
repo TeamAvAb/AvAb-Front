@@ -1,11 +1,11 @@
 import React from 'react';
 import MyInfoBox from '../components/./myPage/MyInfoBox';
 import { Helmet } from 'react-helmet';
-import Page from '../components/./myPage/Page';
+import SideNavLayout from '../layout/SideNavLayout';
 
 export default function MyPage() {
   return (
-    <Page selectedPage="info">
+    <SideNavLayout selectedPage="info" parentTab="my-page">
       <Helmet>
         <title>AvAb | 마이페이지 - 내 정보 관리</title>
         <meta
@@ -19,6 +19,6 @@ export default function MyPage() {
         />
       </Helmet>
       <MyInfoBox />
-    </Page>
+    </SideNavLayout>
   );
 }
