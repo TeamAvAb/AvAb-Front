@@ -147,15 +147,6 @@ const Info = styled.ul`
   }
 `;
 
-const InfoText = styled.span`
-  ${({ theme }) => theme.text.small};
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: normal;
-`;
-
 const MoreDetailBtn = styled.button`
   height: 4.75rem;
   display: flex;

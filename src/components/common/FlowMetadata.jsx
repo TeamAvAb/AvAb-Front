@@ -10,21 +10,21 @@ export default function FlowMetadata({ totalPlayTime, viewCount, author, scrapCo
     <Info>
       <li>
         <img src={timeImg} alt="소요시간" />
-        <span>{totalPlayTime}분</span>
+        <InfoText>{totalPlayTime}분</InfoText>
       </li>
       <li>
         <img src={viewImg} alt="조회수" />
-        <span>{viewCount}</span>
+        <InfoText>{viewCount}</InfoText>
       </li>
       {author && (
         <li>
           <img src={pencilImg} alt="제작자" />
-          <span>{author}</span>
+          <InfoText>{author}</InfoText>
         </li>
       )}
       <li>
         <img src={userImg} alt="스크랩" />
-        <span>{scrapCount}</span>
+        <InfoText>{scrapCount}</InfoText>
       </li>
     </Info>
   );
@@ -43,13 +43,13 @@ const Info = styled.ul`
     align-items: center;
     gap: 0.5rem;
   }
+`;
 
-  span {
-    ${({ theme }) => theme.text.small};
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    line-height: normal;
-  }
+const InfoText = styled.span`
+  ${({ theme }) => theme.text.small};
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: normal;
 `;
