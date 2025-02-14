@@ -137,13 +137,6 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
           />
         </RecreationTitle>
 
-        {/* 레크레이션 키워드 */}
-        {/* <KeywordBox>
-          <Keyword>키워드 1</Keyword>
-          <Keyword>키워드 2</Keyword>
-          <Keyword>키워드 3</Keyword>
-        </KeywordBox> */}
-
         <KeywordBox onClick={handleDetailSearchClick}>
           {selectedKeywords.length === 0 ? (
             isEditable || !keywords ? (
@@ -181,6 +174,10 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
                         height: '20px',
                         marginLeft: '5px',
                         cursor: 'pointer',
+                        position: 'absolute',  // 삭제 아이콘을 절대 위치로 설정
+                        right: '-10px',  // 오른쪽 끝에 위치
+                        top: '50%',  // 수직 가운데 정렬
+                        transform: 'translateY(-50%)',  // 정확한 가운데 정렬
                       }}
                       onClick={(e) => handleDeleteKeyword(index, e)}
                     />
@@ -227,13 +224,15 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
 const WarningBox = styled.div`
   width: 290px;
   padding: 20px;
-  margin-left: 116px;
+  margin-left: 124px;
   background-color: #464c52;
   color: #ffaa29;
   border-radius: 20px;
   font-size: 20px;
   font-weight: 400;
   position: absolute;
+  left: 50%;
+  transform: translateX(50%);  /* 수평 중앙 정렬 */
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -388,27 +387,12 @@ const StyledKeyword = styled.span`
   color: #1b1d1f;
   margin-left: 8px;
   align-items: center;
+  position: relative;
 
   img {
     margin-left: 12px;
   }
 `;
-
-// const KeywordBox = styled.div`
-//   display: flex;
-//   align-items: flex-start;
-//   gap: 17px;
-//   margin-bottom: 21px;
-// `;
-
-// const Keyword = styled.div`
-//   display: flex;
-//   padding: 5px 29px;
-//   justify-content: center;
-//   align-items: center;
-//   border-radius: 5px;
-//   background: #e9ebed;
-// `;
 
 const PlayTime = styled.div`
   display: flex;
