@@ -22,7 +22,7 @@ import cryingAvab from './assets/main/cryingAvab.svg';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import NotFound from './pages/NotFound';
-import LoginModal from './components/common/LoginModal';
+import LoginModal from './components/modal/LoginModal';
 import Header from './components/common/Header';
 import Footer1 from './components/common/footer/Footer1';
 import Footer2 from './components/common/footer/Footer2';
