@@ -35,7 +35,7 @@ export default function FlowDetails() {
   }, [id]);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner height="lg" />;
   }
 
   if (!data) {
