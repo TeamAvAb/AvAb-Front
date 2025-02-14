@@ -145,15 +145,15 @@ const Info = styled.ul`
     align-items: center;
     gap: 0.5rem;
   }
+`;
 
-  span {
-    ${({ theme }) => theme.text.small};
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    line-height: normal;
-  }
+const InfoText = styled.span`
+  ${({ theme }) => theme.text.small};
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: normal;
 `;
 
 const MoreDetailBtn = styled.button`
