@@ -81,21 +81,21 @@ export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) 
           <Info>
             <li>
               <img src={timeImg} alt="소요시간" />
-              <span>{content.totalPlayTime}분</span>
+              <InfoText>{content.totalPlayTime}분</InfoText>
             </li>
             <li>
               <img src={viewImg} alt="조회수" />
-              <span>{content.viewCount}</span>
+              <InfoText>{content.viewCount}</InfoText>
             </li>
             {!isOwner && (
               <li>
                 <img src={pencilImg} alt="제작자" />
-                <span>{content.author.username}</span>
+                <InfoText>{content.author.username}</InfoText>
               </li>
             )}
             <li>
               <img src={userImg} alt="스크랩" />
-              <span>{content.scrapCount}</span>
+              <InfoText>{content.scrapCount}</InfoText>
             </li>
           </Info>
         </CardColumn>
@@ -162,25 +162,15 @@ const Info = styled.ul`
     align-items: center;
     gap: 0.5rem;
   }
-
-  span {
-    ${({ theme }) => theme.text.small};
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    line-height: normal;
-  }
 `;
 
 const InfoText = styled.span`
-  flex: 1;
+  ${({ theme }) => theme.text.small};
   text-align: right;
-  padding-left: 3px;
-  box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: normal;
 `;
 
 const MoreDetailBtn = styled.button`
