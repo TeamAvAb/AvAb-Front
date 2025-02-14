@@ -3,6 +3,8 @@ import CreateFlowBasicInfo from './CreateFlowBasicInfo';
 import CreateFlowDetailInfo from './CreateFlowDetailInfo';
 import CreateFlowRecommendFlows from './CreateFlowRecommendFlows';
 import { CreateFlowFlowContents } from './CreateFlowFlowContents';
+import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
+import styled from 'styled-components';
 
 export default function CreateFlow() {
   const initialContext = {
@@ -49,28 +51,56 @@ export default function CreateFlow() {
     await funnel.history.back();
   };
 
-  switch (funnel.step) {
-    case 'basic-info':
-      return <CreateFlowBasicInfo onNext={handleBasicInfoStepNext} />;
-    case 'detail-info':
-      return (
-        <CreateFlowDetailInfo
-          context={funnel.context}
-          onNext={handleDetailInfoStepNext}
-          onBack={handleDetailInfoStepBack}
-        />
-      );
-    case 'recommended-flows':
-      return (
-        <CreateFlowRecommendFlows
-          context={funnel.context}
-          onNext={handleRecommendedFlowsStepNext}
-          onBack={handleRecommendedFlowsStepBack}
-        />
-      );
-    case 'flow-contents':
-      return (
-        <CreateFlowFlowContents context={funnel.context} onBack={handleRecommendedFlowsStepBack} />
-      );
-  }
+  const renderStep = () => {
+    switch (funnel.step) {
+      case 'basic-info':
+        return <CreateFlowBasicInfo onNext={handleBasicInfoStepNext} />;
+      case 'detail-info':
+        return (
+          <CreateFlowDetailInfo
+            context={funnel.context}
+            onNext={handleDetailInfoStepNext}
+            onBack={handleDetailInfoStepBack}
+          />
+        );
+      case 'recommended-flows':
+        return (
+          <CreateFlowRecommendFlows
+            context={funnel.context}
+            onNext={handleRecommendedFlowsStepNext}
+            onBack={handleRecommendedFlowsStepBack}
+          />
+        );
+      case 'flow-contents':
+        return (
+          <CreateFlowFlowContents context={funnel.context} onBack={handleFlowContentsStepBack} />
+        );
+    }
+  };
+
+  return (
+    <Wrapper>
+      <CreateFlowStepper currentStep={funnel.step} historyReplaceFn={funnel.history.replace} />
+      <StepWrapper>{renderStep()}</StepWrapper>
+    </Wrapper>
+  );
 }
+
+const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.color.grayscale07};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 0;
+  gap: 2rem;
+`;
+
+const StepWrapper = styled.section`
+  background-color: ${({ theme }) => theme.color.main05};
+  display: flex;
+  width: 84rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale05};
+  border-radius: 1.25rem;
+  padding: 2.5rem 7.25rem;
+  box-sizing: border-box;
+`;
