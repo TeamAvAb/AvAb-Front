@@ -6,7 +6,9 @@ export default function Button({
   backgroundColor,
   color,
   border,
+  borderColor,
   size = 'md',
+  transition = true,
   className,
 }) {
   return (
@@ -15,6 +17,8 @@ export default function Button({
       $color={color}
       $border={border}
       $size={size}
+      $transition={transition}
+      $borderColor={borderColor}
       onClick={onClick}
       className={className}
     >
@@ -36,14 +40,14 @@ const StyledButton = styled.button`
   padding: ${({ $size }) => buttonPadding[$size]};
   font-size: ${({ theme }) => theme.text.button.fontSize};
   font-weight: ${({ theme }) => theme.text.button.fontWeight};
-  border: ${({ $border, theme, $backgroundColor }) =>
+  border: ${({ $border, theme, $backgroundColor, $borderColor }) =>
     $border
-      ? `1px solid ${theme.color.grayscale01}`
+      ? `1px solid ${$borderColor ? theme.color[$borderColor] : theme.color.grayscale01}`
       : `1px solid ${theme.color[$backgroundColor]}`};
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  transition: ${({ $transition }) => ($transition ? 'all 0.3s' : 'none')};
   width: fit-content;
   height: fit-content;
 `;

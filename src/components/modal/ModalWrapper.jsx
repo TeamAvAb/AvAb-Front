@@ -5,7 +5,9 @@ import styled from 'styled-components';
 const ModalWrapper = ({ children, close }) => {
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') close();
+      if (e.key === 'Escape') {
+        close();
+      }
     };
     window.addEventListener('keydown', handleEsc);
     return () => {

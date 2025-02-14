@@ -58,13 +58,13 @@ export default function RecreationCardS({ content, refetch }) {
       </CardContent>
       <CardSection onClick={handleDetailClick}>
         <TitleDiv>
-          <Title>{content.title} </Title>
+          <Title>{content.title}</Title>
           <img src={arrowIcon} alt="" />
         </TitleDiv>
         <KeywordsAndRateBox>
           <Keywords>{renderKeywords()}</Keywords>
           <RateDiv>
-            <img src={yellowStar} alt="star icon" width={16} height={16} />
+            <img src={yellowStar} alt="별" width={16} />
             <Rate>{parseFloat(content.totalStars).toFixed(1)}</Rate>
           </RateDiv>
         </KeywordsAndRateBox>
@@ -73,7 +73,7 @@ export default function RecreationCardS({ content, refetch }) {
   );
 }
 
-export const CardSection = styled.div`
+const CardSection = styled.button`
   height: 7rem;
   display: flex;
   flex-direction: column;
@@ -85,6 +85,10 @@ export const CardSection = styled.div`
   background-color: ${({ theme }) => theme.color.secondary04};
   cursor: pointer;
   transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.main03};
+  }
 `;
 
 const CardLayout = styled.div`
@@ -95,10 +99,6 @@ const CardLayout = styled.div`
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.color.grayscale07};
   box-shadow: 0 10px 30px 3px ${({ theme }) => theme.color.grayscale01}33;
-
-  &:hover ${CardSection} {
-    background-color: ${({ theme }) => theme.color.main03};
-  }
 `;
 
 const CardContent = styled.div`

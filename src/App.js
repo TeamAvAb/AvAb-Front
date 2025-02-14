@@ -13,7 +13,7 @@ import MyFlow from './pages/MyFlow'; // 내 일정 플로우 페이지
 import WatchFlow from './pages/WatchFlow'; // 플로우 구경하기
 import ScrapFlow from './pages/ScrapFlow'; // 스크랩 한 플로우 보기
 import MoreMyflow from './pages/MoreMyflow'; // 내가 만든 일정플로우 더보기
-import MoreWatchFlow from './pages/MoreWatchFlow'; // 다른 사람이 만든 일정플로우 더보기
+import FlowDetails from './pages/FlowDetails'; // 다른 사람이 만든 일정플로우 더보기
 import MoreScrapFlow from './pages/MoreScrapFlow'; // 스크랩 한 일정플로우 더보기
 import LoginLoading from './pages/LoginLoading'; // 로그인 시 로딩 페이지
 import GlobalStyle from './GlobalStyles'; // 전역 스타일
@@ -59,7 +59,7 @@ function App() {
       {/* 스크랩 한 플로우 보기 */}
       <Route path="/flow/scrap" element={<ScrapFlow />} />
       {/* 다른 사람이 만든 일정플로우 더보기 */}
-      <Route path="/flow/morewatchflow/:title" element={<MoreWatchFlow />} />
+      <Route path="/flow/morewatchflow/:title" element={<FlowDetails />} />
       {/* 내가 만든 일정플로우 더보기 */}
       <Route path="/flow/moremyflow/:title" element={<MoreMyflow />} />
       {/* 스크랩 한 일정플로우 더보기 */}
