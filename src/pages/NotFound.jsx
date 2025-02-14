@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import cryingAvab from '../assets/main/cryingAvab.svg';
+import cryingAvb from '../assets/main/cryingAvb.png';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Button from '../components/common/button/Button';
@@ -11,7 +11,7 @@ export default function NotFound() {
         <title>존재하지 않는 페이지</title>
       </Helmet>
       <NotFoundContainer>
-        <img src={cryingAvab} alt="울고있는 아브브" />
+        <img src={cryingAvb} alt="울고있는 아브브" />
         <Title>존재하지 않는 페이지입니다.</Title>
         <Description>
           요청한 페이지를 찾을 수 없습니다.
