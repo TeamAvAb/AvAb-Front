@@ -29,21 +29,21 @@ export default function FlowCardD({ content, children, isOwner }) {
           <Info>
             <li>
               <img src={timeImg} alt="소요시간" />
-              <span>{content.totalPlayTime}분</span>
+              <InfoText>{content.totalPlayTime}분</InfoText>
             </li>
             <li>
               <img src={viewImg} alt="조회수" />
-              <span>{content.viewCount}</span>
+              <InfoText>{content.viewCount}</InfoText>
             </li>
             {isOwner !== 'true' && (
               <li>
                 <img src={pencilImg} alt="제작자" />
-                <span>{content.author.username}</span>
+                <InfoText>{content.author.username}</InfoText>
               </li>
             )}
             <li>
               <img src={userImg} alt="스크랩" />
-              <span>{content.scrapCount}</span>
+              <InfoText>{content.scrapCount}</InfoText>
             </li>
           </Info>
         </CardColumn>
@@ -113,6 +113,15 @@ const Info = styled.ul`
   span {
     ${({ theme }) => theme.text.small}
   }
+`;
+const InfoText = styled.span`
+  flex: 1;
+  text-align: right;
+  padding-left: 3px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const MoreDetailBtn = styled.button`
   height: 4.75rem;
