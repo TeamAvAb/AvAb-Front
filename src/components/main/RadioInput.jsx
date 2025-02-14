@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export default function RadioInput({ options, setOption, selectedOption }) {
+export default function RadioInput({ options, setOption, selectedOption, border, gap = 'md' }) {
   const handleOptionClick = (option) => {
     const isSelected = selectedOption.includes(option);
     if (isSelected) {
@@ -12,12 +12,13 @@ export default function RadioInput({ options, setOption, selectedOption }) {
   };
 
   return (
-    <Options>
+    <Options $gap={gap}>
       {options.map((option) => (
         <Option
           key={option.key}
           onClick={() => handleOptionClick(option)}
           selected={selectedOption.includes(option)}
+          $border={border}
         >
           {option.value}
         </Option>
@@ -26,10 +27,15 @@ export default function RadioInput({ options, setOption, selectedOption }) {
   );
 }
 
+const optionGap = {
+  md: '2.5rem',
+  sm: '1.25rem',
+};
+
 const Options = styled.ul`
   display: flex;
   flex-direction: row;
-  gap: 2.5rem;
+  gap: ${({ $gap }) => optionGap[$gap]};
 `;
 
 const Option = styled.li`
@@ -46,4 +52,9 @@ const Option = styled.li`
   color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
   cursor: pointer;
   width: max-content;
+  ${({ $border, theme }) =>
+    $border &&
+    css`
+      border: 1px solid ${theme.color.grayscale05};
+    `}
 `;
