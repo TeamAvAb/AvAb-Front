@@ -79,6 +79,7 @@ export default function FlowWrite() {
     localStorage.removeItem("selectedAges");
     localStorage.removeItem("selectedGroupSize");
     localStorage.removeItem("selectedDetailKeywords");
+    localStorage.removeItem("selectedFlow");
     navigate("/flow/my");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

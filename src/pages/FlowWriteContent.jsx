@@ -206,7 +206,7 @@ export default function FlowWriteContent() {
         const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
 
         const response = await axios.get(
-          'http://avab-dev-env.eba-xbwj9mms.ap-northeast-3.elasticbeanstalk.com/api/recreations/recommended',
+          'http://dev.api.avab.site/api/recreations/recommended',
           {
             params: {
               playTime: savedPlayTime,
@@ -335,11 +335,26 @@ export default function FlowWriteContent() {
       console.error('추가 중 오류 발생:', error);
     }
   };
+
+  const fetchRecreationDetail = async (id) => {
+    try {
+      const response = await axios.get(`https://dev.api.avab.site/api/recreations/${id}`);
+      return response.data.result; // { id, title, keywordList, playTime, ... }
+    } catch (error) {
+      console.error(`레크레이션 상세 정보를 가져오는 데 실패했습니다. ID: ${id}`, error);
+      return null;
+    }
+  };
   
   const handleAddScrapFlow = async (id) => {
-    console.log('Scrap Flow Button clicked');
     try {
-      console.log('API 호출 전');
+      const savedPlayTime = localStorage.getItem('playTime');
+      if (!savedPlayTime) {
+        console.error('playTime이 저장되어 있지 않습니다.');
+        return;
+      }
+
+      const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
       const response = await axios.get(
         `https://dev.api.avab.site/api/users/me/favorites/recreations?page=0`,
         {
@@ -347,9 +362,11 @@ export default function FlowWriteContent() {
             Accept: '*/*',
             Authorization: `Bearer ${testJWT}`,
           },
-        },
+        }
       );
-      console.log(' 스크랩 레크 응답 데이터:', response.data);
+
+      console.log('스크랩 레크 응답 데이터:', response.data.result.recreationList);
+
       console.log(`레크레이션 ID ${id}가 즐겨찾기에 추가되었습니다.`);
       setScrapRecreationData(
         response.data.result.recreationList.map((item) => ({
@@ -362,8 +379,34 @@ export default function FlowWriteContent() {
           isFavorite: item.isFavorite,
         })),
       );
+
+      const data = response.data.result.recreationList.find((item) => item.id === id);
+      if (!data) {
+        console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
+        return;
+      }
+
+      const recreationDetail = await fetchRecreationDetail(id);
+      if (!recreationDetail) {
+        console.error(`해당 ID(${id})의 playTime 정보를 불러올 수 없습니다.`);
+        return;
+      }
+
+      const { title, keywordList, playTime } = recreationDetail;
+
+      // InfoBox 추가
+      setInfoBoxes((prevInfoBoxes) => [
+        ...prevInfoBoxes,
+        <WriteRecreationInfo 
+          title={title} 
+          keywords={keywordList} 
+          playTime={playTime} 
+          isEditable={false}  // handleAddScrapFlow로 생성된 박스만 수정 불가
+          onDelete={handleDeleteInfoBox}
+        />,
+      ]);
+      console.log('추가된 스크랩 레크레이션 데이터:', { title, keywordList, playTime });
     } catch (error) {
-      // 에러 발생 시 에러 처리
       console.error('추가 중 오류 발생:', error);
     }
   };
@@ -374,15 +417,16 @@ export default function FlowWriteContent() {
   }, []);
 
   useEffect(() => {
-    // 데이터에서 필요한 정보 추출
-    const { title, keywordList, playTime } = scrapRecreationData;
-    console.log('추가된 즐겨찾는 레크레이션 데이터:', {
-      title,
-      keywordList,
-      playTime,
-    });
+    console.log(
+      '추가된 즐겨찾는 레크레이션 데이터:',
+      scrapRecreationData.map(({ title, keywordList, playTime }) => ({
+        title,
+        keywordList,
+        playTime,
+      }))
+    );
   }, [scrapRecreationData]);
-
+  
   FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
   FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
 
