@@ -13,6 +13,7 @@ import RecreationInfo from '../components/recreationInfo/RecreationInfo';
 import { Helmet } from 'react-helmet';
 import useLoginModalStore from '../stores/loginModalStore';
 import useLoginStore from '../stores/loginStore';
+import { useLocation } from 'react-router-dom';
 
 const PurposeList = {
   MT: 'MT',
@@ -98,8 +99,8 @@ export default function MoreWatchFlow() {
 
   // moreData 가져오기
   const [data, setData] = useState([]);
-  const moreData = JSON.parse(localStorage.getItem('moreData'));
-  const id = moreData.id;
+  const location = useLocation();
+  const id = location.pathname.split('/')[3];
 
   useEffect(() => {
     const fetchData = async () => {

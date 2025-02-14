@@ -58,22 +58,7 @@ export default function MyFlow() {
         <>
           <FlowBox>
             {datas.map((data) => (
-              <FlowCardD content={data} isOwner="true">
-                <>
-                  <Button backgroundColor="grayscale01" color="main05" border size="xs">
-                    수정
-                  </Button>
-                  <Button
-                    onClick={() => handleDeleteClick(data.id)}
-                    backgroundColor="main05"
-                    color="grayscale04"
-                    border
-                    size="xs"
-                  >
-                    삭제
-                  </Button>
-                </>
-              </FlowCardD>
+              <FlowCardD key={data.id} content={data} isOwner onDeleteClick={handleDeleteClick} />
             ))}
             <ModalWrapper children={<FlowDeleteModal close={closeModal} refetch={fetchData} />} />
           </FlowBox>

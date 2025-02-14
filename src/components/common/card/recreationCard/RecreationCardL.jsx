@@ -88,6 +88,10 @@ const MoreDetailBtn = styled.button`
   ${({ theme }) => theme.text.button};
   border-radius: 0 0 1.25rem 1.25rem;
   transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.main03};
+  }
 `;
 
 const CardContainer = styled.div`
@@ -98,10 +102,6 @@ const CardContainer = styled.div`
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.color.main05};
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
-
-  &:hover ${MoreDetailBtn} {
-    background-color: ${({ theme }) => theme.color.main03};
-  }
 `;
 
 const CardContent = styled.div`

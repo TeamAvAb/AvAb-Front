@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import timeImg from '../../../../assets/Card/timeIcon.svg';
 import viewImg from '../../../../assets/watchflow/view.png'; // svg로 수정 필요
@@ -7,13 +7,48 @@ import userImg from '../../../../assets/Card/userIcon.svg';
 import { useNavigate } from 'react-router';
 import { getTranslatedPurposes } from '../../../../utils/purposeUtils';
 import PurposeChip from '../../chip/PurposeChip';
+import ScrapBtn from '../../button/ScrapBtn';
+import { privateAPI } from '../../../../apis/user';
+import useLoginStore from '../../../../stores/loginStore';
+import useLoginModalStore from '../../../../stores/loginModalStore';
+import Button from '../../button/Button';
 
-export default function FlowCardD({ content, children, isOwner }) {
+export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [isScrap, setIsScrap] = useState(content.isScraped);
+
   const navigate = useNavigate();
+  const navigateToFlowDetails = () => {
+    navigate(`/flow/morewatchflow/${content.id}`);
+  };
 
-  const moveToMoreWatchFlow = (moreData) => {
-    localStorage.setItem('moreData', JSON.stringify(moreData));
-    navigate(`/flow/morewatchflow/${moreData.title}`);
+  const handleDetailClick = () => {
+    navigateToFlowDetails();
+  };
+
+  const handleScrapBtnClick = async () => {
+    if (isLoggedIn) {
+      try {
+        const response = await privateAPI.post(`/api/flows/${content.id}/scraps`);
+        if (response.status === 200) {
+          setIsScrap((prev) => !prev);
+          if (refetch) {
+            refetch();
+          }
+        } else {
+          console.log('플로우 스크랩 실패', response.data);
+        }
+      } catch (error) {
+        throw new Error('ScrapBtn Error in WatchFlow', error);
+      }
+    } else {
+      modalControl();
+    }
+  };
+
+  const handleDeleteClick = async () => {
+    onDeleteClick(content.id);
   };
 
   return (
@@ -25,7 +60,24 @@ export default function FlowCardD({ content, children, isOwner }) {
           <img src={content.imageUrl} alt="플로우 사진" />
         </CardColumn>
         <CardColumn className="right">
-          <BtnBox>{children}</BtnBox>
+          {isOwner ? (
+            <ButtonContainer>
+              <Button backgroundColor="grayscale01" color="main05" border size="xs">
+                수정
+              </Button>
+              <Button
+                onClick={handleDeleteClick}
+                backgroundColor="main05"
+                color="grayscale04"
+                border
+                size="xs"
+              >
+                삭제
+              </Button>
+            </ButtonContainer>
+          ) : (
+            <ScrapBtn flowId={content.id} isScrap={isScrap} onClick={handleScrapBtnClick} />
+          )}
           <Info>
             <li>
               <img src={timeImg} alt="소요시간" />
@@ -35,7 +87,7 @@ export default function FlowCardD({ content, children, isOwner }) {
               <img src={viewImg} alt="조회수" />
               <InfoText>{content.viewCount}</InfoText>
             </li>
-            {isOwner !== 'true' && (
+            {!isOwner && (
               <li>
                 <img src={pencilImg} alt="제작자" />
                 <InfoText>{content.author.username}</InfoText>
@@ -48,7 +100,7 @@ export default function FlowCardD({ content, children, isOwner }) {
           </Info>
         </CardColumn>
       </CardContent>
-      <MoreDetailBtn onClick={() => moveToMoreWatchFlow(content)}>자세히 보기</MoreDetailBtn>
+      <MoreDetailBtn onClick={handleDetailClick}>자세히 보기</MoreDetailBtn>
     </CardLayout>
   );
 }
@@ -60,19 +112,21 @@ const CardLayout = styled.div`
   gap: 1.44rem;
   padding-top: 2.31rem;
   border-radius: 1.25rem;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
 `;
+
 const CardContent = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 2.25rem;
 `;
+
 const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
 
   img {
-    width: 8.8rem;
+    width: 10rem;
   }
 
   &.left {
@@ -80,9 +134,12 @@ const CardColumn = styled.div`
   }
 
   &.right {
-    gap: 3.38rem;
+    gap: 2rem;
+    align-items: end;
+    justify-content: space-between;
   }
 `;
+
 const Title = styled.h4`
   display: inline-block;
   width: 12rem;
@@ -91,12 +148,7 @@ const Title = styled.h4`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const BtnBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: 0.62rem;
-`;
+
 const Info = styled.ul`
   img {
     width: 2.6rem;
@@ -104,25 +156,23 @@ const Info = styled.ul`
   }
 
   li {
-    width: 5.8rem;
+    width: 6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  span {
-    ${({ theme }) => theme.text.small}
+    gap: 0.5rem;
   }
 `;
+
 const InfoText = styled.span`
-  flex: 1;
+  ${({ theme }) => theme.text.small};
   text-align: right;
-  padding-left: 3px;
-  box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: normal;
 `;
+
 const MoreDetailBtn = styled.button`
   height: 4.75rem;
   display: flex;
@@ -132,10 +182,17 @@ const MoreDetailBtn = styled.button`
   background-color: ${({ theme }) => theme.color.secondary04};
   color: ${({ theme }) => theme.color.grayscale01};
   ${({ theme }) => theme.text.button};
-  border-radius: 0rem 0rem 1.25rem 1.25rem;
+  border-radius: 0 0 1.25rem 1.25rem;
   border: none;
+  transition: background-color 0.2s;
 
   &:hover {
     background-color: ${({ theme }) => theme.color.main03};
   }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  flex-direction: column;
 `;
