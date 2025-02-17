@@ -7,14 +7,17 @@ import imgGo4 from '../assets/flowwrite/ImgGo4.png';
 import arrow from '../assets/fast_arrow.svg';
 import StepControl from '../components/createFlow/StepControl';
 import { privateAPI } from '../apis/user';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
   const [recommendedFlows, setRecommendedFlows] = useState([]);
   const [selectedFlowId, setSelectedFlowId] = useState(context.recommendedFlowId);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFlowData = async () => {
       try {
+        setIsLoading(true);
         const response = await privateAPI.get(`https://dev.api.avab.site/api/flows/recommended`, {
           params: {
             playTime: context.totalPlayTime, // 플레이 시간 사용
@@ -26,8 +29,9 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
           const validFlowData = response.data.result.filter(
             (flow) => flow.flowDetail.totalPlayTime === parseInt(context.totalPlayTime),
           );
-          setRecommendedFlows(response.data.result);
+          setRecommendedFlows(validFlowData);
         }
+        setIsLoading(false);
       } catch (error) {
         console.error('API Error:', error);
       }
@@ -35,6 +39,10 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
 
     fetchFlowData();
   }, [context]);
+
+  if (isLoading) {
+    return <LoadingSpinner height="lg" />;
+  }
 
   const handleFlowClick = (flowId) => {
     setSelectedFlowId(flowId);
