@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import keywordImg from '../assets/main/checkIcon.svg';
 import deleteImg from '../assets/main/deleteIcon.svg';
 import RadioInput from '../components/main/RadioInput';
@@ -8,20 +8,32 @@ import AGE from '../constants/enum/age';
 import imgGo3 from '../assets/flowwrite/ImgGo3.png';
 import vector_move from '../assets/flowwrite/vector_move.png';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
-import Button from '../components/common/button/Button';
+import KeywordModal from '../components/main/KeywordModal';
+import KEYWORD_CATEGORY from '../constants/searchKeywordCategory';
+import KEYWORD from '../constants/enum/keyword';
+import { Controller, useForm } from 'react-hook-form';
+import AlertMessage from '../components/common/AlertMessage';
+import StepControl from '../components/createFlow/StepControl';
 
 export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
-  console.log('기본 정보에서 넘어온 데이터', context);
-
-  const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
+
+  const { keywords, genders, ageGroups, participants } = context;
+  const { register, setValue, getValues, watch, control, handleSubmit, formState } = useForm({
+    defaultValues: { keywords, genders, ageGroups, participants },
+  });
 
   const handleKeywordBoxClick = () => {
     setIsKeywordModalOpen(true);
   };
 
   const handleRemoveKeywordClick = (target) => {
-    setSelectedKeywords(selectedKeywords.filter((keyword) => keyword.key !== target.key));
+    const selected = getValues('keywords');
+
+    setValue(
+      'keywords',
+      selected.filter((keyword) => keyword.key !== target.key),
+    );
   };
 
   const handleRecommendedFlowsClick = () => {
@@ -29,7 +41,9 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
   };
 
   const handleFlowContentsClick = () => {
-    onNext('flow-contents', ['A', 'B', 'C'], ['MALE', 'FEMALE'], [10, 20, 30], 30);
+    handleSubmit((data) =>
+      onNext('flow-contents', data.keywords, data.genders, data.ageGroups, data.participants),
+    )();
   };
 
   const handleBackClick = () => {
@@ -37,11 +51,13 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
   };
 
   const handleNextClick = () => {
-    onNext('recommended-flows', ['A', 'B', 'C'], ['MALE', 'FEMALE'], [10, 20, 30], 30);
+    handleSubmit((data) =>
+      onNext('recommended-flows', data.keywords, data.genders, data.ageGroups, data.participants),
+    )();
   };
 
   const renderSelectedKeywords = () => {
-    return selectedKeywords.map((keyword) => (
+    return watch('keywords').map((keyword) => (
       <SelectedKeyword key={keyword.key}>
         <span>{keyword.value} 포함</span>
         <img
@@ -69,7 +85,7 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
           <Label>원하는 키워드를 선택해주세요.</Label>
           <KeywordBox id="keyword" onClick={handleKeywordBoxClick}>
             <img src={keywordImg} style={{ width: '20px', height: '20px' }} alt="" />
-            {selectedKeywords.length === 0 ? (
+            {watch('keywords').length === 0 ? (
               '클릭하면 키워드 선택창이 나와요!'
             ) : (
               <SelectedKeywords>{renderSelectedKeywords()}</SelectedKeywords>
@@ -80,16 +96,52 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
           <Label>레크레이션에 참여하는 인원의 성별과 연령대를 선택해주세요.</Label>
           <RadioInputContainer>
             <RadioInputLabel>성별</RadioInputLabel>
-            <RadioInput options={Object.values(GENDER)} selectedOption={[]} border gap="sm" />
+            <Controller
+              control={control}
+              name="genders"
+              render={({ field: { onChange, value } }) => (
+                <RadioInput
+                  options={Object.values(GENDER)}
+                  setOption={onChange}
+                  selectedOption={value}
+                  border
+                  gap="sm"
+                />
+              )}
+            />
           </RadioInputContainer>
           <RadioInputContainer>
             <RadioInputLabel>연령대</RadioInputLabel>
-            <RadioInput options={Object.values(AGE)} selectedOption={[]} border gap="sm" />
+            <Controller
+              control={control}
+              name="ageGroups"
+              render={({ field: { onChange, value } }) => (
+                <RadioInput
+                  options={Object.values(AGE)}
+                  setOption={onChange}
+                  selectedOption={value}
+                  border
+                  gap="sm"
+                />
+              )}
+            />
           </RadioInputContainer>
         </FormItem>
         <FormItem>
           <Label>레크레이션에 참여하는 조별 인원을 입력해주세요.</Label>
-          <ParticipantInput placeholder="조별 인원을 입력해주세요." />
+          <FormRow>
+            <ParticipantInput
+              $error={!!formState.errors.participants}
+              {...register('participants', { min: 1, max: 20 })}
+              placeholder="조별 인원을 입력해주세요."
+              type="number"
+              min={1}
+              max={20}
+            />
+            {formState.errors.participants && (
+              <AlertMessage message={'조별 인원은 1명 이상 20명 이하로 입력해주세요.'} />
+            )}
+          </FormRow>
         </FormItem>
       </Form>
       <ButtonCardContainer>
@@ -119,29 +171,18 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
         </ButtonCard>
       </ButtonCardContainer>
       <StepControl onBack={handleBackClick} onNext={handleNextClick} />
+      {isKeywordModalOpen && (
+        <KeywordModal
+          category={KEYWORD_CATEGORY.KEYWORD}
+          content={Object.values(KEYWORD)}
+          modalControl={setIsKeywordModalOpen}
+          keywordControl={(data) => setValue('keywords', data)}
+          selectedOption={watch('keywords')}
+        />
+      )}
     </Container>
   );
 }
-
-function StepControl({ onNext, onBack }) {
-  return (
-    <Container1>
-      <Button onClick={onBack} border>
-        이전으로
-      </Button>
-      <Button onClick={onNext} backgroundColor="main02" color="main05">
-        다음으로
-      </Button>
-    </Container1>
-  );
-}
-
-const Container1 = styled.div`
-  display: flex;
-  gap: 2rem;
-  width: 100%;
-  justify-content: center;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -179,6 +220,13 @@ const FormItem = styled.div`
 
 const Label = styled.label`
   ${({ theme }) => theme.text.h4};
+`;
+
+const FormRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
 `;
 
 const KeywordBox = styled.div`
@@ -236,11 +284,19 @@ const ParticipantInput = styled.input`
   padding: 1rem 0.8rem;
   width: 15%;
   border-radius: 1.25rem;
-  border: 1px solid ${({ theme }) => theme.color.grayscale04};
+  border: 1px solid
+    ${({ theme, $error }) => ($error ? theme.color.main04 : theme.color.grayscale04)};
+  ${({ theme }) => theme.text.small};
 
-  ::placeholder {
+  &::placeholder {
     color: ${({ theme }) => theme.color.grayscale04};
     ${({ theme }) => theme.text.small};
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 
@@ -251,7 +307,7 @@ const ArrowIcon = styled.img`
   right: 1.25rem;
   top: 50%;
   transform: translateY(-50%);
-  opacity: 0; /* 기본적으로 숨김 */
+  opacity: 0;
   transition: opacity 0.3s ease-in-out;
 
   &.reversed {
@@ -266,7 +322,6 @@ const ButtonCard = styled.button`
   border-radius: 1.25rem;
   border: none;
   background: ${({ theme }) => theme.color.main03};
-  margin-top: 40px;
   justify-content: center;
   align-items: center;
   transition:
@@ -295,6 +350,8 @@ const CardText = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   text-align: left;
+  ${({ theme }) => theme.text.small};
+  line-height: normal;
 
   &.reversed {
     text-align: right;
@@ -315,4 +372,5 @@ const ButtonCardContainer = styled.div`
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 7.5rem;
+  margin-top: 2.5rem;
 `;
