@@ -48,7 +48,7 @@ export default function KeywordModal({
                 <KeywordChip
                   key={el.key}
                   onClick={() => handleKeywordClick(el)}
-                  selected={result.includes(el)}
+                  selected={result.some((item) => item.key === el.key)}
                   text={el.value}
                   width="17.5%"
                 />
@@ -95,6 +95,7 @@ const Container = styled.div`
   justify-content: center;
   position: fixed;
   top: 0;
+  left: 0;
   background: ${({ theme }) => theme.color.grayscale01}80;
   z-index: 10;
 `;

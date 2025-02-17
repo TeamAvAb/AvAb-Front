@@ -3,11 +3,11 @@ import styled, { css } from 'styled-components';
 
 export default function RadioInput({ options, setOption, selectedOption, border, gap = 'md' }) {
   const handleOptionClick = (option) => {
-    const isSelected = selectedOption.includes(option);
+    const isSelected = selectedOption.some((item) => item.key === option.key);
     if (isSelected) {
-      setOption(selectedOption.filter((el) => el !== option));
+      setOption(selectedOption.filter((el) => el.key !== option.key));
     } else {
-      setOption((prev) => [...prev, option]);
+      setOption([...selectedOption, option]);
     }
   };
 
@@ -17,7 +17,7 @@ export default function RadioInput({ options, setOption, selectedOption, border,
         <Option
           key={option.key}
           onClick={() => handleOptionClick(option)}
-          selected={selectedOption.includes(option)}
+          selected={selectedOption.some((item) => item.key === option.key)}
           $border={border}
         >
           {option.value}
