@@ -16,8 +16,7 @@ export default function RecreationCardS({ content, refetch }) {
   const [isFav, setIsFav] = useState(content.isFavorite);
 
   const navigate = useNavigate();
-  const toRecreationDetail = (recreationId, e) => {
-    e.stopPropagation();
+  const navigateToRecreationDetail = (recreationId) => {
     navigate(`/recreation/detail/${recreationId}`);
     scrollToTop();
   };
@@ -43,9 +42,8 @@ export default function RecreationCardS({ content, refetch }) {
     }
   };
 
-  const handleDetailClick = (e) => {
-    e.stopPropagation();
-    toRecreationDetail(content.id);
+  const handleDetailClick = () => {
+    navigateToRecreationDetail(content.id);
   };
 
   const renderKeywords = () => getTranslatedKeywords(content.keywordList).join(', ');
