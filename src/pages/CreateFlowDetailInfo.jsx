@@ -14,6 +14,7 @@ import KEYWORD from '../constants/enum/keyword';
 import { Controller, useForm } from 'react-hook-form';
 import AlertMessage from '../components/common/AlertMessage';
 import StepControl from '../components/createFlow/StepControl';
+import StepDescriptionBox from '../components/createFlow/StepDescriptionBox';
 
 export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
@@ -78,10 +79,10 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
 
   return (
     <Container>
-      <Explain>
+      <StepDescriptionBox>
         세부정보 입력은 필수사항은 아니지만, <strong>세부정보</strong>를 입력할수록{' '}
         <strong>정확한 추천</strong>을 얻을 수 있습니다.
-      </Explain>
+      </StepDescriptionBox>
       <Form>
         <FormItem>
           <Label>원하는 키워드를 선택해주세요.</Label>
@@ -190,22 +191,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
-
-const Explain = styled.span`
-  ${({ theme }) => theme.text.small};
-  background-color: ${({ theme }) => theme.color.main01};
-  color: ${({ theme }) => theme.color.main05};
-  width: 100%;
-  padding: 0.5rem 0;
-  text-align: center;
-  border-radius: 9999px;
-  line-height: normal;
-  margin-bottom: 6.25rem;
-
-  strong {
-    font-weight: 700;
-  }
 `;
 
 const Form = styled.form`
