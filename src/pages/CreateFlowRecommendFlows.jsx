@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import StepDescriptionBox from '../components/createFlow/StepDescriptionBox';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import FlowRecreationList from '../components/common/FlowRecreationList';
 import NoData from '../components/common/NoData';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
 import arrow from '../assets/fast_arrow.svg';
 import StepControl from '../components/createFlow/StepControl';
+import { privateAPI } from '../apis/user';
 
 export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
   const [recommendedFlows, setRecommendedFlows] = useState([]);
@@ -15,19 +15,18 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
   useEffect(() => {
     const fetchFlowData = async () => {
       try {
-        const response = await axios.get(`https://dev.api.avab.site/api/flows/recommended`, {
+        const response = await privateAPI.get(`https://dev.api.avab.site/api/flows/recommended`, {
           params: {
             playTime: context.totalPlayTime, // 플레이 시간 사용
             purpose: context.purposes.map((purpose) => purpose.key).join(','), // 목적 사용
           },
         });
-        console.log(response.data.result); // API 응답 확인
 
         if (response.data.result) {
           const validFlowData = response.data.result.filter(
             (flow) => flow.flowDetail.totalPlayTime === parseInt(context.totalPlayTime),
           );
-          setRecommendedFlows(validFlowData);
+          setRecommendedFlows(response.data.result);
         }
       } catch (error) {
         console.error('API Error:', error);
@@ -50,7 +49,7 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
   };
 
   const handleBackClick = () => {
-    onBack();
+    onBack(selectedFlowId);
   };
 
   return (
@@ -69,7 +68,7 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
           >
             <HeaderRow>
               <h3>{flow.flowDetail.title}</h3>
-              <Index>{index + 1}안</Index>
+              <Index $selected={selectedFlowId === flow.flowDetail.id}>{index + 1}안</Index>
             </HeaderRow>
             <ListWrapper>
               <FlowRecreationList recreations={flow.recreations} />
@@ -146,6 +145,14 @@ const Index = styled.span`
   padding: 0.5rem 0;
   border-radius: 9999px;
   border: 1px solid ${({ theme }) => theme.color.grayscale01};
+  ${({ $selected, theme }) =>
+    $selected &&
+    css`
+      background-color: ${theme.color.main02};
+      color: ${theme.color.main05};
+      border-color: ${theme.color.main02};
+    `}
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 `;
 
 const ListWrapper = styled.div`

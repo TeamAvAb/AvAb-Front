@@ -17,6 +17,7 @@ export default function CreateFlow() {
     recommendedFlowId: null,
     title: '',
     recreations: [],
+    customRecreations: [],
   };
 
   const funnel = useFunnel({
@@ -35,20 +36,24 @@ export default function CreateFlow() {
     await funnel.history.push(to, { keywords, genders, ageGroups, participants });
   };
 
-  const handleDetailInfoStepBack = async () => {
-    await funnel.history.back();
+  const handleDetailInfoStepBack = async (keywords, genders, ageGroups, participants) => {
+    await funnel.history.push('basic-info', { keywords, genders, ageGroups, participants });
   };
 
   const handleRecommendedFlowsStepNext = async (recommendedFlowId) => {
     await funnel.history.push('flow-contents', { recommendedFlowId });
   };
 
-  const handleRecommendedFlowsStepBack = async () => {
-    await funnel.history.back();
+  const handleRecommendedFlowsStepBack = async (recommendedFlowId) => {
+    await funnel.history.push('detail-info', { recommendedFlowId });
   };
 
-  const handleFlowContentsStepBack = async () => {
-    await funnel.history.back();
+  const handleFlowContentsStepBack = async (title, recreations, customRecreations) => {
+    await funnel.history.push('recommended-flows', { title, recreations, customRecreations });
+  };
+
+  const handleStepClick = (step) => {
+    funnel.history.push(step, funnel.context);
   };
 
   const renderStep = () => {
@@ -80,7 +85,7 @@ export default function CreateFlow() {
 
   return (
     <Wrapper>
-      <CreateFlowStepper currentStep={funnel.step} historyReplaceFn={funnel.history.replace} />
+      <CreateFlowStepper currentStep={funnel.step} onStepClick={handleStepClick} />
       <StepWrapper>{renderStep()}</StepWrapper>
     </Wrapper>
   );

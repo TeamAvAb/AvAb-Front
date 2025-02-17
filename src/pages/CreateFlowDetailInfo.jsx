@@ -50,7 +50,9 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
   };
 
   const handleBackClick = () => {
-    onBack();
+    handleSubmit((data) =>
+      onBack(data.keywords, data.genders, data.ageGroups, data.participants),
+    )();
   };
 
   const handleNextClick = () => {
