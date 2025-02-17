@@ -14,7 +14,6 @@ import hrImg from '../../assets/main/hr.svg';
 import deleteImg from '../../assets/main/deleteIcon.svg';
 import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
-import alertImg from '../../assets/main/alert.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
 import Button from '../common/button/Button';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
@@ -24,6 +23,7 @@ import GENDER from '../../constants/enum/gender';
 import AGE from '../../constants/enum/age';
 import PLACE from '../../constants/enum/place';
 import { scrollToTop } from '../../utils/windowUtils';
+import AlertMessage from '../common/AlertMessage';
 
 export default function Search({ filtersOpen = false, initialParams = {} }) {
   const getInitialKeywords = (keywords) => {
@@ -262,10 +262,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
               $error={participantsAlert}
             />
             {participantsAlert && (
-              <Alert>
-                <img src={alertImg} alt="경고" />
-                <span>1부터 {participantsLimit}까지 입력해주세요.</span>
-              </Alert>
+              <AlertMessage message={`1부터 ${participantsLimit}까지 입력해주세요.`} />
             )}
           </Filter>
 
