@@ -37,7 +37,9 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
   };
 
   const handleRecommendedFlowsClick = () => {
-    onNext('recommended-flows', ['A', 'B', 'C'], ['MALE', 'FEMALE'], [10, 20, 30], 30);
+    handleSubmit((data) =>
+      onNext('recommended-flows', data.keywords, data.genders, data.ageGroups, data.participants),
+    )();
   };
 
   const handleFlowContentsClick = () => {
