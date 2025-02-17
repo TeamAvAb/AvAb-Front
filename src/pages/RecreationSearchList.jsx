@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
-import noScrapImg from '../assets/scrapflow/noScrap.png';
 
 import { Helmet } from 'react-helmet';
 
@@ -13,6 +12,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import RecreationCardL from '../components/common/card/recreationCard/RecreationCardL';
 import qs from 'qs';
 import SortControl from '../components/common/SortControl';
+import NoData from '../components/common/NoData';
 
 export default function RecreationSearchList() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -78,15 +78,7 @@ export default function RecreationSearchList() {
           {loading ? (
             <LoadingSpinner height="lg" />
           ) : datas.length === 0 ? (
-            <NoData>
-              <NoDataImg src={noScrapImg} />
-              <NoDataDescription>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>검색 결과가 없습니다!</div>
-                <div style={{ marginTop: '0.5rem', fontSize: '1.25rem' }}>
-                  다른 조건으로 검색해보세요.
-                </div>
-              </NoDataDescription>
-            </NoData>
+            <NoData variant="search" />
           ) : (
             <>
               <RecreationWrapper>
@@ -121,6 +113,7 @@ const RecreationsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 5rem;
 `;
 
 const ResultHeaderContainer = styled.div`
@@ -143,20 +136,4 @@ const RecreationWrapper = styled.div`
   row-gap: 1.2rem;
   column-gap: 1.8rem;
   margin-bottom: 3rem;
-`;
-
-//검색 결과가 없는 경우
-const NoData = styled.div`
-  width: 100%;
-  text-align: center;
-`;
-
-const NoDataImg = styled.img`
-  width: 9rem;
-`;
-
-const NoDataDescription = styled.div`
-  width: 100%;
-  margin-top: 1rem;
-  text-align: center;
 `;

@@ -18,7 +18,7 @@ import MoreScrapFlow from './pages/MoreScrapFlow'; // 스크랩 한 일정플로
 import LoginLoading from './pages/LoginLoading'; // 로그인 시 로딩 페이지
 import GlobalStyle from './GlobalStyles'; // 전역 스타일
 import useLoginModalStore from './stores/loginModalStore';
-import cryingAvab from './assets/main/cryingAvab.svg';
+import cryingAvb from './assets/main/cryingAvb.png';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import NotFound from './pages/NotFound';
@@ -117,7 +117,7 @@ function App() {
         <MobileOverlay>
           <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
           <SubMessage>PC로 접속해주세요.</SubMessage>
-          <Image src={cryingAvab} alt="Crying Avatar" />
+          <Image src={cryingAvb} alt="Crying Avatar" />
         </MobileOverlay>
       ) : (
         <>

@@ -3,10 +3,10 @@ import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
 import useLoginStore from '../stores/loginStore';
 import useLoginModalStore from '../stores/loginModalStore';
-import noScrapImg from '../assets/scrapflow/noScrap.png';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout';
+import NoData from '../components/common/NoData';
 
 export default function ScrapFlow() {
   const { modalControl } = useLoginModalStore();
@@ -67,13 +67,7 @@ export default function ScrapFlow() {
           </FlowBox>
         </>
       ) : (
-        <NoneAlertBox>
-          <NoneAlertImg src={noScrapImg} />
-          <NoneAlertTextBox>
-            <NoneAlertText className="title">스크랩한 일정플로우가 없습니다!</NoneAlertText>
-            <NoneAlertText>지금 바로 플로우를 구경해보세요.</NoneAlertText>
-          </NoneAlertTextBox>
-        </NoneAlertBox>
+        <NoData variant="scrapFlow" />
       )}
     </FlowTabLayout>
   );
