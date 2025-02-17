@@ -14,7 +14,7 @@ export default function CreateFlow() {
     genders: [],
     ageGroups: [],
     participants: null,
-    recommendedFlows: [],
+    recommendedFlowId: null,
     title: '',
     recreations: [],
   };
@@ -39,8 +39,8 @@ export default function CreateFlow() {
     await funnel.history.back();
   };
 
-  const handleRecommendedFlowsStepNext = async (recommendedFlows) => {
-    await funnel.history.push('flow-contents', { recommendedFlows });
+  const handleRecommendedFlowsStepNext = async (recommendedFlowId) => {
+    await funnel.history.push('flow-contents', { recommendedFlowId });
   };
 
   const handleRecommendedFlowsStepBack = async () => {
