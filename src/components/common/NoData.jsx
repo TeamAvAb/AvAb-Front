@@ -23,6 +23,10 @@ export default function NoData({ variant }) {
       title: '즐겨 찾는 레크레이션이 없습니다!',
       description: '지금 바로 레크레이션을 구경해보세요.',
     },
+    CREATE_FLOW_NO_RECOMMENDED_FLOW: {
+      title: '추천 플로우가 없습니다!',
+      description: '정보를 더 자세히 입력해보세요.',
+    },
   };
 
   let text = null;
@@ -41,6 +45,9 @@ export default function NoData({ variant }) {
       break;
     case 'favoriteRecreation':
       text = TEXT.NO_FAVORITE_RECREATION;
+      break;
+    case 'cfRecommendedFlows':
+      text = TEXT.CREATE_FLOW_NO_RECOMMENDED_FLOW;
       break;
     default:
       break;
