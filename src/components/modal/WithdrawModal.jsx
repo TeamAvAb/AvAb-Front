@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import x from '../../assets/main/closeIcon.svg';
 import * as S from './modal.style';
 import LogoutP from '../../assets/mypage/LogoutImg.svg';
 import patchUserDelete from '../../apis/patchUserDelete';
@@ -15,7 +14,6 @@ export default function WithdrawModal({ handleModal }) {
     logout();
     navigator('/');
   };
-
   const apiCall = () => {
     if (patchUserDelete()) {
       setWithdrawComplete(true);
@@ -23,8 +21,9 @@ export default function WithdrawModal({ handleModal }) {
       console.log('patchUserDelete Fail');
     }
   };
+
   return (
-    <Container>
+    <S.Backdrop>
       <S.Modal>
         <S.Content className="hasimage">
           {withdrawComplete ? (
@@ -35,9 +34,11 @@ export default function WithdrawModal({ handleModal }) {
               </S.TitleContainer>
               <LogoutImg src={LogoutP} />
               <S.BtnContainer>
-                <S.BtnF onClick={completeWithdraw}>닫기</S.BtnF>
+                <S.BtnF onClick={completeWithdraw} backgroundColor="main02" color="main05">
+                  닫기
+                </S.BtnF>
               </S.BtnContainer>
-              <S.CloseBtn onClick={completeWithdraw} src={x} />
+              <S.CloseBtn onClick={completeWithdraw} />
             </>
           ) : (
             <>
@@ -47,37 +48,38 @@ export default function WithdrawModal({ handleModal }) {
                   30일 이후에는 계정 및 데이터가 영구 삭제되며 복구가 불가능합니다.
                 </S.SubTitle>
               </S.TitleContainer>
-              <LogoutImg src={LogoutP} />
+              <LogoutImg src={LogoutP} alt="우는 아브브" />
               <S.BtnContainer className="btn-row">
-                <S.BtnB onClick={apiCall} className="btn-row">
+                <S.BtnB
+                  onClick={apiCall}
+                  className="btn-row"
+                  backgroundColor="main05"
+                  color="grayscale03"
+                  border
+                  borderColor="grayscale03"
+                >
                   회원탈퇴
                 </S.BtnB>
-                <S.BtnF onClick={() => handleModal(false)} className="btn-row">
+                <S.BtnF
+                  onClick={() => handleModal(false)}
+                  className="btn-row"
+                  backgroundColor="main02"
+                  color="main05"
+                >
                   닫기
                 </S.BtnF>
               </S.BtnContainer>
-              <S.CloseBtn onClick={() => handleModal(false)} src={x} />
+              <S.CloseBtn onClick={() => handleModal(false)} />
             </>
           )}
         </S.Content>
       </S.Modal>
-    </Container>
+    </S.Backdrop>
   );
 }
 
-const Container = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  z-index: 999;
-`;
 const LogoutImg = styled.img`
-  width: 200px;
-  height: 210px;
-  margin-bottom: 20px;
+  width: 12.5rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1.69rem;
 `;

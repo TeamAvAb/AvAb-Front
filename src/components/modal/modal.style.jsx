@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '../common/button/Button';
+import closeIcon from '../../assets/X.svg';
 
 const Backdrop = styled.div`
   width: 100vw;
@@ -14,26 +15,25 @@ const Backdrop = styled.div`
   z-index: 999;
 `;
 const Modal = styled.div`
-  width: 440px;
-  height: 435px;
+  width: 27.5rem;
+  min-height: 27.1rem;
   display: flex;
   justify-content: center;
   position: relative;
   background-color: #f7f8f9;
-  border-radius: 20px;
+  border-radius: 1.25rem;
+  box-sizing: border-box;
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 60px;
-  padding: 27px auto 25px;
-  box-sizing: border-box;
-  max-width: 80%;
+  padding: 3rem 0;
+  gap: 3.75rem;
+  max-width: 70%;
   &.hasimage {
     gap: 0;
-    max-width: 70%;
   }
   word-break: keep-all;
 `;
@@ -57,36 +57,37 @@ const SubTitle = styled.span`
   line-height: normal;
 `;
 const BtnContainer = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  gap: 2em;
+  gap: 2.5rem;
   &.btn-row {
     flex-direction: row;
   }
 `;
 const BtnF = styled(Button)`
-  width: 70%;
+  width: 13.93rem;
   &.btn-row {
-    width: 8.6rem;
+    width: 8.62rem;
     flex: 1;
   }
 `;
 const BtnB = styled(Button)`
-  width: 70%;
+  width: 13.93rem;
   &.btn-row {
-    width: 8.6rem;
+    width: 8.62rem;
     flex: 1;
   }
 `;
-const CloseBtn = styled.img`
+const CloseBtn = styled.button`
+  background: url(${closeIcon}) no-repeat;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 2.62rem;
+  height: 2.62rem;
+  padding: 0;
 `;
 
 export {

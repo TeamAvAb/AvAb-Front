@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LogoutModal({ handleModal }) {
   const { logout } = useLoginStore();
-
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -43,6 +42,7 @@ export default function LogoutModal({ handleModal }) {
               backgroundColor="main05"
               color="grayscale03"
               border
+              borderColor="grayscale03"
             >
               로그아웃
             </S.BtnB>
@@ -55,6 +55,7 @@ export default function LogoutModal({ handleModal }) {
               닫기
             </S.BtnF>
           </S.BtnContainer>
+          <S.CloseBtn onClick={() => handleModal(false)} />
         </S.Content>
       </S.Modal>
     </S.Backdrop>
