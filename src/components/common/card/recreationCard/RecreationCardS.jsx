@@ -97,6 +97,7 @@ const CardLayout = styled.div`
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.color.grayscale07};
   box-shadow: 0 10px 30px 3px ${({ theme }) => theme.color.grayscale01}33;
+  flex: 0 0 auto;
 `;
 
 const CardContent = styled.div`
