@@ -1,6 +1,5 @@
 import ModalPortal from '../../portals/ModalPortal';
 import { useEffect } from 'react';
-import styled from 'styled-components';
 import { Backdrop } from './modal.style';
 
 const ModalWrapper = ({ children, close }) => {
