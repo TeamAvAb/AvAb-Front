@@ -66,20 +66,13 @@ const BtnContainer = styled.div`
     flex-direction: row;
   }
 `;
-const BtnF = styled(Button)`
+const ModalBtn = styled(Button)`
   width: 13.93rem;
   &.btn-row {
     width: 8.62rem;
-    flex: 1;
   }
 `;
-const BtnB = styled(Button)`
-  width: 13.93rem;
-  &.btn-row {
-    width: 8.62rem;
-    flex: 1;
-  }
-`;
+
 const CloseBtn = styled.button`
   background: url(${closeIcon}) no-repeat;
   position: absolute;
@@ -98,7 +91,6 @@ export {
   Title,
   SubTitle,
   BtnContainer,
-  BtnF,
-  BtnB,
+  ModalBtn,
   CloseBtn,
 };

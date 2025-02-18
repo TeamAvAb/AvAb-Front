@@ -5,8 +5,7 @@ import {
   Modal,
   Title,
   TitleContainer,
-  BtnF,
-  BtnB,
+  ModalBtn,
 } from './modal.style';
 import { useState } from 'react';
 
@@ -26,7 +25,7 @@ export default function FlowShareModal({ close }) {
         </TitleContainer>
         <BtnContainer>
           {copied ? (
-            <BtnB
+            <ModalBtn
               onClick={handleLinkCopy}
               backgroundColor="main05"
               color="main02"
@@ -34,11 +33,11 @@ export default function FlowShareModal({ close }) {
               borderColor="main02"
             >
               복사 완료
-            </BtnB>
+            </ModalBtn>
           ) : (
-            <BtnF onClick={handleLinkCopy} backgroundColor="main02" color="main05">
+            <ModalBtn onClick={handleLinkCopy} backgroundColor="main02" color="main05">
               링크 복사하기
-            </BtnF>
+            </ModalBtn>
           )}
         </BtnContainer>
       </Content>

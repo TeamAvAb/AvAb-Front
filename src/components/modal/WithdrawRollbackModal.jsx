@@ -33,9 +33,9 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
               <S.SubTitle>다시 로그인해주세요.</S.SubTitle>
             </S.TitleContainer>
             <S.BtnContainer>
-              <S.BtnF onClick={navigateLogin} backgroundColor="main02" color="main05">
+              <S.ModalBtn onClick={navigateLogin} backgroundColor="main02" color="main05">
                 네
-              </S.BtnF>
+              </S.ModalBtn>
             </S.BtnContainer>
             <S.CloseBtn onClick={navigateLogin} />
           </>
@@ -48,10 +48,10 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
               </S.SubTitle>
             </S.TitleContainer>
             <S.BtnContainer>
-              <S.BtnF onClick={deleteRollback} backgroundColor="main02" color="main05">
+              <S.ModalBtn onClick={deleteRollback} backgroundColor="main02" color="main05">
                 네
-              </S.BtnF>
-              <S.BtnB
+              </S.ModalBtn>
+              <S.ModalBtn
                 onClick={navigateLogin}
                 backgroundColor="main05"
                 color="grayscale03"
@@ -59,7 +59,7 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
                 borderColor="grayscale03"
               >
                 아니요
-              </S.BtnB>
+              </S.ModalBtn>
             </S.BtnContainer>
             <S.CloseBtn onClick={navigateLogin} />
           </>

@@ -34,9 +34,9 @@ export default function WithdrawModal({ handleModal }) {
               </S.TitleContainer>
               <LogoutImg src={LogoutP} />
               <S.BtnContainer>
-                <S.BtnF onClick={completeWithdraw} backgroundColor="main02" color="main05">
+                <S.ModalBtn onClick={completeWithdraw} backgroundColor="main02" color="main05">
                   닫기
-                </S.BtnF>
+                </S.ModalBtn>
               </S.BtnContainer>
               <S.CloseBtn onClick={completeWithdraw} />
             </>
@@ -50,7 +50,7 @@ export default function WithdrawModal({ handleModal }) {
               </S.TitleContainer>
               <LogoutImg src={LogoutP} alt="우는 아브브" />
               <S.BtnContainer className="btn-row">
-                <S.BtnB
+                <S.ModalBtn
                   onClick={apiCall}
                   className="btn-row"
                   backgroundColor="main05"
@@ -59,15 +59,15 @@ export default function WithdrawModal({ handleModal }) {
                   borderColor="grayscale03"
                 >
                   회원탈퇴
-                </S.BtnB>
-                <S.BtnF
+                </S.ModalBtn>
+                <S.ModalBtn
                   onClick={() => handleModal(false)}
                   className="btn-row"
                   backgroundColor="main02"
                   color="main05"
                 >
                   닫기
-                </S.BtnF>
+                </S.ModalBtn>
               </S.BtnContainer>
               <S.CloseBtn onClick={() => handleModal(false)} />
             </>

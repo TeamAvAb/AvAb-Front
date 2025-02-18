@@ -38,15 +38,19 @@ export default function FlowDeleteModal({ close, refetch }) {
         </S.TitleContainer>
         <S.BtnContainer>
           {deleteComplete ? (
-            <S.BtnF onClick={() => confirmDelete()} backgroundColor="main02" color="main05">
+            <S.ModalBtn onClick={() => confirmDelete()} backgroundColor="main02" color="main05">
               확인
-            </S.BtnF>
+            </S.ModalBtn>
           ) : (
             <>
-              <S.BtnF onClick={() => deleteFlow(flowId)} backgroundColor="main02" color="main05">
+              <S.ModalBtn
+                onClick={() => deleteFlow(flowId)}
+                backgroundColor="main02"
+                color="main05"
+              >
                 삭제하기
-              </S.BtnF>
-              <S.BtnB
+              </S.ModalBtn>
+              <S.ModalBtn
                 onClick={() => close()}
                 backgroundColor="main05"
                 color="grayscale03"
@@ -54,7 +58,7 @@ export default function FlowDeleteModal({ close, refetch }) {
                 borderColor="grayscale03"
               >
                 실행 취소하기
-              </S.BtnB>
+              </S.ModalBtn>
             </>
           )}
         </S.BtnContainer>

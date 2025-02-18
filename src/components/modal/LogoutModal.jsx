@@ -36,7 +36,7 @@ export default function LogoutModal({ handleModal }) {
           </S.TitleContainer>
           <LogoutImg src={LogoutP} alt="우는 아브브" />
           <S.BtnContainer className="btn-row">
-            <S.BtnB
+            <S.ModalBtn
               onClick={handleLogout}
               className="btn-row"
               backgroundColor="main05"
@@ -45,15 +45,15 @@ export default function LogoutModal({ handleModal }) {
               borderColor="grayscale03"
             >
               로그아웃
-            </S.BtnB>
-            <S.BtnF
+            </S.ModalBtn>
+            <S.ModalBtn
               onClick={() => handleModal(false)}
               className="btn-row"
               backgroundColor="main02"
               color="main05"
             >
               닫기
-            </S.BtnF>
+            </S.ModalBtn>
           </S.BtnContainer>
           <S.CloseBtn onClick={() => handleModal(false)} />
         </S.Content>

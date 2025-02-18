@@ -8,9 +8,9 @@ export default function NicknameChangeModal({ handleModal }) {
         <S.Content>
           <S.Title>닉네임 변경을 완료했습니다!</S.Title>
           <S.BtnContainer>
-            <S.BtnF onClick={() => handleModal(false)} backgroundColor="main02" color="main05">
+            <S.ModalBtn onClick={() => handleModal(false)} backgroundColor="main02" color="main05">
               확인
-            </S.BtnF>
+            </S.ModalBtn>
           </S.BtnContainer>
         </S.Content>
         <S.CloseBtn onClick={() => handleModal(false)} />
