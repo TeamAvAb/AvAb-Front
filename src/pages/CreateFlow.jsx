@@ -86,7 +86,7 @@ export default function CreateFlow() {
   return (
     <Wrapper>
       <CreateFlowStepper currentStep={funnel.step} onStepClick={handleStepClick} />
-      <StepWrapper>{renderStep()}</StepWrapper>
+      <StepWrapper $wide={funnel.step === 'flow-contents'}>{renderStep()}</StepWrapper>
     </Wrapper>
   );
 }
@@ -106,6 +106,6 @@ const StepWrapper = styled.section`
   width: 84rem;
   border: 1px solid ${({ theme }) => theme.color.grayscale05};
   border-radius: 1.25rem;
-  padding: 2.5rem 7.25rem;
+  padding: 2.5rem ${({ $wide }) => ($wide ? '2.5rem' : '7.25rem')};
   box-sizing: border-box;
 `;

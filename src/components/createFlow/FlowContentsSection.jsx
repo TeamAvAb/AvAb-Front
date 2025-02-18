@@ -1,0 +1,174 @@
+import styled from 'styled-components';
+import { getTranslatedPurposes } from '../../utils/purposeUtils';
+import { getTranslatedKeywords } from '../../utils/keywordUtils';
+import { getTranslatedGenders } from '../../utils/genderUtils';
+import { getTranslatedAges } from '../../utils/ageUtils';
+import plusIcon from '../../assets/plus.svg';
+import RecreationList from './RecreationList';
+
+export function FlowContentsSection({ flow }) {
+  return (
+    <Container>
+      <SectionHeaderContainer>
+        <h2>기본정보</h2>
+        <h2>세부정보</h2>
+      </SectionHeaderContainer>
+      <SummaryBox>
+        <Column>
+          <InfoRow>
+            <Label>목적</Label>
+            <span>{getTranslatedPurposes(flow.purposes).join(' ')}</span>
+          </InfoRow>
+          <InfoRow>
+            <Label>플레이 시간</Label>
+            <span>{flow.totalPlayTime}분</span>
+          </InfoRow>
+        </Column>
+
+        <Line />
+
+        <Column className="right">
+          <InfoRow>
+            <Label>키워드</Label>
+            {flow.keywords.length === 0 && '선택해주세요.'}
+            <span>{getTranslatedKeywords(flow.keywords).join(' ')}</span>
+          </InfoRow>
+          <InfoRow>
+            <Label>성별</Label>
+            {flow.genders.length === 0 && '선택해주세요.'}
+            <span>{getTranslatedGenders(flow.genders).join(', ')}</span>
+          </InfoRow>
+          <InfoRow>
+            <Label>연령대</Label>
+            {flow.ageGroups.length === 0 && '선택해주세요.'}
+            <span>{getTranslatedAges(flow.ageGroups).join(', ')}</span>
+          </InfoRow>
+          <InfoRow>
+            <Label>인원</Label>
+            <span>{flow.participants > 0 ? `${flow.participants}명` : '입력해주세요.'}</span>
+          </InfoRow>
+        </Column>
+      </SummaryBox>
+      <SectionHeader>일정플로우 제목</SectionHeader>
+      <TitleInput placeholder="일정플로우의 제목을 입력해주세요." />
+      <RecreationListContainer>
+        <h2>플로우 제목</h2>
+        <RecreationList />
+        <AddCustomRecreationButton>
+          <img src={plusIcon} />
+        </AddCustomRecreationButton>
+      </RecreationListContainer>
+    </Container>
+  );
+}
+
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 50%;
+`;
+
+const SectionHeaderContainer = styled.div`
+  ${({ theme }) => theme.text.h4};
+  padding: 1.7rem 2.4rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale05};
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+
+  h2 {
+    width: 50%;
+    text-align: center;
+  }
+`;
+
+const SectionHeader = styled.h2`
+  ${({ theme }) => theme.text.h4};
+  padding: 1.7rem 2.4rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale05};
+  border-radius: 1.25rem;
+`;
+
+const SummaryBox = styled.div`
+  border-radius: 1.25rem;
+  background: ${({ theme }) => theme.color.grayscale07};
+  padding: 1.8rem 1.25rem;
+  display: flex;
+  align-items: center;
+  height: 6.5rem;
+  margin-bottom: 1.25rem;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 50%;
+
+  &.right {
+    margin-left: 1.25rem;
+  }
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  ${({ theme }) => theme.text.small};
+`;
+
+const Label = styled.h3`
+  ${({ theme }) => theme.text.smallBold};
+`;
+
+const Line = styled.div`
+  border-left: 1px solid #cacdd2;
+  height: 100%;
+  width: 1px;
+`;
+
+const TitleInput = styled.input`
+  ${({ theme }) => theme.text.paragraph};
+  border-radius: 1.25rem;
+  background: ${({ theme }) => theme.color.grayscale07};
+  padding: 0.8rem 1.2rem;
+  border: none;
+  margin-bottom: 6rem;
+
+  ::placeholder {
+    ${({ theme }) => theme.text.paragraph};
+    color: ${({ theme }) => theme.color.grayscale04};
+  }
+`;
+
+const RecreationListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.75rem;
+  align-items: center;
+  margin: 0 1.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid ${({ theme }) => theme.color.grayscale04};
+  padding: 2rem 4.3rem;
+
+  h2 {
+    ${({ theme }) => theme.text.h4};
+    text-align: center;
+  }
+`;
+
+const AddCustomRecreationButton = styled.button`
+  width: 65%;
+  margin: 0 auto;
+  background-color: ${({ theme }) => theme.color.grayscale07};
+  border-radius: 1.25rem;
+  box-shadow: 0 0 20px ${({ theme }) => theme.color.grayscale01}26;
+  padding: 1rem 0;
+`;
+
+const PlayTimeBar = styled.div`
+  background: ${({ theme }) => theme.color.secondary04};
+  width: 0.5rem;
+  height: ${({ $height }) => `${$height}rem`};
+  border-radius: 9999px;
+`;

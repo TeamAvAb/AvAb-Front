@@ -1,11 +1,29 @@
+import styled from 'styled-components';
+import SelectRecreationSection from '../components/createFlow/SelectRecreationSection';
+import { FlowContentsSection } from '../components/createFlow/FlowContentsSection';
+
 export function CreateFlowFlowContents({ context, onBack }) {
-  console.log('상세 정보/추천 플로우에서 넘어온 데이터', context);
+  const { purposes, totalPlayTime, keywords, genders, ageGroups, participants } = context;
 
   return (
-    <div>
-      플로우 내용
-      <button onClick={onBack}>이전</button>
-      <button>저장하기</button>
-    </div>
+    <Container>
+      <SelectRecreationSection totalPlayTime={totalPlayTime} purposes={purposes} />
+      <FlowContentsSection
+        flow={{
+          purposes,
+          totalPlayTime,
+          keywords,
+          genders,
+          ageGroups,
+          participants,
+        }}
+      />
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  gap: 1.25rem;
+  width: 100%;
+`;

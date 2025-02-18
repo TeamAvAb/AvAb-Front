@@ -27,6 +27,7 @@ export default function FlowRecreation({ index, recreationTitle, keywords, playT
     </FlowRecreationContainer>
   );
 }
+
 const PlayTimeBar = styled.div`
   background: ${({ theme }) => theme.color.secondary04};
   width: 0.5rem;
