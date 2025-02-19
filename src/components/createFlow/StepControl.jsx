@@ -2,14 +2,14 @@ import Button from '../common/button/Button';
 import React from 'react';
 import styled from 'styled-components';
 
-export default function StepControl({ onNext, onBack }) {
+export default function StepControl({ onNext, onBack, last = false }) {
   return (
     <Container>
       <Button onClick={onBack} border>
         이전으로
       </Button>
       <Button onClick={onNext} backgroundColor="main02" color="main05">
-        다음으로
+        {last ? '저장하기' : '다음으로'}
       </Button>
     </Container>
   );
