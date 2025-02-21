@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 import { getTranslatedPurposes } from '../../utils/purposeUtils';
-import { getTranslatedKeywords } from '../../utils/keywordUtils';
-import { getTranslatedGenders } from '../../utils/genderUtils';
-import { getTranslatedAges } from '../../utils/ageUtils';
 import RecreationList from './RecreationList';
 
 export function FlowContentsSection({
@@ -46,17 +43,17 @@ export function FlowContentsSection({
           <InfoRow>
             <Label>키워드</Label>
             {flow.keywords.length === 0 && '선택해주세요.'}
-            <span>{getTranslatedKeywords(flow.keywords).join(' ')}</span>
+            <span>{flow.keywords.map((keyword) => keyword.value).join(' ')}</span>
           </InfoRow>
           <InfoRow>
             <Label>성별</Label>
             {flow.genders.length === 0 && '선택해주세요.'}
-            <span>{getTranslatedGenders(flow.genders).join(', ')}</span>
+            <span>{flow.genders.map((gender) => gender.value).join(', ')}</span>
           </InfoRow>
           <InfoRow>
             <Label>연령대</Label>
             {flow.ageGroups.length === 0 && '선택해주세요.'}
-            <span>{getTranslatedAges(flow.ageGroups).join(', ')}</span>
+            <span>{flow.ageGroups.map((group) => group.value).join(', ')}</span>
           </InfoRow>
           <InfoRow>
             <Label>인원</Label>
