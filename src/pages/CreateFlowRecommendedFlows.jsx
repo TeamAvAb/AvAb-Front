@@ -9,7 +9,7 @@ import StepControl from '../components/createFlow/StepControl';
 import { privateAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
-export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
+export default function CreateFlowRecommendedFlows({ context, onBack, onNext }) {
   const [recommendedFlows, setRecommendedFlows] = useState([]);
   const [selectedFlowId, setSelectedFlowId] = useState(context.recommendedFlowId);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +40,6 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
     fetchFlowData();
   }, [context]);
 
-  if (isLoading) {
-    return <LoadingSpinner height="lg" />;
-  }
-
   const handleFlowClick = (flowId) => {
     setSelectedFlowId(flowId);
   };
@@ -67,7 +63,8 @@ export default function CreateFlowRecommendFlows({ context, onBack, onNext }) {
         하여 선택해주세요.
       </StepDescriptionBox>
       <FlowsWrapper>
-        {recommendedFlows.length === 0 && <NoData variant="cfRecommendedFlows" />}
+        {isLoading && <LoadingSpinner />}
+        {!isLoading && recommendedFlows.length === 0 && <NoData variant="cfRecommendedFlows" />}
         {recommendedFlows.map((flow, index) => (
           <FlowContainer
             onClick={() => handleFlowClick(flow.flowDetail.id)}
@@ -112,6 +109,7 @@ const FlowsWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+  min-height: 20rem;
 `;
 
 const FlowContainer = styled.div`
