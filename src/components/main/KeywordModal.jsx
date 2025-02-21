@@ -12,16 +12,21 @@ export default function KeywordModal({
   modalControl,
   keywordControl,
   selectedOption,
+  limit,
 }) {
   const [result, setResult] = useState(selectedOption);
   const handleKeywordClick = (option) => {
-    const isSelected = selectedOption.includes(option) || result.includes(option);
+    const isSelected = result.some((el) => el.key === option.key);
     if (isSelected) {
-      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
       setResult((prev) => prev.filter((el) => el.key !== option.key));
     } else {
-      // 단일 선택 시 체크된 아이템을 배열에 추가
-      setResult((prev) => [...prev, option]);
+      if (limit) {
+        if (result.length < limit) {
+          setResult((prev) => [...prev, option]);
+        }
+      } else {
+        setResult((prev) => [...prev, option]);
+      }
     }
   };
 
