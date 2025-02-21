@@ -150,7 +150,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
   };
 
   // 1~participantsLimit 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
-  useDebouncedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
+  useDebouncedEffect(() => setParticipantsAlert(false), 1000, [participantsAlert]);
 
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
