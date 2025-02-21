@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 
-export function CreateFlowFlowContents({ context, onBack, push }) {
+export function CreateFlowFlowContents({ context, onBack, saveContext }) {
   const {
     purposes,
     totalPlayTime,
@@ -16,23 +16,14 @@ export function CreateFlowFlowContents({ context, onBack, push }) {
     ageGroups,
     participants,
     recommendedFlowId,
-    recreations: initialRecreations,
+    recreations: contextRecreations,
+    title: contextTitle,
   } = context;
 
   const { register, control, watch, handleSubmit } = useForm({
     defaultValues: {
-      title: '',
-      recreations: !!initialRecreations.length
-        ? initialRecreations
-        : [
-            {
-              id: null,
-              title: '',
-              keywords: [],
-              playTime: null,
-              isCustom: true,
-            },
-          ],
+      title: contextTitle,
+      recreations: contextRecreations,
     },
   });
 
@@ -70,14 +61,16 @@ export function CreateFlowFlowContents({ context, onBack, push }) {
       }
     };
 
-    if (!initialRecreations.length) {
+    if (!contextRecreations.length) {
       fetchRecommendedFlow();
     }
   }, []);
 
   useEffect(() => {
-    push({ title: watch('title') });
-  }, [watch('title')]);
+    const { unsubscribe } = watch((data) => saveContext(data));
+
+    return () => unsubscribe();
+  }, [watch]);
 
   const handleBackClick = () => {
     handleSubmit((data) => onBack(data.title, data.recreations))();

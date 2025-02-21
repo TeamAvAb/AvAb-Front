@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import keywordImg from '../assets/main/checkIcon.svg';
 import deleteImg from '../assets/main/deleteIcon.svg';
 import RadioInput from '../components/main/RadioInput';
@@ -16,13 +16,19 @@ import AlertMessage from '../components/common/AlertMessage';
 import StepControl from '../components/createFlow/StepControl';
 import StepDescriptionBox from '../components/createFlow/StepDescriptionBox';
 
-export default function CreateFlowDetailInfo({ context, onBack, onNext }) {
+export default function CreateFlowDetailInfo({ context, onBack, onNext, saveContext }) {
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
 
   const { keywords, genders, ageGroups, participants } = context;
   const { register, setValue, getValues, watch, control, handleSubmit, formState } = useForm({
     defaultValues: { keywords, genders, ageGroups, participants },
   });
+
+  useEffect(() => {
+    const { unsubscribe } = watch((data) => saveContext(data));
+
+    return () => unsubscribe();
+  }, [watch]);
 
   const handleKeywordBoxClick = () => {
     setIsKeywordModalOpen(true);

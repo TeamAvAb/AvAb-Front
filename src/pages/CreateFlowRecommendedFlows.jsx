@@ -9,7 +9,7 @@ import StepControl from '../components/createFlow/StepControl';
 import { privateAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
-export default function CreateFlowRecommendedFlows({ context, onBack, onNext }) {
+export default function CreateFlowRecommendedFlows({ context, onBack, onNext, saveContext }) {
   const [recommendedFlows, setRecommendedFlows] = useState([]);
   const [selectedFlowId, setSelectedFlowId] = useState(context.recommendedFlowId);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +39,10 @@ export default function CreateFlowRecommendedFlows({ context, onBack, onNext }) 
 
     fetchFlowData();
   }, [context]);
+
+  useEffect(() => {
+    saveContext({ recommendedFlowId: selectedFlowId });
+  }, [selectedFlowId]);
 
   const handleFlowClick = (flowId) => {
     setSelectedFlowId(flowId);

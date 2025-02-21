@@ -1,10 +1,11 @@
 import { useFunnel } from '@use-funnel/react-router-dom';
 import CreateFlowBasicInfo from './CreateFlowBasicInfo';
 import CreateFlowDetailInfo from './CreateFlowDetailInfo';
-import CreateFlowRecommendFlows from './CreateFlowRecommendFlows';
+import CreateFlowRecommendedFlows from './CreateFlowRecommendedFlows';
 import { CreateFlowFlowContents } from './CreateFlowFlowContents';
 import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 export default function CreateFlow() {
   const initialContext = {
@@ -16,8 +17,15 @@ export default function CreateFlow() {
     participants: null,
     recommendedFlowId: null,
     title: '',
-    recreations: [],
-    customRecreations: [],
+    recreations: [
+      {
+        id: null,
+        title: '',
+        keywords: [],
+        playTime: null,
+        isCustom: true,
+      },
+    ],
   };
 
   const funnel = useFunnel({
@@ -48,12 +56,16 @@ export default function CreateFlow() {
     await funnel.history.push('detail-info', { recommendedFlowId });
   };
 
-  const handleFlowContentsStepBack = async (title, recreations, customRecreations) => {
-    await funnel.history.push('recommended-flows', { title, recreations, customRecreations });
+  const handleFlowContentsStepBack = async (title, recreations) => {
+    await funnel.history.push('recommended-flows', { title, recreations });
   };
 
-  const handleStepClick = (step) => {
-    funnel.history.push(step, funnel.context);
+  const handleStepClick = async (step) => {
+    await funnel.history.push(step, funnel.context);
+  };
+
+  const saveContext = async (context) => {
+    await funnel.history.replace(funnel.step, context);
   };
 
   const renderStep = () => {
@@ -66,22 +78,32 @@ export default function CreateFlow() {
             context={funnel.context}
             onNext={handleDetailInfoStepNext}
             onBack={handleDetailInfoStepBack}
+            saveContext={saveContext}
           />
         );
       case 'recommended-flows':
         return (
-          <CreateFlowRecommendFlows
+          <CreateFlowRecommendedFlows
             context={funnel.context}
             onNext={handleRecommendedFlowsStepNext}
             onBack={handleRecommendedFlowsStepBack}
+            saveContext={saveContext}
           />
         );
       case 'flow-contents':
         return (
-          <CreateFlowFlowContents context={funnel.context} onBack={handleFlowContentsStepBack} />
+          <CreateFlowFlowContents
+            context={funnel.context}
+            onBack={handleFlowContentsStepBack}
+            saveContext={saveContext}
+          />
         );
     }
   };
+
+  useEffect(() => {
+    console.log(funnel.context);
+  }, [funnel.context]);
 
   return (
     <Wrapper>
