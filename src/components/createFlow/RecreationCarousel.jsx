@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import useEmblaCarousel from 'embla-carousel-react';
 import RightArrow from '../common/button/RightArrow';
 import LeftArrow from '../common/button/LeftArrow';
 import { usePrevNextButtons } from '../../hooks/usePrevNextButtons';
 import RecreationCard from './RecreationCard';
+import { useEffect } from 'react';
+import useCarousel from '../../hooks/useCarousel';
 
 function PrevArrow({ onClick }) {
   return (
@@ -13,34 +14,47 @@ function PrevArrow({ onClick }) {
   );
 }
 
-function NextArrow({ className, onClick }) {
+function NextArrow({ onClick }) {
   return (
-    <ButtonWrapper onClick={onClick}>
+    <ButtonWrapper className="next" onClick={onClick}>
       <RightArrow />
     </ButtonWrapper>
   );
 }
 
-export default function RecreationCarousel({ recreations, handleAddRecommendFlow }) {
-  const [carouselRef, carouselApi] = useEmblaCarousel({
-    slidesToScroll: 2,
-    duration: 30,
-    watchDrag: false,
-  });
+export default function RecreationCarousel({ recreations, appendRecreation, incrementPage }) {
+  const [carouselRef, carouselApi] = useCarousel();
 
   const { onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(carouselApi);
+
+  useEffect(() => {
+    incrementPage &&
+      carouselApi &&
+      carouselApi.on('slidesInView', () => {
+        const lastSlide = carouselApi.slideNodes().length - 1;
+        const isLastSlideInView = carouselApi.slidesInView().includes(lastSlide);
+
+        if (isLastSlideInView) {
+          incrementPage();
+        }
+      });
+  }, [carouselApi]);
 
   return (
     <Carousel>
       <Viewport ref={carouselRef}>
         <Container>
           {recreations.map((recreation) => (
-            <RecreationCard content={recreation} />
+            <RecreationCard
+              key={recreation.id}
+              content={recreation}
+              appendRecreation={appendRecreation}
+            />
           ))}
         </Container>
+        <PrevArrow onClick={onPrevButtonClick} />
+        <NextArrow onClick={onNextButtonClick} />
       </Viewport>
-      <PrevArrow onClick={onPrevButtonClick} />
-      <NextArrow onClick={onNextButtonClick} />
     </Carousel>
   );
 }
@@ -63,7 +77,10 @@ const Container = styled.div`
 const ButtonWrapper = styled.div`
   position: absolute;
   top: 40%;
-  right: 0;
+
+  &.next {
+    right: 0;
+  }
 
   &.prev {
     left: 0;

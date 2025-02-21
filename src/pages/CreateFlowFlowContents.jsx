@@ -2,26 +2,113 @@ import styled from 'styled-components';
 import SelectRecreationSection from '../components/createFlow/SelectRecreationSection';
 import { FlowContentsSection } from '../components/createFlow/FlowContentsSection';
 import StepControl from '../components/createFlow/StepControl';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { privateAPI } from '../apis/user';
+import KEYWORD from '../constants/enum/keyword';
 
-export function CreateFlowFlowContents({ context, onBack }) {
-  const { purposes, totalPlayTime, keywords, genders, ageGroups, participants } = context;
+export function CreateFlowFlowContents({ context, onBack, push }) {
+  const {
+    purposes,
+    totalPlayTime,
+    keywords,
+    genders,
+    ageGroups,
+    participants,
+    recommendedFlowId,
+    recreations: initialRecreations,
+  } = context;
+
+  const { register, control, watch, handleSubmit } = useForm({
+    defaultValues: {
+      title: '',
+      recreations: !!initialRecreations.length
+        ? initialRecreations
+        : [
+            {
+              id: null,
+              title: '',
+              keywords: [],
+              playTime: null,
+              isCustom: true,
+            },
+          ],
+    },
+  });
+
+  const {
+    fields: recreations,
+    append: appendRecreation,
+    remove: removeRecreation,
+    replace: replaceAllRecreations,
+  } = useFieldArray({
+    control,
+    name: 'recreations',
+  });
+
+  useEffect(() => {
+    const fetchRecommendedFlow = async () => {
+      if (!recommendedFlowId) {
+        return;
+      }
+
+      try {
+        const response = await privateAPI.get(`/api/flows/${recommendedFlowId}`);
+        if (response.data.result) {
+          replaceAllRecreations(
+            response.data.result.recreations.map((recreation) => ({
+              id: recreation.id,
+              title: recreation.title,
+              keywords: recreation.keywordList.map((keyword) => KEYWORD[keyword]),
+              playTime: recreation.playTime,
+              isCustom: false,
+            })),
+          );
+        }
+      } catch (e) {
+        console.error('추천 플로우 조회 실패', e);
+      }
+    };
+
+    if (!initialRecreations.length) {
+      fetchRecommendedFlow();
+    }
+  }, []);
+
+  useEffect(() => {
+    push({ title: watch('title') });
+  }, [watch('title')]);
+
+  const handleBackClick = () => {
+    handleSubmit((data) => onBack(data.title, data.recreations))();
+  };
 
   return (
     <Container>
       <Sections>
-        <SelectRecreationSection totalPlayTime={totalPlayTime} purposes={purposes} />
+        <SelectRecreationSection
+          totalPlayTime={totalPlayTime}
+          purposes={purposes}
+          appendRecreation={appendRecreation}
+        />
         <FlowContentsSection
           flow={{
+            title: watch('title'),
             purposes,
             totalPlayTime,
             keywords,
             genders,
             ageGroups,
             participants,
+            recreations,
           }}
+          register={register}
+          control={control}
+          appendRecreation={appendRecreation}
+          removeRecreation={removeRecreation}
         />
       </Sections>
-      <StepControl last />
+      <StepControl last onBack={handleBackClick} />
     </Container>
   );
 }

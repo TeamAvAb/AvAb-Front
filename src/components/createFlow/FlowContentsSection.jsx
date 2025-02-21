@@ -3,10 +3,25 @@ import { getTranslatedPurposes } from '../../utils/purposeUtils';
 import { getTranslatedKeywords } from '../../utils/keywordUtils';
 import { getTranslatedGenders } from '../../utils/genderUtils';
 import { getTranslatedAges } from '../../utils/ageUtils';
-import plusIcon from '../../assets/plus.svg';
 import RecreationList from './RecreationList';
 
-export function FlowContentsSection({ flow }) {
+export function FlowContentsSection({
+  flow,
+  register,
+  control,
+  appendRecreation,
+  removeRecreation,
+}) {
+  const handleAddCustomRecreationClick = () => {
+    appendRecreation({
+      id: null,
+      title: '',
+      keywords: [],
+      playTime: null,
+      isCustom: true,
+    });
+  };
+
   return (
     <Container>
       <SectionHeaderContainer>
@@ -50,12 +65,19 @@ export function FlowContentsSection({ flow }) {
         </Column>
       </SummaryBox>
       <SectionHeader>일정플로우 제목</SectionHeader>
-      <TitleInput placeholder="일정플로우의 제목을 입력해주세요." />
+      <TitleInput placeholder="일정플로우의 제목을 입력해주세요." {...register('title')} />
       <RecreationListContainer>
-        <h2>플로우 제목</h2>
-        <RecreationList />
-        <AddCustomRecreationButton>
-          <img src={plusIcon} />
+        <h2 className={!flow.title ? 'empty-title' : ''}>
+          {flow.title ? flow.title : '플로우 제목'}
+        </h2>
+        <RecreationList
+          recreations={flow.recreations}
+          register={register}
+          removeRecreation={removeRecreation}
+          control={control}
+        />
+        <AddCustomRecreationButton onClick={handleAddCustomRecreationClick}>
+          +
         </AddCustomRecreationButton>
       </RecreationListContainer>
     </Container>
@@ -154,6 +176,10 @@ const RecreationListContainer = styled.div`
   h2 {
     ${({ theme }) => theme.text.h4};
     text-align: center;
+
+    &.empty-title {
+      color: ${({ theme }) => theme.color.grayscale04};
+    }
   }
 `;
 
@@ -163,7 +189,17 @@ const AddCustomRecreationButton = styled.button`
   background-color: ${({ theme }) => theme.color.grayscale07};
   border-radius: 1.25rem;
   box-shadow: 0 0 20px ${({ theme }) => theme.color.grayscale01}26;
-  padding: 1rem 0;
+  padding: 5px 0;
+  font-size: 2.5rem;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.main02};
+    color: ${({ theme }) => theme.color.main05};
+  }
+
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 `;
 
 const PlayTimeBar = styled.div`

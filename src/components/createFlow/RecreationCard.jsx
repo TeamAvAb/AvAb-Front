@@ -2,8 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import RecreationCardS from '../common/card/recreationCard/RecreationCardS';
 import Button from '../common/button/Button';
+import KEYWORD from '../../constants/enum/keyword';
 
-export default function RecreationCard({ content, handleAddRecommendFlow, handleAddScrapFlow }) {
+export default function RecreationCard({ content, appendRecreation }) {
+  const handleAddClick = () => {
+    appendRecreation({
+      id: content.id,
+      title: content.title,
+      keywords: content.keywordList.map((keyword) => KEYWORD[keyword]),
+      playTime: content.playTime,
+      isCustom: false,
+    });
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -14,7 +25,7 @@ export default function RecreationCard({ content, handleAddRecommendFlow, handle
           <Content>{content.summary}</Content>
         </Summary>
       </Wrapper>
-      <Button color="main05" backgroundColor="secondary02">
+      <Button onClick={handleAddClick} color="main05" backgroundColor="secondary02">
         추가하기
       </Button>
     </Container>
