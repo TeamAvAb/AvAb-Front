@@ -6,6 +6,8 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
+import useModal from '../hooks/useModal';
+import CreateFlowConfirmModal from '../components/modal/CreateFlowConfirmModal';
 
 export function CreateFlowFlowContents({ context, onBack, saveContext }) {
   const {
@@ -36,6 +38,8 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
     control,
     name: 'recreations',
   });
+
+  const { ModalWrapper, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const fetchRecommendedFlow = async () => {
@@ -101,7 +105,10 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
           removeRecreation={removeRecreation}
         />
       </Sections>
-      <StepControl last onBack={handleBackClick} />
+      <StepControl last onBack={handleBackClick} onNext={openModal} />
+      <ModalWrapper>
+        <CreateFlowConfirmModal close={closeModal} />
+      </ModalWrapper>
     </Container>
   );
 }
