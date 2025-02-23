@@ -64,14 +64,19 @@ export default function RecreationItem({
           ))}
         </KeywordBox>
         <PlayTimeBox>
-          플레이까지
+          <span className="label">플레이까지</span>
           <PlayTimeInput
             placeholder="10"
-            {...register(`recreations.${index}.playTime`, { required: true, min: 1 })}
+            {...register(`recreations.${index}.playTime`, {
+              valueAsNumber: true,
+              required: { value: true, message: '플레이 시간을 입력해주세요.' },
+              min: { value: 10, message: '10분에서 300분 사이로 입력해주세요.' },
+              max: { value: 300, message: '10분에서 300분 사이로 입력해주세요.' },
+            })}
           />
           <span className="minute">분</span>
           <ErrorWrapper className="playTime">
-            {error?.playTime && <AlertMessage message="플레이 시간을 입력해주세요." />}
+            {error?.playTime && <AlertMessage message={error?.playTime.message} />}
           </ErrorWrapper>
         </PlayTimeBox>
       </RecreationContent>
@@ -138,14 +143,18 @@ const PlayTimeBox = styled.div`
   span.minute {
     ${({ theme }) => theme.text.smallBold};
   }
+
+  span.label {
+    width: 6rem;
+  }
 `;
 
 const PlayTimeInput = styled.input`
-  margin-left: 1.2rem;
   font-weight: 700;
   border: none;
   ${({ theme }) => theme.text.smallBold};
-  width: 1.1rem;
+  width: 1.7rem;
+  text-align: right;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grayscale04};
@@ -169,5 +178,6 @@ const ErrorWrapper = styled.div`
 
   &.playTime {
     margin-left: 0.5rem;
+    max-width: 60%;
   }
 `;

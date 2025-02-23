@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { getTranslatedPurposes } from '../../utils/purposeUtils';
 import RecreationList from './RecreationList';
+import { useFormState } from 'react-hook-form';
+import AlertMessage from '../common/AlertMessage';
 
 export function FlowContentsSection({
   flow,
@@ -18,6 +20,10 @@ export function FlowContentsSection({
       isCustom: true,
     });
   };
+
+  const {
+    errors: { title: titleError },
+  } = useFormState({ control });
 
   return (
     <Container>
@@ -62,7 +68,31 @@ export function FlowContentsSection({
         </Column>
       </SummaryBox>
       <SectionHeader>일정플로우 제목</SectionHeader>
-      <TitleInput placeholder="일정플로우의 제목을 입력해주세요." {...register('title')} />
+      <TitleInputBox>
+        <TitleInput
+          placeholder="일정플로우의 제목을 입력해주세요."
+          {...register('title', {
+            required: {
+              value: true,
+              message: '플로우 제목을 입력해주세요.',
+            },
+            minLength: {
+              value: 2,
+              message: '2자 이상 40자 이하로 입력해주세요.',
+            },
+            maxLength: {
+              value: 40,
+              message: '2자 이상 40자 이하로 입력해주세요.',
+            },
+          })}
+        />
+        {titleError ? (
+          <AlertMessage message={titleError.message} />
+        ) : (
+          <div style={{ height: '1.13rem' }} />
+        )}
+      </TitleInputBox>
+
       <RecreationListContainer>
         <h2 className={!flow.title ? 'empty-title' : ''}>
           {flow.title ? flow.title : '플로우 제목'}
@@ -152,12 +182,19 @@ const TitleInput = styled.input`
   background: ${({ theme }) => theme.color.grayscale07};
   padding: 0.8rem 1.2rem;
   border: none;
-  margin-bottom: 6rem;
 
   ::placeholder {
     ${({ theme }) => theme.text.paragraph};
     color: ${({ theme }) => theme.color.grayscale04};
   }
+`;
+
+const TitleInputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 6rem;
 `;
 
 const RecreationListContainer = styled.div`
@@ -173,6 +210,8 @@ const RecreationListContainer = styled.div`
   h2 {
     ${({ theme }) => theme.text.h4};
     text-align: center;
+    word-break: break-all;
+    line-height: normal;
 
     &.empty-title {
       color: ${({ theme }) => theme.color.grayscale04};
@@ -197,11 +236,4 @@ const AddCustomRecreationButton = styled.button`
   transition:
     background-color 0.3s,
     color 0.3s;
-`;
-
-const PlayTimeBar = styled.div`
-  background: ${({ theme }) => theme.color.secondary04};
-  width: 0.5rem;
-  height: ${({ $height }) => `${$height}rem`};
-  border-radius: 9999px;
 `;

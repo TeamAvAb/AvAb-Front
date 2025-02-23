@@ -2,10 +2,9 @@ import { useFunnel } from '@use-funnel/react-router-dom';
 import CreateFlowBasicInfo from './CreateFlowBasicInfo';
 import CreateFlowDetailInfo from './CreateFlowDetailInfo';
 import CreateFlowRecommendedFlows from './CreateFlowRecommendedFlows';
-import { CreateFlowFlowContents } from './CreateFlowFlowContents';
+import CreateFlowFlowContents from './CreateFlowFlowContents';
 import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 
 export default function CreateFlow() {
   const initialContext = {
@@ -17,15 +16,7 @@ export default function CreateFlow() {
     participants: null,
     recommendedFlowId: null,
     title: '',
-    recreations: [
-      {
-        id: null,
-        title: '',
-        keywords: [],
-        playTime: null,
-        isCustom: true,
-      },
-    ],
+    recreations: [],
   };
 
   const funnel = useFunnel({
@@ -100,10 +91,6 @@ export default function CreateFlow() {
         );
     }
   };
-
-  useEffect(() => {
-    console.log(funnel.context);
-  }, [funnel.context]);
 
   return (
     <Wrapper>

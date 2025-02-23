@@ -22,7 +22,8 @@ export default function RecreationList({ recreations, register, removeRecreation
             removeRecreation={removeRecreation}
             recreationTitle={field.title}
             keywords={field.keywords}
-            playTime={field.playTime}
+            register={register}
+            control={control}
           />
         ),
       )}

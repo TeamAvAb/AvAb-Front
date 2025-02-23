@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import KeywordModal from '../main/KeywordModal';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
 import KEYWORD from '../../constants/enum/keyword';
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller, useFormState, useWatch } from 'react-hook-form';
 import KeywordChip from '../common/chip/KeywordChip';
 import DeleteRecreationConfirmTooltip from './DeleteRecreationConfirmTooltip';
+import AlertMessage from '../common/AlertMessage';
+import RecreationKeywordTooltip from './RecreationKeywordTooltip';
 
 export default function CustomRecreationItem({ index, register, removeRecreation, control }) {
   const [isDeleteConfirmTooltipOpen, setIsDeleteConfirmTooltipOpen] = useState(false);
@@ -16,6 +18,10 @@ export default function CustomRecreationItem({ index, register, removeRecreation
     name: `recreations.${index}`,
     control,
   });
+
+  const { errors } = useFormState({ control, name: `recreations` });
+
+  const error = errors.recreations?.[index];
 
   const handleXClick = () => {
     setIsDeleteConfirmTooltipOpen(true);
@@ -40,7 +46,8 @@ export default function CustomRecreationItem({ index, register, removeRecreation
 
   const playTimeBarHeight = playTime ? (playTime / 10) * 10 : 10;
 
-  const TOOLTIP_ID = `delete-confirm-${index}`;
+  const DELETE_TOOLTIP_ID = `delete-confirm-${index}`;
+  const KEYWORD_TOOLTIP_ID = `select-keyword-tooltip`;
 
   return (
     <Container>
@@ -50,29 +57,55 @@ export default function CustomRecreationItem({ index, register, removeRecreation
           <NumCircle>{index + 1}</NumCircle>
           <TitleInput
             placeholder="레크레이션 제목 입력"
-            {...register(`customRecreations.${index}.title`)}
+            {...register(`recreations.${index}.title`, {
+              required: { value: true, message: '제목을 입력해주세요.' },
+              minLength: { value: 2, message: '2자에서 15자 사이로 입력해주세요.' },
+              maxLength: { value: 15, message: '2자에서 15자 사이로 입력해주세요.' },
+            })}
           />
-          <DeleteButton data-tooltip-id={TOOLTIP_ID} onClick={handleXClick}>
+          <DeleteButton data-tooltip-id={DELETE_TOOLTIP_ID} onClick={handleXClick}>
             <img src={circleXIcon} width={20} alt="삭제" />
           </DeleteButton>
           <DeleteRecreationConfirmTooltip
-            tooltipId={TOOLTIP_ID}
+            tooltipId={DELETE_TOOLTIP_ID}
             isOpen={isDeleteConfirmTooltipOpen}
             onDelete={handleDeleteClick}
             onCancel={handleCancelClick}
           />
         </TitleBox>
-        <KeywordBox onClick={handleKeywordBoxClick}>
+        <ErrorWrapper className="title">
+          {error?.title && <AlertMessage message={error?.title.message} />}
+        </ErrorWrapper>
+        <KeywordBox
+          onClick={handleKeywordBoxClick}
+          data-tooltip-id={!!keywords.length ? KEYWORD_TOOLTIP_ID : ''}
+        >
           {!keywords.length ? (
             <span>이곳을 클릭하여 3개의 키워드를 선택해주세요.</span>
           ) : (
             renderSelectedKeywords()
           )}
         </KeywordBox>
+        <RecreationKeywordTooltip tooltipId={KEYWORD_TOOLTIP_ID} />
+
+        <ErrorWrapper className="keywords">
+          {error?.keywords && <AlertMessage message={error?.keywords.message} />}
+        </ErrorWrapper>
         <PlayTimeBox>
-          플레이까지
-          <PlayTimeInput placeholder="10" {...register(`customRecreations.${index}.playTime`)} />
-          <span>분</span>
+          <span className="label">플레이까지</span>
+          <PlayTimeInput
+            placeholder="10"
+            {...register(`recreations.${index}.playTime`, {
+              valueAsNumber: true,
+              required: { value: true, message: '플레이 시간을 입력해주세요.' },
+              min: { value: 10, message: '10분에서 300분 사이로 입력해주세요.' },
+              max: { value: 300, message: '10분에서 300분 사이로 입력해주세요.' },
+            })}
+          />
+          <span className="minute">분</span>
+          <ErrorWrapper className="playTime">
+            {error?.playTime && <AlertMessage message={error?.playTime.message} />}
+          </ErrorWrapper>
         </PlayTimeBox>
       </RecreationContent>
       <Controller
@@ -85,13 +118,15 @@ export default function CustomRecreationItem({ index, register, removeRecreation
                 selectedOption={value}
                 modalControl={setIsKeywordModalOpen}
                 keywordControl={onChange}
-                limit={3}
+                min={3}
+                max={3}
               />
             )
           );
         }}
         name={`recreations.${index}.keywords`}
         control={control}
+        rules={{ required: { value: true, message: '키워드를 3개 선택해주세요.' } }}
       />
     </Container>
   );
@@ -119,6 +154,22 @@ const TitleBox = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`;
+
+const ErrorWrapper = styled.div`
+  &.title {
+    margin-left: 3.3rem;
+    margin-top: -1rem;
+  }
+
+  &.keywords {
+    margin-top: -0.5rem;
+  }
+
+  &.playTime {
+    margin-left: 0.5rem;
+    max-width: 60%;
+  }
 `;
 
 const KeywordBox = styled.button`
@@ -161,20 +212,26 @@ const TitleInput = styled.input`
 `;
 
 const PlayTimeBox = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 1rem;
   ${({ theme }) => theme.text.small};
 
-  span {
+  span.minute {
     ${({ theme }) => theme.text.smallBold};
+  }
+
+  span.label {
+    width: 6rem;
   }
 `;
 
 const PlayTimeInput = styled.input`
-  margin-left: 1.2rem;
   font-weight: 700;
   border: none;
   ${({ theme }) => theme.text.smallBold};
-  width: 1.1rem;
+  width: 1.7rem;
+  text-align: right;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.grayscale04};

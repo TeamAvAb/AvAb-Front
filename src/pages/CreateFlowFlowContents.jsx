@@ -3,13 +3,14 @@ import SelectRecreationSection from '../components/createFlow/SelectRecreationSe
 import { FlowContentsSection } from '../components/createFlow/FlowContentsSection';
 import StepControl from '../components/createFlow/StepControl';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
-import CreateFlowConfirmModal from '../components/modal/CreateFlowConfirmModal';
+import CreateFlowBeforeUnloadModal from '../components/modal/CreateFlowBeforeUnloadModal';
+import FlowContentsErrorModal from '../components/modal/FlowContentsErrorModal';
 
-export function CreateFlowFlowContents({ context, onBack, saveContext }) {
+export default function CreateFlowFlowContents({ context, onBack, saveContext }) {
   const {
     purposes,
     totalPlayTime,
@@ -22,10 +23,22 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
     title: contextTitle,
   } = context;
 
+  const [contentsError, setContentsError] = useState('');
+
   const { register, control, watch, handleSubmit } = useForm({
     defaultValues: {
       title: contextTitle,
-      recreations: contextRecreations,
+      recreations: !!contextRecreations.length
+        ? contextRecreations
+        : [
+            {
+              id: null,
+              title: '',
+              keywords: [],
+              playTime: null,
+              isCustom: true,
+            },
+          ],
     },
   });
 
@@ -39,7 +52,17 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
     name: 'recreations',
   });
 
-  const { ModalWrapper, openModal, closeModal } = useModal();
+  const {
+    ModalWrapper: BeforeUnloadModalWrapper,
+    openModal: openBeforeUnloadModal,
+    closeModal: closeBeforeUnloadModal,
+  } = useModal();
+
+  const {
+    ModalWrapper: ContentsErrorModalWrapper,
+    openModal: openContentsErrorModal,
+    closeModal: closeContentsErrorModal,
+  } = useModal();
 
   useEffect(() => {
     const fetchRecommendedFlow = async () => {
@@ -80,6 +103,61 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
     handleSubmit((data) => onBack(data.title, data.recreations))();
   };
 
+  const saveFlow = ({
+    title,
+    recreations,
+    totalPlayTime,
+    participants,
+    ageGroups,
+    purposes,
+    keywords,
+    genders,
+  }) => {
+    const recreationSpecList = recreations.map((recreation, seq) =>
+      !recreation.isCustom
+        ? {
+            seq,
+            recreationId: recreation.id,
+            customPlayTime: recreation.playTime,
+          }
+        : {
+            seq,
+            customTitle: recreation.title,
+            customPlayTime: recreation.playTime,
+            customKeywordList: recreation.keywords.map((keyword) => keyword.key),
+          },
+    );
+    const ageList = ageGroups.map((ageGroup) => ageGroup.key);
+    const purposeList = purposes.map((purpose) => purpose.key);
+    const keywordList = keywords.map((keyword) => keyword.key);
+    const genderList = genders.map((gender) => gender.key);
+
+    const flow = {
+      title,
+      recreationSpecList,
+      totalPlayTime,
+      participants,
+      ageList,
+      purposeList,
+      keywordList,
+      genderList,
+    };
+
+    console.log(flow);
+    // TODO: API 호출
+  };
+
+  const handleInvalidContents = (errors) => {
+    if (errors.recreations.some((recreation) => !!recreation.keywords)) {
+      setContentsError('recreationsKeyword');
+      openContentsErrorModal();
+    }
+  };
+
+  const handleSaveClick = () => {
+    handleSubmit((data) => saveFlow({ ...context, ...data }), handleInvalidContents)();
+  };
+
   return (
     <Container>
       <Sections>
@@ -105,10 +183,13 @@ export function CreateFlowFlowContents({ context, onBack, saveContext }) {
           removeRecreation={removeRecreation}
         />
       </Sections>
-      <StepControl last onBack={handleBackClick} onNext={openModal} />
-      <ModalWrapper>
-        <CreateFlowConfirmModal close={closeModal} />
-      </ModalWrapper>
+      <StepControl last onBack={handleBackClick} onNext={handleSaveClick} />
+      <BeforeUnloadModalWrapper>
+        <CreateFlowBeforeUnloadModal close={closeBeforeUnloadModal} />
+      </BeforeUnloadModalWrapper>
+      <ContentsErrorModalWrapper>
+        <FlowContentsErrorModal close={closeContentsErrorModal} variant={contentsError} />
+      </ContentsErrorModalWrapper>
     </Container>
   );
 }
