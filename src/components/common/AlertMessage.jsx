@@ -14,7 +14,7 @@ export default function AlertMessage({ message }) {
 const Alert = styled.div`
   display: flex;
   gap: 0.5rem;
-  align-items: baseline;
+  align-items: center;
   color: ${({ theme }) => theme.color.main04};
   ${({ theme }) => theme.text.small};
 `;
