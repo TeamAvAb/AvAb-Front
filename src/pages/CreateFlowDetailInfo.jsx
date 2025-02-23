@@ -20,7 +20,15 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, saveCont
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
 
   const { keywords, genders, ageGroups, participants } = context;
-  const { register, setValue, getValues, watch, control, handleSubmit, formState } = useForm({
+  const {
+    register,
+    setValue,
+    getValues,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: { keywords, genders, ageGroups, participants },
   });
 
@@ -142,16 +150,18 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, saveCont
           <Label>레크레이션에 참여하는 조별 인원을 입력해주세요.</Label>
           <FormRow>
             <ParticipantInput
-              $error={!!formState.errors.participants}
-              {...register('participants', { min: 1, max: 20 })}
+              $error={!!errors.participants}
+              {...register('participants', {
+                min: { value: 1, message: '조별 인원은 1명에 100명 사이로 입력해주세요.' },
+                max: { value: 100, message: '조별 인원은 1명에 100명 사이로 입력해주세요.' },
+                valueAsNumber: true,
+              })}
               placeholder="조별 인원을 입력해주세요."
               type="number"
               min={1}
-              max={20}
+              max={100}
             />
-            {formState.errors.participants && (
-              <AlertMessage message={'조별 인원은 1명 이상 20명 이하로 입력해주세요.'} />
-            )}
+            {errors.participants && <AlertMessage message={errors.participants.message} />}
           </FormRow>
         </FormItem>
       </Form>
@@ -183,12 +193,20 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, saveCont
       </ButtonCardContainer>
       <StepControl onBack={handleBackClick} onNext={handleNextClick} />
       {isKeywordModalOpen && (
-        <KeywordModal
-          category={KEYWORD_CATEGORY.KEYWORD}
-          content={Object.values(KEYWORD)}
-          modalControl={setIsKeywordModalOpen}
-          keywordControl={(data) => setValue('keywords', data)}
-          selectedOption={watch('keywords')}
+        <Controller
+          render={({ field: { onChange, value } }) => (
+            <KeywordModal
+              category={KEYWORD_CATEGORY.KEYWORD}
+              content={Object.values(KEYWORD)}
+              modalControl={setIsKeywordModalOpen}
+              keywordControl={onChange}
+              selectedOption={value}
+              min={1}
+              max={10}
+            />
+          )}
+          name="keywords"
+          control={control}
         />
       )}
     </Container>
