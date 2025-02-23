@@ -5,6 +5,8 @@ import Button from '../common/button/Button';
 import BaseKeywordChip from '../common/chip/KeywordChip';
 import BasePurposeChip from '../common/chip/PurposeChip';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import alertIcon from '../../assets/main/alert.svg';
 
 export default function KeywordModal({
   category,
@@ -12,7 +14,8 @@ export default function KeywordModal({
   modalControl,
   keywordControl,
   selectedOption,
-  limit,
+  min,
+  max,
 }) {
   const [result, setResult] = useState(selectedOption);
   const handleKeywordClick = (option) => {
@@ -20,13 +23,7 @@ export default function KeywordModal({
     if (isSelected) {
       setResult((prev) => prev.filter((el) => el.key !== option.key));
     } else {
-      if (limit) {
-        if (result.length < limit) {
-          setResult((prev) => [...prev, option]);
-        }
-      } else {
-        setResult((prev) => [...prev, option]);
-      }
+      setResult((prev) => [...prev, option]);
     }
   };
 
@@ -41,6 +38,23 @@ export default function KeywordModal({
 
   const handleClose = () => {
     modalControl(false);
+  };
+
+  const TOOLTIP_ID = 'keyword-tooltip';
+
+  const isValidSelection = () => {
+    if (min && !max) {
+      return result.length >= min;
+    } else if (!min && max) {
+      return result.length <= max;
+    } else if (min && max) {
+      if (min === max) {
+        return result.length === min;
+      }
+      return result.length >= min && result.length <= max;
+    }
+
+    return true;
   };
 
   return (
@@ -84,9 +98,32 @@ export default function KeywordModal({
               <img src={rechoiceIcon} style={{ width: '2.5rem', height: '2.5rem' }} alt="초기화" />
               초기화
             </Button>
-            <Button backgroundColor="main02" color="main05" onClick={handleSubmit}>
-              선택 완료
-            </Button>
+            <div data-tooltip-id={isValidSelection() ? '' : TOOLTIP_ID}>
+              <Button
+                backgroundColor={isValidSelection() ? 'main02' : 'grayscale05'}
+                color="main05"
+                onClick={handleSubmit}
+              >
+                선택 완료
+              </Button>
+            </div>
+            <Tooltip id={TOOLTIP_ID} opacity={1} offset={5}>
+              <TooltipContent>
+                <TooltipMessage>
+                  <img src={alertIcon} alt="경고" />
+                  <span>
+                    {KEYWORD_CATEGORY.KEYWORD ? '키워드를 ' : '목적을 '}
+                    {min && !max && `${min}개 이상 선택해주세요.`}
+                    {!min && max && `${max}개 이하 선택해주세요.`}
+                    {min && max
+                      ? min === max
+                        ? `${min}개 선택해주세요.`
+                        : `${min}개 이상 ${max}개 이하 선택해주세요.`
+                      : ''}
+                  </span>
+                </TooltipMessage>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </SetModal>
       </Modal>
@@ -148,4 +185,31 @@ const ModalContent = styled.div`
   align-items: center;
   box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.2) inset;
   padding: ${({ $category }) => ($category === 'keyword' ? '2.5rem' : '3.5rem')};
+`;
+
+const Tooltip = styled(ReactTooltip)`
+  background: ${({ theme }) => theme.color.grayscale03} !important;
+  padding: 1.2rem !important;
+  border-radius: 1.2rem !important;
+`;
+
+const TooltipContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const TooltipMessage = styled.div`
+  display: flex;
+  gap: 1rem;
+  color: ${({ theme }) => theme.color.main04};
+  ${({ theme }) => theme.text.paragraph};
+  text-align: center;
+  line-height: normal;
+`;
+
+const TooltipButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  pointer-events: auto;
 `;
