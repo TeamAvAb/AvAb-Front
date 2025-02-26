@@ -8,6 +8,7 @@ import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
 import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
 import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
+import FlowContentSection from '../components/createFlow/FlowContentSection';
 
 export default function CreateFlowFlowContent({ context, onBack, saveContext, validateRef }) {
   const {
@@ -176,7 +177,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
           purposes={purposes}
           appendRecreation={appendRecreation}
         />
-        <FlowContentsSection
+        <FlowContentSection
           flow={{
             title: watch('title'),
             purposes,

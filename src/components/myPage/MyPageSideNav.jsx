@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import LogoutModal from '../modal/LogoutModal';
 import { scrollToTop } from '../../utils/windowUtils';
 import SideNav from '../../layout/SideNav';
+import SITE_URL from '../../constants/url';
 
 export default function MyPageSideNav({ selectedPage }) {
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -11,12 +12,12 @@ export default function MyPageSideNav({ selectedPage }) {
   const navigate = useNavigate();
 
   const handleMyInfoClick = () => {
-    navigate(`/mypage/myinfo`);
+    navigate(SITE_URL.MY_INFO);
     scrollToTop();
   };
 
   const handleFavoritesClick = () => {
-    navigate(`/mypage/favorites`);
+    navigate(SITE_URL.MY_FAVORITE_RECREATIONS);
     scrollToTop();
   };
 

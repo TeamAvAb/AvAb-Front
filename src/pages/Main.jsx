@@ -17,11 +17,12 @@ import gatherImg from '../assets/main/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
 import { scrollToTop } from '../utils/windowUtils';
+import SITE_URL from '../constants/url';
 
 export default function Main() {
   const navigate = useNavigate();
   const goToSearchList = () => {
-    navigate(`/search/list`);
+    navigate(SITE_URL.RECREATION_SEARCH_LIST);
     scrollToTop();
   };
 

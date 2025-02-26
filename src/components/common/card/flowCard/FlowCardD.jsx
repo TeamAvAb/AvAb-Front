@@ -9,6 +9,7 @@ import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import Button from '../../button/Button';
 import FlowMetadata from '../../FlowMetadata';
+import SITE_URL from '../../../../constants/url';
 
 export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -17,7 +18,7 @@ export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) 
 
   const navigate = useNavigate();
   const navigateToFlowDetails = () => {
-    navigate(`/flow/morewatchflow/${content.id}`);
+    navigate(SITE_URL.FLOW_DETAIL(content.id));
   };
 
   const handleDetailClick = () => {

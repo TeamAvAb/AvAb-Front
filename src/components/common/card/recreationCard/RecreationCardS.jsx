@@ -9,6 +9,7 @@ import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import { privateAPI } from '../../../../apis/user';
+import SITE_URL from '../../../../constants/url';
 
 export default function RecreationCardS({ content, refetch }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -17,7 +18,7 @@ export default function RecreationCardS({ content, refetch }) {
 
   const navigate = useNavigate();
   const navigateToRecreationDetail = (recreationId) => {
-    navigate(`/recreation/detail/${recreationId}`);
+    navigate(SITE_URL.RECREATION_DETAIL(recreationId));
     scrollToTop();
   };
 

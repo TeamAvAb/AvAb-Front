@@ -24,6 +24,7 @@ import AGE from '../../constants/enum/age';
 import PLACE from '../../constants/enum/place';
 import { scrollToTop } from '../../utils/windowUtils';
 import AlertMessage from '../common/AlertMessage';
+import SITE_URL from '../../constants/url';
 
 export default function Search({ filtersOpen = false, initialParams = {} }) {
   const getInitialKeywords = (keywords) => {
@@ -207,7 +208,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
 
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
 
-    navigate(`/search/list?${param}`);
+    navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
   };
 
@@ -556,13 +557,4 @@ const BtnContainer = styled.div`
 const SearchButtons = styled.div`
   display: flex;
   gap: 2.5rem;
-`;
-
-const Alert = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: baseline;
-  margin-left: 1rem;
-  color: ${({ theme }) => theme.color.main04};
-  ${({ theme }) => theme.text.small};
 `;
