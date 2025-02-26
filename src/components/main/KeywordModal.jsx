@@ -207,9 +207,3 @@ const TooltipMessage = styled.div`
   text-align: center;
   line-height: normal;
 `;
-
-const TooltipButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  pointer-events: auto;
-`;
