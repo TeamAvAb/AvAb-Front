@@ -9,7 +9,7 @@ export default function LoginModal() {
   const { pathname } = useLocation();
   const { modalControl } = useLoginModalStore((state) => state);
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
-  let REDIRECT_URI = null;
+  let REDIRECT_URI;
 
   if (window.location.href.startsWith('http://localhost:3000/')) {
     REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;

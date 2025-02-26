@@ -133,21 +133,6 @@ const Title = styled.h4`
   text-overflow: ellipsis;
 `;
 
-const Info = styled.ul`
-  img {
-    width: 2.6rem;
-    object-fit: none;
-  }
-
-  li {
-    width: 6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-  }
-`;
-
 const MoreDetailBtn = styled.button`
   height: 4.75rem;
   display: flex;

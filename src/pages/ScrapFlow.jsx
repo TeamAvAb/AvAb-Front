@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
 import useLoginStore from '../stores/loginStore';
-import useLoginModalStore from '../stores/loginModalStore';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout';
 import NoData from '../components/common/NoData';
 
 export default function ScrapFlow() {
-  const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
 
   // 데이터 가져오기
@@ -80,32 +78,4 @@ const FlowBox = styled.div`
   row-gap: 1.25rem;
   column-gap: 7.5rem;
   margin: 2.44rem 0 5.08rem;
-`;
-
-// 일정플로우 없는 경우
-const NoneAlertBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-  text-align: center;
-`;
-const NoneAlertImg = styled.img`
-  width: 7.5rem;
-`;
-const NoneAlertTextBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-const NoneAlertText = styled.span`
-  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
-  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
-
-  &.title {
-    font-size: ${({ theme }) => theme.text.h4.fontSize};
-    font-weight: ${({ theme }) => theme.text.h4.fontWeight};
-  }
 `;

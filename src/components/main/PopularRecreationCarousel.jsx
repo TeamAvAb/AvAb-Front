@@ -29,9 +29,6 @@ export default function PopularRecreationCarousel() {
     autoplay: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
-    beforeChange: (current, next) => {
-      return setSlideIndex(next);
-    },
   };
 
   useEffect(() => {
