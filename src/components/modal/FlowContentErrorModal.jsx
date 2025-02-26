@@ -13,17 +13,25 @@ import styled from 'styled-components';
 
 export default function FlowContentErrorModal({ close, variant: propVariant }) {
   const variants = {
-    PLAY_TIME: {
+    PLAY_TIME_GT: {
       title: '플레이 시간을 수정해주세요!',
       description: '입력한 시간보다 플레이 시간을 초과했어요.',
       button: '시간 수정하기',
     },
+    PLAY_TIME_LT: {
+      title: '플레이 시간을 수정해주세요!',
+      description: '입력한 시간보다 플레이 시간이 부족해요.',
+      button: '시간 수정하기',
+    },
   };
 
-  let variant = variants.PLAY_TIME;
+  let variant = variants.PLAY_TIME_LT;
   switch (propVariant) {
-    case 'playTime':
-      variant = variants.PLAY_TIME;
+    case 'playTimeLt':
+      variant = variants.PLAY_TIME_LT;
+      break;
+    case 'playTimeGt':
+      variant = variants.PLAY_TIME_GT;
       break;
     default:
       break;

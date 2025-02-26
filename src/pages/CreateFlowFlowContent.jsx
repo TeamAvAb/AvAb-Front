@@ -23,7 +23,13 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
     title: contextTitle,
   } = context;
 
-  const { register, control, watch, handleSubmit } = useForm({
+  const {
+    register,
+    control,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: contextTitle,
       recreations: !!contextRecreations.length
@@ -48,6 +54,14 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
   } = useFieldArray({
     control,
     name: 'recreations',
+    rules: {
+      validate: {
+        playTimeLt: (value) =>
+          value.reduce((acc, recreation) => acc + recreation.playTime, 0) >= totalPlayTime,
+        playTimeGt: (value) =>
+          value.reduce((acc, recreation) => acc + recreation.playTime, 0) <= totalPlayTime,
+      },
+    },
   });
 
   const {
@@ -149,18 +163,12 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
     // TODO: API 호출
   };
 
-  const getContentError = () => {
+  const handleInvalidData = (errors) => {
+    console.log(errors);
     if (
-      watch('recreations').reduce((acc, recreation) => acc + recreation.playTime, 0) > totalPlayTime
+      errors?.recreations?.root?.type === 'playTimeLt' ||
+      errors?.recreations?.root?.type === 'playTimeGt'
     ) {
-      return 'playTime';
-    }
-
-    return '';
-  };
-
-  const handleInvalidData = () => {
-    if (getContentError()) {
       openContentErrorModal();
     }
   };
@@ -199,7 +207,10 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
         <CreateFlowPreventLeaveModal close={closeBeforeUnloadModal} />
       </BeforeUnloadModalWrapper>
       <ContentErrorModalWrapper>
-        <FlowContentErrorModal close={closeContentErrorModal} variant={getContentError()} />
+        <FlowContentErrorModal
+          close={closeContentErrorModal}
+          variant={errors?.recreations?.root?.type}
+        />
       </ContentErrorModalWrapper>
     </Container>
   );
