@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
-import CreateFlowBeforeUnloadModal from '../components/modal/CreateFlowBeforeUnloadModal';
+import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
 import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
 
 export default function CreateFlowFlowContent({ context, onBack, saveContext, validateRef }) {
@@ -195,7 +195,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
       </Sections>
       <StepControl last onBack={handleBackClick} onNext={handleSaveClick} />
       <BeforeUnloadModalWrapper>
-        <CreateFlowBeforeUnloadModal close={closeBeforeUnloadModal} />
+        <CreateFlowPreventLeaveModal close={closeBeforeUnloadModal} />
       </BeforeUnloadModalWrapper>
       <ContentErrorModalWrapper>
         <FlowContentErrorModal close={closeContentErrorModal} variant={getContentError()} />

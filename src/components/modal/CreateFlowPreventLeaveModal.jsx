@@ -11,7 +11,7 @@ import Button from '../common/button/Button';
 import xIcon from '../../assets/X.svg';
 import styled from 'styled-components';
 
-export default function CreateFlowConfirmModal({ close }) {
+export default function CreateFlowPreventLeaveModal({ close }) {
   return (
     <Modal>
       <Content>
