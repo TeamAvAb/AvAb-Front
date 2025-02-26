@@ -8,11 +8,30 @@ import arrow from '../assets/fast_arrow.svg';
 import StepControl from '../components/createFlow/StepControl';
 import { privateAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import useModal from '../hooks/useModal';
+import ChangeRecommendFlowConfirmModal from '../components/modal/ChangeRecommendFlowConfirmModal';
 
-export default function CreateFlowRecommendedFlows({ context, onBack, onNext, saveContext }) {
+export default function CreateFlowRecommendedFlows({
+  context,
+  onBack,
+  onNext,
+  saveContext,
+  validateRef,
+}) {
   const [recommendedFlows, setRecommendedFlows] = useState([]);
   const [selectedFlowId, setSelectedFlowId] = useState(context.recommendedFlowId);
   const [isLoading, setIsLoading] = useState(true);
+  const [targetFlowId, setTargetFlowId] = useState(null);
+
+  const {
+    ModalWrapper,
+    closeModal: closeChangeFlowConfirmModal,
+    openModal: openChangeFlowConfirmModal,
+  } = useModal();
+
+  useEffect(() => {
+    validateRef.current = (onValid) => onValid;
+  }, [validateRef]);
 
   useEffect(() => {
     const fetchFlowData = async () => {
@@ -27,7 +46,7 @@ export default function CreateFlowRecommendedFlows({ context, onBack, onNext, sa
 
         if (response.data.result) {
           const validFlowData = response.data.result.filter(
-            (flow) => flow.flowDetail.totalPlayTime === parseInt(context.totalPlayTime),
+            (flow) => flow.flowDetail.totalPlayTime === context.totalPlayTime,
           );
           setRecommendedFlows(validFlowData);
         }
@@ -38,14 +57,21 @@ export default function CreateFlowRecommendedFlows({ context, onBack, onNext, sa
     };
 
     fetchFlowData();
-  }, [context]);
-
-  useEffect(() => {
-    saveContext({ recommendedFlowId: selectedFlowId });
-  }, [selectedFlowId]);
+  }, []);
 
   const handleFlowClick = (flowId) => {
-    setSelectedFlowId(flowId);
+    if (selectedFlowId === flowId) {
+      return;
+    }
+
+    if (!!context.recreations.length) {
+      setTargetFlowId(flowId);
+      openChangeFlowConfirmModal();
+    } else {
+      setSelectedFlowId(flowId);
+    }
+
+    saveContext({ recommendedFlowId: flowId, recreations: [] });
   };
 
   const handleCardButtonClick = () => {
@@ -67,23 +93,29 @@ export default function CreateFlowRecommendedFlows({ context, onBack, onNext, sa
         하여 선택해주세요.
       </StepDescriptionBox>
       <FlowsWrapper>
-        {isLoading && <LoadingSpinner />}
-        {!isLoading && recommendedFlows.length === 0 && <NoData variant="cfRecommendedFlows" />}
-        {recommendedFlows.map((flow, index) => (
-          <FlowContainer
-            onClick={() => handleFlowClick(flow.flowDetail.id)}
-            key={flow.flowDetail.id}
-            $selected={selectedFlowId === flow.flowDetail.id}
-          >
-            <HeaderRow>
-              <h3>{flow.flowDetail.title}</h3>
-              <Index $selected={selectedFlowId === flow.flowDetail.id}>{index + 1}안</Index>
-            </HeaderRow>
-            <ListWrapper>
-              <FlowRecreationList recreations={flow.recreations} />
-            </ListWrapper>
-          </FlowContainer>
-        ))}
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : recommendedFlows.length === 0 ? (
+          <NoData variant="cfRecommendedFlows" />
+        ) : (
+          recommendedFlows.map((flow, index) => (
+            <FlowContainer
+              onClick={() => handleFlowClick(flow.flowDetail.id)}
+              key={flow.flowDetail.id}
+              className={selectedFlowId === flow.flowDetail.id && 'selected'}
+            >
+              <HeaderRow>
+                <h3>{flow.flowDetail.title}</h3>
+                <Index className={selectedFlowId === flow.flowDetail.id && 'selected'}>
+                  {index + 1}안
+                </Index>
+              </HeaderRow>
+              <ListWrapper>
+                <FlowRecreationList recreations={flow.recreations} />
+              </ListWrapper>
+            </FlowContainer>
+          ))
+        )}
       </FlowsWrapper>
       <CardButton onClick={handleCardButtonClick}>
         <CardButtonTextContainer>
@@ -99,6 +131,14 @@ export default function CreateFlowRecommendedFlows({ context, onBack, onNext, sa
       </CardButton>
 
       <StepControl onNext={handleNextClick} onBack={handleBackClick} />
+
+      <ModalWrapper>
+        <ChangeRecommendFlowConfirmModal
+          close={closeChangeFlowConfirmModal}
+          targetFlowId={targetFlowId}
+          onChangeClick={setSelectedFlowId}
+        />
+      </ModalWrapper>
     </Container>
   );
 }
@@ -120,18 +160,20 @@ const FlowContainer = styled.div`
   border-radius: 1.25rem;
   display: flex;
   flex-direction: column;
-  ${({ $selected, theme }) => css`
-    border-width: ${$selected ? '2px' : '1px'};
-    border-color: ${$selected ? theme.color.main02 : theme.color.grayscale05};
-    border-style: solid;
-    box-shadow: ${$selected ? `0 0 20px ${theme.color.grayscale01}26` : 'none'};
-  `}
+  border: 1px solid ${({ theme }) => theme.color.grayscale05};
   padding: 2rem 0;
   width: 50%;
   gap: 4rem;
   transition:
     border-color 0.3s,
     box-shadow 0.3s;
+  cursor: pointer;
+
+  &.selected {
+    border-width: 2px;
+    border-color: ${({ theme }) => theme.color.main02};
+    box-shadow: 0 0 20px ${({ theme }) => theme.color.grayscale01}26;
+  }
 `;
 
 const HeaderRow = styled.div`
@@ -155,14 +197,18 @@ const Index = styled.span`
   padding: 0.5rem 0;
   border-radius: 9999px;
   border: 1px solid ${({ theme }) => theme.color.grayscale01};
-  ${({ $selected, theme }) =>
-    $selected &&
-    css`
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+
+  &.selected {
+    ${({ theme }) => css`
       background-color: ${theme.color.main02};
       color: ${theme.color.main05};
       border-color: ${theme.color.main02};
     `}
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
 `;
 
 const ListWrapper = styled.div`

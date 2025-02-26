@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 import SelectRecreationSection from '../components/createFlow/SelectRecreationSection';
-import { FlowContentsSection } from '../components/createFlow/FlowContentsSection';
 import StepControl from '../components/createFlow/StepControl';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
 import CreateFlowBeforeUnloadModal from '../components/modal/CreateFlowBeforeUnloadModal';
-import FlowContentsErrorModal from '../components/modal/FlowContentsErrorModal';
+import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
 
-export default function CreateFlowFlowContents({ context, onBack, saveContext }) {
+export default function CreateFlowFlowContent({ context, onBack, saveContext, validateRef }) {
   const {
     purposes,
     totalPlayTime,
@@ -22,8 +21,6 @@ export default function CreateFlowFlowContents({ context, onBack, saveContext })
     recreations: contextRecreations,
     title: contextTitle,
   } = context;
-
-  const [contentsError, setContentsError] = useState('');
 
   const { register, control, watch, handleSubmit } = useForm({
     defaultValues: {
@@ -59,10 +56,20 @@ export default function CreateFlowFlowContents({ context, onBack, saveContext })
   } = useModal();
 
   const {
-    ModalWrapper: ContentsErrorModalWrapper,
-    openModal: openContentsErrorModal,
-    closeModal: closeContentsErrorModal,
+    ModalWrapper: ContentErrorModalWrapper,
+    openModal: openContentErrorModal,
+    closeModal: closeContentErrorModal,
   } = useModal();
+
+  useEffect(() => {
+    validateRef.current = (onValid) => onValid;
+  }, [validateRef]);
+
+  useEffect(() => {
+    const { unsubscribe } = watch((data) => saveContext(data));
+
+    return () => unsubscribe();
+  }, [watch, saveContext]);
 
   useEffect(() => {
     const fetchRecommendedFlow = async () => {
@@ -91,13 +98,7 @@ export default function CreateFlowFlowContents({ context, onBack, saveContext })
     if (!contextRecreations.length) {
       fetchRecommendedFlow();
     }
-  }, []);
-
-  useEffect(() => {
-    const { unsubscribe } = watch((data) => saveContext(data));
-
-    return () => unsubscribe();
-  }, [watch]);
+  }, [contextRecreations.length, recommendedFlowId, replaceAllRecreations]);
 
   const handleBackClick = () => {
     handleSubmit((data) => onBack(data.title, data.recreations))();
@@ -147,15 +148,24 @@ export default function CreateFlowFlowContents({ context, onBack, saveContext })
     // TODO: API 호출
   };
 
-  const handleInvalidContents = (errors) => {
-    if (errors.recreations.some((recreation) => !!recreation.keywords)) {
-      setContentsError('recreationsKeyword');
-      openContentsErrorModal();
+  const getContentError = () => {
+    if (
+      watch('recreations').reduce((acc, recreation) => acc + recreation.playTime, 0) > totalPlayTime
+    ) {
+      return 'playTime';
+    }
+
+    return '';
+  };
+
+  const handleInvalidData = () => {
+    if (getContentError()) {
+      openContentErrorModal();
     }
   };
 
   const handleSaveClick = () => {
-    handleSubmit((data) => saveFlow({ ...context, ...data }), handleInvalidContents)();
+    handleSubmit((data) => saveFlow({ ...context, ...data }), handleInvalidData)();
   };
 
   return (
@@ -187,9 +197,9 @@ export default function CreateFlowFlowContents({ context, onBack, saveContext })
       <BeforeUnloadModalWrapper>
         <CreateFlowBeforeUnloadModal close={closeBeforeUnloadModal} />
       </BeforeUnloadModalWrapper>
-      <ContentsErrorModalWrapper>
-        <FlowContentsErrorModal close={closeContentsErrorModal} variant={contentsError} />
-      </ContentsErrorModalWrapper>
+      <ContentErrorModalWrapper>
+        <FlowContentErrorModal close={closeContentErrorModal} variant={getContentError()} />
+      </ContentErrorModalWrapper>
     </Container>
   );
 }

@@ -2,9 +2,10 @@ import { useFunnel } from '@use-funnel/react-router-dom';
 import CreateFlowBasicInfo from './CreateFlowBasicInfo';
 import CreateFlowDetailInfo from './CreateFlowDetailInfo';
 import CreateFlowRecommendedFlows from './CreateFlowRecommendedFlows';
-import CreateFlowFlowContents from './CreateFlowFlowContents';
+import CreateFlowFlowContent from './CreateFlowFlowContent';
 import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
 import styled from 'styled-components';
+import { useRef } from 'react';
 
 export default function CreateFlow() {
   const initialContext = {
@@ -26,6 +27,8 @@ export default function CreateFlow() {
       context: initialContext,
     },
   });
+
+  const validateStepRef = useRef(() => () => {});
 
   const handleBasicInfoStepNext = async (purposes, totalPlayTime) => {
     await funnel.history.push('detail-info', { purposes, totalPlayTime });
@@ -52,11 +55,11 @@ export default function CreateFlow() {
   };
 
   const handleStepClick = async (step) => {
-    await funnel.history.push(step, funnel.context);
+    validateStepRef.current(async () => await funnel.history.push(step, funnel.context))();
   };
 
-  const saveContext = async (context) => {
-    await funnel.history.replace(funnel.step, context);
+  const saveContext = async (data) => {
+    await funnel.history.replace(funnel.step, data);
   };
 
   const renderStep = () => {
@@ -69,7 +72,7 @@ export default function CreateFlow() {
             context={funnel.context}
             onNext={handleDetailInfoStepNext}
             onBack={handleDetailInfoStepBack}
-            saveContext={saveContext}
+            validateRef={validateStepRef}
           />
         );
       case 'recommended-flows':
@@ -79,16 +82,20 @@ export default function CreateFlow() {
             onNext={handleRecommendedFlowsStepNext}
             onBack={handleRecommendedFlowsStepBack}
             saveContext={saveContext}
+            validateRef={validateStepRef}
           />
         );
       case 'flow-contents':
         return (
-          <CreateFlowFlowContents
+          <CreateFlowFlowContent
             context={funnel.context}
             onBack={handleFlowContentsStepBack}
             saveContext={saveContext}
+            validateRef={validateStepRef}
           />
         );
+      default:
+        return null;
     }
   };
 

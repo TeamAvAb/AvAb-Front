@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { getTranslatedPurposes } from '../../utils/purposeUtils';
 import RecreationList from './RecreationList';
 import { useFormState } from 'react-hook-form';
 import AlertMessage from '../common/AlertMessage';
 
-export function FlowContentsSection({
+export default function FlowContentSection({
   flow,
   register,
   control,
@@ -35,7 +34,7 @@ export function FlowContentsSection({
         <Column>
           <InfoRow>
             <Label>목적</Label>
-            <span>{getTranslatedPurposes(flow.purposes).join(' ')}</span>
+            <span>{flow.purposes.map((purpose) => purpose.value).join(' ')}</span>
           </InfoRow>
           <InfoRow>
             <Label>플레이 시간</Label>

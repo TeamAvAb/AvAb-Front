@@ -16,7 +16,7 @@ import AlertMessage from '../components/common/AlertMessage';
 import StepControl from '../components/createFlow/StepControl';
 import StepDescriptionBox from '../components/createFlow/StepDescriptionBox';
 
-export default function CreateFlowDetailInfo({ context, onBack, onNext, saveContext }) {
+export default function CreateFlowDetailInfo({ context, onBack, onNext, validateRef }) {
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
 
   const { keywords, genders, ageGroups, participants } = context;
@@ -33,10 +33,10 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, saveCont
   });
 
   useEffect(() => {
-    const { unsubscribe } = watch((data) => saveContext(data));
-
-    return () => unsubscribe();
-  }, [watch]);
+    validateRef.current = (onValid) => {
+      return handleSubmit(onValid);
+    };
+  }, [handleSubmit, validateRef]);
 
   const handleKeywordBoxClick = () => {
     setIsKeywordModalOpen(true);
