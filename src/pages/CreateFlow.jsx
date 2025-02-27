@@ -5,7 +5,10 @@ import CreateFlowRecommendedFlows from './CreateFlowRecommendedFlows';
 import CreateFlowFlowContent from './CreateFlowFlowContent';
 import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
 import styled from 'styled-components';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { useBlocker } from 'react-router';
+import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
+import useModal from '../hooks/useModal';
 
 export default function CreateFlow() {
   const initialContext = {
@@ -29,6 +32,28 @@ export default function CreateFlow() {
   });
 
   const validateStepRef = useRef(() => () => {});
+
+  const isContextEmpty = () =>
+    Object.values(funnel.context).every(
+      (value) => value === null || value === 0 || value === '' || value.length === 0,
+    );
+
+  const shouldBlock = ({ currentLocation, nextLocation }) =>
+    !isContextEmpty() && currentLocation.pathname !== nextLocation.pathname;
+
+  const blocker = useBlocker(shouldBlock);
+
+  const {
+    ModalWrapper: PreventLeaveModalWrapper,
+    openModal: openPreventLeaveModal,
+    closeModal: closePreventLeaveModal,
+  } = useModal();
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      openPreventLeaveModal();
+    }
+  }, [blocker.state, openPreventLeaveModal]);
 
   const handleBasicInfoStepNext = async (purposes, totalPlayTime) => {
     await funnel.history.push('detail-info', { purposes, totalPlayTime });
@@ -61,6 +86,10 @@ export default function CreateFlow() {
   const saveContext = async (data) => {
     await funnel.history.replace(funnel.step, data);
   };
+
+  const proceedNavigation = () => blocker.proceed();
+
+  const blockNavigation = () => blocker.reset();
 
   const renderStep = () => {
     switch (funnel.step) {
@@ -103,6 +132,13 @@ export default function CreateFlow() {
     <Wrapper>
       <CreateFlowStepper currentStep={funnel.step} onStepClick={handleStepClick} />
       <StepWrapper $wide={funnel.step === 'flow-contents'}>{renderStep()}</StepWrapper>
+      <PreventLeaveModalWrapper>
+        <CreateFlowPreventLeaveModal
+          close={closePreventLeaveModal}
+          onLeaveClick={proceedNavigation}
+          onStayClick={blockNavigation}
+        />
+      </PreventLeaveModalWrapper>
     </Wrapper>
   );
 }

@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
-import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
 import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
 import FlowContentSection from '../components/createFlow/FlowContentSection';
 
@@ -63,12 +62,6 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
       },
     },
   });
-
-  const {
-    ModalWrapper: BeforeUnloadModalWrapper,
-    openModal: openBeforeUnloadModal,
-    closeModal: closeBeforeUnloadModal,
-  } = useModal();
 
   const {
     ModalWrapper: ContentErrorModalWrapper,
@@ -164,7 +157,6 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
   };
 
   const handleInvalidData = (errors) => {
-    console.log(errors);
     if (
       errors?.recreations?.root?.type === 'playTimeLt' ||
       errors?.recreations?.root?.type === 'playTimeGt'
@@ -203,9 +195,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
         />
       </Sections>
       <StepControl last onBack={handleBackClick} onNext={handleSaveClick} />
-      <BeforeUnloadModalWrapper>
-        <CreateFlowPreventLeaveModal close={closeBeforeUnloadModal} />
-      </BeforeUnloadModalWrapper>
+
       <ContentErrorModalWrapper>
         <FlowContentErrorModal
           close={closeContentErrorModal}
