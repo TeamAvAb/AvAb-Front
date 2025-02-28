@@ -72,6 +72,7 @@ export default function RecreationItem({
               required: { value: true, message: '플레이 시간을 입력해주세요.' },
               min: { value: 10, message: '10분에서 300분 사이로 입력해주세요.' },
               max: { value: 300, message: '10분에서 300분 사이로 입력해주세요.' },
+              validate: (value) => value % 10 === 0 || '10분 단위로 입력해주세요.',
             })}
           />
           <span className="minute">분</span>
