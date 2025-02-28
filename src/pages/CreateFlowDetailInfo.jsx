@@ -16,7 +16,13 @@ import AlertMessage from '../components/common/AlertMessage';
 import StepControl from '../components/createFlow/StepControl';
 import StepDescriptionBox from '../components/createFlow/StepDescriptionBox';
 
-export default function CreateFlowDetailInfo({ context, onBack, onNext, validateRef }) {
+export default function CreateFlowDetailInfo({
+  context,
+  onBack,
+  onNext,
+  validateRef,
+  saveContext,
+}) {
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
 
   const { keywords, genders, ageGroups, participants } = context;
@@ -33,10 +39,14 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, validate
   });
 
   useEffect(() => {
-    validateRef.current = (onValid) => {
-      return handleSubmit(onValid);
-    };
+    validateRef.current = (onValid) => handleSubmit(onValid);
   }, [handleSubmit, validateRef]);
+
+  useEffect(() => {
+    const { unsubscribe } = watch((value) => saveContext(value));
+
+    return () => unsubscribe();
+  }, [watch, saveContext]);
 
   const handleKeywordBoxClick = () => {
     setIsKeywordModalOpen(true);
@@ -192,9 +202,9 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, validate
         </ButtonCard>
       </ButtonCardContainer>
       <StepControl onBack={handleBackClick} onNext={handleNextClick} />
-      {isKeywordModalOpen && (
-        <Controller
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        render={({ field: { onChange, value } }) =>
+          isKeywordModalOpen && (
             <KeywordModal
               category={KEYWORD_CATEGORY.KEYWORD}
               content={Object.values(KEYWORD)}
@@ -204,11 +214,11 @@ export default function CreateFlowDetailInfo({ context, onBack, onNext, validate
               min={1}
               max={10}
             />
-          )}
-          name="keywords"
-          control={control}
-        />
-      )}
+          )
+        }
+        name="keywords"
+        control={control}
+      />
     </Container>
   );
 }
@@ -243,7 +253,6 @@ const FormRow = styled.div`
 `;
 
 const KeywordBox = styled.div`
-  flex: 1;
   height: 3rem;
   border-radius: 1.25rem;
   color: ${({ theme }) => theme.color.grayscale04};
@@ -255,7 +264,7 @@ const KeywordBox = styled.div`
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.color.grayscale04};
   width: 70%;
-  padding: 1rem 0.8rem;
+  padding: 0 0.8rem;
 `;
 
 const SelectedKeyword = styled.div`
