@@ -13,7 +13,7 @@ import useModal from '../hooks/useModal';
 export default function CreateFlow() {
   const initialContext = {
     purposes: [],
-    totalPlayTime: 0,
+    totalPlayTime: null,
     keywords: [],
     genders: [],
     ageGroups: [],
@@ -94,7 +94,14 @@ export default function CreateFlow() {
   const renderStep = () => {
     switch (funnel.step) {
       case 'basic-info':
-        return <CreateFlowBasicInfo onNext={handleBasicInfoStepNext} />;
+        return (
+          <CreateFlowBasicInfo
+            onNext={handleBasicInfoStepNext}
+            context={funnel.context}
+            validateRef={validateStepRef}
+            saveContext={saveContext}
+          />
+        );
       case 'detail-info':
         return (
           <CreateFlowDetailInfo
@@ -102,6 +109,7 @@ export default function CreateFlow() {
             onNext={handleDetailInfoStepNext}
             onBack={handleDetailInfoStepBack}
             validateRef={validateStepRef}
+            saveContext={saveContext}
           />
         );
       case 'recommended-flows':
