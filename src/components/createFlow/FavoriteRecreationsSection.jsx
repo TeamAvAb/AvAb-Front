@@ -10,17 +10,12 @@ export default function FavoriteRecreationsSection({ appendRecreation }) {
   const [totalPages, setTotalPages] = useState(1);
   const [recreations, setRecreations] = useState([]);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [additionalLoading, setAdditionalLoading] = useState(false);
 
   useEffect(() => {
     const fetchFavoriteRecreations = async () => {
       try {
         if (page > totalPages - 1) {
           return;
-        }
-
-        if (!initialLoading) {
-          // setAdditionalLoading(true);
         }
 
         const response = await privateAPI.get('/api/users/me/favorites/recreations', {
@@ -37,11 +32,7 @@ export default function FavoriteRecreationsSection({ appendRecreation }) {
           setTotalPages(totalPages);
         }
 
-        if (initialLoading) {
-          setInitialLoading(false);
-        } else {
-          // setAdditionalLoading(false);
-        }
+        setInitialLoading(false);
       } catch (error) {
         console.error('즐겨 찾는 레크레이션 불러오기 실패:', error);
       }
