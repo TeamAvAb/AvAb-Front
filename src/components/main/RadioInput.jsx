@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import clsx from 'clsx';
 
 export default function RadioInput({ options, setOption, selectedOption, border, gap = 'md' }) {
   const handleOptionClick = (option) => {
@@ -17,8 +18,10 @@ export default function RadioInput({ options, setOption, selectedOption, border,
         <Option
           key={option.key}
           onClick={() => handleOptionClick(option)}
-          selected={selectedOption.some((item) => item.key === option.key)}
-          $border={border}
+          className={clsx({
+            selected: selectedOption.some((item) => item.key === option.key),
+            border,
+          })}
         >
           {option.value}
         </Option>
@@ -47,14 +50,26 @@ const Option = styled.li`
   border-radius: 9999px;
   box-sizing: border-box;
   padding: 0.8rem 1.8rem;
-  background: ${({ selected, theme }) => (selected ? theme.color.secondary04 : theme.color.main05)};
+  background: ${({ theme }) => theme.color.main05};
   text-align: center;
-  color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
+  color: ${({ theme }) => theme.color.grayscale04};
   cursor: pointer;
   width: max-content;
+
   ${({ $border, theme }) =>
     $border &&
     css`
       border: 1px solid ${theme.color.grayscale05};
     `}
+  &.border {
+    border: 1px solid ${({ theme }) => theme.color.grayscale05};
+  }
+
+  &.selected {
+    ${({ theme }) => css`
+      background-color: ${theme.color.secondary04};
+      color: ${theme.color.grayscale01};
+      font-weight: bold;
+    `}
+  }
 `;
