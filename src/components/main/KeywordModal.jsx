@@ -103,6 +103,7 @@ export default function KeywordModal({
                 backgroundColor={isValidSelection() ? 'main02' : 'grayscale05'}
                 color="main05"
                 onClick={handleSubmit}
+                disabled={!isValidSelection()}
               >
                 선택 완료
               </Button>
