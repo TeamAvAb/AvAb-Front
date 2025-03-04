@@ -8,8 +8,16 @@ import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
 import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
 import FlowContentSection from '../components/createFlow/FlowContentSection';
+import { useNavigate } from 'react-router-dom';
+import SITE_URL from '../constants/url';
 
-export default function CreateFlowFlowContent({ context, onBack, saveContext, validateRef }) {
+export default function CreateFlowFlowContent({
+  context,
+  onBack,
+  saveContext,
+  validateRef,
+  onFlowSaved,
+}) {
   const {
     purposes,
     totalPlayTime,
@@ -27,6 +35,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
     control,
     watch,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -62,6 +71,8 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
       },
     },
   });
+
+  const navigate = useNavigate();
 
   const {
     ModalWrapper: ContentErrorModalWrapper,
@@ -109,10 +120,11 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
   }, [contextRecreations.length, recommendedFlowId, replaceAllRecreations]);
 
   const handleBackClick = () => {
-    handleSubmit((data) => onBack(data.title, data.recreations))();
+    const data = getValues();
+    onBack(data.title, data.recreations);
   };
 
-  const saveFlow = ({
+  const convertFlowToDTO = ({
     title,
     recreations,
     totalPlayTime,
@@ -141,7 +153,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
     const keywordList = keywords.map((keyword) => keyword.key);
     const genderList = genders.map((gender) => gender.key);
 
-    const flow = {
+    return {
       title,
       recreationSpecList,
       totalPlayTime,
@@ -151,9 +163,38 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
       keywordList,
       genderList,
     };
+  };
 
-    console.log(flow);
-    // TODO: API 호출
+  const saveFlow = async (data) => {
+    const req = convertFlowToDTO(data);
+
+    console.log(req);
+
+    try {
+      const res = await privateAPI.post('/api/flows', req);
+
+      if (res.status === 201) {
+        console.log('플로우 저장 성공');
+        return res.data.result.flowId;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('플로우 저장 실패', error);
+    }
+  };
+
+  const navigateToFlowDetail = (flowId) => {
+    navigate(SITE_URL.FLOW_DETAIL(flowId), { replace: true });
+  };
+
+  const handleValidData = async (data) => {
+    const flowId = await saveFlow({ ...context, ...data });
+
+    if (flowId) {
+      onFlowSaved();
+      navigateToFlowDetail(flowId);
+    }
   };
 
   const handleInvalidData = (errors) => {
@@ -166,7 +207,7 @@ export default function CreateFlowFlowContent({ context, onBack, saveContext, va
   };
 
   const handleSaveClick = () => {
-    handleSubmit((data) => saveFlow({ ...context, ...data }), handleInvalidData)();
+    handleSubmit(handleValidData, handleInvalidData)();
   };
 
   return (
