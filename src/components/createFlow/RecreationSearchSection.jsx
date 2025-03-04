@@ -7,7 +7,7 @@ import RecreationCarousel from './RecreationCarousel';
 import NoData from '../common/NoData';
 import styled from 'styled-components';
 
-export default function RecreationSearchSection({ appendRecreation }) {
+export default function RecreationSearchSection({ onAddRecreationClick }) {
   const [recreations, setRecreations] = useState([]);
   const [page, setPage] = useState(0);
 
@@ -68,7 +68,7 @@ export default function RecreationSearchSection({ appendRecreation }) {
       {!!recreations.length ? (
         <RecreationCarousel
           recreations={recreations}
-          appendRecreation={appendRecreation}
+          onAddRecreationClick={onAddRecreationClick}
           incrementPage={incrementPage}
         />
       ) : (

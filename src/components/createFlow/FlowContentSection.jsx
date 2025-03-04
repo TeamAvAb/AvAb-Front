@@ -10,6 +10,10 @@ export default function FlowContentSection({
   appendRecreation,
   removeRecreation,
 }) {
+  const {
+    errors: { title: titleError },
+  } = useFormState({ control });
+
   const handleAddCustomRecreationClick = () => {
     appendRecreation({
       id: null,
@@ -19,10 +23,6 @@ export default function FlowContentSection({
       isCustom: true,
     });
   };
-
-  const {
-    errors: { title: titleError },
-  } = useFormState({ control });
 
   return (
     <Container>

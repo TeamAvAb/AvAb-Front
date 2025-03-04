@@ -5,7 +5,7 @@ import NoData from '../common/NoData';
 import styled from 'styled-components';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-export default function FavoriteRecreationsSection({ appendRecreation }) {
+export default function FavoriteRecreationsSection({ onAddRecreationClick }) {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [recreations, setRecreations] = useState([]);
@@ -52,7 +52,7 @@ export default function FavoriteRecreationsSection({ appendRecreation }) {
         ) : !!recreations.length ? (
           <RecreationCarousel
             recreations={recreations}
-            appendRecreation={appendRecreation}
+            onAddRecreationClick={onAddRecreationClick}
             incrementPage={incrementPage}
           />
         ) : (

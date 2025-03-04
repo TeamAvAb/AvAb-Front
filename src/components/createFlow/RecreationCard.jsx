@@ -4,16 +4,15 @@ import RecreationCardS from '../common/card/recreationCard/RecreationCardS';
 import Button from '../common/button/Button';
 import KEYWORD from '../../constants/enum/keyword';
 
-export default function RecreationCard({ content, appendRecreation }) {
-  const handleAddClick = () => {
-    appendRecreation({
+export default function RecreationCard({ content, onAddRecreationClick }) {
+  const handleAddClick = () =>
+    onAddRecreationClick({
       id: content.id,
       title: content.title,
       keywords: content.keywordList.map((keyword) => KEYWORD[keyword]),
       playTime: content.playTime,
       isCustom: false,
     });
-  };
 
   return (
     <Container>

@@ -3,17 +3,17 @@ import FavoriteRecreationsSection from './FavoriteRecreationsSection';
 import RecreationSearchSection from './RecreationSearchSection';
 import RecommendedRecreationSection from './RecommendedRecreationSection';
 
-export default function SelectRecreationSection({ purposes, totalPlayTime, appendRecreation }) {
+export default function SelectRecreationSection({ purposes, totalPlayTime, onAddRecreationClick }) {
   return (
     <Container>
       <SectionHeading>레크레이션 선택</SectionHeading>
       <RecommendedRecreationSection
         totalPlayTime={totalPlayTime}
         purposes={purposes}
-        appendRecreation={appendRecreation}
+        onAddRecreationClick={onAddRecreationClick}
       />
-      <FavoriteRecreationsSection appendRecreation={appendRecreation} />
-      <RecreationSearchSection appendRecreation={appendRecreation} />
+      <FavoriteRecreationsSection onAddRecreationClick={onAddRecreationClick} />
+      <RecreationSearchSection onAddRecreationClick={onAddRecreationClick} />
     </Container>
   );
 }

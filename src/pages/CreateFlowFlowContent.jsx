@@ -36,7 +36,7 @@ export default function CreateFlowFlowContent({
     watch,
     handleSubmit,
     getValues,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: {
       title: contextTitle,
@@ -118,6 +118,14 @@ export default function CreateFlowFlowContent({
       fetchRecommendedFlow();
     }
   }, [contextRecreations.length, recommendedFlowId, replaceAllRecreations]);
+
+  const handleAddRecreationClick = (recreation) => {
+    if (!dirtyFields.recreations) {
+      removeRecreation(0);
+    }
+
+    appendRecreation(recreation);
+  };
 
   const handleBackClick = () => {
     const data = getValues();
@@ -216,7 +224,7 @@ export default function CreateFlowFlowContent({
         <SelectRecreationSection
           totalPlayTime={totalPlayTime}
           purposes={purposes}
-          appendRecreation={appendRecreation}
+          onAddRecreationClick={handleAddRecreationClick}
         />
         <FlowContentSection
           flow={{
