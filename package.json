@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@use-funnel/react-router-dom": "^0.0.11",
     "axios": "^1.6.7",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.5.2",
     "gh-pages": "^6.1.1",
