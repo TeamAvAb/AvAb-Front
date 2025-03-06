@@ -5,12 +5,14 @@ import CreateFlowRecommendedFlows from './CreateFlowRecommendedFlows';
 import CreateFlowFlowContent from './CreateFlowFlowContent';
 import CreateFlowStepper from '../components/createFlow/CreateFlowStepper';
 import styled from 'styled-components';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBlocker } from 'react-router';
 import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
 import useModal from '../hooks/useModal';
 
 export default function CreateFlow() {
+  const [isFlowSaving, setIsFlowSaving] = useState(false);
+
   const initialContext = {
     purposes: [],
     totalPlayTime: null,
@@ -51,9 +53,13 @@ export default function CreateFlow() {
 
   useEffect(() => {
     if (blocker.state === 'blocked') {
+      if (isFlowSaving) {
+        blocker.proceed();
+        return;
+      }
       openPreventLeaveModal();
     }
-  }, [blocker.state, openPreventLeaveModal]);
+  }, [blocker.state, openPreventLeaveModal, isFlowSaving]);
 
   const handleBasicInfoStepNext = async (purposes, totalPlayTime) => {
     await funnel.history.push('detail-info', { purposes, totalPlayTime });
@@ -81,6 +87,10 @@ export default function CreateFlow() {
 
   const handleStepClick = async (step) => {
     validateStepRef.current(async () => await funnel.history.push(step, funnel.context))();
+  };
+
+  const handleFlowSaved = () => {
+    setIsFlowSaving(true);
   };
 
   const saveContext = async (data) => {
@@ -127,6 +137,7 @@ export default function CreateFlow() {
           <CreateFlowFlowContent
             context={funnel.context}
             onBack={handleFlowContentsStepBack}
+            onFlowSaved={handleFlowSaved}
             saveContext={saveContext}
             validateRef={validateStepRef}
           />
