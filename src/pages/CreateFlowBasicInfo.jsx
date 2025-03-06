@@ -9,6 +9,7 @@ import deleteImg from '../assets/main/deleteIcon.svg';
 import PURPOSE from '../constants/enum/purpose';
 import AlertMessage from '../components/common/AlertMessage';
 import { useNavigate } from 'react-router-dom';
+import SITE_URL from '../constants/url';
 
 export default function CreateFlowBasicInfo({ onNext, context, validateRef, saveContext }) {
   const [isPurposeModalOpen, setIsPurposeModalOpen] = useState(false);
@@ -58,7 +59,7 @@ export default function CreateFlowBasicInfo({ onNext, context, validateRef, save
   };
 
   const handleBackClick = () => {
-    navigate('/flow/watch');
+    navigate(SITE_URL.FLOW, { replace: true });
   };
 
   const renderSelectedPurposes = () => {

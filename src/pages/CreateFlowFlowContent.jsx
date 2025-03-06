@@ -176,8 +176,6 @@ export default function CreateFlowFlowContent({
   const saveFlow = async (data) => {
     const req = convertFlowToDTO(data);
 
-    console.log(req);
-
     try {
       const res = await privateAPI.post('/api/flows', req);
 
