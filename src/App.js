@@ -27,6 +27,7 @@ import Header from './components/common/Header';
 import Footer1 from './components/common/footer/Footer1';
 import Footer2 from './components/common/footer/Footer2';
 import Footer3 from './components/common/footer/Footer3';
+import CreateFlow from './pages/CreateFlow';
 
 function App() {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ function App() {
       {/* 로그인 리다이렉트 페이지 */}
       <Route path="/api/auth/login/kakao" element={<LoginLoading />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/flow/create" element={<CreateFlow />} />
     </Routes>
   );
 
