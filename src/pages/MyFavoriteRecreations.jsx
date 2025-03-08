@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { privateAPI } from '../apis/user';
 import Pagination from '../components/pagination/Pagination';
-import noScrapImg from '../assets/scrapflow/noScrap.png';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import RecreationCardWHashtag from '../components/common/card/recreationCard/RecreationCardWHashtag';
 import SideNavLayout from '../layout/SideNavLayout';
+import NoData from '../components/common/NoData';
 
 export default function MyFavoriteRecreations() {
   // 데이터 가져오기
@@ -49,7 +49,6 @@ export default function MyFavoriteRecreations() {
 
   return (
     <SideNavLayout selectedPage="favorites" parentTab="my-page">
-      {/*중앙 부분*/}
       <RecreationWrap>
         <RecreationTitle id="move">즐겨 찾는 레크레이션</RecreationTitle>
         {loading ? (
@@ -69,10 +68,7 @@ export default function MyFavoriteRecreations() {
             />
           </RecreationList>
         ) : (
-          <NoDataContainer>
-            <NoDataImg src={noScrapImg} />
-            <NoDataDescription>즐겨찾기한 레크레이션이 없습니다.</NoDataDescription>
-          </NoDataContainer>
+          <NoData variant="favoriteRecreation" />
         )}
       </RecreationWrap>
     </SideNavLayout>

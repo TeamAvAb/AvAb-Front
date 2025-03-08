@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user.js';
 import styled from 'styled-components';
 import useLoginModalStore from '../stores/loginModalStore.js';
-import noScrapImg from '../assets/scrapflow/noScrap.png';
 import useLoginStore from '../stores/loginStore.js';
 import SortControl from '../components/common/SortControl';
-import ScrapBtn from '../components/common/button/ScrapBtn';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout.jsx';
+import NoData from '../components/common/NoData';
 
 export default function WatchFlow() {
   const { modalControl } = useLoginModalStore();
@@ -85,13 +84,7 @@ export default function WatchFlow() {
           </FlowBox>
         </>
       ) : (
-        <NoneAlertBox>
-          <NoneAlertImg src={noScrapImg} />
-          <NoneAlertTextBox>
-            <NoneAlertText className="title"> 일정플로우가 없습니다!</NoneAlertText>
-            <NoneAlertText>지금 바로 일정플로우를 만들어보세요.</NoneAlertText>
-          </NoneAlertTextBox>
-        </NoneAlertBox>
+        <NoData variant="flowError" />
       )}
     </FlowTabLayout>
   );

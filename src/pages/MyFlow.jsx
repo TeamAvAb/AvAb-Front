@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import useModal from '../hooks/useModal';
 import FlowDeleteModal from '../components/modal/FlowDeleteModal';
 import useLoginStore from '../stores/loginStore';
-import noFlowImg from '../assets/myflow/noFlow.png';
-import Button from '../components/common/button/Button';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout';
+import NoData from '../components/common/NoData';
 
 export default function MyFlow() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -60,17 +59,13 @@ export default function MyFlow() {
             {datas.map((data) => (
               <FlowCardD key={data.id} content={data} isOwner onDeleteClick={handleDeleteClick} />
             ))}
-            <ModalWrapper children={<FlowDeleteModal close={closeModal} refetch={fetchData} />} />
+            <ModalWrapper>
+              <FlowDeleteModal close={closeModal} refetch={fetchData} />
+            </ModalWrapper>
           </FlowBox>
         </>
       ) : (
-        <NoneAlertBox>
-          <NoneAlertImg src={noFlowImg} />
-          <NoneAlertTextBox>
-            <NoneAlertText className="title"> 내가 만든 일정플로우가 없습니다!</NoneAlertText>
-            <NoneAlertText>위의 버튼을 눌러 나만의 일정플로우를 만들어 보세요.</NoneAlertText>
-          </NoneAlertTextBox>
-        </NoneAlertBox>
+        <NoData variant="myFlow" />
       )}
     </FlowTabLayout>
   );
