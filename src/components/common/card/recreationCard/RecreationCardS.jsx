@@ -16,8 +16,7 @@ export default function RecreationCardS({ content, refetch }) {
   const [isFav, setIsFav] = useState(content.isFavorite);
 
   const navigate = useNavigate();
-  const toRecreationDetail = (recreationId, e) => {
-    e.stopPropagation();
+  const toRecreationDetail = (recreationId) => {
     navigate(`/recreation/detail/${recreationId}`);
     scrollToTop();
   };
