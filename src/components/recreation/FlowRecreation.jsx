@@ -7,10 +7,9 @@ export default function FlowRecreation({ index, recreationTitle, keywords, playT
   const renderKeywords = () =>
     getTranslatedKeywords(keywords).map((keyword) => <KeywordChip key={keyword} text={keyword} />);
 
-  const playTimeBarHeight = (playTime / 10) * 10;
   return (
-    <FlowRecreationContainer>
-      <PlayTimeBar $height={playTimeBarHeight} />
+    <FlowRecreationContainer $playTime={playTime}>
+      <PlayTimeBar />
       <RecreationContent>
         <TitleBox>
           <NumCircle>{index + 1}</NumCircle> {/* 번호 */}
@@ -31,13 +30,14 @@ export default function FlowRecreation({ index, recreationTitle, keywords, playT
 const PlayTimeBar = styled.div`
   background: ${({ theme }) => theme.color.secondary04};
   width: 0.5rem;
-  height: ${({ $height }) => `${$height}rem`};
+  height: 100%;
   border-radius: 9999px;
 `;
 
 const FlowRecreationContainer = styled.li`
   display: flex;
   gap: 1.2rem;
+  flex: ${({ $playTime }) => $playTime};
 `;
 
 const RecreationContent = styled.div`
