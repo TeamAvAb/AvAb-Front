@@ -11,9 +11,9 @@ import Button from '../common/button/Button';
 import xIcon from '../../assets/X.svg';
 import styled from 'styled-components';
 
-export default function ChangeRecommendFlowConfirmModal({ close, targetFlowId, onChangeClick }) {
+export default function ChangeRecommendFlowConfirmModal({ close, onChangeClick }) {
   const handleChangeClick = () => {
-    onChangeClick(targetFlowId);
+    onChangeClick();
     close();
   };
 

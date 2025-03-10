@@ -37,7 +37,7 @@ export default function CreateFlowRecommendedFlows({
     const fetchFlowData = async () => {
       try {
         setIsLoading(true);
-        const response = await privateAPI.get(`https://dev.api.avab.site/api/flows/recommended`, {
+        const response = await privateAPI.get(`/api/flows/recommended`, {
           params: {
             playTime: context.totalPlayTime, // 플레이 시간 사용
             purpose: context.purposes.map((purpose) => purpose.key).join(','), // 목적 사용
@@ -69,9 +69,8 @@ export default function CreateFlowRecommendedFlows({
       openChangeFlowConfirmModal();
     } else {
       setSelectedFlowId(flowId);
+      saveContext({ recommendedFlowId: flowId, recreations: [] });
     }
-
-    saveContext({ recommendedFlowId: flowId, recreations: [] });
   };
 
   const handleCardButtonClick = () => {
@@ -135,8 +134,10 @@ export default function CreateFlowRecommendedFlows({
       <ModalWrapper>
         <ChangeRecommendFlowConfirmModal
           close={closeChangeFlowConfirmModal}
-          targetFlowId={targetFlowId}
-          onChangeClick={setSelectedFlowId}
+          onChangeClick={() => {
+            setSelectedFlowId(targetFlowId);
+            saveContext({ recommendedFlowId: targetFlowId, recreations: [] });
+          }}
         />
       </ModalWrapper>
     </Container>
