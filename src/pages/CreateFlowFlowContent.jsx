@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { privateAPI } from '../apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
-import FlowContentErrorModal from '../components/modal/FlowContentErrorModal';
+import FlowContentPlayTimeErrorModal from '../components/modal/FlowContentPlayTimeErrorModal';
 import FlowContentSection from '../components/createFlow/FlowContentSection';
 import { useNavigate } from 'react-router-dom';
 import SITE_URL from '../constants/url';
@@ -36,6 +36,7 @@ export default function CreateFlowFlowContent({
     watch,
     handleSubmit,
     getValues,
+    trigger,
     formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: {
@@ -64,10 +65,9 @@ export default function CreateFlowFlowContent({
     name: 'recreations',
     rules: {
       validate: {
-        playTimeLt: (value) =>
-          value.reduce((acc, recreation) => acc + recreation.playTime, 0) >= totalPlayTime,
-        playTimeGt: (value) =>
-          value.reduce((acc, recreation) => acc + recreation.playTime, 0) <= totalPlayTime,
+        totalPlayTimeEq: (value) => {
+          return value.reduce((acc, recreation) => acc + recreation.playTime, 0) === totalPlayTime;
+        },
       },
     },
   });
@@ -75,9 +75,9 @@ export default function CreateFlowFlowContent({
   const navigate = useNavigate();
 
   const {
-    ModalWrapper: ContentErrorModalWrapper,
-    openModal: openContentErrorModal,
-    closeModal: closeContentErrorModal,
+    ModalWrapper: PlayTimeErrorModalWrapper,
+    openModal: openPlayTimeErrorModal,
+    closeModal: closePlayTimeErrorModal,
   } = useModal();
 
   useEffect(() => {
@@ -204,16 +204,22 @@ export default function CreateFlowFlowContent({
   };
 
   const handleInvalidData = (errors) => {
-    if (
-      errors?.recreations?.root?.type === 'playTimeLt' ||
-      errors?.recreations?.root?.type === 'playTimeGt'
-    ) {
-      openContentErrorModal();
+    if (Object.keys(errors).length === 1 && errors?.recreations?.root?.type === 'totalPlayTimeEq') {
+      openPlayTimeErrorModal();
     }
   };
 
   const handleSaveClick = () => {
     handleSubmit(handleValidData, handleInvalidData)();
+  };
+
+  const handleModalSaveClick = async () => {
+    const currentTotalPlayTime = getValues('recreations').reduce(
+      (acc, recreation) => acc + recreation.playTime,
+      0,
+    );
+
+    await handleValidData({ ...getValues(), totalPlayTime: currentTotalPlayTime });
   };
 
   return (
@@ -243,12 +249,17 @@ export default function CreateFlowFlowContent({
       </Sections>
       <StepControl last onBack={handleBackClick} onNext={handleSaveClick} />
 
-      <ContentErrorModalWrapper>
-        <FlowContentErrorModal
-          close={closeContentErrorModal}
-          variant={errors?.recreations?.root?.type}
+      <PlayTimeErrorModalWrapper>
+        <FlowContentPlayTimeErrorModal
+          onSaveClick={handleModalSaveClick}
+          close={closePlayTimeErrorModal}
+          contextTotalPlayTime={context.totalPlayTime}
+          currentTotalPlayTime={watch('recreations').reduce(
+            (acc, recreation) => acc + recreation.playTime,
+            0,
+          )}
         />
-      </ContentErrorModalWrapper>
+      </PlayTimeErrorModalWrapper>
     </Container>
   );
 }
