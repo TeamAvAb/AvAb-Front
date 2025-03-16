@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import fix from '../../assets/flowwrite/fix_flow_write.png';
-import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
-import warn from "../../assets/flowwrite/warn.png";
+import deleteIcon from '../../assets/common/deleteIcon.svg';
+import warn from '../../assets/flowwrite/warn.png';
 import DetailKeywordModal from '../flowwrite/DetailKeywordModal';
 
-export default function WriteRecreationInfo({ num, title, keywords, playTime, isEditable, onDelete }) {
+export default function WriteRecreationInfo({
+  num,
+  title,
+  keywords,
+  playTime,
+  isEditable,
+  onDelete,
+}) {
   const [localTitle, setLocalTitle] = useState(title || '');
   const [localTime, setLocalTime] = useState(playTime || 10);
   const [localKeywords, setLocalKeywords] = useState(keywords || []);
@@ -27,14 +34,16 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
   };
 
   const handleTitleChange = (e) => {
-    if (isEditable || !title) { // isEditable이 true일 때만, 또는 title이 없을 때
+    if (isEditable || !title) {
+      // isEditable이 true일 때만, 또는 title이 없을 때
       console.log('Title changed:', e.target.value); // 입력값 확인
       setLocalTitle(e.target.value); // 사용자가 수정할 수 있도록
     }
   };
 
   const handleTimeChange = (e) => {
-    if (isEditable || !playTime) { // isEditable이 true일 때만, 또는 playTime이 없을 때
+    if (isEditable || !playTime) {
+      // isEditable이 true일 때만, 또는 playTime이 없을 때
       console.log('Time changed:', e.target.value); // 입력값 확인
       setLocalTime(e.target.value); // 사용자가 수정할 수 있도록
     }
@@ -97,14 +106,21 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
         <WarningBox>
           <WarningIcon src={warn} alt="Warning" />
           <div style={{ textAlign: 'center', lineHeight: '1.5' }}>
-            삭제하시겠습니까?<br />
+            삭제하시겠습니까?
+            <br />
             작업을 되돌릴 수 없습니다.
           </div>
           <WarningButtons>
-            <WarningButton onClick={confirmDelete} style={{ backgroundColor: '#ffaa29', color: '#fff' }}>
+            <WarningButton
+              onClick={confirmDelete}
+              style={{ backgroundColor: '#ffaa29', color: '#fff' }}
+            >
               확인
             </WarningButton>
-            <WarningButton onClick={cancelDelete} style={{ backgroundColor: '#6c757d', color: '#fff' }}>
+            <WarningButton
+              onClick={cancelDelete}
+              style={{ backgroundColor: '#6c757d', color: '#fff' }}
+            >
               취소
             </WarningButton>
           </WarningButtons>
@@ -154,9 +170,7 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
               // API에서 키워드를 받아올 때
               <div style={{ display: 'flex', gap: '8px', width: '90%' }}>
                 {keywords.map((keyword, index) => (
-                  <StyledKeyword key={index}>
-                    {keywordMapping[keyword] || keyword}
-                  </StyledKeyword>
+                  <StyledKeyword key={index}>{keywordMapping[keyword] || keyword}</StyledKeyword>
                 ))}
               </div>
             )
@@ -174,10 +188,10 @@ export default function WriteRecreationInfo({ num, title, keywords, playTime, is
                         height: '20px',
                         marginLeft: '5px',
                         cursor: 'pointer',
-                        position: 'absolute',  // 삭제 아이콘을 절대 위치로 설정
-                        right: '-10px',  // 오른쪽 끝에 위치
-                        top: '50%',  // 수직 가운데 정렬
-                        transform: 'translateY(-50%)',  // 정확한 가운데 정렬
+                        position: 'absolute', // 삭제 아이콘을 절대 위치로 설정
+                        right: '-10px', // 오른쪽 끝에 위치
+                        top: '50%', // 수직 가운데 정렬
+                        transform: 'translateY(-50%)', // 정확한 가운데 정렬
                       }}
                       onClick={(e) => handleDeleteKeyword(index, e)}
                     />
@@ -232,7 +246,7 @@ const WarningBox = styled.div`
   font-weight: 400;
   position: absolute;
   left: 50%;
-  transform: translateX(50%);  /* 수평 중앙 정렬 */
+  transform: translateX(50%); /* 수평 중앙 정렬 */
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -367,9 +381,11 @@ const KeywordInput = styled.input`
   &:focus::placeholder {
     color: transparent;
   }
-  
+
   /* 비활성화 상태일 때의 스타일 */
-  ${({ disabled }) => disabled && `
+  ${({ disabled }) =>
+    disabled &&
+    `
     background-color: #E9EBED;
     color: #9fa4a9;
     cursor: not-allowed;

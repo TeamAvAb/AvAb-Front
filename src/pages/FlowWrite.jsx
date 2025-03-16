@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import KeywordModal from '../components/main/KeywordModal.jsx';
-import writeSelect1 from "../assets/flowwrite/write_select_1.png";
-import write2 from "../assets/flowwrite/write_2.png";
-import write3 from "../assets/flowwrite/write_3.png";
-import write4 from "../assets/flowwrite/write_4.png";
-import line from "../assets/flowwrite/line.png";
+import writeSelect1 from '../assets/flowwrite/write_select_1.png';
+import write2 from '../assets/flowwrite/write_2.png';
+import write3 from '../assets/flowwrite/write_3.png';
+import write4 from '../assets/flowwrite/write_4.png';
+import line from '../assets/flowwrite/line.png';
 import KEYWORD_CATEGORY from '../constants/searchKeywordCategory.js';
 import PURPOSE from '../constants/enum/purpose.js';
 import keywordImg from '../assets/main/checkIcon.svg';
-import deleteImg from '../assets/main/deleteIcon.svg';
-import warn from "../assets/flowwrite/warn.png";
-import { Helmet } from "react-helmet";
+import deleteIcon from '../assets/common/deleteIcon.svg';
+import warn from '../assets/flowwrite/warn.png';
+import { Helmet } from 'react-helmet';
 
 const keywordMappings = {
-  워크샵: "WORKSHOP",
-  체육대회: "SPORTS_DAY",
-  MT: "MT",
-  모임: "GATHERING",
-  수련회: "RETREAT",
+  워크샵: 'WORKSHOP',
+  체육대회: 'SPORTS_DAY',
+  MT: 'MT',
+  모임: 'GATHERING',
+  수련회: 'RETREAT',
 };
 
-export default function FlowWrite({initialParams = {} }) {
+export default function FlowWrite({ initialParams = {} }) {
   const getInitialPurpose = (purposes) => {
     if (!purposes) {
       return [];
@@ -40,8 +40,8 @@ export default function FlowWrite({initialParams = {} }) {
   };
 
   useEffect(() => {
-    console.log("현재 선택된 목적 키워드:", purpose);
-    localStorage.setItem("purpose", JSON.stringify(params.purpose));
+    console.log('현재 선택된 목적 키워드:', purpose);
+    localStorage.setItem('purpose', JSON.stringify(params.purpose));
   }, [params.purpose]);
 
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export default function FlowWrite({initialParams = {} }) {
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [keyword, setKeyword] = useState(params.keyword);
   const [keywordContent, setKeywordContent] = useState([]);
-  const [playTime, setPlayTime] = useState("");
+  const [playTime, setPlayTime] = useState('');
   const [purpose, setPurpose] = useState(params.purpose);
   const [savedPlayTime, setSavedPlayTime] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
@@ -61,7 +61,7 @@ export default function FlowWrite({initialParams = {} }) {
         <span>{el.value} 포함</span>
         <img
           alt={`${el.value} 삭제`}
-          src={deleteImg}
+          src={deleteIcon}
           id={el}
           style={{ width: '1rem' }}
           onClick={(e) => {
@@ -74,8 +74,8 @@ export default function FlowWrite({initialParams = {} }) {
   };
 
   useEffect(() => {
-    const savedTime = localStorage.getItem("playTime");
-    const savedPurpose = localStorage.getItem("selectedPurpose");
+    const savedTime = localStorage.getItem('playTime');
+    const savedPurpose = localStorage.getItem('selectedPurpose');
     if (savedPurpose) {
       setPurpose(JSON.parse(savedPurpose)); // 저장된 목적 키워드를 불러와 상태에 반영
     }
@@ -87,44 +87,42 @@ export default function FlowWrite({initialParams = {} }) {
   }, []);
 
   const handleNextClick = () => {
-    console.log("현재 선택된 목적:", purpose);
+    console.log('현재 선택된 목적:', purpose);
     if (!purpose.length) {
-      setShowWarning("레크레이션 목적을 선택해주세요.");
+      setShowWarning('레크레이션 목적을 선택해주세요.');
       return;
     }
-  
+
     if (!playTime) {
-      setShowWarning("시간을 10분 단위로 입력해주세요.");
+      setShowWarning('시간을 10분 단위로 입력해주세요.');
       return;
     }
-  
+
     if (parseInt(playTime, 10) % 10 !== 0) {
-      setShowWarning("시간을 10분 단위로 입력해주세요.");
+      setShowWarning('시간을 10분 단위로 입력해주세요.');
       return;
     }
-  
-    const englishKeywords = selectedKeywords.map(
-      (keyword) => keywordMappings[keyword]
-    );
-    localStorage.setItem("selectedKeywords", JSON.stringify(englishKeywords));
-    localStorage.setItem("playTime", playTime);
+
+    const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
+    localStorage.setItem('selectedKeywords', JSON.stringify(englishKeywords));
+    localStorage.setItem('playTime', playTime);
     setSavedPlayTime(playTime);
-    navigate("/flow/write/detail");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate('/flow/write/detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBeforeClick = () => {
-    localStorage.removeItem("selectedKeywords");
-    localStorage.removeItem("playTime");
-    localStorage.removeItem("selectedGenders");
-    localStorage.removeItem("selectedAges");
-    localStorage.removeItem("selectedGroupSize");
-    localStorage.removeItem("selectedDetailKeywords");
-    localStorage.removeItem("selectedFlow");
-    navigate("/flow/my");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    localStorage.removeItem('selectedKeywords');
+    localStorage.removeItem('playTime');
+    localStorage.removeItem('selectedGenders');
+    localStorage.removeItem('selectedAges');
+    localStorage.removeItem('selectedGroupSize');
+    localStorage.removeItem('selectedDetailKeywords');
+    localStorage.removeItem('selectedFlow');
+    navigate('/flow/my');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
   const handleRemoveClick = (category, targetValue) => {
     if (category === KEYWORD_CATEGORY.KEYWORD) {
       setKeyword(keyword.filter((el) => el.key !== targetValue.key));
@@ -141,10 +139,7 @@ export default function FlowWrite({initialParams = {} }) {
           name="description"
           content="레크레이션 플로우를 작성하고 개인 맞춤형 레크레이션 계획을 쉽게 만들 수 있는 페이지입니다."
         />
-        <meta
-          name="keywords"
-          content="레크레이션, 플로우 작성, 아브아브, AvAb"
-        />
+        <meta name="keywords" content="레크레이션, 플로우 작성, 아브아브, AvAb" />
       </Helmet>
       {purposeModal ? (
         <KeywordModal
@@ -157,49 +152,50 @@ export default function FlowWrite({initialParams = {} }) {
       ) : null}
       <ProgressbarStyle>
         <ProgressBarItem>
-          <img src={writeSelect1} alt="Write Select 1" style={{ width: "50px", height: "50px" }} />
-          <span style={{ color: "#19297C" }}>기본정보</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={writeSelect1} alt="Write Select 1" style={{ width: '50px', height: '50px' }} />
+          <span style={{ color: '#19297C' }}>기본정보</span>
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={write2} alt="Write 2" style={{ width: "50px", height: "50px" }} />
+          <img src={write2} alt="Write 2" style={{ width: '50px', height: '50px' }} />
           <span>세부정보</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={write3} alt="Write 3" style={{ width: "50px", height: "50px" }} />
+          <img src={write3} alt="Write 3" style={{ width: '50px', height: '50px' }} />
           <span>추천 플로우</span>
-          <img src={line} alt="line" style={{ width: "80px", height: "2px" }} />
+          <img src={line} alt="line" style={{ width: '80px', height: '2px' }} />
         </ProgressBarItem>
         <ProgressBarItem>
-          <img src={write4} alt="Write 4" style={{ width: "50px", height: "50px" }} />
+          <img src={write4} alt="Write 4" style={{ width: '50px', height: '50px' }} />
           <span>플로우 내용</span>
         </ProgressBarItem>
       </ProgressbarStyle>
       <FlowwriteBasic>
         <div>
           <TextLine>레크레이션의 목적을 입력해주세요.</TextLine>
-          <PurposeSearch 
+          <PurposeSearch
             id="purpose"
             onClick={() => {
-              console.log("클릭됨!");
+              console.log('클릭됨!');
               setPurposeModal(true);
-            }}>
-              <img src={keywordImg} style={{ width: '1.2rem', paddingLeft: '1.4rem' }} alt="" />
-              {purpose.length === 0 ? (
-                '클릭하면 목적 선택창이 나와요!'
-              ) : (
-                <SelectedKeywords>
-                  {renderKeyword(KEYWORD_CATEGORY.PURPOSE, purpose)}
-                </SelectedKeywords>
-              )}
-            </PurposeSearch>
+            }}
+          >
+            <img src={keywordImg} style={{ width: '1.2rem', paddingLeft: '1.4rem' }} alt="" />
+            {purpose.length === 0 ? (
+              '클릭하면 목적 선택창이 나와요!'
+            ) : (
+              <SelectedKeywords>
+                {renderKeyword(KEYWORD_CATEGORY.PURPOSE, purpose)}
+              </SelectedKeywords>
+            )}
+          </PurposeSearch>
           <TextLine>레크레이션의 총 진행 시간을 입력해주세요.</TextLine>
           <PlayTime>
             <PlayInput
               type="text"
               placeholder="시간을 10분 단위로 입력해주세요."
-              style={{ width: "90%", height: "18px" }}
+              style={{ width: '90%', height: '18px' }}
               value={playTime}
               onChange={(e) => setPlayTime(e.target.value)}
             />
@@ -208,14 +204,14 @@ export default function FlowWrite({initialParams = {} }) {
           <NextButton onClick={handleNextClick}>
             다음으로
             {showWarning && (
-            <WarningWrapper>
-              <WarningBox>
-                <WarningIcon src={warn} alt="Warning" />
-                {showWarning}
-              </WarningBox>
-            </WarningWrapper>
-          )}
-            </NextButton>
+              <WarningWrapper>
+                <WarningBox>
+                  <WarningIcon src={warn} alt="Warning" />
+                  {showWarning}
+                </WarningBox>
+              </WarningWrapper>
+            )}
+          </NextButton>
         </div>
       </FlowwriteBasic>
     </FlowWriteWrap>
@@ -422,17 +418,17 @@ const WarningBox = styled.div`
   bottom: 4.375rem;
 
   &::after {
-  content: '';
-  position: absolute;
-  bottom: -1.125rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 0.625rem solid transparent;
-  border-right: 0.625rem solid transparent;
-  border-top: 1.25rem solid #464c52;
-}
+    content: '';
+    position: absolute;
+    bottom: -1.125rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.625rem solid transparent;
+    border-right: 0.625rem solid transparent;
+    border-top: 1.25rem solid #464c52;
+  }
 `;
 
 const WarningIcon = styled.img`

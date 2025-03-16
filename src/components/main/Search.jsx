@@ -11,7 +11,7 @@ import RadioInput from './RadioInput';
 import searchIconImg from '../../assets/main/searchIcon.svg';
 import keywordImg from '../../assets/main/checkIcon.svg';
 import hrImg from '../../assets/main/hr.svg';
-import deleteImg from '../../assets/main/deleteIcon.svg';
+import deleteIcon from '../../assets/common/deleteIcon.svg';
 import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
 import alertImg from '../../assets/main/alert.svg';
@@ -162,7 +162,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
         <span>{el.value} 포함</span>
         <img
           alt={`${el.value} 삭제`}
-          src={deleteImg}
+          src={deleteIcon}
           id={el}
           style={{ width: '1rem' }}
           onClick={(e) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import fix from '../../assets/flowwrite/fix_flow_write.png';
-import deleteIcon from '../../assets/flowwrite/deleteIcon.png';
+import deleteIcon from '../../assets/common/deleteIcon.svg';
 
 const DetailMapping = {
   COOPERATIVE: '협동',

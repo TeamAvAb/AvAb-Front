@@ -8,7 +8,7 @@ import write3 from '../assets/flowwrite/write_3.png';
 import write4 from '../assets/flowwrite/write_4.png';
 import line from '../assets/flowwrite/line.png';
 import check from '../assets/flowwrite/check.png';
-import deleteIcon from '../assets/flowwrite/deleteIcon.png';
+import deleteIcon from '../assets/common/deleteIcon.svg';
 
 import imgGo3 from '../assets/flowwrite/ImgGo3.png';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
@@ -46,10 +46,10 @@ export default function FlowWriteDetail() {
 
   // 로컬 스토리지에 상태를 저장
   useEffect(() => {
-    const savedGenders = localStorage.getItem("selectedGenders");
-    const savedAges = localStorage.getItem("selectedAges");
-    const savedGroupSize = localStorage.getItem("selectedGroupSize");
-    const savedDetailKeywords = localStorage.getItem("selectedDetailKeywords");
+    const savedGenders = localStorage.getItem('selectedGenders');
+    const savedAges = localStorage.getItem('selectedAges');
+    const savedGroupSize = localStorage.getItem('selectedGroupSize');
+    const savedDetailKeywords = localStorage.getItem('selectedDetailKeywords');
 
     if (savedGenders) {
       setSelectedGenders(JSON.parse(savedGenders));
@@ -62,8 +62,8 @@ export default function FlowWriteDetail() {
     }
     if (savedDetailKeywords) {
       const englishKeywords = JSON.parse(savedDetailKeywords);
-      const koreanKeywords = englishKeywords.map(keyword => {
-        return Object.keys(DetailMappings).find(key => DetailMappings[key] === keyword);
+      const koreanKeywords = englishKeywords.map((keyword) => {
+        return Object.keys(DetailMappings).find((key) => DetailMappings[key] === keyword);
       });
       setSelectedDetailKeywords(koreanKeywords);
     }
@@ -274,7 +274,7 @@ export default function FlowWriteDetail() {
                 <CardGoContent onClick={handleGo4Click}>
                   <CardGoContainer>
                     <CardGoTextContainer>
-                    <ArrowIcon2 src={vector_move} alt="arrow" />
+                      <ArrowIcon2 src={vector_move} alt="arrow" />
                       <CardGo4Text>바로 플로우 작성하기</CardGo4Text>
                       <CardGo4SubText>
                         원하는 플로우를 작성할 수 있도록{'\n'}아브아브가 도와줄게요!
@@ -517,7 +517,7 @@ const ArrowIcon1 = styled.img`
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  opacity: 0;  /* 기본적으로 숨김 */
+  opacity: 0; /* 기본적으로 숨김 */
   transition: opacity 0.3s ease-in-out;
 `;
 
@@ -528,7 +528,7 @@ const ArrowIcon2 = styled.img`
   left: 20px;
   top: 50%;
   transform: translateY(-50%) scaleX(-1); /* 좌우 반전 */
-  opacity: 0;  /* 기본적으로 숨김 */
+  opacity: 0; /* 기본적으로 숨김 */
   transition: opacity 0.3s ease-in-out;
 `;
 
@@ -601,7 +601,7 @@ const CardGoContent = styled.div`
   &:hover {
     box-shadow: 0px 0px 20px 0px rgba(27, 29, 31, 0.15); /* 호버 시 그림자 효과 */
   }
-  
+
   &:hover ${ArrowIcon2} {
     opacity: 1;
   }
