@@ -4,7 +4,7 @@ import Share from '../assets/moreflow/share.png';
 import Time from '../assets/moreflow/time.png';
 import User from '../assets/moreflow/user.png';
 import View from '../assets/moreflow/view.png';
-import Close from '../assets/myflow/close.png';
+import closeIcon from '../assets/common/x.svg';
 import RecreationInfo from '../components/recreationInfo/RecreationInfo';
 import { useNavigate } from 'react-router-dom';
 import { privateAPI } from '../apis/user';
@@ -122,7 +122,7 @@ export default function MoreMyFlow() {
           <ModalContainer>
             <ModalBox>
               <CloseBtn onClick={close}>
-                <img src={Close} alt="닫기" />
+                <img src={closeIcon} alt="닫기" />
               </CloseBtn>
               <ModalBoxDetail>
                 <div>
@@ -257,7 +257,7 @@ export default function MoreMyFlow() {
               <ModalContainer>
                 <ModalBox>
                   <CloseBtn onClick={closeDel}>
-                    <img src={Close} alt="닫기" />
+                    <img src={closeIcon} alt="닫기" />
                   </CloseBtn>
                   <ModalBoxDetail>
                     <div>

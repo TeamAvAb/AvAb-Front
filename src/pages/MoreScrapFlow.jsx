@@ -7,7 +7,7 @@ import View from '../assets/moreflow/view.png';
 import Write from '../assets/moreflow/write.png';
 import Scrap from '../assets/moreflow/scrap.png';
 import Scrap2 from '../assets/moreflow/scrap2.png';
-import Close from '../assets/myflow/close.png';
+import closeIcon from '../assets/common/x.svg';
 import RecreationInfo from '../components/recreationInfo/RecreationInfo';
 import { privateAPI, publicAPI } from '../apis/user';
 import useLoginModalStore from '../stores/loginModalStore';
@@ -130,7 +130,7 @@ export default function MoreWatchFlow() {
           <ModalContainer>
             <ModalBox>
               <CloseBtn onClick={close}>
-                <img src={Close} alt="닫기" />
+                <img src={closeIcon} alt="닫기" />
               </CloseBtn>
               <ModalBoxDetail>
                 <div>

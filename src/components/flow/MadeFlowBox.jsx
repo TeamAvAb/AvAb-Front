@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Time from '../../assets/myflow/time.png';
 import View from '../../assets/myflow/view.png';
 import User from '../../assets/myflow/user.png';
-import Close from '../../assets/myflow/close.png';
+import closeIcon from '../../assets/common/x.svg';
 import { useNavigate } from 'react-router-dom';
 
 const PurposeList = {
@@ -60,7 +60,7 @@ export default function MadeFlowBox({ datas, setDoDel }) {
         <ModalContainer>
           <ModalBox>
             <CloseBtn onClick={close}>
-              <img src={Close} alt="닫기" />
+              <img src={closeIcon} alt="닫기" />
             </CloseBtn>
             <ModalBoxDetail>
               <div>

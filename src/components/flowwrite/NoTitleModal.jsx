@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from '../../assets/flowwrite/close_modal.png';
+import closeIcon from '../../assets/common/x.svg';
 
 const NoTitle = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
         <CloseButtonContainer>
-          <ModalCloseButton onClick={onClose} src={close} alt="Close" />
+          <ModalCloseButton onClick={onClose} src={closeIcon} alt="Close" />
         </CloseButtonContainer>
         <ModalTitle>
           일정 플로우

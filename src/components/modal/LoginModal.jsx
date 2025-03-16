@@ -3,7 +3,7 @@ import { Backdrop } from './modal.style';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import characterImg from '../../assets/character/kakaoAvb.png';
-import closeIcon from '../../assets/X.svg';
+import closeIcon from '../../assets/common/x.svg';
 import useLoginModalStore from '../../stores/loginModalStore';
 import Button from '../common/button/Button';
 
