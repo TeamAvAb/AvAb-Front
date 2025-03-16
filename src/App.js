@@ -18,7 +18,7 @@ import MoreScrapFlow from './pages/MoreScrapFlow'; // 스크랩 한 일정플로
 import LoginLoading from './pages/LoginLoading'; // 로그인 시 로딩 페이지
 import GlobalStyle from './GlobalStyles'; // 전역 스타일
 import useLoginModalStore from './stores/loginModalStore';
-import cryingAvb from './assets/main/cryingAvb.png';
+import cryingAvb from './assets/character/cryingAvb.png';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import NotFound from './pages/NotFound';

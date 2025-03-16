@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import cryingAvb from '../assets/main/cryingAvb.png';
+import cryingAvb from '../assets/character/cryingAvb.png';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Button from '../components/common/button/Button';

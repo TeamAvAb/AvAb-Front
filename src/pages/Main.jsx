@@ -6,8 +6,7 @@ import Search from '../components/main/Search';
 import PopularRecreationCarousel from '../components/main/PopularRecreationCarousel';
 import BannerCarousel from '../components/main/BannerCarousel';
 
-import character from '../assets/main/character.png';
-import characterImg from '../assets/main/character.png';
+import characterImg from '../assets/character/greetingAvb.png';
 import plusIconImg from '../assets/main/plusIcon.svg';
 import intro from '../assets/main/introImg.png';
 
@@ -73,7 +72,7 @@ export default function Main() {
             검색해보세요!
           </Comment>
           <img
-            src={character}
+            src={characterImg}
             style={{
               height: '20rem',
             }}

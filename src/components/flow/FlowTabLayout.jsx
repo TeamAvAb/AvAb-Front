@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import SideNavLayout from '../../layout/SideNavLayout';
 import Button from '../common/button/Button';
 import Pagination from '../pagination/Pagination';
-import penguin from '../../assets/scrapflow/penguin.png';
+import characterImg from '../../assets/character/memoAvb.png';
 import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function FlowTabLayout({
@@ -34,7 +34,7 @@ export default function FlowTabLayout({
     <SideNavLayout selectedPage={selectedPage} parentTab="flow">
       <MainSection>
         <ButtonSection>
-          <CharacterImg src={penguin} />
+          <CharacterImg src={characterImg} />
           <FlowMakeBtn onClick={moveToMakeFlow} backgroundColor="main01" color="main05" size="lg">
             일정플로우 만들기
           </FlowMakeBtn>

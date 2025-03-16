@@ -1,5 +1,5 @@
 import React from 'react';
-import FooterP from '../../../assets/Footer/FooterP.svg';
+import footerAvb from '../../../assets/character/footerAvb.svg';
 import styled from 'styled-components';
 import Button from '../button/Button';
 import FooterCopyright from './FooterCopyright';
@@ -11,7 +11,7 @@ export default function Footer1() {
     <div style={{ marginTop: '8rem' }}>
       <FooterContainer>
         <MainSection>
-          <OpinionImg src={FooterP}></OpinionImg>
+          <OpinionImg src={footerAvb}></OpinionImg>
           <OpinionMsgContainer>
             <OpinionMsg>
               <BoldSpan>아브아브</BoldSpan>에게
