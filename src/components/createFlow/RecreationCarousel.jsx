@@ -22,7 +22,12 @@ function NextArrow({ onClick }) {
   );
 }
 
-export default function RecreationCarousel({ recreations, onAddRecreationClick, incrementPage }) {
+export default function RecreationCarousel({
+  recreations,
+  onAddRecreationClick,
+  incrementPage,
+  addRecreationDisabled,
+}) {
   const [carouselRef, carouselApi] = useCarousel();
 
   const { onPrevButtonClick, onNextButtonClick } = usePrevNextButtons(carouselApi);
@@ -49,6 +54,7 @@ export default function RecreationCarousel({ recreations, onAddRecreationClick, 
               key={recreation.id}
               content={recreation}
               onAddRecreationClick={onAddRecreationClick}
+              addDisabled={addRecreationDisabled}
             />
           ))}
         </Container>

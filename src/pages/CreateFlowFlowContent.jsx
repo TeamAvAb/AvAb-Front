@@ -36,8 +36,7 @@ export default function CreateFlowFlowContent({
     watch,
     handleSubmit,
     getValues,
-    trigger,
-    formState: { errors, dirtyFields },
+    formState: { dirtyFields },
   } = useForm({
     defaultValues: {
       title: contextTitle,
@@ -69,6 +68,7 @@ export default function CreateFlowFlowContent({
           return value.reduce((acc, recreation) => acc + recreation.playTime, 0) === totalPlayTime;
         },
       },
+      maxLength: 10,
     },
   });
 
@@ -229,6 +229,7 @@ export default function CreateFlowFlowContent({
           totalPlayTime={totalPlayTime}
           purposes={purposes}
           onAddRecreationClick={handleAddRecreationClick}
+          addRecreationDisabled={recreations.length === 10}
         />
         <FlowContentSection
           flow={{

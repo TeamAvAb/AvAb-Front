@@ -3,7 +3,12 @@ import FavoriteRecreationsSection from './FavoriteRecreationsSection';
 import RecreationSearchSection from './RecreationSearchSection';
 import RecommendedRecreationSection from './RecommendedRecreationSection';
 
-export default function SelectRecreationSection({ purposes, totalPlayTime, onAddRecreationClick }) {
+export default function SelectRecreationSection({
+  purposes,
+  totalPlayTime,
+  onAddRecreationClick,
+  addRecreationDisabled,
+}) {
   return (
     <Container>
       <SectionHeading>레크레이션 선택</SectionHeading>
@@ -11,9 +16,16 @@ export default function SelectRecreationSection({ purposes, totalPlayTime, onAdd
         totalPlayTime={totalPlayTime}
         purposes={purposes}
         onAddRecreationClick={onAddRecreationClick}
+        addRecreationDisabled={addRecreationDisabled}
       />
-      <FavoriteRecreationsSection onAddRecreationClick={onAddRecreationClick} />
-      <RecreationSearchSection onAddRecreationClick={onAddRecreationClick} />
+      <FavoriteRecreationsSection
+        onAddRecreationClick={onAddRecreationClick}
+        addRecreationDisabled={addRecreationDisabled}
+      />
+      <RecreationSearchSection
+        onAddRecreationClick={onAddRecreationClick}
+        addRecreationDisabled={addRecreationDisabled}
+      />
     </Container>
   );
 }

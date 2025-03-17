@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import RecreationList from './RecreationList';
 import { useFormState } from 'react-hook-form';
 import AlertMessage from '../common/AlertMessage';
+import clsx from 'clsx';
 
 export default function FlowContentSection({
   flow,
@@ -93,7 +94,7 @@ export default function FlowContentSection({
       </TitleInputBox>
 
       <RecreationListContainer>
-        <h2 className={!flow.title ? 'empty-title' : ''}>
+        <h2 className={clsx({ 'empty-title': !flow.title })}>
           {flow.title ? flow.title : '플로우 제목'}
         </h2>
         <RecreationList
@@ -102,7 +103,10 @@ export default function FlowContentSection({
           removeRecreation={removeRecreation}
           control={control}
         />
-        <AddCustomRecreationButton onClick={handleAddCustomRecreationClick}>
+        <AddCustomRecreationButton
+          onClick={handleAddCustomRecreationClick}
+          disabled={flow.recreations.length === 10}
+        >
           +
         </AddCustomRecreationButton>
       </RecreationListContainer>
@@ -227,7 +231,11 @@ const AddCustomRecreationButton = styled.button`
   padding: 5px 0;
   font-size: 2.5rem;
 
-  &:hover {
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.color.main02};
     color: ${({ theme }) => theme.color.main05};
   }

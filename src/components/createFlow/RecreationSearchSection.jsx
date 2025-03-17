@@ -7,7 +7,7 @@ import RecreationCarousel from './RecreationCarousel';
 import NoData from '../common/NoData';
 import styled from 'styled-components';
 
-export default function RecreationSearchSection({ onAddRecreationClick }) {
+export default function RecreationSearchSection({ onAddRecreationClick, addRecreationDisabled }) {
   const [recreations, setRecreations] = useState([]);
   const [page, setPage] = useState(0);
 
@@ -70,6 +70,7 @@ export default function RecreationSearchSection({ onAddRecreationClick }) {
           recreations={recreations}
           onAddRecreationClick={onAddRecreationClick}
           incrementPage={incrementPage}
+          addRecreationDisabled={addRecreationDisabled}
         />
       ) : (
         <NoDataContainer>

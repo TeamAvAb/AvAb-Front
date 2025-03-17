@@ -8,6 +8,7 @@ export default function RecommendedRecreationSection({
   purposes,
   totalPlayTime,
   onAddRecreationClick,
+  addRecreationDisabled,
 }) {
   const [recreations, setRecreations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +52,11 @@ export default function RecommendedRecreationSection({
     <>
       <SectionHeading>추천 레크레이션</SectionHeading>
       {!isLoading ? (
-        <RecreationCarousel recreations={recreations} onAddRecreationClick={onAddRecreationClick} />
+        <RecreationCarousel
+          recreations={recreations}
+          onAddRecreationClick={onAddRecreationClick}
+          addRecreationDisabled={addRecreationDisabled}
+        />
       ) : (
         <Wrapper>
           <LoadingSpinner />

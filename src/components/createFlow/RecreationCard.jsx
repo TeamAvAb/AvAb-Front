@@ -4,7 +4,7 @@ import RecreationCardS from '../common/card/recreationCard/RecreationCardS';
 import Button from '../common/button/Button';
 import KEYWORD from '../../constants/enum/keyword';
 
-export default function RecreationCard({ content, onAddRecreationClick }) {
+export default function RecreationCard({ content, onAddRecreationClick, addDisabled }) {
   const handleAddClick = () =>
     onAddRecreationClick({
       id: content.id,
@@ -24,7 +24,12 @@ export default function RecreationCard({ content, onAddRecreationClick }) {
           <Content>{content.summary}</Content>
         </Summary>
       </Wrapper>
-      <Button onClick={handleAddClick} color="main05" backgroundColor="secondary02">
+      <Button
+        onClick={handleAddClick}
+        color="main05"
+        backgroundColor={!addDisabled ? 'secondary02' : 'grayscale05'}
+        disabled={addDisabled}
+      >
         추가하기
       </Button>
     </Container>

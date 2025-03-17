@@ -5,7 +5,10 @@ import NoData from '../common/NoData';
 import styled from 'styled-components';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-export default function FavoriteRecreationsSection({ onAddRecreationClick }) {
+export default function FavoriteRecreationsSection({
+  onAddRecreationClick,
+  addRecreationDisabled,
+}) {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [recreations, setRecreations] = useState([]);
@@ -54,6 +57,7 @@ export default function FavoriteRecreationsSection({ onAddRecreationClick }) {
             recreations={recreations}
             onAddRecreationClick={onAddRecreationClick}
             incrementPage={incrementPage}
+            addRecreationDisabled={addRecreationDisabled}
           />
         ) : (
           <NoData variant="favoriteRecreation" />
