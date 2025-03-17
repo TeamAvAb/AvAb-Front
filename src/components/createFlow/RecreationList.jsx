@@ -36,4 +36,5 @@ const ListContainer = styled.ol`
   flex-direction: column;
   gap: 0.5rem;
   width: 24rem;
+  max-height: 120rem;
 `;

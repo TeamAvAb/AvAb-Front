@@ -1,6 +1,5 @@
 import circleXIcon from '../../assets/circle_x.svg';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import KeywordModal from '../main/KeywordModal';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
 import KEYWORD from '../../constants/enum/keyword';
@@ -9,6 +8,19 @@ import KeywordChip from '../common/chip/KeywordChip';
 import DeleteRecreationConfirmTooltip from './DeleteRecreationConfirmTooltip';
 import AlertMessage from '../common/AlertMessage';
 import RecreationKeywordTooltip from './RecreationKeywordTooltip';
+import {
+  Container,
+  DeleteButton,
+  ErrorWrapper,
+  KeywordBox,
+  NumCircle,
+  PlayTimeBar,
+  PlayTimeBox,
+  PlayTimeInput,
+  RecreationContent,
+  TitleBox,
+} from './style/RecreationItem';
+import styled from 'styled-components';
 
 export default function CustomRecreationItem({ index, register, removeRecreation, control }) {
   const [isDeleteConfirmTooltipOpen, setIsDeleteConfirmTooltipOpen] = useState(false);
@@ -44,14 +56,12 @@ export default function CustomRecreationItem({ index, register, removeRecreation
     return keywords.map((keyword) => <KeywordChip key={keyword.key} text={keyword.value} />);
   };
 
-  const playTimeBarHeight = playTime ? (playTime / 10) * 10 : 10;
-
   const DELETE_TOOLTIP_ID = `delete-confirm-${index}`;
   const KEYWORD_TOOLTIP_ID = `select-keyword-tooltip`;
 
   return (
-    <Container>
-      <PlayTimeBar $height={playTimeBarHeight} />
+    <Container $playTime={playTime}>
+      <PlayTimeBar />
       <RecreationContent>
         <TitleBox>
           <NumCircle>{index + 1}</NumCircle>
@@ -133,72 +143,6 @@ export default function CustomRecreationItem({ index, register, removeRecreation
   );
 }
 
-const Container = styled.li`
-  display: flex;
-  gap: 0.8rem;
-`;
-
-const PlayTimeBar = styled.div`
-  background: ${({ theme }) => theme.color.secondary04};
-  width: 0.5rem;
-  height: ${({ $height }) => `${$height}rem`};
-  border-radius: 9999px;
-`;
-
-const RecreationContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const TitleBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const ErrorWrapper = styled.div`
-  &.title {
-    margin-left: 3.3rem;
-    margin-top: -1rem;
-  }
-
-  &.keywords {
-    margin-top: -0.5rem;
-  }
-
-  &.playTime {
-    margin-left: 0.5rem;
-    max-width: 60%;
-  }
-`;
-
-const KeywordBox = styled.button`
-  display: flex;
-  gap: 0.5rem;
-  text-align: left;
-  padding: 0;
-
-  span {
-    background-color: ${({ theme }) => theme.color.grayscale06};
-    border-radius: 5px;
-    padding: 0.5rem 0.8rem;
-    color: ${({ theme }) => theme.color.grayscale04};
-    width: 100%;
-  }
-`;
-
-const NumCircle = styled.span`
-  background-color: ${({ theme }) => theme.color.secondary04};
-  width: 2.6rem;
-  height: 2.6rem;
-  ${({ theme }) => theme.text.h4};
-  border-radius: 9999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const TitleInput = styled.input`
   display: flex;
   flex-direction: column;
@@ -210,36 +154,4 @@ const TitleInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.color.grayscale04};
   }
-`;
-
-const PlayTimeBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  ${({ theme }) => theme.text.small};
-
-  span.minute {
-    ${({ theme }) => theme.text.smallBold};
-  }
-
-  span.label {
-    width: 6rem;
-  }
-`;
-
-const PlayTimeInput = styled.input`
-  font-weight: 700;
-  border: none;
-  ${({ theme }) => theme.text.smallBold};
-  width: 1.7rem;
-  text-align: right;
-
-  &::placeholder {
-    color: ${({ theme }) => theme.color.grayscale04};
-  }
-`;
-
-const DeleteButton = styled.button`
-  padding: 0;
-  height: 1.25rem;
 `;
