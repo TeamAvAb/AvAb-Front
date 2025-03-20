@@ -204,7 +204,10 @@ export default function CreateFlowFlowContent({
   };
 
   const handleInvalidData = (errors) => {
-    if (Object.keys(errors).length === 1 && errors?.recreations?.root?.type === 'totalPlayTimeEq') {
+    if (
+      Object.keys(errors.recreations).length === 1 &&
+      errors.recreations?.root?.type === 'totalPlayTimeEq'
+    ) {
       openPlayTimeErrorModal();
     }
   };

@@ -75,7 +75,7 @@ export default function KeywordModal({
                 <PurposeChip
                   key={el.key}
                   onClick={() => handleKeywordClick(el)}
-                  selected={result.includes(el)}
+                  selected={result.some((item) => item.key === el.key)}
                   text={el.value}
                 />
               ),

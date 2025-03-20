@@ -58,8 +58,13 @@ export default function FlowContentSection({
           </InfoRow>
           <InfoRow>
             <Label>연령대</Label>
-            {flow.ageGroups.length === 0 && '선택해주세요.'}
-            <span>{flow.ageGroups.map((group) => group.value).join(', ')}</span>
+            <span>
+              {flow.ageGroups.length === 0 && '선택해주세요.'}
+              {flow.ageGroups
+                .toSorted((a, b) => a.order - b.order)
+                .map((age) => age.value)
+                .join(', ')}
+            </span>
           </InfoRow>
           <InfoRow>
             <Label>인원</Label>
@@ -167,10 +172,15 @@ const InfoRow = styled.div`
   display: flex;
   gap: 0.5rem;
   ${({ theme }) => theme.text.small};
+
+  span {
+    word-break: keep-all;
+  }
 `;
 
 const Label = styled.h3`
   ${({ theme }) => theme.text.smallBold};
+  word-break: keep-all;
 `;
 
 const Line = styled.div`
