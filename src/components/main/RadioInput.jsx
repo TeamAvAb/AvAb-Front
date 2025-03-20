@@ -1,23 +1,27 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import clsx from 'clsx';
 
-export default function RadioInput({ options, setOption, selectedOption }) {
+export default function RadioInput({ options, setOption, selectedOption, border, gap = 'md' }) {
   const handleOptionClick = (option) => {
-    const isSelected = selectedOption.includes(option);
+    const isSelected = selectedOption.some((item) => item.key === option.key);
     if (isSelected) {
-      setOption(selectedOption.filter((el) => el !== option));
+      setOption(selectedOption.filter((el) => el.key !== option.key));
     } else {
-      setOption((prev) => [...prev, option]);
+      setOption([...selectedOption, option]);
     }
   };
 
   return (
-    <Options>
+    <Options $gap={gap}>
       {options.map((option) => (
         <Option
           key={option.key}
           onClick={() => handleOptionClick(option)}
-          selected={selectedOption.includes(option)}
+          className={clsx({
+            selected: selectedOption.some((item) => item.key === option.key),
+            border,
+          })}
         >
           {option.value}
         </Option>
@@ -26,10 +30,15 @@ export default function RadioInput({ options, setOption, selectedOption }) {
   );
 }
 
+const optionGap = {
+  md: '2.5rem',
+  sm: '1.25rem',
+};
+
 const Options = styled.ul`
   display: flex;
   flex-direction: row;
-  gap: 2.5rem;
+  gap: ${({ $gap }) => optionGap[$gap]};
 `;
 
 const Option = styled.li`
@@ -41,9 +50,26 @@ const Option = styled.li`
   border-radius: 9999px;
   box-sizing: border-box;
   padding: 0.8rem 1.8rem;
-  background: ${({ selected, theme }) => (selected ? theme.color.secondary04 : theme.color.main05)};
+  background: ${({ theme }) => theme.color.main05};
   text-align: center;
-  color: ${({ selected, theme }) => (selected ? theme.color.grayscale01 : theme.color.grayscale04)};
+  color: ${({ theme }) => theme.color.grayscale04};
   cursor: pointer;
   width: max-content;
+
+  ${({ $border, theme }) =>
+    $border &&
+    css`
+      border: 1px solid ${theme.color.grayscale05};
+    `}
+  &.border {
+    border: 1px solid ${({ theme }) => theme.color.grayscale05};
+  }
+
+  &.selected {
+    ${({ theme }) => css`
+      background-color: ${theme.color.secondary04};
+      color: ${theme.color.grayscale01};
+      font-weight: bold;
+    `}
+  }
 `;

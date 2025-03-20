@@ -6,7 +6,7 @@ import useLoginStore from '../stores/loginStore';
 import { useLocation } from 'react-router-dom';
 import FlowInfoSection from '../components/flowDetails/FlowInfoSection';
 import FlowSummarySection from '../components/flowDetails/FlowSummarySection';
-import FlowRecreationSection from '../components/flowDetails/FlowRecreationSection';
+import FlowTimelineSection from '../components/flowDetails/FlowTimelineSection';
 import NotFound from './NotFound';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
@@ -56,7 +56,7 @@ export default function FlowDetails() {
         <FlowInfoSection flow={data.flowDetail} />
         <FlowDetailsMainSection>
           <FlowSummarySection flow={data.flowDetail} />
-          <FlowRecreationSection flowTitle={data.flowDetail.title} recreations={data.recreations} />
+          <FlowTimelineSection flowTitle={data.flowDetail.title} recreations={data.recreations} />
         </FlowDetailsMainSection>
       </>
     )

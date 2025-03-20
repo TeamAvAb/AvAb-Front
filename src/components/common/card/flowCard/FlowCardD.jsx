@@ -9,6 +9,7 @@ import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import Button from '../../button/Button';
 import FlowMetadata from '../../FlowMetadata';
+import SITE_URL from '../../../../constants/url';
 
 export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -17,7 +18,7 @@ export default function FlowCardD({ content, isOwner, refetch, onDeleteClick }) 
 
   const navigate = useNavigate();
   const navigateToFlowDetails = () => {
-    navigate(`/flow/morewatchflow/${content.id}`);
+    navigate(SITE_URL.FLOW_DETAIL(content.id));
   };
 
   const handleDetailClick = () => {
@@ -130,21 +131,6 @@ const Title = styled.h4`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-const Info = styled.ul`
-  img {
-    width: 2.6rem;
-    object-fit: none;
-  }
-
-  li {
-    width: 6rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-  }
 `;
 
 const MoreDetailBtn = styled.button`

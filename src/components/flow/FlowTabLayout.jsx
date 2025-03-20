@@ -8,6 +8,7 @@ import Button from '../common/button/Button';
 import Pagination from '../pagination/Pagination';
 import characterImg from '../../assets/character/memoAvb.png';
 import LoadingSpinner from '../common/LoadingSpinner';
+import SITE_URL from '../../constants/url';
 
 export default function FlowTabLayout({
   selectedPage,
@@ -24,7 +25,7 @@ export default function FlowTabLayout({
 
   const moveToMakeFlow = () => {
     if (isLoggedIn) {
-      navigate(`/flow/write`);
+      navigate(SITE_URL.CREATE_FLOW);
     } else {
       modalControl();
     }
@@ -82,6 +83,7 @@ const FlowMakeBtn = styled(Button)`
   font-size: 3rem;
   position: relative;
   left: -1.5rem;
+
   &:hover {
     background-color: ${({ theme }) => theme.color.main02};
   }

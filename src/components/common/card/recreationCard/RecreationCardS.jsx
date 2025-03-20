@@ -9,6 +9,7 @@ import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import { privateAPI } from '../../../../apis/user';
+import SITE_URL from '../../../../constants/url';
 
 export default function RecreationCardS({ content, refetch }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -16,8 +17,8 @@ export default function RecreationCardS({ content, refetch }) {
   const [isFav, setIsFav] = useState(content.isFavorite);
 
   const navigate = useNavigate();
-  const toRecreationDetail = (recreationId) => {
-    navigate(`/recreation/detail/${recreationId}`);
+  const navigateToRecreationDetail = (recreationId) => {
+    navigate(SITE_URL.RECREATION_DETAIL(recreationId));
     scrollToTop();
   };
 
@@ -42,9 +43,8 @@ export default function RecreationCardS({ content, refetch }) {
     }
   };
 
-  const handleDetailClick = (e) => {
-    e.stopPropagation();
-    toRecreationDetail(content.id);
+  const handleDetailClick = () => {
+    navigateToRecreationDetail(content.id);
   };
 
   const renderKeywords = () => getTranslatedKeywords(content.keywordList).join(', ');
@@ -98,6 +98,7 @@ const CardLayout = styled.div`
   border-radius: 1.25rem;
   background-color: ${({ theme }) => theme.color.grayscale07};
   box-shadow: 0 10px 30px 3px ${({ theme }) => theme.color.grayscale01}33;
+  flex: 0 0 auto;
 `;
 
 const CardContent = styled.div`

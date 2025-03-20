@@ -16,11 +16,12 @@ import gatherImg from '../assets/main/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
 import { scrollToTop } from '../utils/windowUtils';
+import SITE_URL from '../constants/url';
 
 export default function Main() {
   const navigate = useNavigate();
   const goToSearchList = () => {
-    navigate(`/search/list`);
+    navigate(SITE_URL.RECREATION_SEARCH_LIST);
     scrollToTop();
   };
 
@@ -58,7 +59,7 @@ export default function Main() {
           content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
         />
         <meta property="og:image" content={characterImg} />
-        <meta property="og:url" content="http://avab.site" />
+        <meta property="og:url" content="https://avab.site" />
         <meta property="og:type" content="website" />
       </Helmet>
       <Container>

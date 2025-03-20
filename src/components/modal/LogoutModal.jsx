@@ -5,6 +5,7 @@ import LogoutP from '../../assets/mypage/LogoutImg.svg';
 import useLoginStore from '../../stores/loginStore';
 import { privateAPI } from '../../apis/user';
 import { useNavigate } from 'react-router-dom';
+import SITE_URL from '../../constants/url';
 
 export default function LogoutModal({ handleModal }) {
   const { logout } = useLoginStore();
@@ -13,9 +14,9 @@ export default function LogoutModal({ handleModal }) {
     try {
       const response = await privateAPI.delete('/api/auth/logout');
       if (response.data.isSuccess === true) {
+        navigate(SITE_URL.MAIN);
         localStorage.clear();
         logout();
-        navigate('/');
       } else {
         alert('로그아웃 요청 에러가 발생했습니다!');
         console.log(response);

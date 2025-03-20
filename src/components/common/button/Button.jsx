@@ -10,6 +10,7 @@ export default function Button({
   size = 'md',
   transition = true,
   className,
+  disabled,
 }) {
   return (
     <StyledButton
@@ -21,6 +22,7 @@ export default function Button({
       $borderColor={borderColor}
       onClick={onClick}
       className={className}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
@@ -50,4 +52,8 @@ const StyledButton = styled.button`
   transition: ${({ $transition }) => ($transition ? 'all 0.3s' : 'none')};
   width: fit-content;
   height: fit-content;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
