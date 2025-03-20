@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import arrow from '../../assets/main/nextSlide.svg';
 import heartImg from '../../assets/main/heart.svg';
 import starImg from '../../assets/main/starIcon.svg';
-import AddRecreationInfo from './AddRecreationInfo';
 
 const keywordMapping = {
   QUICKNESS: '순발력',

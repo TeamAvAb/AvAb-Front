@@ -9,13 +9,9 @@ import write2 from '../assets/flowwrite/write_2.png';
 import write3 from '../assets/flowwrite/write_3.png';
 import writeSelect4 from '../assets/flowwrite/write_select_4.png';
 import line from '../assets/flowwrite/line.png';
-import WithoutSaving from '../components/flowwrite/WithoutSavingModal.jsx';
-import TimeOut from '../components/flowwrite/TimeOutModal.jsx'
 import NoTitle from '../components/flowwrite/NoTitleModal.jsx';
-import NoKeyword from '../components/flowwrite/NoKeywordModal.jsx'
 import WriteSelectedRecreationInfo from '../components/flowwrite/WriteSelectedRecreationInfo.jsx';
 import WriteRecreationInfo from '../components/flowwrite/WriteRecreationInfo.jsx';
-import AddRecreationInfo from '../components/flowwrite/AddRecreationInfo.jsx';
 import RecommendRecreation from '../components/flowwrite/RecommendRecreation.jsx';
 import ScrapRecreation from '../components/flowwrite/ScrapRecreation.jsx';
 
@@ -205,15 +201,12 @@ export default function FlowWriteContent() {
         }
         const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
 
-        const response = await axios.get(
-          'http://dev.api.avab.site/api/recreations/recommended',
-          {
-            params: {
-              playTime: savedPlayTime,
-              purpose: englishKeywords.join(','),
-            },
+        const response = await axios.get('http://dev.api.avab.site/api/recreations/recommended', {
+          params: {
+            playTime: savedPlayTime,
+            purpose: englishKeywords.join(','),
           },
-        );
+        });
 
         // API 응답에서 필요한 데이터만 추출하여 recreationData 상태를 업데이트
         setRecreationData(
@@ -265,7 +258,7 @@ export default function FlowWriteContent() {
     setFlowTitle(e.target.value);
   };
 
-  const handleAddFlow = async() => {
+  const handleAddFlow = async () => {
     console.log('Add Flow Button clicked');
     setInfoBoxes((prevInfoBoxes) => [...prevInfoBoxes, <WriteRecreationInfo />]);
     setNumOfRecreationInfo(numOfRecreationInfo + 1);
@@ -302,7 +295,7 @@ export default function FlowWriteContent() {
         console.error('playTime이 저장되어 있지 않습니다.');
         return;
       }
-  
+
       const englishKeywords = selectedKeywords.map((keyword) => keywordMappings[keyword]);
       const response = await axios.get('https://dev.api.avab.site/api/recreations/recommended', {
         params: {
@@ -310,23 +303,23 @@ export default function FlowWriteContent() {
           purpose: englishKeywords.join(','),
         },
       });
-  
+
       const data = response.data.result.find((item) => item.id === id);
       if (!data) {
         console.error(`해당 id(${id})에 해당하는 데이터를 찾을 수 없습니다.`);
         return;
       }
-  
+
       const { title, keywordList, playTime } = data;
-  
+
       // InfoBox 추가
       setInfoBoxes((prevInfoBoxes) => [
         ...prevInfoBoxes,
-        <WriteRecreationInfo 
-          title={title} 
-          keywords={keywordList} 
-          playTime={playTime} 
-          isEditable={false}  // handleAddRecommendFlow로 생성된 박스만 수정 불가
+        <WriteRecreationInfo
+          title={title}
+          keywords={keywordList}
+          playTime={playTime}
+          isEditable={false} // handleAddRecommendFlow로 생성된 박스만 수정 불가
           onDelete={handleDeleteInfoBox}
         />,
       ]);
@@ -345,7 +338,7 @@ export default function FlowWriteContent() {
       return null;
     }
   };
-  
+
   const handleAddScrapFlow = async (id) => {
     try {
       const savedPlayTime = localStorage.getItem('playTime');
@@ -362,7 +355,7 @@ export default function FlowWriteContent() {
             Accept: '*/*',
             Authorization: `Bearer ${testJWT}`,
           },
-        }
+        },
       );
 
       console.log('스크랩 레크 응답 데이터:', response.data.result.recreationList);
@@ -397,11 +390,11 @@ export default function FlowWriteContent() {
       // InfoBox 추가
       setInfoBoxes((prevInfoBoxes) => [
         ...prevInfoBoxes,
-        <WriteRecreationInfo 
-          title={title} 
-          keywords={keywordList} 
-          playTime={playTime} 
-          isEditable={false}  // handleAddScrapFlow로 생성된 박스만 수정 불가
+        <WriteRecreationInfo
+          title={title}
+          keywords={keywordList}
+          playTime={playTime}
+          isEditable={false} // handleAddScrapFlow로 생성된 박스만 수정 불가
           onDelete={handleDeleteInfoBox}
         />,
       ]);
@@ -423,10 +416,10 @@ export default function FlowWriteContent() {
         title,
         keywordList,
         playTime,
-      }))
+      })),
     );
   }, [scrapRecreationData]);
-  
+
   FlowWriteContent.handleAddRecommendFlow = handleAddRecommendFlow;
   FlowWriteContent.handleAddScrapFlow = handleAddScrapFlow;
 
@@ -502,9 +495,7 @@ export default function FlowWriteContent() {
                       목적
                     </div>
                     <div>
-                      <div style={{ width: '228px' }}>
-                        {selectedKeywords.join(', ')}
-                      </div>
+                      <div style={{ width: '228px' }}>{selectedKeywords.join(', ')}</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex' }}>
@@ -792,7 +783,7 @@ const ContentInfoDetail = styled.div`
   background: #f7f8f9;
   margin-left: 20px;
   display: flex;
-  justify-content: center
+  justify-content: center;
 `;
 
 const ContentTitleInput = styled.input`
