@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import yellowStar from '../../assets/recreation/yellowStar.svg';
-import viewIcon from '../../assets/recreation/viewIcon.svg';
+import viewIcon from '../../assets/card/viewIcon.svg';
 import HashtagChip from '../common/chip/HashtagChip';
 import FavBtn from '../common/button/FavBtn';
 import KeywordChip from '../common/chip/KeywordChip';

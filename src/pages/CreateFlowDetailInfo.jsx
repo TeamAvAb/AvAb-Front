@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import keywordImg from '../assets/main/checkIcon.svg';
+import checkIcon from '../assets/common/checkIcon.svg';
 import deleteImg from '../assets/common/deleteIcon.svg';
 import RadioInput from '../components/main/RadioInput';
 import GENDER from '../constants/enum/gender';
 import AGE from '../constants/enum/age';
 import imgGo3 from '../assets/flowwrite/ImgGo3.png';
-import vector_move from '../assets/flowwrite/vector_move.png';
+import double_arrow from '../assets/flowwrite/double_right_arrow.svg';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
 import KeywordModal from '../components/main/KeywordModal';
 import KEYWORD_CATEGORY from '../constants/searchKeywordCategory';
@@ -113,7 +113,7 @@ export default function CreateFlowDetailInfo({
         <FormItem>
           <Label>원하는 키워드를 선택해주세요.</Label>
           <KeywordBox id="keyword" onClick={handleKeywordBoxClick}>
-            <img src={keywordImg} style={{ width: '20px', height: '20px' }} alt="" />
+            <img src={checkIcon} style={{ width: '20px', height: '20px' }} alt="" />
             {watch('keywords').length === 0 ? (
               '클릭하면 키워드 선택창이 나와요!'
             ) : (
@@ -186,10 +186,10 @@ export default function CreateFlowDetailInfo({
               아브아브가 추천한 플로우예요!
             </SubText>
           </CardText>
-          <ArrowIcon src={vector_move} alt="arrow" />
+          <ArrowIcon src={double_arrow} alt="arrow" />
         </ButtonCard>
         <ButtonCard className="reversed" onClick={handleFlowContentsClick}>
-          <ArrowIcon className="reversed" src={vector_move} alt="arrow" />
+          <ArrowIcon className="reversed" src={double_arrow} alt="arrow" />
           <CardText className="reversed">
             <TitleText>바로 플로우 작성하기</TitleText>
             <SubText>

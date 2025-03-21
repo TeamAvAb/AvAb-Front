@@ -1,7 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import useDetectClose from '../../hooks/main/useDetectClose';
-import downIconImg from '../../assets/main/downIcon.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/main/arrowDownIcon.svg';
+import theme from '../../styles/theme';
 
 export default function PlayTimeSelect({ options, setOption, selectedOption }) {
   const [dropdownOpen, myPageRef, myPageHandler] = useDetectClose(false);
@@ -35,7 +36,7 @@ export default function PlayTimeSelect({ options, setOption, selectedOption }) {
         type="button"
       >
         {selectedOption ? `${selectedOption}분` : '선택하세요.'}
-        <img src={downIconImg} style={{ width: '1.2rem' }} alt="" />
+        <ArrowIcon style={{ width: '24px', height: '24px' }} fill={theme.color.grayscale04} />
       </DropdownButton>
     </DropdownContainer>
   );

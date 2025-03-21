@@ -7,7 +7,7 @@ import PopularRecreationCarousel from '../components/main/PopularRecreationCarou
 import BannerCarousel from '../components/main/BannerCarousel';
 
 import characterImg from '../assets/character/greetingAvb.png';
-import plusIconImg from '../assets/main/plusIcon.svg';
+import plusIconImg from '../assets/common/plusIcon.svg';
 import intro from '../assets/main/introImg.png';
 
 import workshopImg from '../assets/main/banner1_workshop.png';

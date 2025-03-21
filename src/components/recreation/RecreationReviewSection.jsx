@@ -7,7 +7,8 @@ import useLoginModalStore from '../../stores/loginModalStore';
 import useLoginStore from '../../stores/loginStore';
 import Pagination from '../pagination/Pagination';
 import { Tooltip } from 'react-tooltip';
-import alertIcon from '../../assets/main/alert.svg';
+import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import theme from '../../styles/theme';
 
 const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
   const { modalControl } = useLoginModalStore();
@@ -108,7 +109,7 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
         {isLoggedIn && selectedStars === 0 && (
           <ReviewInputWarningTooltip id="review-submit" openOnClick offset={5} opacity={1}>
             <TooltipContent>
-              <img src={alertIcon} alt="warning" />
+              <AlertIcon alt="경고" fill={theme.color.main04} />
               별점을 선택해주세요!
             </TooltipContent>
           </ReviewInputWarningTooltip>

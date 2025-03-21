@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import yellowStar from '../../../../assets/recreation/yellowStar.svg';
 import FavBtn from '../../button/FavBtn';
-import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
+import arrowIcon from '../../../../assets/common/nextArrowIcon.svg';
 import { scrollToTop } from '../../../../utils/windowUtils';
 import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import useLoginStore from '../../../../stores/loginStore';

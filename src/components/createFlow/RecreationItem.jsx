@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import circleXIcon from '../../assets/circle_x.svg';
+import circleXIcon from '../../assets/common/deleteIconFill.svg';
 import KeywordChip from '../common/chip/KeywordChip';
 import DeleteRecreationConfirmTooltip from './DeleteRecreationConfirmTooltip';
 import AlertMessage from '../common/AlertMessage';

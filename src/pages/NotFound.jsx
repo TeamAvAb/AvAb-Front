@@ -11,7 +11,7 @@ export default function NotFound() {
         <title>존재하지 않는 페이지</title>
       </Helmet>
       <NotFoundContainer>
-        <img src={cryingAvb} alt="울고있는 아브브" />
+        <CharacterImg src={cryingAvb} alt="울고있는 아브브" />
         <Title>존재하지 않는 페이지입니다.</Title>
         <Description>
           요청한 페이지를 찾을 수 없습니다.
@@ -55,4 +55,8 @@ const Description = styled.p`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 1rem;
+`;
+
+const CharacterImg = styled.img`
+  width: 15.5rem;
 `;

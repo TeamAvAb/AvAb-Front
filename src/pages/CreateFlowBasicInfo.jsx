@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import keywordImg from '../assets/main/checkIcon.svg';
+import checkIcon from '../assets/common/checkIcon.svg';
 import StepControl from '../components/createFlow/StepControl';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -86,7 +86,7 @@ export default function CreateFlowBasicInfo({ onNext, context, validateRef, save
         <FormItem>
           <Label>레크레이션의 목적을 선택해주세요.</Label>
           <KeywordBox id="purpose" onClick={handlePurposeBoxClick}>
-            <img src={keywordImg} style={{ width: '20px', height: '20px' }} alt="" />
+            <img src={checkIcon} style={{ width: '20px', height: '20px' }} alt="" />
             {watch('purposes').length === 0 ? (
               '클릭하면 목적 선택창이 나와요!'
             ) : (

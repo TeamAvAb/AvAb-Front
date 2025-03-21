@@ -1,6 +1,6 @@
 import PurposeChip from '../common/chip/PurposeChip';
 import { getTranslatedPurposes } from '../../utils/purposeUtils';
-import shareIcon from '../../assets/moreflow/share.png';
+import shareIcon from '../../assets/flow/shareIcon.svg';
 import ScrapBtn from '../common/button/ScrapBtn';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -112,6 +112,6 @@ const Title = styled.h1`
 `;
 
 const ShareImg = styled.img`
-  width: 3rem;
+  width: 2.6rem;
   cursor: pointer;
 `;

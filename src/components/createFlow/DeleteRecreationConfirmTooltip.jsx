@@ -1,15 +1,16 @@
-import alertIcon from '../../assets/main/alert.svg';
+import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
 import Button from '../common/button/Button';
 import React from 'react';
 import styled from 'styled-components';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import theme from '../../styles/theme';
 
 export default function DeleteRecreationConfirmTooltip({ tooltipId, isOpen, onDelete, onCancel }) {
   return (
     <Tooltip id={tooltipId} isOpen={isOpen} offset={5} opacity={1}>
       <TooltipContent>
         <TooltipMessage>
-          <img src={alertIcon} alt="경고" />
+          <AlertIcon alt="경고" fill={theme.color.main04} />
           <span>
             삭제하시겠습니까?
             <br />
@@ -43,6 +44,7 @@ const TooltipContent = styled.div`
 
 const TooltipMessage = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
   color: ${({ theme }) => theme.color.main04};
   ${({ theme }) => theme.text.paragraph};

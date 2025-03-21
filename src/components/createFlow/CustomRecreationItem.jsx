@@ -1,4 +1,4 @@
-import circleXIcon from '../../assets/circle_x.svg';
+import circleXIcon from '../../assets/common/deleteIconFill.svg';
 import React, { useState } from 'react';
 import KeywordModal from '../main/KeywordModal';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';

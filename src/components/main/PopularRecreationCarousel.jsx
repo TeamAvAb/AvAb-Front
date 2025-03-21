@@ -5,13 +5,13 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import RecreationTripleSet from './RecreationTripleSet';
-import prevSlide from '../../assets/main/prevSlide.svg';
-import nextSlide from '../../assets/main/nextSlide.svg';
 import wholeSlide from '../../assets/main/wholeSlide.svg';
 import currentSlide from '../../assets/main/currentSlide.svg';
 import useLoginStore from '../../stores/loginStore';
 import LeftArrow from '../common/button/LeftArrow';
 import RightArrow from '../common/button/RightArrow';
+import leftArrowIcon from '../../assets/common/prevArrowIcon.svg';
+import rightArrowIcon from '../../assets/common/nextArrowIcon.svg';
 
 export default function PopularRecreationCarousel() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -82,15 +82,15 @@ export default function PopularRecreationCarousel() {
         </ProgressBar>
         <SlideControl>
           <img
-            src={prevSlide}
-            style={{ width: '1.2rem', height: '1.2rem', cursor: 'pointer' }}
+            src={leftArrowIcon}
+            style={{ height: '0.8rem', cursor: 'pointer' }}
             onClick={() => slider?.current?.slickPrev()}
             alt="이전"
           />
           <span>{slideIndex + 1} / 3</span>
           <img
-            src={nextSlide}
-            style={{ width: '1.2rem', height: '1.2rem', cursor: 'pointer' }}
+            src={rightArrowIcon}
+            style={{ height: '0.8rem', cursor: 'pointer' }}
             onClick={() => slider?.current?.slickNext()}
             alt="다음"
           />
@@ -173,7 +173,7 @@ const CurrentSlide = styled.img`
 `;
 
 const SlideControl = styled.div`
-  width: 7.2rem;
+  width: 6rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

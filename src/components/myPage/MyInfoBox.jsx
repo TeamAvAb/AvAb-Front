@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import WarningIcon from '../../assets/mypage/WarnLogo.svg';
+import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
 import NicknameChangeModal from '../modal/NicknameChangeModal';
 import WithdrawModal from '../modal/WithdrawModal';
 import { privateAPI } from '../../apis/user';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Button from '../common/button/Button';
+import theme from '../../styles/theme';
 
 export default function MyInfoBox() {
   const [nickname, setNickname] = useState('');
@@ -78,7 +79,7 @@ export default function MyInfoBox() {
             maxLength={NICKNAME_MAX_LENGTH}
           />
           <WarnSpace>
-            <WarnImg src={WarningIcon} />
+            <AlertIcon alt="경고" fill={theme.color.grayscale04} />
             <Warn>닉네임은 공백포함 10자까지 작성 가능합니다.</Warn>
           </WarnSpace>
         </MyInfoSection>
@@ -134,6 +135,7 @@ const MyInput = styled.input`
 const WarnSpace = styled.div`
   display: flex;
   margin-top: 0.8rem;
+  gap: 0.5rem;
 `;
 
 const WarnImg = styled.img`

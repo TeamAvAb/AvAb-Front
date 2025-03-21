@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import FlowRecreationList from '../components/common/FlowRecreationList';
 import NoData from '../components/common/NoData';
 import imgGo4 from '../assets/flowwrite/ImgGo4.png';
-import arrow from '../assets/fast_arrow.svg';
+import double_arrow from '../assets/flowwrite/double_right_arrow.svg';
 import StepControl from '../components/createFlow/StepControl';
 import { privateAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -126,7 +126,7 @@ export default function CreateFlowRecommendedFlows({
           </CardButtonSubText>
         </CardButtonTextContainer>
         <img src={imgGo4} alt="go 4" style={{ width: '120px', height: '120px' }} />
-        <ArrowIcon src={arrow} />
+        <ArrowIcon src={double_arrow} />
       </CardButton>
 
       <StepControl onNext={handleNextClick} onBack={handleBackClick} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import arrow from '../../assets/searchlist/dropdownArrow.svg';
+import arrow from '../../assets/common/dropdownArrow.svg';
 import styled, { css } from 'styled-components';
 import useDetectClose from '../../hooks/main/useDetectClose';
 

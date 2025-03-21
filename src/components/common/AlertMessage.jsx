@@ -1,11 +1,12 @@
-import alertImg from '../../assets/main/alert.svg';
+import { ReactComponent as AlertImg } from '../../assets/common/alert.svg';
 import React from 'react';
 import styled from 'styled-components';
+import theme from '../../styles/theme';
 
 export default function AlertMessage({ message }) {
   return (
     <Alert>
-      <img src={alertImg} alt="경고" />
+      <AlertImg alt="경고" fill={theme.color.main04} />
       <span>{message}</span>
     </Alert>
   );
