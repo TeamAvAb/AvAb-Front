@@ -39,8 +39,12 @@ export default function CreateFlowRecommendedFlows({
         setIsLoading(true);
         const response = await privateAPI.get(`/api/flows/recommended`, {
           params: {
+            keyword: context.keywords.map((keyword) => keyword.key), // 키워드 사용
+            participants: context.participants,
             playTime: context.totalPlayTime, // 플레이 시간 사용
-            purpose: context.purposes.map((purpose) => purpose.key).join(','), // 목적 사용
+            purpose: context.purposes.map((purpose) => purpose.key), // 목적 사용
+            gender: context.genders.map((gender) => gender.key),
+            age: context.ageGroups.map((age) => age.key),
           },
         });
 

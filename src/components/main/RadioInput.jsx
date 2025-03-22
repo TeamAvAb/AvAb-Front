@@ -70,6 +70,7 @@ const Option = styled.li`
       background-color: ${theme.color.secondary04};
       color: ${theme.color.grayscale01};
       font-weight: bold;
+      border-color: ${theme.color.secondary04};
     `}
   }
 `;
