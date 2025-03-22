@@ -29,6 +29,9 @@ export default function PopularRecreationCarousel() {
     autoplay: false,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
+    beforeChange: (_, next) => {
+      return setSlideIndex(next);
+    },
   };
 
   useEffect(() => {
@@ -167,7 +170,7 @@ const WholeSlide = styled.img`
 
 const CurrentSlide = styled.img`
   position: absolute;
-  top: -1px;
+  top: -1.1px;
   left: ${({ $index }) => ($index === 1 ? '0' : $index === 2 ? '15.7rem' : '31.5rem')};
   transition: left 1.3s ease-in-out;
 `;
