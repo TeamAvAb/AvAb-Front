@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import rechoiceIcon from '../../assets/main/rechoiceIcon.svg';
+import rechoiceIcon from '../../assets/search/rechoiceIcon.svg';
 import Button from '../common/button/Button';
 import BaseKeywordChip from '../common/chip/KeywordChip';
 import BasePurposeChip from '../common/chip/PurposeChip';

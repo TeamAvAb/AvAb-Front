@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import useDetectClose from '../../hooks/main/useDetectClose';
-import { ReactComponent as ArrowIcon } from '../../assets/main/arrowDownIcon.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/search/arrowDownIcon.svg';
 import theme from '../../styles/theme';
 
 export default function PlayTimeSelect({ options, setOption, selectedOption }) {

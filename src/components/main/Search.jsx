@@ -10,10 +10,10 @@ import RadioInput from './RadioInput';
 
 import searchIconImg from '../../assets/common/searchIcon.svg';
 import checkIcon from '../../assets/common/checkIcon.svg';
-import hrImg from '../../assets/main/hr.svg';
+import hrImg from '../../assets/search/hr.svg';
 import deleteIcon from '../../assets/common/deleteIcon.svg';
-import { ReactComponent as ArrowIcon } from '../../assets/main/arrowDownIcon.svg';
-import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/search/arrowDownIcon.svg';
+import arrowUpImg from '../../assets/search/arrowUpIcon.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
 import Button from '../common/button/Button';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';

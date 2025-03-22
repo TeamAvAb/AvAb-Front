@@ -8,11 +8,11 @@ import BannerCarousel from '../components/main/BannerCarousel';
 
 import characterImg from '../assets/character/greetingAvb.png';
 import plusIconImg from '../assets/common/plusIcon.svg';
-import intro from '../assets/main/introImg.png';
+import intro from '../assets/introImg.png';
 
-import workshopImg from '../assets/main/banner1_workshop.png';
-import mtImg from '../assets/main/banner2_mt.png';
-import gatherImg from '../assets/main/banner3_gather.png';
+import workshopImg from '../assets/carousel/banner1_workshop.png';
+import mtImg from '../assets/carousel/banner2_mt.png';
+import gatherImg from '../assets/carousel/banner3_gather.png';
 
 import { Helmet } from 'react-helmet';
 import { scrollToTop } from '../utils/windowUtils';
