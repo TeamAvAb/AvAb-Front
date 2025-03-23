@@ -25,7 +25,7 @@ const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
     recreationData.wayList.map((ways, index) => (
       <div key={index}>
         <p>
-          {index + 1}. {ways.contents}
+          {index + 1}. {ways.content}
         </p>
         {ways.imageUrl && <RecreationImg src={ways.imageUrl} alt={`이미지 ${index + 1}`} />}
       </div>
