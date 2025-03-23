@@ -4,13 +4,13 @@ import styled from 'styled-components';
 export default function FlowRecreationList({ recreations }) {
   return (
     <RecreationList>
-      {recreations.map((recreations, index) => (
+      {recreations.map((recreation, index) => (
         <FlowRecreation
-          key={recreations.id}
+          key={recreation.id}
           index={index}
-          recreationTitle={recreations.title}
-          keywords={recreations.keywordList}
-          playTime={recreations.playTime}
+          recreationTitle={recreation.title}
+          keywords={recreation.keywordList}
+          playTime={recreation.playTime}
         />
       ))}
     </RecreationList>
@@ -22,4 +22,5 @@ const RecreationList = styled.ol`
   flex-direction: column;
   gap: 0.5rem;
   width: 24rem;
+  height: 100rem;
 `;

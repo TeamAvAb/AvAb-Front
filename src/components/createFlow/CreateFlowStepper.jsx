@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
-export default function CreateFlowStepper({ currentStep, historyReplaceFn: replace }) {
+export default function CreateFlowStepper({ currentStep, onStepClick }) {
   const steps = [
     {
       step: 'basic-info',
@@ -24,7 +24,7 @@ export default function CreateFlowStepper({ currentStep, historyReplaceFn: repla
   const renderSteps = () =>
     steps.map(({ step, name }, index) => (
       <Fragment key={step}>
-        <Step onClick={() => replace(step)}>
+        <Step onClick={() => onStepClick(step)}>
           <StepOrder $current={step === currentStep}>{index + 1}</StepOrder>
           <StepName $current={step === currentStep}>{name}</StepName>
         </Step>

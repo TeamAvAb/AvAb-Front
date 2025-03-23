@@ -79,31 +79,3 @@ const FlowBox = styled.div`
   column-gap: 7.5rem;
   margin: 2.44rem 0 5.08rem;
 `;
-
-// 일정플로우 없는 경우
-const NoneAlertBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-  text-align: center;
-`;
-const NoneAlertImg = styled.img`
-  width: 7.5rem;
-`;
-const NoneAlertTextBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-const NoneAlertText = styled.span`
-  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
-  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
-
-  &.title {
-    font-size: ${({ theme }) => theme.text.h4.fontSize};
-    font-weight: ${({ theme }) => theme.text.h4.fontWeight};
-  }
-`;

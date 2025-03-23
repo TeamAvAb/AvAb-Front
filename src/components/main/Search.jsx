@@ -14,7 +14,6 @@ import hrImg from '../../assets/main/hr.svg';
 import deleteImg from '../../assets/main/deleteIcon.svg';
 import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
 import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
-import alertImg from '../../assets/main/alert.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
 import Button from '../common/button/Button';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
@@ -24,6 +23,8 @@ import GENDER from '../../constants/enum/gender';
 import AGE from '../../constants/enum/age';
 import PLACE from '../../constants/enum/place';
 import { scrollToTop } from '../../utils/windowUtils';
+import AlertMessage from '../common/AlertMessage';
+import SITE_URL from '../../constants/url';
 
 export default function Search({ filtersOpen = false, initialParams = {} }) {
   const getInitialKeywords = (keywords) => {
@@ -150,7 +151,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
   };
 
   // 1~participantsLimit 이외의 수를 입력할 경우 경고 문구를 디바운싱으로 노출
-  useDebouncedEffect(() => setParticipantsAlert(false), 1000, participantsAlert);
+  useDebouncedEffect(() => setParticipantsAlert(false), 1000, [participantsAlert]);
 
   // 모달창
   const [keywordModal, setKeywordModal] = useState(false);
@@ -207,7 +208,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
 
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
 
-    navigate(`/search/list?${param}`);
+    navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
   };
 
@@ -262,10 +263,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
               $error={participantsAlert}
             />
             {participantsAlert && (
-              <Alert>
-                <img src={alertImg} alt="경고" />
-                <span>1부터 {participantsLimit}까지 입력해주세요.</span>
-              </Alert>
+              <AlertMessage message={`1부터 ${participantsLimit}까지 입력해주세요.`} />
             )}
           </Filter>
 
@@ -559,13 +557,4 @@ const BtnContainer = styled.div`
 const SearchButtons = styled.div`
   display: flex;
   gap: 2.5rem;
-`;
-
-const Alert = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: baseline;
-  margin-left: 1rem;
-  color: ${({ theme }) => theme.color.main04};
-  ${({ theme }) => theme.text.small};
 `;

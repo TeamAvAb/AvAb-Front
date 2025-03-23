@@ -94,26 +94,6 @@ const FavoriteRecreations = styled.div`
   column-gap: 1.4rem;
 `;
 
-const NoDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-`;
-
-const NoDataImg = styled.img`
-  width: 10rem;
-`;
-
-const NoDataDescription = styled.div`
-  width: 100%;
-  margin-top: 2rem;
-  text-align: center;
-  ${({ theme }) => theme.text.h3};
-  padding-bottom: 5rem;
-`;
-
 const RecreationList = styled.div`
   display: flex;
   flex-direction: column;

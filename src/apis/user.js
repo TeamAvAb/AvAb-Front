@@ -1,5 +1,8 @@
 import axios from 'axios';
 import useLoginStore from '../stores/loginStore';
+import qs from 'qs';
+
+axios.defaults.paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'comma' });
 
 // 인증이 필요없는 요청
 export const publicAPI = axios.create({

@@ -106,7 +106,7 @@ export default function RecreationDetail() {
         <meta property="og:image" content={recreationData.imageUrl} />
         <meta
           property="og:url"
-          content={`http://avab.site/recreation/${recreationData.recreationId}`}
+          content={`https://avab.site/recreation/${recreationData.recreationId}`}
         />
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="AvAb 아브아브" />

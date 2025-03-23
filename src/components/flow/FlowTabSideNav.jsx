@@ -5,6 +5,7 @@ import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 import { scrollToTop } from '../../utils/windowUtils';
 import SideNav from '../../layout/SideNav';
+import SITE_URL from '../../constants/url';
 
 export default function FlowTabSideNav({ selectedPage }) {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -13,13 +14,13 @@ export default function FlowTabSideNav({ selectedPage }) {
   const navigate = useNavigate();
 
   const handleWatchFlowClick = () => {
-    navigate('/flow/watch');
+    navigate(SITE_URL.FLOW);
     scrollToTop();
   };
 
   const handleMyFlowClick = () => {
     if (isLoggedIn) {
-      navigate('/flow/my');
+      navigate(SITE_URL.MY_FLOW);
       scrollToTop();
     } else {
       modalControl();
@@ -28,7 +29,7 @@ export default function FlowTabSideNav({ selectedPage }) {
 
   const handleScrapFlowClick = () => {
     if (isLoggedIn) {
-      navigate('/flow/scrap');
+      navigate(SITE_URL.MY_SCRAP_FLOW);
       scrollToTop();
     } else {
       modalControl();

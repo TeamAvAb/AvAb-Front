@@ -3,90 +3,34 @@ import React, { forwardRef } from 'react';
 import RecreationInfo from './RecreationInfo';
 import RecreationAdditionalInfo from './RecreationAdditionalInfo';
 import PurposeChip from '../common/chip/PurposeChip';
+import PLACE from '../../constants/enum/place';
+import GENDER from '../../constants/enum/gender';
+import AGE from '../../constants/enum/age';
+import PURPOSE from '../../constants/enum/purpose';
 
 const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
-  const getPlaceText = () => {
-    if (
-      recreationData.placeList.includes('INDOOR') &&
-      recreationData.placeList.includes('OUTDOOR')
-    ) {
-      return '실내, 실외';
-    } else if (recreationData.placeList.includes('INDOOR')) {
-      return '실내';
-    } else if (recreationData.placeList.includes('OUTDOOR')) {
-      return '실외';
-    } else {
-      return '';
-    }
-  };
+  const getPlaceText = () => recreationData.placeList.map((place) => PLACE[place].value).join(', ');
 
-  const getGenderText = () => {
-    if (
-      recreationData.genderList.includes('MALE') &&
-      recreationData.genderList.includes('FEMALE')
-    ) {
-      return '여성, 남성';
-    } else if (recreationData.placeList.includes('MALE')) {
-      return '남성';
-    } else if (recreationData.placeList.includes('FEMALE')) {
-      return '여성';
-    } else {
-      return '';
-    }
-  };
+  const getGenderText = () =>
+    recreationData.genderList.map((gender) => GENDER[gender].value).join(', ');
 
-  const getAgeText = (ageGroups) => {
-    const ageGroupMap = {
-      UNDER_TEENAGER: '10대 미만',
-      TEENAGER: '10대',
-      TWENTIES: '20대',
-      THIRTIES: '30대',
-      FORTIES: '40대',
-      OVER_FIFTIES: '50대 이상',
-    };
-
-    const matchedAges = ageGroups.map((ageGroup) => ageGroupMap[ageGroup]);
-
-    return matchedAges.join(', ');
-  };
+  const getAgeText = () => recreationData.ageList.map((age) => AGE[age].value).join(', ');
 
   const renderPurpose = () =>
-    recreationData.purposeList.map((purpose, index) => {
-      let translatedPurpose = '';
+    recreationData.purposeList.map((purpose) => (
+      <PurposeChip key={purpose} text={PURPOSE[purpose].value} />
+    ));
 
-      switch (purpose) {
-        case 'WORKSHOP':
-          translatedPurpose = '워크샵';
-          break;
-        case 'SPORTS_DAY':
-          translatedPurpose = '체육대회';
-          break;
-        case 'MT':
-          translatedPurpose = 'MT';
-          break;
-        case 'GATHERING':
-          translatedPurpose = '모임';
-          break;
-        case 'RETREAT':
-          translatedPurpose = '수련회';
-          break;
-        default:
-          translatedPurpose = purpose;
-          break;
-      }
-
-      return <PurposeChip key={index} text={translatedPurpose} />;
-    });
   const renderRecreationWay = () =>
     recreationData.wayList.map((ways, index) => (
       <div key={index}>
         <p>
-          {index + 1}. {ways.contents}
+          {index + 1}. {ways.content}
         </p>
         {ways.imageUrl && <RecreationImg src={ways.imageUrl} alt={`이미지 ${index + 1}`} />}
       </div>
     ));
-  console.log(recreationData);
+
   return (
     <InfoSection ref={ref}>
       <RecreationInfo title="레크레이션 소개">
@@ -119,7 +63,7 @@ const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
             }`}
           />
           <RecreationAdditionalInfo info="gender" content={getGenderText()} />
-          <RecreationAdditionalInfo info="age" content={getAgeText(recreationData.ageList)} />
+          <RecreationAdditionalInfo info="age" content={getAgeText()} />
         </RecreationAdditionalInfoContainer>
       </RecreationInfo>
     </InfoSection>

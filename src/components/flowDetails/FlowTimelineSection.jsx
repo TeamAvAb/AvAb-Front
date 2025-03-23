@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import FlowRecreationList from '../common/FlowRecreationList';
 
-export default function FlowRecreationSection({ flowTitle, recreations }) {
+export default function FlowTimelineSection({ flowTitle, recreations }) {
   return (
     <FlowContainer>
       <h2>{flowTitle}</h2>
