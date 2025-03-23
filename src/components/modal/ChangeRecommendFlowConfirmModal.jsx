@@ -8,7 +8,7 @@ import {
   TitleContainer,
 } from './modal.style';
 import Button from '../common/button/Button';
-import xIcon from '../../assets/X.svg';
+import xIcon from '../../assets/common/x.svg';
 import styled from 'styled-components';
 
 export default function ChangeRecommendFlowConfirmModal({ close, onChangeClick }) {

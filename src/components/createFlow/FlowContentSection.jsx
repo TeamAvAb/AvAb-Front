@@ -3,6 +3,7 @@ import RecreationList from './RecreationList';
 import { useFormState } from 'react-hook-form';
 import AlertMessage from '../common/AlertMessage';
 import clsx from 'clsx';
+import { ReactComponent as PlusIcon } from '../../assets/common/plusIcon.svg';
 
 export default function FlowContentSection({
   flow,
@@ -112,7 +113,7 @@ export default function FlowContentSection({
           onClick={handleAddCustomRecreationClick}
           disabled={flow.recreations.length === 10}
         >
-          +
+          <PlusIcon />
         </AddCustomRecreationButton>
       </RecreationListContainer>
     </Container>

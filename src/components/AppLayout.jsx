@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../styles/theme';
 import GlobalStyle from '../GlobalStyles';
-import cryingAvb from '../assets/main/cryingAvb.png';
+import cryingAvb from '../assets/character/cryingAvb.png';
 import Header from './common/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './common/footer/Footer';
-import LoginModal from './common/LoginModal';
+import LoginModal from './modal/LoginModal';
 
 export default function AppLayout() {
   const { modalOpen } = useLoginModalStore();

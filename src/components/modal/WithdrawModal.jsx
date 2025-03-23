@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as S from './modal.style';
-import LogoutP from '../../assets/mypage/LogoutImg.svg';
+import LogoutP from '../../assets/character/cryingAvb.png';
 import patchUserDelete from '../../apis/patchUserDelete';
 import useLoginStore from '../../stores/loginStore';
 import { useNavigate } from 'react-router';
@@ -32,7 +32,7 @@ export default function WithdrawModal({ handleModal }) {
                 <S.Title>탈퇴되었습니다</S.Title>
                 <S.SubTitle>계정 정보는 한달 동안 유효하니 다시 찾아주세요!</S.SubTitle>
               </S.TitleContainer>
-              <LogoutImg src={LogoutP} />
+              <CharacterImg src={LogoutP} />
               <S.BtnContainer>
                 <S.ModalBtn onClick={completeWithdraw} backgroundColor="main02" color="main05">
                   닫기
@@ -48,7 +48,7 @@ export default function WithdrawModal({ handleModal }) {
                   30일 이후에는 계정 및 데이터가 영구 삭제되며 복구가 불가능합니다.
                 </S.SubTitle>
               </S.TitleContainer>
-              <LogoutImg src={LogoutP} alt="우는 아브브" />
+              <CharacterImg src={LogoutP} alt="우는 아브브" />
               <S.BtnContainer className="btn-row">
                 <S.ModalBtn
                   onClick={apiCall}
@@ -78,7 +78,7 @@ export default function WithdrawModal({ handleModal }) {
   );
 }
 
-const LogoutImg = styled.img`
+const CharacterImg = styled.img`
   width: 12.5rem;
   margin-top: 0.4rem;
   margin-bottom: 1.69rem;

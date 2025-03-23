@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { ReactComponent as Icon } from '../../../assets/Card/scrapIcon.svg';
+import { ReactComponent as Icon } from '../../../assets/card/scrapIcon.svg';
 
 export default function ScrapBtn({ isScrap, onClick, className }) {
   const theme = useContext(ThemeContext);

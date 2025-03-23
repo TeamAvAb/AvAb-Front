@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as S from './modal.style';
-import LogoutP from '../../assets/mypage/LogoutImg.svg';
+import cryingAvb from '../../assets/character/cryingAvb.png';
+
 import useLoginStore from '../../stores/loginStore';
 import { privateAPI } from '../../apis/user';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +36,8 @@ export default function LogoutModal({ handleModal }) {
             <S.Title>로그아웃 하시게요?</S.Title>
             <S.SubTitle>더 많은 혜택이 기다리고 있어요.</S.SubTitle>
           </S.TitleContainer>
-          <LogoutImg src={LogoutP} alt="우는 아브브" />
+          <CharacterImg src={cryingAvb} alt="울고있는 아브브" />
+
           <S.BtnContainer className="btn-row">
             <S.ModalBtn
               onClick={handleLogout}
@@ -63,8 +65,7 @@ export default function LogoutModal({ handleModal }) {
   );
 }
 
-const LogoutImg = styled.img`
-  width: 12.5rem;
+const CharacterImg = styled.img`
+  width: 15.5rem;
   margin-top: 0.4rem;
-  margin-bottom: 1.69rem;
 `;

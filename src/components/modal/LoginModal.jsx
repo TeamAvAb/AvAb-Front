@@ -2,8 +2,9 @@ import React from 'react';
 import { Backdrop } from './modal.style';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import character from '../../assets/main/login_character.png';
-import closeIcon from '../../assets/X.svg';
+import characterImg from '../../assets/character/kakaoAvb.png';
+import closeIcon from '../../assets/common/x.svg';
+
 import useLoginModalStore from '../../stores/loginModalStore';
 import Button from '../common/button/Button';
 
@@ -42,7 +43,8 @@ export default function LoginModal() {
               간편 로그인하기
             </Button>
           </Text>
-          <CharacterImg src={character} alt="로그인하는 아브브" />
+          <CharacterImg src={characterImg} alt="로그인하는 아브브" />
+
         </Content>
         <Controls>
           <CloseBtn onClick={modalControl}>

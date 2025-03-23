@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import rechoiceIcon from '../../assets/main/rechoiceIcon.svg';
+import rechoiceIcon from '../../assets/search/rechoiceIcon.svg';
 import Button from '../common/button/Button';
 import BaseKeywordChip from '../common/chip/KeywordChip';
 import BasePurposeChip from '../common/chip/PurposeChip';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import alertIcon from '../../assets/main/alert.svg';
+import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import theme from '../../styles/theme';
 
 export default function KeywordModal({
   category,
@@ -111,7 +112,7 @@ export default function KeywordModal({
             <Tooltip id={TOOLTIP_ID} opacity={1} offset={5}>
               <TooltipContent>
                 <TooltipMessage>
-                  <img src={alertIcon} alt="경고" />
+                  <AlertIcon alt="경고" fill={theme.color.main04} />
                   <span>
                     {KEYWORD_CATEGORY.KEYWORD ? '키워드를 ' : '목적을 '}
                     {min && !max && `${min}개 이상 선택해주세요.`}
@@ -202,6 +203,7 @@ const TooltipContent = styled.div`
 
 const TooltipMessage = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
   color: ${({ theme }) => theme.color.main04};
   ${({ theme }) => theme.text.paragraph};

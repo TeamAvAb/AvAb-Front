@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { privateAPI } from '../../apis/user';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
-import searchIconImg from '../../assets/main/searchIcon.svg';
+import searchIconImg from '../../assets/common/searchIcon.svg';
 import RecreationCarousel from './RecreationCarousel';
 import NoData from '../common/NoData';
 import styled from 'styled-components';

@@ -1,7 +1,7 @@
-import timeImg from '../../assets/Card/timeIcon.svg';
-import viewImg from '../../assets/watchflow/view.png';
-import pencilImg from '../../assets/Card/pencilIcon.svg';
-import userImg from '../../assets/Card/userIcon.svg';
+import timeImg from '../../assets/card/timeIcon.svg';
+import viewImg from '../../assets/card/viewIcon.svg';
+import pencilImg from '../../assets/card/pencilIcon.svg';
+import userImg from '../../assets/card/userIcon.svg';
 import React from 'react';
 import styled from 'styled-components';
 

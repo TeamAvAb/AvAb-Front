@@ -1,6 +1,6 @@
 import PurposeChip from '../common/chip/PurposeChip';
 import { getTranslatedPurposes } from '../../utils/purposeUtils';
-import shareIcon from '../../assets/moreflow/share.png';
+import shareIcon from '../../assets/flow/shareIcon.svg';
 import ScrapBtn from '../common/button/ScrapBtn';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ export default function FlowInfoSection({ flow }) {
     closeModal: closeFlowShareModal,
   } = useModal();
 
-  const [scrap, setScrap] = useState(flow.isScraped);
+  const [scrap, setScrap] = useState(flow.isFavorite);
 
   const toggleScrap = async () => {
     if (isLoggedIn) {
@@ -112,6 +112,6 @@ const Title = styled.h1`
 `;
 
 const ShareImg = styled.img`
-  width: 3rem;
+  width: 2.6rem;
   cursor: pointer;
 `;

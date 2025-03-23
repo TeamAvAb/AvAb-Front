@@ -1,4 +1,4 @@
-import cryingAvb from '../../assets/main/cryingAvb.png';
+import cryingAvb from '../../assets/character/cryingAvb.png';
 import styled from 'styled-components';
 
 export default function NoData({ variant }) {

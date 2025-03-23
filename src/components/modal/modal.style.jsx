@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Button from '../common/button/Button';
-import closeIcon from '../../assets/X.svg';
+import closeIcon from '../../assets/common/x.svg';
 
 const Backdrop = styled.div`
   width: 100vw;

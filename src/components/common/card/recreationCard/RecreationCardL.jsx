@@ -5,7 +5,7 @@ import yellowStar from '../../../../assets/recreation/yellowStar.svg';
 import BaseFavBtn from '../../button/FavBtn';
 import HashtagChip from '../../chip/HashtagChip';
 import KeywordChip from '../../chip/KeywordChip';
-import arrowIcon from '../../../../assets/Card/arrowIcon.svg';
+import arrowIcon from '../../../../assets/common/nextArrowIcon.svg';
 import { getTranslatedKeywords } from '../../../../utils/keywordUtils';
 import SITE_URL from '../../../../constants/url';
 import { scrollToTop } from '../../../../utils/windowUtils';

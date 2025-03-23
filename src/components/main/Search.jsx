@@ -8,12 +8,12 @@ import KeywordModal from './KeywordModal';
 import PlayTimeSelect from './PlayTimeSelect';
 import RadioInput from './RadioInput';
 
-import searchIconImg from '../../assets/main/searchIcon.svg';
-import keywordImg from '../../assets/main/checkIcon.svg';
-import hrImg from '../../assets/main/hr.svg';
-import deleteImg from '../../assets/main/deleteIcon.svg';
-import arrowDownImg from '../../assets/main/arrowDownIcon.svg';
-import arrowUpImg from '../../assets/main/arrowUpIcon.svg';
+import searchIconImg from '../../assets/common/searchIcon.svg';
+import checkIcon from '../../assets/common/checkIcon.svg';
+import hrImg from '../../assets/search/hr.svg';
+import deleteIcon from '../../assets/common/deleteIcon.svg';
+import { ReactComponent as ArrowIcon } from '../../assets/search/arrowDownIcon.svg';
+import arrowUpImg from '../../assets/search/arrowUpIcon.svg';
 import useDebouncedEffect from '../../hooks/useDebouncedEffect';
 import Button from '../common/button/Button';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
@@ -25,6 +25,7 @@ import PLACE from '../../constants/enum/place';
 import { scrollToTop } from '../../utils/windowUtils';
 import AlertMessage from '../common/AlertMessage';
 import SITE_URL from '../../constants/url';
+import theme from '../../styles/theme';
 
 export default function Search({ filtersOpen = false, initialParams = {} }) {
   const getInitialKeywords = (keywords) => {
@@ -163,7 +164,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
         <span>{el.value} 포함</span>
         <img
           alt={`${el.value} 삭제`}
-          src={deleteImg}
+          src={deleteIcon}
           id={el}
           style={{ width: '1rem' }}
           onClick={(e) => {
@@ -241,7 +242,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
           <Filter>
             <LabelName htmlFor="keyword">키워드</LabelName>
             <KeywordBox id="keyword" onClick={() => setKeywordModal(true)}>
-              <img src={keywordImg} style={{ width: '20px', height: '20px' }} alt="" />
+              <img src={checkIcon} style={{ width: '20px', height: '20px' }} alt="" />
               {keyword.length === 0 ? (
                 '클릭하면 키워드 선택창이 나와요!'
               ) : (
@@ -302,7 +303,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
           <Filter>
             <LabelName htmlFor="purpose">목적</LabelName>
             <KeywordBox id="purpose" onClick={() => setPurposeModal(true)}>
-              <img src={keywordImg} style={{ width: '1.2rem' }} alt="" />
+              <img src={checkIcon} style={{ width: '1.2rem' }} alt="" />
               {purpose.length === 0 ? (
                 '클릭하면 목적 선택창이 나와요!'
               ) : (
@@ -342,7 +343,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
           ) : (
             <>
               필터 더보기
-              <img alt="필터 더보기" style={{ width: '24px', height: '24px' }} src={arrowDownImg} />
+              <ArrowIcon style={{ width: '24px', height: '24px' }} fill={theme.color.grayscale01} />
             </>
           )}
         </MoreFiltersButton>
