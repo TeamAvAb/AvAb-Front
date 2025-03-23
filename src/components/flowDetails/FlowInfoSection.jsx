@@ -20,7 +20,7 @@ export default function FlowInfoSection({ flow }) {
     closeModal: closeFlowShareModal,
   } = useModal();
 
-  const [scrap, setScrap] = useState(flow.isScraped);
+  const [scrap, setScrap] = useState(flow.isFavorite);
 
   const toggleScrap = async () => {
     if (isLoggedIn) {
