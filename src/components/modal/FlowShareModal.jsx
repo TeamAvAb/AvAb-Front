@@ -1,6 +1,12 @@
-import { BtnContainer, CloseBtn, Content, Modal, Title, TitleContainer } from './modal.style';
-import Button from '../common/button/Button';
-import xIcon from '../../assets/X.svg';
+import {
+  BtnContainer,
+  CloseBtn,
+  Content,
+  Modal,
+  Title,
+  TitleContainer,
+  ModalBtn,
+} from './modal.style';
 import { useState } from 'react';
 
 export default function FlowShareModal({ close }) {
@@ -18,19 +24,24 @@ export default function FlowShareModal({ close }) {
           <Title>일정 플로우를 공유하세요!</Title>
         </TitleContainer>
         <BtnContainer>
-          <Button
-            backgroundColor={!copied && 'main02'}
-            color={copied ? 'main02' : 'main05'}
-            border={copied}
-            borderColor={copied && 'main02'}
-            transition={false}
-            onClick={handleLinkCopy}
-          >
-            {copied ? '복사 완료!' : '링크 복사하기'}
-          </Button>
+          {copied ? (
+            <ModalBtn
+              onClick={handleLinkCopy}
+              backgroundColor="main05"
+              color="main02"
+              border
+              borderColor="main02"
+            >
+              복사 완료
+            </ModalBtn>
+          ) : (
+            <ModalBtn onClick={handleLinkCopy} backgroundColor="main02" color="main05">
+              링크 복사하기
+            </ModalBtn>
+          )}
         </BtnContainer>
       </Content>
-      <CloseBtn src={xIcon} onClick={close} />
+      <CloseBtn onClick={close} />
     </Modal>
   );
 }

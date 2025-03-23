@@ -1,9 +1,11 @@
 import React from 'react';
+import { Backdrop } from './modal.style';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import character from '../../assets/main/login_character.png';
-import closeImg from '../../assets/main/closeIcon.svg';
+import closeIcon from '../../assets/X.svg';
 import useLoginModalStore from '../../stores/loginModalStore';
+import Button from '../common/button/Button';
 
 export default function LoginModal() {
   const { pathname } = useLocation();
@@ -23,7 +25,7 @@ export default function LoginModal() {
   };
 
   return (
-    <Container>
+    <Backdrop>
       <Modal>
         <Content>
           <Text>
@@ -36,99 +38,71 @@ export default function LoginModal() {
               간편하게 로그인을 하고 <br />
               <span style={{ fontWeight: '700' }}>성공적인 레크레이션</span>을 <br /> 경험해보세요!
             </Comment>
-            <Button onClick={toKakaoLogin}>간편 로그인하기</Button>
+            <Button onClick={toKakaoLogin} backgroundColor="main01" color="main05" size="sm">
+              간편 로그인하기
+            </Button>
           </Text>
-          <img
-            src={character}
-            style={{
-              width: '249px',
-              height: '286px',
-              objectFit: 'cover',
-            }}
-          />
+          <CharacterImg src={character} alt="로그인하는 아브브" />
         </Content>
         <Controls>
-          <Control onClick={modalControl}>
-            <img src={closeImg} style={{ width: '24px', height: '25px' }} />
+          <CloseBtn onClick={modalControl}>
+            <img src={closeIcon} alt="닫기" />
             닫기
-          </Control>
+          </CloseBtn>
         </Controls>
       </Modal>
-    </Container>
+    </Backdrop>
   );
 }
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  background: var(--shadow, rgba(70, 76, 82, 0.5));
-  z-index: 999;
-`;
 const Modal = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 126px;
-  width: 669px;
-  border-radius: 20px;
-  background: var(--main-ffffff, #fff);
+  border-radius: 1.25rem;
+  background: ${({ theme }) => theme.color.main05};
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  padding: 50px 50px 47px 50px;
-  gap: 56px;
-  border-radius: 20px;
-  background: var(--gray-scale-f-7-f-8-f-9, #f7f8f9);
+  padding: 3.13rem 3.13rem 2.94rem 3.13rem;
+  gap: 3.5rem;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: ${({ theme }) => theme.color.grayscale07};
 `;
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 33px;
+  gap: 2.06rem;
 `;
 const Title = styled.span`
-  color: #000;
-  font-size: 48px;
-  font-weight: 700;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.h2.fontSize};
+  font-weight: ${({ theme }) => theme.text.h2.fontWeight};
+  line-height: normal;
 `;
 
 const Comment = styled.span`
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 30px;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
+  line-height: 1.875rem;
+`;
+const CharacterImg = styled.img`
+  width: 15.56rem;
 `;
 
-const Button = styled.button`
-  width: max-content;
-  padding: 9px 24px;
-  border: none;
-  border-radius: 20px;
-  background: var(--main-d-9-d-9-d-9, #19297c);
-  color: #fff;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-`;
 const Controls = styled.div`
-  display: inline-flex;
+  height: 5.12rem;
+  display: flex;
   justify-content: end;
-  height: 25px;
-  padding: 22px;
-  color: var(--gray-scale-464-c-52, #464c52);
-  font-size: 20px;
-  font-weight: 400;
+  padding: 1.38rem;
+  box-sizing: border-box;
 `;
 
-const Control = styled.div`
+const CloseBtn = styled.button`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 8px;
-  cursor: pointer;
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
 `;

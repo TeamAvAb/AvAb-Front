@@ -1,15 +1,14 @@
 import React from 'react';
 import userDeleteRollback from '../../apis/userDeleteRollback';
 import { useNavigate } from 'react-router';
-import x from '../../assets/main/closeIcon.svg';
 import * as S from './modal.style';
+
 export default function WithdrawRollbackModal({ close, rollbackState, setRollbackState }) {
   const navigator = useNavigate();
   const deleteRollback = async () => {
     try {
       const response = await userDeleteRollback();
       if (response) {
-        console.log('복구 완료');
         setRollbackState(true);
         close();
       } else {
@@ -23,6 +22,7 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
     close();
     navigator('/');
   };
+
   return (
     <S.Modal>
       <S.Content>
@@ -33,9 +33,11 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
               <S.SubTitle>다시 로그인해주세요.</S.SubTitle>
             </S.TitleContainer>
             <S.BtnContainer>
-              <S.BtnF onClick={navigateLogin}>네</S.BtnF>
+              <S.ModalBtn onClick={navigateLogin} backgroundColor="main02" color="main05">
+                네
+              </S.ModalBtn>
             </S.BtnContainer>
-            <S.CloseBtn onClick={navigateLogin} src={x} />
+            <S.CloseBtn onClick={navigateLogin} />
           </>
         ) : (
           <>
@@ -46,10 +48,20 @@ export default function WithdrawRollbackModal({ close, rollbackState, setRollbac
               </S.SubTitle>
             </S.TitleContainer>
             <S.BtnContainer>
-              <S.BtnF onClick={deleteRollback}>네</S.BtnF>
-              <S.BtnB onClick={navigateLogin}>아니요</S.BtnB>
+              <S.ModalBtn onClick={deleteRollback} backgroundColor="main02" color="main05">
+                네
+              </S.ModalBtn>
+              <S.ModalBtn
+                onClick={navigateLogin}
+                backgroundColor="main05"
+                color="grayscale03"
+                border
+                borderColor="grayscale03"
+              >
+                아니요
+              </S.ModalBtn>
             </S.BtnContainer>
-            <S.CloseBtn onClick={navigateLogin} src={x} />
+            <S.CloseBtn onClick={navigateLogin} />
           </>
         )}
       </S.Content>

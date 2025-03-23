@@ -1,108 +1,96 @@
 import styled from 'styled-components';
+import Button from '../common/button/Button';
+import closeIcon from '../../assets/X.svg';
 
-const Modal = styled.div`
-  width: 440px;
-  height: 435px;
+const Backdrop = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  margin-top: 230px;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(70, 76, 82, 0.5);
+  z-index: 999;
+`;
+const Modal = styled.div`
+  width: 27.5rem;
+  min-height: 27.1rem;
+  display: flex;
+  justify-content: center;
   position: relative;
   background-color: #f7f8f9;
-  border-radius: 20px;
+  border-radius: 1.25rem;
+  box-sizing: border-box;
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 60px;
-  padding: 27px auto 25px;
-  box-sizing: border-box;
-  max-width: 80%;
+  padding: 3rem 0;
+  gap: 3.75rem;
+  max-width: 70%;
   &.hasimage {
     gap: 0;
-    max-width: 70%;
   }
   word-break: keep-all;
 `;
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 const Title = styled.h1`
-  color: #000;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.h3.fontSize};
+  font-weight: ${({ theme }) => theme.text.h3.fontWeight};
   text-align: center;
-  font-family: Pretendard;
-  font-size: 2.16rem;
-  font-style: normal;
-  font-weight: 700;
   line-height: normal;
 `;
 const SubTitle = styled.span`
-  color: #000;
+  color: ${({ theme }) => theme.color.grayscale01};
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
   text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 400;
   line-height: normal;
 `;
 const BtnContainer = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  gap: 2em;
+  gap: 2.5rem;
   &.btn-row {
     flex-direction: row;
   }
 `;
-const BtnF = styled.button`
-  width: 80%;
-  border-radius: 50px;
-  border: none;
-  background: var(--main-4036-ed, #4036ed);
-  padding: 0.75em;
-  color: var(--main-ffffff, #fff);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
+const ModalBtn = styled(Button)`
+  width: 13.93rem;
   &.btn-row {
-    width: auto;
-    flex: 1;
+    width: 8.62rem;
   }
-`;
-const BtnB = styled.button`
-  width: 80%;
-  border-radius: 50px;
-  border: 1px solid var(--gray-scale-464-c-52, #464c52);
-  background: var(--main-ffffff, #fff);
-  padding: 0.75em;
-  color: var(--gray-scale-464-c-52, #464c52);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
-  &.btn-row {
-    width: auto;
-    flex: 1;
-  }
-`;
-const CloseBtn = styled.img`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
 `;
 
-export { Modal, Content, TitleContainer, Title, SubTitle, BtnContainer, BtnF, BtnB, CloseBtn };
+const CloseBtn = styled.button`
+  background: url(${closeIcon}) no-repeat;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 2.62rem;
+  height: 2.62rem;
+  padding: 0;
+`;
+
+export {
+  Backdrop,
+  Modal,
+  Content,
+  TitleContainer,
+  Title,
+  SubTitle,
+  BtnContainer,
+  ModalBtn,
+  CloseBtn,
+};
