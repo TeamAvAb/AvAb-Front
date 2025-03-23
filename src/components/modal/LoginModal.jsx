@@ -4,6 +4,7 @@ import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import characterImg from '../../assets/character/kakaoAvb.png';
 import closeIcon from '../../assets/common/x.svg';
+
 import useLoginModalStore from '../../stores/loginModalStore';
 import Button from '../common/button/Button';
 
@@ -43,6 +44,7 @@ export default function LoginModal() {
             </Button>
           </Text>
           <CharacterImg src={characterImg} alt="로그인하는 아브브" />
+
         </Content>
         <Controls>
           <CloseBtn onClick={modalControl}>

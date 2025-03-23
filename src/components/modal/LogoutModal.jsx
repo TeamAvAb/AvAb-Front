@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import * as S from './modal.style';
 import cryingAvb from '../../assets/character/cryingAvb.png';
+
 import useLoginStore from '../../stores/loginStore';
 import { privateAPI } from '../../apis/user';
 import { useNavigate } from 'react-router-dom';
@@ -36,6 +37,7 @@ export default function LogoutModal({ handleModal }) {
             <S.SubTitle>더 많은 혜택이 기다리고 있어요.</S.SubTitle>
           </S.TitleContainer>
           <CharacterImg src={cryingAvb} alt="울고있는 아브브" />
+
           <S.BtnContainer className="btn-row">
             <S.ModalBtn
               onClick={handleLogout}
