@@ -2,6 +2,7 @@
   "name": "avab",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -11,6 +12,8 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.5.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
     "gh-pages": "^6.1.1",
     "qs": "^6.11.2",
     "react": "^18.2.0",
@@ -20,7 +23,6 @@
     "react-paginate": "^8.2.0",
     "react-router": "^6.21.2",
     "react-router-dom": "^6.22.0",
-    "react-scripts": "5.0.1",
     "react-slick": "^0.30.1",
     "react-spinners": "^0.13.8",
     "react-tooltip": "^5.28.0",
@@ -31,10 +33,8 @@
     "zustand": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -60,11 +60,18 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@iconify/react": "^4.1.1",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
-    "react-helmet": "^6.1.0"
+    "react-helmet": "^6.1.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.3",
+    "vite-plugin-svgr": "^4.3.0"
   }
 }

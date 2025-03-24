@@ -1,6 +1,5 @@
-import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import AlertIcon from '@/assets/common/alert.svg?react';
 import Button from '../common/button/Button';
-import React from 'react';
 import styled from 'styled-components';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import theme from '../../styles/theme';

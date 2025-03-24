@@ -1,4 +1,4 @@
-import { ReactComponent as AlertImg } from '../../assets/common/alert.svg';
+import AlertImg from '@/assets/common/alert.svg?react';
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../../styles/theme';
