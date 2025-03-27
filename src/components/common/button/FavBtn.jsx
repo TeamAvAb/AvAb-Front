@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { ReactComponent as Icon } from '../../../assets/card/heartIcon.svg';
+import Icon from '@/assets/card/heartIcon.svg?react';
 
 export default function FavBtn({ isFav, onClick, className }) {
   const theme = useContext(ThemeContext);

@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import React, { forwardRef, useEffect, useState } from 'react';
 import ReviewStars from './ReviewStars';
 import RecreationReview from './RecreationReview';
-import { privateAPI, publicAPI } from '../../apis/user';
+import { privateAPI, publicAPI } from '@/apis/user.js';
 import useLoginModalStore from '../../stores/loginModalStore';
 import useLoginStore from '../../stores/loginStore';
 import Pagination from '../pagination/Pagination';
 import { Tooltip } from 'react-tooltip';
-import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import AlertIcon from '@/assets/common/alert.svg?react';
 import theme from '../../styles/theme';
 
 const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {

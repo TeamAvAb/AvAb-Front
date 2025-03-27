@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import AlertIcon from '@/assets/common/alert.svg?react';
 import NicknameChangeModal from '../modal/NicknameChangeModal';
 import WithdrawModal from '../modal/WithdrawModal';
-import { privateAPI } from '../../apis/user';
+import { privateAPI } from '@/apis/user.js';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Button from '../common/button/Button';
 import theme from '../../styles/theme';

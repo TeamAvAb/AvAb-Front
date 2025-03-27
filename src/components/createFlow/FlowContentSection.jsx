@@ -3,7 +3,7 @@ import RecreationList from './RecreationList';
 import { useFormState } from 'react-hook-form';
 import AlertMessage from '../common/AlertMessage';
 import clsx from 'clsx';
-import { ReactComponent as PlusIcon } from '../../assets/common/plusIcon.svg';
+import PlusIcon from '@/assets/common/plusIcon.svg?react';
 
 export default function FlowContentSection({
   flow,

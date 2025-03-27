@@ -6,7 +6,7 @@ import BaseKeywordChip from '../common/chip/KeywordChip';
 import BasePurposeChip from '../common/chip/PurposeChip';
 import KEYWORD_CATEGORY from '../../constants/searchKeywordCategory';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { ReactComponent as AlertIcon } from '../../assets/common/alert.svg';
+import AlertIcon from '@/assets/common/alert.svg?react';
 import theme from '../../styles/theme';
 
 export default function KeywordModal({
