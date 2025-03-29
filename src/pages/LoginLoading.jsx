@@ -5,6 +5,7 @@ import useLoginStore from '../stores/loginStore';
 import WithdrawRollbackModal from '../components/modal/WithdrawRollbackModal';
 import useModal from '../hooks/useModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
 
 export default function LoginLoading() {
   const { isLoggedIn, setIsLoggedIn, setUserId, setAccessToken, setRefreshToken } = useLoginStore();
@@ -70,17 +71,20 @@ export default function LoginLoading() {
   };
 
   return (
-    <div style={{ height: 'calc(100vh - 11rem' }}>
-      <LoadingSpinner />
-      <ModalWrapper
-        children={
-          <WithdrawRollbackModal
-            close={closeModal}
-            rollbackState={rollbackState}
-            setRollbackState={setRollbackState}
-          />
-        }
-      />
-    </div>
+    <>
+      <PageMetadata title="로그인 중입니다... AvAb | 아브아브" description="" keywords="" url="" />
+      <div style={{ height: 'calc(100vh - 11rem' }}>
+        <LoadingSpinner />
+        <ModalWrapper
+          children={
+            <WithdrawRollbackModal
+              close={closeModal}
+              rollbackState={rollbackState}
+              setRollbackState={setRollbackState}
+            />
+          }
+        />
+      </div>
+    </>
   );
 }

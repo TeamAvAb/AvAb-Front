@@ -19,6 +19,10 @@ import CreateFlow from './pages/CreateFlow';
 import SITE_URL from './constants/url';
 import AppLayout from './components/AppLayout';
 import LoginGuard from './components/LoginGuard';
+import { HelmetProvider } from 'react-helmet-async';
+import { ThemeProvider } from 'styled-components';
+import theme from '@/styles/theme.js';
+import GlobalStyle from '@/GlobalStyles.jsx';
 
 function App() {
   const routes = (
@@ -47,7 +51,14 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </HelmetProvider>
+  );
 }
 
 export default App;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
 import useLoginStore from '../stores/loginStore';
 import { useLocation } from 'react-router-dom';
 import FlowInfoSection from '../components/flowDetails/FlowInfoSection';
@@ -9,6 +8,9 @@ import FlowSummarySection from '../components/flowDetails/FlowSummarySection';
 import FlowTimelineSection from '../components/flowDetails/FlowTimelineSection';
 import NotFound from './NotFound';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
+import PURPOSE from '@/constants/enum/purpose.js';
 
 export default function FlowDetails() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -32,7 +34,7 @@ export default function FlowDetails() {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, isLoggedIn]);
 
   if (isLoading) {
     return <LoadingSpinner height="lg" />;
@@ -43,23 +45,21 @@ export default function FlowDetails() {
   }
 
   return (
-    data.length !== 0 && (
-      <>
-        <Helmet>
-          <title>{`${data.flowDetail.title} - AvAb | 레크레이션 플로우 공유`}</title>
-          <meta
-            name="description"
-            content={`${data.flowDetail.title} 플로우에 대한 상세 정보입니다. AvAb에서 다양한 레크레이션 정보를 확인하고, 자신만의 플로우를 만들어 공유하세요.`}
-          />
-        </Helmet>
-
-        <FlowInfoSection flow={data.flowDetail} />
-        <FlowDetailsMainSection>
-          <FlowSummarySection flow={data.flowDetail} />
-          <FlowTimelineSection flowTitle={data.flowDetail.title} recreations={data.recreations} />
-        </FlowDetailsMainSection>
-      </>
-    )
+    <>
+      <PageMetadata
+        title={`${data.flowDetail.title}`}
+        description={`${data.flowDetail.title} 일정 플로우에 대한 상세 정보`}
+        keywords={data.flowDetail.purposeList.map((purpose) => PURPOSE[purpose].value).join(', ')}
+        url={SITE_URL.FLOW_DETAIL(id)}
+        image={data.flowDetail.imageUrl}
+        type="article"
+      />
+      <FlowInfoSection flow={data.flowDetail} />
+      <FlowDetailsMainSection>
+        <FlowSummarySection flow={data.flowDetail} />
+        <FlowTimelineSection flowTitle={data.flowDetail.title} recreations={data.recreations} />
+      </FlowDetailsMainSection>
+    </>
   );
 }
 

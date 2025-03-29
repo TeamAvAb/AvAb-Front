@@ -14,9 +14,9 @@ import workshopImg from '../assets/carousel/banner1_workshop.png';
 import mtImg from '../assets/carousel/banner2_mt.png';
 import gatherImg from '../assets/carousel/banner3_gather.png';
 
-import { Helmet } from 'react-helmet';
 import { scrollToTop } from '../utils/windowUtils';
 import SITE_URL from '../constants/url';
+import { Helmet } from 'react-helmet-async';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function Main() {
         <title>AvAb | 아브아브 - 빠르고 쉬운 레크레이션 검색 플랫폼</title>
         <meta
           name="description"
-          content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
+          content="아브아브에서 다양한 레크레이션을 쉽게 검색하고 추천 받아보세요. 워크샵, MT, 모임 등 다양한 레크레이션 옵션을 빠르게 찾아보실 수 있습니다."
         />
         <meta name="keywords" content="레크레이션, 검색, 추천, 워크샵, MT, 모임, 아브아브, AvAb" />
         <meta property="og:title" content="아브아브 - 빠르고 쉬운 레크레이션 검색 플랫폼" />

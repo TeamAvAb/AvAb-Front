@@ -11,16 +11,17 @@ import Button from '../common/button/Button';
 export default function LoginModal() {
   const { pathname } = useLocation();
   const { modalControl } = useLoginModalStore((state) => state);
-  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REST_API_KEY = import.meta.env.VITE_REST_API_KEY;
   let REDIRECT_URI;
 
+  // TODO: NODE_ENV에 따라 REDIRECT_URI 설정하게 바꿀 것!
   if (window.location.href.startsWith('http://localhost:3000/')) {
-    REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL_LOCAL;
+    REDIRECT_URI = import.meta.env.VITE_REDIRECT_URL_LOCAL;
   } else {
-    REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+    REDIRECT_URI = import.meta.env.VITE_REDIRECT_URL;
   }
 
-  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
   const toKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
@@ -44,7 +45,6 @@ export default function LoginModal() {
             </Button>
           </Text>
           <CharacterImg src={characterImg} alt="로그인하는 아브브" />
-
         </Content>
         <Controls>
           <CloseBtn onClick={modalControl}>

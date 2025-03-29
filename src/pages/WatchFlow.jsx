@@ -6,6 +6,8 @@ import SortControl from '../components/common/SortControl';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout.jsx';
 import NoData from '../components/common/NoData';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function WatchFlow() {
   const { isLoggedIn, userId } = useLoginStore((state) => state);
@@ -50,28 +52,36 @@ export default function WatchFlow() {
   }, [currentPage, order]);
 
   return (
-    <FlowTabLayout
-      selectedPage="watch-flow"
-      isloading={loading}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      handlePaginationClick={setCurrentPage}
-    >
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
-        <SortControl setOption={setOrder} selectedOption={order} isFlow />
-      </div>
-      {!loading && datas && datas.length > 0 ? (
-        <>
-          <FlowBox>
-            {datas.map((data) => (
-              <FlowCardD key={data.id} content={data} isOwner={data.author.id === userId} />
-            ))}
-          </FlowBox>
-        </>
-      ) : (
-        <NoData variant="flowError" />
-      )}
-    </FlowTabLayout>
+    <>
+      <PageMetadata
+        title="플로우 구경하기 | AvAb - 아브아브"
+        description="AvAb 아브아브에서 플로우를 구경하고 MT, 수련회, 파티, 이벤트에서 다 함께 즐겨보세요."
+        keywords="플로우, 구경"
+        url={SITE_URL.FLOW}
+      />
+      <FlowTabLayout
+        selectedPage="watch-flow"
+        isloading={loading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePaginationClick={setCurrentPage}
+      >
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
+          <SortControl setOption={setOrder} selectedOption={order} isFlow />
+        </div>
+        {!loading && datas && datas.length > 0 ? (
+          <>
+            <FlowBox>
+              {datas.map((data) => (
+                <FlowCardD key={data.id} content={data} isOwner={data.author.id === userId} />
+              ))}
+            </FlowBox>
+          </>
+        ) : (
+          <NoData variant="flowError" />
+        )}
+      </FlowTabLayout>
+    </>
   );
 }
 

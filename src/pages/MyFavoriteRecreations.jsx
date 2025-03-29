@@ -6,6 +6,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import RecreationCardWHashtag from '../components/common/card/recreationCard/RecreationCardWHashtag';
 import SideNavLayout from '../layout/SideNavLayout';
 import NoData from '../components/common/NoData';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function MyFavoriteRecreations() {
   // 데이터 가져오기
@@ -48,30 +50,38 @@ export default function MyFavoriteRecreations() {
   }, [currentPage]);
 
   return (
-    <SideNavLayout selectedPage="favorites" parentTab="my-page">
-      <RecreationWrap>
-        <RecreationTitle id="move">즐겨 찾는 레크레이션</RecreationTitle>
-        {loading ? (
-          <LoadingSpinner />
-        ) : recreations.length !== 0 ? (
-          <RecreationList>
-            <FavoriteRecreations>
-              {recreations.map((data) => (
-                <RecreationCardWHashtag key={data.id} content={data} refetch={fetchData} />
-              ))}
-            </FavoriteRecreations>
-            <Pagination
-              currentPage={currentPage}
-              pageNum={pages}
-              setCurrentPage={setCurrentPage}
-              scrollLocation={document.querySelector('#move').offsetTop}
-            />
-          </RecreationList>
-        ) : (
-          <NoData variant="favoriteRecreation" />
-        )}
-      </RecreationWrap>
-    </SideNavLayout>
+    <>
+      <PageMetadata
+        title="즐겨 찾는 레크레이션 | AvAb - 아브아브"
+        description="AvAb 아브아브에서 좋아하는 레크레이션을 즐겨찾기하고, 빠르게 찾아보세요."
+        keywords="즐겨찾기"
+        url={SITE_URL.MY_FAVORITE_RECREATIONS}
+      />
+      <SideNavLayout selectedPage="favorites" parentTab="my-page">
+        <RecreationWrap>
+          <RecreationTitle id="move">즐겨 찾는 레크레이션</RecreationTitle>
+          {loading ? (
+            <LoadingSpinner />
+          ) : recreations.length !== 0 ? (
+            <RecreationList>
+              <FavoriteRecreations>
+                {recreations.map((data) => (
+                  <RecreationCardWHashtag key={data.id} content={data} refetch={fetchData} />
+                ))}
+              </FavoriteRecreations>
+              <Pagination
+                currentPage={currentPage}
+                pageNum={pages}
+                setCurrentPage={setCurrentPage}
+                scrollLocation={document.querySelector('#move').offsetTop}
+              />
+            </RecreationList>
+          ) : (
+            <NoData variant="favoriteRecreation" />
+          )}
+        </RecreationWrap>
+      </SideNavLayout>
+    </>
   );
 }
 

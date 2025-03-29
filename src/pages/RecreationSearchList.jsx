@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
 
-import { Helmet } from 'react-helmet';
-
 import useLoginStore from '../stores/loginStore';
 import { privateAPI, publicAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -13,6 +11,8 @@ import RecreationCardL from '../components/common/card/recreationCard/Recreation
 import qs from 'qs';
 import SortControl from '../components/common/SortControl';
 import NoData from '../components/common/NoData';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function RecreationSearchList() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -56,18 +56,12 @@ export default function RecreationSearchList() {
   }, [currentPage, order, isLoggedIn, initialParams]);
   return (
     <>
-      <Helmet>
-        <title>AvAb | 레크레이션 검색 결과</title>
-        <meta
-          name="description"
-          content="다양한 레크레이션을 검색하고 찾을 수 있습니다. 원하는 레크레이션을 찾아보세요."
-        />
-        <meta property="og:title" content="레크레이션 검색 결과" />
-        <meta
-          property="og:description"
-          content="다양한 레크레이션을 검색하고 찾을 수 있습니다. 원하는 레크레이션을 찾아보세요."
-        />
-      </Helmet>
+      <PageMetadata
+        title="레크레이션 검색 결과 | AvAb - 아브아브"
+        description="AvAb 아브아브에서 다양한 레크레이션을 손쉽게 검색하고 찾아보세요."
+        keywords="검색, 결과"
+        url={SITE_URL.RECREATION_SEARCH_LIST}
+      />
       <Container>
         <Search filtersOpen initialParams={initialParams} />
         <RecreationsContainer>

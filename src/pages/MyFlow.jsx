@@ -7,6 +7,8 @@ import useLoginStore from '../stores/loginStore';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout';
 import NoData from '../components/common/NoData';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function MyFlow() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -46,28 +48,36 @@ export default function MyFlow() {
   }, [currentPage]);
 
   return (
-    <FlowTabLayout
-      selectedPage="my-flow"
-      isloading={loading}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      handlePaginationClick={setCurrentPage}
-    >
-      {!loading && datas && datas.length > 0 ? (
-        <>
-          <FlowBox>
-            {datas.map((data) => (
-              <FlowCardD key={data.id} content={data} isOwner onDeleteClick={handleDeleteClick} />
-            ))}
-            <ModalWrapper>
-              <FlowDeleteModal close={closeModal} refetch={fetchData} />
-            </ModalWrapper>
-          </FlowBox>
-        </>
-      ) : (
-        <NoData variant="myFlow" />
-      )}
-    </FlowTabLayout>
+    <>
+      <PageMetadata
+        title="내가 만든 일정 플로우 | AvAb 아브아브"
+        description="AvAb 아브아브에서 나만의 레크레이션 일정을 만들고, 다른 사람들과 공유해보세요."
+        keywords="계획, 일정, 플로우"
+        url={SITE_URL.MY_FLOW}
+      />
+      <FlowTabLayout
+        selectedPage="my-flow"
+        isloading={loading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePaginationClick={setCurrentPage}
+      >
+        {!loading && datas && datas.length > 0 ? (
+          <>
+            <FlowBox>
+              {datas.map((data) => (
+                <FlowCardD key={data.id} content={data} isOwner onDeleteClick={handleDeleteClick} />
+              ))}
+              <ModalWrapper>
+                <FlowDeleteModal close={closeModal} refetch={fetchData} />
+              </ModalWrapper>
+            </FlowBox>
+          </>
+        ) : (
+          <NoData variant="myFlow" />
+        )}
+      </FlowTabLayout>
+    </>
   );
 }
 

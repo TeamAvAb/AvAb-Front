@@ -6,6 +6,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import FlowCardD from '../components/common/card/flowCard/FlowCardD';
 import FlowTabLayout from '../components/flow/FlowTabLayout';
 import NoData from '../components/common/NoData';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function ScrapFlow() {
   const { isLoggedIn } = useLoginStore((state) => state);
@@ -33,7 +35,7 @@ export default function ScrapFlow() {
   // 초기 렌더링 및 페이지 변경에 따른 데이터 페칭
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, fetchData]);
 
   // 스크랩을 해제해서 페이지 수가 줄어들 경우 처리
   useEffect(() => {
@@ -44,30 +46,38 @@ export default function ScrapFlow() {
         setCurrentPage(0);
       }
     }
-  }, [totalPages]);
+  }, [currentPage, totalPages]);
 
   return (
-    <FlowTabLayout
-      selectedPage="scrap-flow"
-      isloading={loading}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      handlePaginationClick={setCurrentPage}
-    >
-      {loading ? (
-        <LoadingSpinner />
-      ) : datas && datas.length > 0 ? (
-        <>
-          <FlowBox>
-            {datas.map((data) => (
-              <FlowCardD key={data.id} content={data} refetch={fetchData} />
-            ))}
-          </FlowBox>
-        </>
-      ) : (
-        <NoData variant="scrapFlow" />
-      )}
-    </FlowTabLayout>
+    <>
+      <PageMetadata
+        title="내가 스크랩한 플로우 | AvAb - 아브아브"
+        description="아브아브에서 좋아하는 일정 플로우를 스크랩하고 빠르게 찾아보세요."
+        keywords="스크랩, 플로우, 일정"
+        url={SITE_URL.MY_SCRAP_FLOW}
+      />
+      <FlowTabLayout
+        selectedPage="scrap-flow"
+        isloading={loading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePaginationClick={setCurrentPage}
+      >
+        {loading ? (
+          <LoadingSpinner />
+        ) : datas && datas.length > 0 ? (
+          <>
+            <FlowBox>
+              {datas.map((data) => (
+                <FlowCardD key={data.id} content={data} refetch={fetchData} />
+              ))}
+            </FlowBox>
+          </>
+        ) : (
+          <NoData variant="scrapFlow" />
+        )}
+      </FlowTabLayout>
+    </>
   );
 }
 

@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useBlocker } from 'react-router';
 import CreateFlowPreventLeaveModal from '../components/modal/CreateFlowPreventLeaveModal';
 import useModal from '../hooks/useModal';
+import SITE_URL from '@/constants/url.js';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
 
 export default function CreateFlow() {
   const [isFlowSaving, setIsFlowSaving] = useState(false);
@@ -148,17 +150,25 @@ export default function CreateFlow() {
   };
 
   return (
-    <Wrapper>
-      <CreateFlowStepper currentStep={funnel.step} onStepClick={handleStepClick} />
-      <StepWrapper $wide={funnel.step === 'flow-contents'}>{renderStep()}</StepWrapper>
-      <PreventLeaveModalWrapper>
-        <CreateFlowPreventLeaveModal
-          close={closePreventLeaveModal}
-          onLeaveClick={proceedNavigation}
-          onStayClick={blockNavigation}
-        />
-      </PreventLeaveModalWrapper>
-    </Wrapper>
+    <>
+      <PageMetadata
+        title="AvAb | 아브아브 - 일정 플로우 만들기"
+        description="아브아브에서 손쉽게 일정 플로우를 계획하고 공유해보세요!"
+        keywords="일정, 플로우, 계획"
+        url={SITE_URL.CREATE_FLOW}
+      />
+      <Wrapper>
+        <CreateFlowStepper currentStep={funnel.step} onStepClick={handleStepClick} />
+        <StepWrapper $wide={funnel.step === 'flow-contents'}>{renderStep()}</StepWrapper>
+        <PreventLeaveModalWrapper>
+          <CreateFlowPreventLeaveModal
+            close={closePreventLeaveModal}
+            onLeaveClick={proceedNavigation}
+            onStayClick={blockNavigation}
+          />
+        </PreventLeaveModalWrapper>
+      </Wrapper>
+    </>
   );
 }
 

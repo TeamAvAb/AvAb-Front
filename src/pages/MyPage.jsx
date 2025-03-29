@@ -1,24 +1,21 @@
 import React from 'react';
 import MyInfoBox from '../components/./myPage/MyInfoBox';
-import { Helmet } from 'react-helmet';
 import SideNavLayout from '../layout/SideNavLayout';
+import PageMetadata from '@/components/helmet/PageMetadata.js';
+import SITE_URL from '@/constants/url.js';
 
 export default function MyPage() {
   return (
-    <SideNavLayout selectedPage="info" parentTab="my-page">
-      <Helmet>
-        <title>AvAb | 마이페이지 - 내 정보 관리</title>
-        <meta
-          name="description"
-          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
-        />
-        <meta property="og:title" content="마이페이지 - 내 정보 관리" />
-        <meta
-          property="og:description"
-          content="마이페이지에서 내 정보를 관리하고, 즐겨찾는 레크레이션을 확인할 수 있습니다."
-        />
-      </Helmet>
-      <MyInfoBox />
-    </SideNavLayout>
+    <>
+      <PageMetadata
+        title="마이페이지 | AvAb 아브아브"
+        description="마이페이지 - 내 정보"
+        keywords=""
+        url={SITE_URL.MY_INFO}
+      />
+      <SideNavLayout selectedPage="info" parentTab="my-page">
+        <MyInfoBox />
+      </SideNavLayout>
+    </>
   );
 }

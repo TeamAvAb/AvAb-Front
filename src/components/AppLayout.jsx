@@ -1,13 +1,12 @@
 import useLoginModalStore from '../stores/loginModalStore';
 import { useEffect, useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
-import GlobalStyle from '../GlobalStyles';
+import styled from 'styled-components';
 import cryingAvb from '../assets/character/cryingAvb.png';
 import Header from './common/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './common/footer/Footer';
 import LoginModal from './modal/LoginModal';
+import { Helmet } from 'react-helmet-async';
 
 export default function AppLayout() {
   const { modalOpen } = useLoginModalStore();
@@ -31,26 +30,48 @@ export default function AppLayout() {
     };
   }, []);
 
-  return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      {isMobile ? (
-        <MobileOverlay>
-          <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
-          <SubMessage>PC로 접속해주세요.</SubMessage>
-          <Image src={cryingAvb} alt="" />
-        </MobileOverlay>
-      ) : (
-        <>
-          <Header />
-          <main className="main">
-            <Outlet />
-          </main>
-          <Footer />
-          {modalOpen ? <LoginModal /> : null}
-        </>
-      )}
-    </ThemeProvider>
+  return isMobile ? (
+    <MobileOverlay>
+      <MobileMessage>모바일 버전은 준비 중입니다.</MobileMessage>
+      <SubMessage>PC로 접속해주세요.</SubMessage>
+      <Image src={cryingAvb} alt="" />
+    </MobileOverlay>
+  ) : (
+    <>
+      <Helmet>
+        <title>AvAb | 아브아브 - 빠르고 쉬운 레크레이션 검색 플랫폼</title>
+        <meta
+          name="description"
+          content="함께하는 즐거움을 계획하고, 얼음같은 분위기를 깨트려 보세요! 레크레이션을 보다 쉽게, 아브아브"
+        />
+        <meta name="keywords" content="레크레이션, 아브아브, AvAb, 워크샵, MT, 모임, 이벤트" />
+        <meta name="author" content="AvAb Team" />
+
+        <meta property="og:title" content="아브아브 AvAb" />
+        <meta
+          property="og:description"
+          content="함께하는 즐거움을 계획하고, 얼음같은 분위기를 깨트려 보세요! 레크레이션을 보다 쉽게, 아브아브"
+        />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="https://avab.site" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="아브아브 AvAb" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="아브아브 AvAb" />
+        <meta
+          name="twitter:description"
+          content="함께하는 즐거움을 계획하고, 얼음같은 분위기를 깨트려 보세요! 레크레이션을 보다 쉽게, 아브아브"
+        />
+        <meta name="twitter:image" content="이미지 넣기" />
+      </Helmet>
+      <Header />
+      <main className="main">
+        <Outlet />
+      </main>
+      <Footer />
+      {modalOpen ? <LoginModal /> : null}
+    </>
   );
 }
 
