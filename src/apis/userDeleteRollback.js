@@ -4,7 +4,7 @@ export const userDeleteRollback = async () => {
   const accessToken = localStorage.getItem('accessTokenForRollback');
   try {
     const response = await axios.patch(
-      `${process.env.REACT_APP_API_URL}api/users/me/deleted`,
+      `${import.meta.env.VITE_API_URL}api/users/me/deleted`,
       { accessToken },
       {
         headers: {

@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: ["dev"]
+    branches: ['dev']
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: "**/node_modules"
+          path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -34,15 +34,15 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "REACT_APP_REST_API_KEY=${{ secrets.REACT_APP_REST_API_KEY }}" >> .env
-          echo "REACT_APP_REDIRECT_URL=${{ secrets.REACT_APP_REDIRECT_URL }}" >> .env
-          echo "REACT_APP_REDIRECT_URL_LOCAL=${{ secrets.REACT_APP_REDIRECT_URL_LOCAL }}" >> .env
-          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> .env
+          echo "VITE_REST_API_KEY=${{ secrets.VITE_REST_API_KEY }}" >> .env
+          echo "VITE_REDIRECT_URL=${{ secrets.VITE_REDIRECT_URL }}" >> .env
+          echo "VITE_REDIRECT_URL_LOCAL=${{ secrets.VITE_REDIRECT_URL_LOCAL }}" >> .env
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
 
       - name: Build project
         run: npm run build
-        env: 
-          CI: ""
+        env:
+          CI: ''
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
