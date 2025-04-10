@@ -11,9 +11,9 @@ import { privateAPI, publicAPI } from '../apis/user';
 import useLoginStore from '../stores/loginStore';
 import NotFound from './NotFound';
 import PageMetadata from '@/components/helmet/PageMetadata.js';
-import PURPOSE from '@/constants/enum/purpose.js';
 import KEYWORD from '@/constants/enum/keyword.js';
 import SITE_URL from '@/constants/url.js';
+import PURPOSE from '@/constants/enum/purpose.js';
 
 export default function RecreationDetail() {
   const { recreationId } = useParams();
@@ -56,11 +56,10 @@ export default function RecreationDetail() {
     <>
       <PageMetadata
         title={`${recreationData.title} 레크레이션 상세 정보 | AvAb - 아브아브`}
-        description={
-          recreationData.purposeList.map((purpose) => PURPOSE[purpose].value) +
-          recreationData.summary
-        }
-        keywords={recreationData.keywordList.map((keyword) => KEYWORD[keyword].value)}
+        description={`${recreationData.purposeList
+          .map((purpose) => PURPOSE[purpose].value)
+          .join(', ')} ${recreationData.summary}`}
+        keywords={recreationData.keywordList.map((keyword) => KEYWORD[keyword].value).join(', ')}
         url={SITE_URL.RECREATION_DETAIL(recreationId)}
         image={recreationData.imageUrl}
         type="article"

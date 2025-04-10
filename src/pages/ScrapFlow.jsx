@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { privateAPI, publicAPI } from '../apis/user';
 import styled from 'styled-components';
 import useLoginStore from '../stores/loginStore';
@@ -21,7 +21,7 @@ export default function ScrapFlow() {
   // 전체 페이지 수
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
 
     const api = isLoggedIn ? privateAPI : publicAPI;
@@ -30,12 +30,12 @@ export default function ScrapFlow() {
     setTotalPages(response.data.result.totalPages);
 
     setLoading(false);
-  };
+  }, [currentPage, isLoggedIn]);
 
   // 초기 렌더링 및 페이지 변경에 따른 데이터 페칭
   useEffect(() => {
     fetchData();
-  }, [currentPage, fetchData]);
+  }, [fetchData]);
 
   // 스크랩을 해제해서 페이지 수가 줄어들 경우 처리
   useEffect(() => {

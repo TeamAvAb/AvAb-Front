@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     svgrPlugin(),
     prerender({
-      routes: ['/', '/search/list'],
+      routes: [], //TODO: prerender할 페이지 경로 추가
       renderer: '@prerenderer/renderer-puppeteer',
       server: {
         host: 'localhost',
@@ -18,7 +18,7 @@ export default defineConfig({
       },
       postProcess(renderedRoute) {
         renderedRoute.html = renderedRoute.html
-          .replace(/http:/i, 'https:')
+          .replace(/http:/gi, 'https:')
           .replace(/(https:\/\/)?(localhost|127\.0\.0\.1):\d*/i, 'https://avab.site/');
       },
     }),
