@@ -6,7 +6,7 @@ import fallbackProfileImage from '../../assets/header/profileImg.png';
 import useLoginStore from '../../stores/loginStore';
 import useLoginModalStore from '../../stores/loginModalStore';
 import Navigation from './Navigation';
-import { scrollToTop } from '../../utils/windowUtils';
+import { scrollToTop } from '@/utils/windowUtils.js';
 import Button from './button/Button';
 
 export default function Header() {
@@ -14,7 +14,8 @@ export default function Header() {
   const { modalControl } = useLoginModalStore((state) => state);
   const getProfileImage = () => {
     const profileImage = localStorage.getItem('userImage');
-    return profileImage === 'null' ? fallbackProfileImage : profileImage;
+
+    return profileImage && profileImage !== 'null' ? profileImage : fallbackProfileImage;
   };
 
   return (
