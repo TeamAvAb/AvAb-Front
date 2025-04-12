@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ScrapBtn from '../common/button/ScrapBtn';
 import FlowRecreationList from '../common/FlowRecreationList';
+import { privateAPI } from '@/apis/user.js';
+import useLoginStore from '@/stores/loginStore.js';
+import useLoginModalStore from '@/stores/loginModalStore.js';
 
 export default function FlowCard({ index, flowData, flowRecreations }) {
+  const { isLoggedIn } = useLoginStore((state) => state);
+  const { modalControl } = useLoginModalStore();
+  const [scrap, setScrap] = useState(flowData.isFavorite);
+
+  const toggleScrap = async () => {
+    if (isLoggedIn) {
+      const response = await privateAPI.post(`/api/flows/${flowData.id}/scraps`);
+      if (response.status === 200) {
+        // 요청이 성공하면 상태 업데이트
+        console.log(response.data);
+        setScrap((prev) => !prev);
+      } else {
+        // 요청이 실패하면 에러 처리
+        console.log(response.data);
+      }
+    } else {
+      modalControl();
+    }
+  };
+
+  const handleScrapClick = async () => {
+    await toggleScrap();
+  };
   return (
     <FlowCardContainer>
       <TitleWrap>
         <NumberBox>{index}안</NumberBox>
         <FlowTitle>{flowData?.title}</FlowTitle>
-        <ScrapButton flowId={flowData.id} isScrap={flowData.isFavorite} />
+        <ScrapButton isScrap={scrap} onClick={handleScrapClick} />
       </TitleWrap>
       <ListWrap>
         <FlowRecreationList recreations={flowRecreations} />
