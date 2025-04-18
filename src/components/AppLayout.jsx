@@ -8,6 +8,7 @@ import Header from './common/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './common/footer/Footer';
 import LoginModal from './modal/LoginModal';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function AppLayout() {
   const { modalOpen } = useLoginModalStore();
@@ -46,6 +47,7 @@ export default function AppLayout() {
           <main className="main">
             <Outlet />
           </main>
+          <ReactQueryDevtools initialIsOpen={true} />
           <Footer />
           {modalOpen ? <LoginModal /> : null}
         </>
