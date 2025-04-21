@@ -2566,7 +2566,7 @@ table {
 `,wc=M.li`
   ${({theme:e})=>e.text.nav};
   cursor: pointer;
-`;function vA(){const{isLoggedIn:e}=Ut(i=>i),{modalControl:r}=Jr(i=>i),n=()=>{const i=localStorage.getItem("userImage");return i==="null"?gA:i};return u.jsxs(xA,{children:[u.jsx(ui,{to:"/",children:u.jsx(wA,{src:mA,onClick:kr})}),u.jsx(Ph,{}),e?u.jsx(ui,{to:"/mypage/myinfo",children:u.jsx(CA,{src:n(),onClick:kr})}):u.jsxs(u.Fragment,{children:[u.jsx(SA,{src:hA}),u.jsx(Pt,{onClick:()=>r(),children:"로그인"})]})]})}const xA=M.header`
+`;function vA(){const{isLoggedIn:e}=Ut(i=>i),{modalControl:r}=Jr(i=>i),n=()=>{const i=localStorage.getItem("userImage");return i&&i!=="null"?i:gA};return u.jsxs(xA,{children:[u.jsx(ui,{to:"/",children:u.jsx(wA,{src:mA,onClick:kr})}),u.jsx(Ph,{}),e?u.jsx(ui,{to:"/mypage/myinfo",children:u.jsx(CA,{src:n(),onClick:kr})}):u.jsxs(u.Fragment,{children:[u.jsx(SA,{src:hA}),u.jsx(Pt,{onClick:()=>r(),children:"로그인"})]})]})}const xA=M.header`
   display: flex;
   justify-content: center;
   align-items: center;
