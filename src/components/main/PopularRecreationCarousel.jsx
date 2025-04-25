@@ -12,10 +12,35 @@ import LeftArrow from '../common/button/LeftArrow';
 import RightArrow from '../common/button/RightArrow';
 import leftArrowIcon from '../../assets/common/prevArrowIcon.svg';
 import rightArrowIcon from '../../assets/common/nextArrowIcon.svg';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function PopularRecreationCarousel() {
-  const { isLoggedIn } = useLoginStore((state) => state);
-  const [data, setData] = useState([]);
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
+  const getRecreationList = async (isLoggedIn) => {
+    const api = isLoggedIn ? privateAPI : publicAPI;
+    try {
+      const response = await api.get('/api/recreations');
+      if (response.status === 200) {
+        return response.data.result.recreationList;
+      } else {
+        console.log('Error Accrued', response);
+      }
+    } catch (error) {
+      console.log('Error Accrued', error);
+    }
+  };
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['popularRecreation', isLoggedIn],
+    queryFn: async () => {
+      const data = await getRecreationList(isLoggedIn);
+      return [data.slice(0, 3), data.slice(3, 6), data.slice(6, 9)];
+    },
+    staleTime: 60 * 1000 * 5, // 5분
+    gcTime: 60 * 1000 * 10, // 10분
+  });
+
   const slider = useRef();
   const [slideIndex, setSlideIndex] = useState(0);
   const settings = {
@@ -34,38 +59,12 @@ export default function PopularRecreationCarousel() {
     },
   };
 
-  useEffect(() => {
-    const call = async () => {
-      try {
-        if (isLoggedIn) {
-          const response = await privateAPI.get('/api/recreations');
-          if (response.status === 200) {
-            setData([
-              response.data.result.recreationList.slice(0, 3),
-              response.data.result.recreationList.slice(3, 6),
-              response.data.result.recreationList.slice(6, 9),
-            ]);
-          } else {
-            console.log('인기 레크 로드 요청 에러 : ', response);
-          }
-        } else {
-          const response = await publicAPI.get('/api/recreations');
-          if (response.status === 200) {
-            setData([
-              response.data.result.recreationList.slice(0, 3),
-              response.data.result.recreationList.slice(3, 6),
-              response.data.result.recreationList.slice(6, 9),
-            ]);
-          } else {
-            console.log('인기 레크 로드 요청 에러 : ', response);
-          }
-        }
-      } catch (error) {
-        console.log('인기 레크 로드 요청 에러 : ', error);
-      }
-    };
-    call();
-  }, []);
+  if (isLoading)
+    return (
+      <div style={{ width: '60rem', height: '25rem' }}>
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <div

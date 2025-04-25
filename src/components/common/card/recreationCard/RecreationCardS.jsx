@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import yellowStar from '../../../../assets/recreation/yellowStar.svg';
@@ -10,17 +10,23 @@ import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import { privateAPI } from '../../../../apis/user';
 import SITE_URL from '../../../../constants/url';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function RecreationCardS({ content, refetch }) {
   const { isLoggedIn } = useLoginStore((state) => state);
   const { modalControl } = useLoginModalStore();
   const [isFav, setIsFav] = useState(content.isFavorite);
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
   const navigateToRecreationDetail = (recreationId) => {
     navigate(SITE_URL.RECREATION_DETAIL(recreationId));
     scrollToTop();
   };
+
+  useEffect(() => {
+    setIsFav(content.isFavorite);
+  }, [content.isFavorite]);
 
   const handleFavClick = async (recreationId) => {
     if (!isLoggedIn) {
@@ -30,6 +36,7 @@ export default function RecreationCardS({ content, refetch }) {
         const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
         if (response.status === 201) {
           setIsFav((prev) => !prev);
+          queryClient.invalidateQueries({ queryKey: ['popularRecreation'] });
           if (refetch) {
             refetch();
           } // 즐겨찾는 레크레이션 페이지 리렌더링 요청
