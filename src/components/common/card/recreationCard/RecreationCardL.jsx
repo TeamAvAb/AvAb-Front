@@ -12,6 +12,7 @@ import { scrollToTop } from '../../../../utils/windowUtils';
 import useLoginStore from '../../../../stores/loginStore';
 import useLoginModalStore from '../../../../stores/loginModalStore';
 import { privateAPI } from '../../../../apis/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function RecreationCardL({ content }) {
   const renderKeywords = () =>
@@ -33,6 +34,7 @@ export default function RecreationCardL({ content }) {
     toRecreationDetail(content.id);
   };
 
+  const queryclient = useQueryClient();
   const handleFavClick = async (recreationId) => {
     if (!isLoggedIn) {
       modalControl();
@@ -42,6 +44,7 @@ export default function RecreationCardL({ content }) {
         const response = await privateAPI.post(`/api/recreations/${recreationId}/favorites`);
         if (response.status === 201) {
           setIsFav((prev) => !prev);
+          queryclient.invalidateQueries({ queryKey: ['recreationList'] });
           return;
         } else {
           console.log(response.data);
