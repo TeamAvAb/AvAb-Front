@@ -11,14 +11,16 @@ import { Helmet } from 'react-helmet';
 import { privateAPI, publicAPI } from '../apis/user';
 import useLoginStore from '../stores/loginStore';
 import NotFound from './NotFound';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function RecreationDetail() {
-  const { recreationId } = useParams();
   const infoRef = useRef(null);
   const reviewRef = useRef(null);
   const relatedRef = useRef(null);
   const flowRef = useRef(null);
   const scrollRefs = useRef([infoRef, reviewRef, relatedRef, flowRef]);
+
+  const { recreationId } = useParams();
   const { isLoggedIn } = useLoginStore((state) => state);
   const [recreationData, setRecreationData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,23 +28,24 @@ export default function RecreationDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // isLoggedIn()이 true면 privateAPI, false면 publicAPI 사용
+        setLoading(true);
         const api = isLoggedIn ? privateAPI : publicAPI;
         const response = await api.get(`/api/recreations/${recreationId}`);
         setRecreationData(response.data.result);
-        console.log('레크레이션 데이터 ', response.data.result);
-        setLoading(false); // 데이터 받아오기 성공
+        setLoading(false);
       } catch (error) {
-        console.error(error);
-        setLoading(false); // 데이터 받아오기 실패
+        setLoading(false);
+        throw new Error('GET Recreation Detail Error');
       }
     };
 
     fetchData();
+
+    return setRecreationData(null);
   }, [recreationId]);
 
   if (loading) {
-    return <div></div>; // 로딩 중일 때
+    return <LoadingSpinner height="lg" />;
   }
 
   if (!recreationData) {
@@ -114,15 +117,13 @@ export default function RecreationDetail() {
       <RecreationTopInfo recreationData={recreationData} />
       <RecreationMenuBar scrollRefs={scrollRefs} />
       <RecreationDetailContainer>
-        {recreationData ? (
+        {recreationData && (
           <>
             <RecreationInfoSection ref={infoRef} recreationData={recreationData} />
             <RecreationReviewSection ref={reviewRef} recreationId={recreationId} />
             <RelatedRecreationSection ref={relatedRef} recreationId={recreationId} />
             <RecreationRelatedFlowSection ref={flowRef} recreationId={recreationId} />
           </>
-        ) : (
-          <div></div> // 데이터가 없는 경우
         )}
       </RecreationDetailContainer>
     </>
