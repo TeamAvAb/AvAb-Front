@@ -15,7 +15,6 @@ export default function RecreationReview({ review, refetch }) {
   const { modalControl } = useLoginModalStore();
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
 
-  console.log(review);
   const handleRecommendationClick = async (type) => {
     try {
       if (isLoggedIn) {
