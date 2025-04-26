@@ -38,7 +38,7 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
       setReviewListData(response.data.result.reviewList);
       setReviewData(response.data.result);
     } catch (error) {
-      console.error('리뷰데이터', error);
+      throw new Error('GET Recreation Reviews Error');
     }
   };
 
@@ -115,7 +115,7 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
       <ReviewsContainer>
         <ReviewList>
           {reviewListData.map((review) => (
-            <RecreationReview key={review.reviewId} review={review} />
+            <RecreationReview key={review.reviewId} review={review} refetch={fetchReviews} />
           ))}
         </ReviewList>
         {/* 리뷰 리스트가 있을 때만 페이지네이션 표시 */}
