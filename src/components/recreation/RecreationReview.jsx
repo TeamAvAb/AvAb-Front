@@ -10,27 +10,30 @@ import useLoginModalStore from '../../stores/loginModalStore';
 import useLoginStore from '../../stores/loginStore';
 import Button from '../common/button/Button';
 
-export default function RecreationReview({ review }) {
+export default function RecreationReview({ review, refetch }) {
   const [recommendation, setRecommendation] = useState(review.recommendation);
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
 
-  console.log(review);
   const handleRecommendationClick = async (type) => {
-    if (isLoggedIn) {
-      const response = await privateAPI.post(
-        `/api/recreation-reviews/${review.reviewId}/recommendations`,
-        {
-          type,
-        },
-      );
-      if (response.data?.code === 'COMMON201') {
-        setRecommendation((prev) => ({ ...prev, type }));
+    try {
+      if (isLoggedIn) {
+        const response = await privateAPI.post(
+          `/api/recreation-reviews/${review.reviewId}/recommendations`,
+          {
+            type,
+          },
+        );
+        if (response?.status === 201) {
+          refetch();
+        } else {
+          console.log(response.data);
+        }
       } else {
-        console.log(response.data);
+        modalControl();
       }
-    } else {
-      modalControl();
+    } catch (error) {
+      throw new Error('POST Recreation Review Error');
     }
   };
 
@@ -61,14 +64,14 @@ export default function RecreationReview({ review }) {
       <ReviewContent>{review.content}</ReviewContent>
       <ReviewRecommendationButtonContainer>
         <RecommendationButton
-          active={recommendation && recommendation.type === 'GOOD'}
+          active={review && review.recommendation.type === 'GOOD'}
           onClick={() => handleRecommendationClick('GOOD')}
         >
           <GoodIcon />
           {review.goodCount}
         </RecommendationButton>
         <RecommendationButton
-          active={recommendation && recommendation.type === 'BAD'}
+          active={review && review.recommendation.type === 'BAD'}
           onClick={() => handleRecommendationClick('BAD')}
         >
           <BadIcon />
