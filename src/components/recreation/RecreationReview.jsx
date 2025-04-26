@@ -15,6 +15,7 @@ export default function RecreationReview({ review }) {
   const { modalControl } = useLoginModalStore();
   const { isLoggedIn } = useLoginStore((state) => state);
 
+  console.log(review);
   const handleRecommendationClick = async (type) => {
     if (isLoggedIn) {
       const response = await privateAPI.post(
@@ -57,7 +58,7 @@ export default function RecreationReview({ review }) {
         <Divider />
         <CreatedAt>{getRelativeTimeText(review.createdAt)}</CreatedAt>
       </NicknameDateBox>
-      <ReviewContent>{review.contents}</ReviewContent>
+      <ReviewContent>{review.content}</ReviewContent>
       <ReviewRecommendationButtonContainer>
         <RecommendationButton
           active={recommendation && recommendation.type === 'GOOD'}
