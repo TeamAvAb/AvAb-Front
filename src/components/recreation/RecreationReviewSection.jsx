@@ -30,15 +30,12 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
 
   // 리뷰 목록 받아오기
   const fetchReviews = async () => {
-    console.log('리뷰 목록 다시 받기');
     try {
       const api = isLoggedIn ? privateAPI : publicAPI;
       const response = await api.get(
         `/api/recreations/${recreationId}/reviews?page=${currentPage}`,
       );
-      console.log(response);
       setReviewListData(response.data.result.reviewList);
-      console.log('리뷰 리스트 데이터: ', response.data.result.reviewList);
       setReviewData(response.data.result);
     } catch (error) {
       console.error('리뷰데이터', error);
