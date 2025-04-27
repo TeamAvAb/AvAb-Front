@@ -11,13 +11,14 @@ import AlertIcon from '@/assets/common/alert.svg?react';
 import theme from '../../styles/theme';
 
 const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const { modalControl } = useLoginModalStore();
-  const { isLoggedIn } = useLoginStore((state) => state);
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [reviewData, setReviewData] = useState(0);
   const [reviewInput, setReviewInput] = useState('');
   const [selectedStars, setSelectedStars] = useState(0);
+  const [tooltipMessage, setTooltipMessage] = useState('');
 
   const handleStarClick = (starCount) => {
     if (!isLoggedIn) {
@@ -53,23 +54,28 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
       return;
     }
 
-    if (selectedStars === 0) {
+    if (selectedStars === 0 && reviewInput.trim() === '') {
+      setTooltipMessage('별점과 내용을 모두 입력해주세요!');
       return;
     }
 
+    if (selectedStars === 0) {
+      setTooltipMessage('별점을 선택해주세요!');
+      return;
+    }
+
+    if (reviewInput.trim() === '') {
+      setTooltipMessage('내용을 입력해주세요!');
+      return;
+    }
+
+    setTooltipMessage(''); // 문제 없으면 툴팁 비우기
+
     try {
-      await privateAPI.post(
-        `/api/recreations/${recreationId}/reviews`,
-        {
-          stars: selectedStars,
-          contents: reviewInput,
-        },
-        {
-          headers: {
-            Accept: '*/*',
-          },
-        },
-      );
+      const response = await privateAPI.post(`/api/recreations/${recreationId}/reviews`, {
+        stars: selectedStars,
+        content: reviewInput,
+      });
 
       // 리뷰 목록 업데이트
       fetchReviews();
@@ -103,11 +109,12 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
         <ReviewInputButton onClick={handleReviewSubmit} data-tooltip-id="review-submit">
           등록
         </ReviewInputButton>
-        {isLoggedIn && selectedStars === 0 && (
+        {/* 별점, 내용 미입력시 툴팁 */}
+        {tooltipMessage && (
           <ReviewInputWarningTooltip id="review-submit" openOnClick offset={5} opacity={1}>
             <TooltipContent>
               <AlertIcon alt="경고" fill={theme.color.main04} />
-              별점을 선택해주세요!
+              {tooltipMessage}
             </TooltipContent>
           </ReviewInputWarningTooltip>
         )}
