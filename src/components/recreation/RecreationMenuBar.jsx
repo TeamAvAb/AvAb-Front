@@ -63,7 +63,10 @@ export default function RecreationMenuBar({ scrollRefs }) {
 const RecreationMenuBarContainer = styled.div`
   position: sticky;
   top: 0;
-  background-color: white;
+  display: flex;
+  gap: 9.25rem;
+  padding: 1.19rem 0 1.19rem 5.5rem;
+  background-color: ${({ theme }) => theme.color.main05};
   z-index: 1;
   display: flex;
   align-items: center;
@@ -72,10 +75,7 @@ const RecreationMenuBarContainer = styled.div`
 
 const NavBtn = styled.button`
   ${({ theme }) => theme.text.nav}
-  display: flex;
-  align-items: center;
-  padding: 19px 0px 19px 88px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.color.main05};
 
   &.active {
     font-weight: bold;
