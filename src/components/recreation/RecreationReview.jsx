@@ -13,7 +13,7 @@ import Button from '../common/button/Button';
 export default function RecreationReview({ review, refetch }) {
   const [recommendation, setRecommendation] = useState(review.recommendation);
   const { modalControl } = useLoginModalStore();
-  const { isLoggedIn } = useLoginStore((state) => state);
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
 
   const handleRecommendationClick = async (type) => {
     try {
@@ -64,14 +64,14 @@ export default function RecreationReview({ review, refetch }) {
       <ReviewContent>{review.content}</ReviewContent>
       <ReviewRecommendationButtonContainer>
         <RecommendationButton
-          active={review && review.recommendation.type === 'GOOD'}
+          active={isLoggedIn && review && review.recommendation.type === 'GOOD'}
           onClick={() => handleRecommendationClick('GOOD')}
         >
           <GoodIcon />
           {review.goodCount}
         </RecommendationButton>
         <RecommendationButton
-          active={review && review.recommendation.type === 'BAD'}
+          active={isLoggedIn && review && review.recommendation.type === 'BAD'}
           onClick={() => handleRecommendationClick('BAD')}
         >
           <BadIcon />
