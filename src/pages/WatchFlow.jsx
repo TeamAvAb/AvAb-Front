@@ -30,6 +30,7 @@ export default function WatchFlow() {
         setDatas(response.data.result.flowList);
         setTotalPages(response.data.result.totalPages);
       } catch (error) {
+        console.error(error);
         throw new Error('플로우 구경하기 데이터 받아오기 실패');
       }
     } else {
@@ -38,6 +39,7 @@ export default function WatchFlow() {
         setDatas(response.data.result.flowList);
         setTotalPages(response.data.result.totalPages);
       } catch (error) {
+        console.error(error);
         throw new Error('플로우 구경하기 데이터 받아오기 실패');
       }
     }
