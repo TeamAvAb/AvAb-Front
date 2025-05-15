@@ -40,7 +40,7 @@ export default function CreateFlowFlowContent({
   } = useForm({
     defaultValues: {
       title: contextTitle,
-      recreations: !!contextRecreations.length
+      recreations: contextRecreations.length
         ? contextRecreations
         : [
             {
@@ -203,11 +203,12 @@ export default function CreateFlowFlowContent({
     }
   };
 
+  const onlyTotalPlayTimeError = (errors) =>
+    Object.entries(errors.recreations).every(([key, val]) => key === 'root' || val === undefined) &&
+    errors.recreations?.root?.type === 'totalPlayTimeEq';
+
   const handleInvalidData = (errors) => {
-    if (
-      Object.keys(errors.recreations).length === 1 &&
-      errors.recreations?.root?.type === 'totalPlayTimeEq'
-    ) {
+    if (onlyTotalPlayTimeError(errors)) {
       openPlayTimeErrorModal();
     }
   };
