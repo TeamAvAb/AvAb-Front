@@ -10,7 +10,7 @@ import { Tooltip } from 'react-tooltip';
 import AlertIcon from '@/assets/common/alert.svg?react';
 import theme from '../../styles/theme';
 
-const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
+const RecreationReviewSection = forwardRef(({ recreationId, handleModal }, ref) => {
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const { modalControl } = useLoginModalStore();
   const [reviewListData, setReviewListData] = useState([]);
@@ -79,12 +79,10 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
 
       // 리뷰 목록 업데이트
       fetchReviews();
-
-      alert('리뷰가 등록되었습니다');
+      handleModal(true);
       setSelectedStars(0);
       setReviewInput('');
     } catch (error) {
-      console.error(error);
       alert('리뷰 등록에 실패했습니다');
     }
   };
