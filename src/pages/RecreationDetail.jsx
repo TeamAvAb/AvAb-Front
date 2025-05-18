@@ -12,6 +12,7 @@ import { privateAPI, publicAPI } from '../apis/user';
 import useLoginStore from '../stores/loginStore';
 import NotFound from './NotFound';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import ReviewPostSuccessModal from '@/components/modal/ReviewPostSuccessModal';
 
 export default function RecreationDetail() {
   const infoRef = useRef(null);
@@ -24,6 +25,7 @@ export default function RecreationDetail() {
   const { isLoggedIn } = useLoginStore((state) => state);
   const [recreationData, setRecreationData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reviewPostSuccessModalOpen, setReviewPostSuccessModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,12 +122,19 @@ export default function RecreationDetail() {
         {recreationData && (
           <>
             <RecreationInfoSection ref={infoRef} recreationData={recreationData} />
-            <RecreationReviewSection ref={reviewRef} recreationId={recreationId} />
+            <RecreationReviewSection
+              ref={reviewRef}
+              recreationId={recreationId}
+              handleModal={setReviewPostSuccessModalOpen}
+            />
             <RelatedRecreationSection ref={relatedRef} recreationId={recreationId} />
             <RecreationRelatedFlowSection ref={flowRef} recreationId={recreationId} />
           </>
         )}
       </RecreationDetailContainer>
+      {reviewPostSuccessModalOpen && (
+        <ReviewPostSuccessModal handleModal={setReviewPostSuccessModalOpen} />
+      )}
     </>
   );
 }
