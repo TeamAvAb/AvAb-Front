@@ -27,7 +27,7 @@ import AlertMessage from '../common/AlertMessage';
 import SITE_URL from '../../constants/url';
 import theme from '../../styles/theme';
 
-export default function Search({ filtersOpen = false, initialParams = {} }) {
+export default function Search({ filtersOpen = false, initialParams = {}, resetPage }) {
   const getInitialKeywords = (keywords) => {
     if (!keywords) {
       return [];
@@ -263,6 +263,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
 
     navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
+    resetPage(); // 설정한 옵션 바뀌면 페이지 초기화
   };
 
   const handleSearch = (e) => {

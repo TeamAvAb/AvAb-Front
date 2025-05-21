@@ -45,6 +45,10 @@ export default function RecreationSearchList() {
     }
   };
 
+  const resetPage = () => {
+    setCurrentPage(0);
+  };
+
   const { isLoading, data, error } = useQuery({
     queryKey: ['recreationList', isLoggedIn, params],
     queryFn: () => getRecreationList(isLoggedIn, params),
@@ -67,7 +71,7 @@ export default function RecreationSearchList() {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen initialParams={params} />
+        <Search filtersOpen initialParams={params} resetPage={resetPage} />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
