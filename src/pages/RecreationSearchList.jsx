@@ -22,10 +22,12 @@ export default function RecreationSearchList() {
 
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const location = useLocation();
+
   const initialParams = useMemo(
     () => qs.parse(location.search, { ignoreQueryPrefix: true, parseArrays: true }),
     [location.search],
   );
+
   const params = { ...initialParams, page: currentPage, sortBy: order };
 
   const getRecreationList = async (isLoggedIn, params) => {
@@ -65,7 +67,7 @@ export default function RecreationSearchList() {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen initialParams={initialParams} />
+        <Search filtersOpen initialParams={params} />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
