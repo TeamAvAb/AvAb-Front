@@ -213,16 +213,16 @@ export default function CreateFlowFlowContent({
   };
 
   const onlyNoRecreationError = (errors) =>
+    Object.keys(errors).length === 1 &&
     Object.entries(errors.recreations).every(([key, val]) => key === 'root' || val === undefined) &&
     errors.recreations?.root?.type === 'required';
 
   const onlyTotalPlayTimeError = (errors) =>
+    Object.keys(errors).length === 1 &&
     Object.entries(errors.recreations).every(([key, val]) => key === 'root' || val === undefined) &&
     errors.recreations?.root?.type === 'totalPlayTimeEq';
 
   const handleInvalidData = (errors) => {
-    console.log(errors);
-
     if (onlyNoRecreationError(errors)) {
       openNoRecreationErrorModal();
     }
