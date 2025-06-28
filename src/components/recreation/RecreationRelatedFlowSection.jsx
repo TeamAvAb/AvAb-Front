@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, { forwardRef, useEffect, useState } from 'react';
 import FlowCard from './FlowCard';
 import { publicAPI } from '../../apis/user';
+import NoData from '../common/NoData';
 
 const RecreationRelatedFlowSection = forwardRef(({ recreationId }, ref) => {
   const [relatedFlowsData, setRelatedFlowsData] = useState([]);
@@ -25,14 +26,18 @@ const RecreationRelatedFlowSection = forwardRef(({ recreationId }, ref) => {
       <TitleText>연관 플로우</TitleText>
       <SubText>해당 레크레이션과 관련된 플로우를 제공해드려요!</SubText>
       <FlowBoxWrap>
-        {relatedFlowsData.map((flow, index) => (
-          <FlowCard
-            key={flow.flowDetail.id}
-            index={index + 1}
-            flowData={flow.flowDetail}
-            flowRecreations={flow.recreations}
-          />
-        ))}
+        {relatedFlowsData.length !== 0 ? (
+          relatedFlowsData.map((flow, index) => (
+            <FlowCard
+              key={flow.flowDetail.id}
+              index={index + 1}
+              flowData={flow.flowDetail}
+              flowRecreations={flow.recreations}
+            />
+          ))
+        ) : (
+          <NoData variant="relatedFlow" />
+        )}
       </FlowBoxWrap>
     </RelatedFlowContainer>
   );
@@ -59,9 +64,11 @@ const SubText = styled.div`
 `;
 
 const FlowBoxWrap = styled.div`
+  min-height: 25rem;
   display: flex;
   gap: 8.5rem;
   justify-content: center;
+  align-items: center;
 `;
 
 export default RecreationRelatedFlowSection;

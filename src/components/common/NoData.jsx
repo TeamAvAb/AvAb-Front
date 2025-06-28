@@ -27,6 +27,10 @@ export default function NoData({ variant }) {
       title: '추천 플로우가 없습니다!',
       description: '정보를 더 자세히 입력해보세요.',
     },
+    NO_RELATED_FLOW: {
+      title: '연관된 플로우가 없습니다!',
+      description: '해당 레크레이션을 포함한 일정플로우를 만들어보세요.',
+    },
   };
 
   let text = null;
@@ -48,6 +52,9 @@ export default function NoData({ variant }) {
       break;
     case 'cfRecommendedFlows':
       text = TEXT.CREATE_FLOW_NO_RECOMMENDED_FLOW;
+      break;
+    case 'relatedFlow':
+      text = TEXT.NO_RELATED_FLOW;
       break;
     default:
       break;

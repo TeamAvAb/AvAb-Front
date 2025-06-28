@@ -26,5 +26,4 @@ const Loading = styled.div`
   gap: 40px;
   text-align: center;
   ${({ theme }) => theme.text.paragraph}
-}
 `;
