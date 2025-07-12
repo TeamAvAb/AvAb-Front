@@ -7,6 +7,7 @@ import PLACE from '../../constants/enum/place';
 import GENDER from '../../constants/enum/gender';
 import AGE from '../../constants/enum/age';
 import PURPOSE from '../../constants/enum/purpose';
+import theme from '@/styles/theme';
 
 const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
   const getPlaceText = () => recreationData.placeList.map((place) => PLACE[place].value).join(', ');
@@ -37,10 +38,12 @@ const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
         <Description>{recreationData.summary}</Description>
         <PlaceTimeContainer>
           <span>
-            <span style={{ fontWeight: 'bold' }}>장소</span> {getPlaceText()}
+            <span className="label">장소</span>
+            {getPlaceText()}
           </span>
           <span>
-            <span style={{ fontWeight: 'bold' }}>시간</span> {recreationData.playTime}분
+            <span className="label">시간</span>
+            {recreationData.playTime}분
           </span>
         </PlaceTimeContainer>
       </RecreationInfo>
@@ -96,6 +99,12 @@ const PlaceTimeContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   font-size: ${({ theme }) => theme.text.small.fontSize};
+  font-weight: ${({ theme }) => theme.text.small.fontWeight};
+
+  .label {
+    font-weight: ${({ theme }) => theme.text.smallBold.fontWeight};
+    margin-right: 0.5rem;
+  }
 `;
 
 const PurposeContainer = styled.div`
@@ -107,6 +116,8 @@ const RecreationWayContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+  font-size: ${({ theme }) => theme.text.paragraph.fontSize};
+  font-weight: ${({ theme }) => theme.text.paragraph.fontWeight};
 `;
 
 const RecreationAdditionalInfoContainer = styled.div`

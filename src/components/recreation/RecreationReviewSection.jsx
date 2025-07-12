@@ -10,14 +10,15 @@ import { Tooltip } from 'react-tooltip';
 import AlertIcon from '@/assets/common/alert.svg?react';
 import theme from '../../styles/theme';
 
-const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
+const RecreationReviewSection = forwardRef(({ recreationId, handleModal }, ref) => {
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const { modalControl } = useLoginModalStore();
-  const { isLoggedIn } = useLoginStore((state) => state);
   const [reviewListData, setReviewListData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [reviewData, setReviewData] = useState(0);
   const [reviewInput, setReviewInput] = useState('');
   const [selectedStars, setSelectedStars] = useState(0);
+  const [tooltipMessage, setTooltipMessage] = useState('');
 
   const handleStarClick = (starCount) => {
     if (!isLoggedIn) {
@@ -30,18 +31,15 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
 
   // 리뷰 목록 받아오기
   const fetchReviews = async () => {
-    console.log('리뷰 목록 다시 받기');
     try {
       const api = isLoggedIn ? privateAPI : publicAPI;
       const response = await api.get(
         `/api/recreations/${recreationId}/reviews?page=${currentPage}`,
       );
-      console.log(response);
       setReviewListData(response.data.result.reviewList);
-      console.log('리뷰 리스트 데이터: ', response.data.result.reviewList);
       setReviewData(response.data.result);
     } catch (error) {
-      console.error('리뷰데이터', error);
+      throw new Error('GET Recreation Reviews Error');
     }
   };
 
@@ -56,32 +54,35 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
       return;
     }
 
-    if (selectedStars === 0) {
+    if (selectedStars === 0 && reviewInput.trim() === '') {
+      setTooltipMessage('별점과 내용을 모두 입력해주세요!');
       return;
     }
 
+    if (selectedStars === 0) {
+      setTooltipMessage('별점을 선택해주세요!');
+      return;
+    }
+
+    if (reviewInput.trim() === '') {
+      setTooltipMessage('내용을 입력해주세요!');
+      return;
+    }
+
+    setTooltipMessage(''); // 문제 없으면 툴팁 비우기
+
     try {
-      await privateAPI.post(
-        `/api/recreations/${recreationId}/reviews`,
-        {
-          stars: selectedStars,
-          contents: reviewInput,
-        },
-        {
-          headers: {
-            Accept: '*/*',
-          },
-        },
-      );
+      const response = await privateAPI.post(`/api/recreations/${recreationId}/reviews`, {
+        stars: selectedStars,
+        content: reviewInput,
+      });
 
       // 리뷰 목록 업데이트
       fetchReviews();
-
-      alert('리뷰가 등록되었습니다');
+      handleModal(true);
       setSelectedStars(0);
       setReviewInput('');
     } catch (error) {
-      console.error(error);
       alert('리뷰 등록에 실패했습니다');
     }
   };
@@ -106,11 +107,12 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
         <ReviewInputButton onClick={handleReviewSubmit} data-tooltip-id="review-submit">
           등록
         </ReviewInputButton>
-        {isLoggedIn && selectedStars === 0 && (
+        {/* 별점, 내용 미입력시 툴팁 */}
+        {tooltipMessage && (
           <ReviewInputWarningTooltip id="review-submit" openOnClick offset={5} opacity={1}>
             <TooltipContent>
               <AlertIcon alt="경고" fill={theme.color.main04} />
-              별점을 선택해주세요!
+              {tooltipMessage}
             </TooltipContent>
           </ReviewInputWarningTooltip>
         )}
@@ -118,7 +120,7 @@ const RecreationReviewSection = forwardRef(({ recreationId }, ref) => {
       <ReviewsContainer>
         <ReviewList>
           {reviewListData.map((review) => (
-            <RecreationReview key={review.reviewId} review={review} />
+            <RecreationReview key={review.reviewId} review={review} refetch={fetchReviews} />
           ))}
         </ReviewList>
         {/* 리뷰 리스트가 있을 때만 페이지네이션 표시 */}
