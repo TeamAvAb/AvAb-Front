@@ -196,10 +196,9 @@ const More = styled.button`
 const IntroTitle = styled.div`
   display: inline-block; 
   align-items: center;
-  background-color: #19297C;
-  color: #FFFFFF;
-  font-size: 1.25rem;
-  font-weight: 400;
+  background-color: ${({ theme }) => theme.color.main01};
+  color: ${({ theme }) => theme.color.main05};
+  ${({ theme }) => theme.text.paragraph};
   padding: 1.0rem 2.0rem;
   border-radius: 9999px;
   text-align: center;
@@ -236,26 +235,24 @@ const IntroBlock = styled.div`
 `;
 
 const MockupImage = styled.img`
-  width: 350px;
+  width: 35rem;
   height: auto;
 `;
 
 const TextBox = styled.div`
-  width: 429px;
+  width: 43rem;
 `;
 
-const Title = styled.h2`
-  font-size: 2.25rem;
-  font-weight: 700;
+const Title = styled.h3`
+  ${({ theme }) => theme.text.h3};
   line-height: normal;
   margin-bottom: 1rem;
-  color: #000000CC;
+  color: ${({ theme }) => theme.color.grayscale02};
 `;
 
 const Description = styled.p`
-  font-size: 1.25rem;
-  font-weight: 400;
+  ${({ theme }) => theme.text.paragraph};
   line-height: 2.5rem;
-  color: #000000CC;
+  color: ${({ theme }) => theme.color.grayscale02};
 `;
 
