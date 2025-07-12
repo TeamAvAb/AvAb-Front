@@ -62,7 +62,7 @@ export default function FlowInfoSection({ flow }) {
           <ScrapBtn isScrap={scrap} onClick={handleScrapClick} />
           <FlowMetadata
             totalPlayTime={flow.totalPlayTime}
-            viewCount={flow.totalPlayTime}
+            viewCount={flow.viewCount}
             scrapCount={flow.scrapCount}
             author={flow.author.username}
           />

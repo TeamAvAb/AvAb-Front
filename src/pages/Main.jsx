@@ -8,7 +8,9 @@ import BannerCarousel from '../components/main/BannerCarousel';
 
 import characterImg from '../assets/character/greetingAvb.png';
 import plusIconImg from '../assets/common/plusIcon.svg';
-import intro from '../assets/introImg.png';
+import intro1 from '../assets/intro/intro1.png';
+import intro2 from '../assets/intro/intro2.png';
+import intro3 from '../assets/intro/intro3.png';
 
 import workshopImg from '../assets/carousel/banner1_workshop.png';
 import mtImg from '../assets/carousel/banner2_mt.png';
@@ -94,9 +96,48 @@ export default function Main() {
         </div>
       </Container>
       <BannerCarousel contents={banner} />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <img src={intro} alt="아브아브 설명" />
-      </div>
+
+      <IntroSection>
+        <IntroTitle>아브아브 서비스 소개</IntroTitle>
+        <IntroBlock>
+          <MockupImage src={intro1} alt="검색 목업" />
+          <TextBox>
+            <Title>원하는 레크레이션을<br/>쉽고 빠르게 검색해요</Title>
+            <Description>
+              다양한 조건 필터를 통해 레크레이션을 검색해 <br/>
+              정보를 얻을 수 있어요. 마음에 드는 레크레이션이<br/>
+              있다면 즐겨찾기 하세요!
+            </Description>
+          </TextBox>
+        </IntroBlock>
+
+        <IntroBlock>
+          <TextBox>
+            <Title>찾기 어려운 레크레이션<br/>정보를 한눈에 알아봐요</Title>
+            <Description>
+              레크레이션 상세정보에 더해 리뷰 및 평가를 통해<br/>
+              레크레이션 정보를 얻을 수 있어요. 연관<br/>
+              레크레이션과 연관 플로우를 살펴보며 같이 활용할<br/>
+              레크레이션을 찾아볼 수 있어요.
+            </Description>
+          </TextBox>
+          <MockupImage src={intro2} alt="상세페이지 목업" />
+        </IntroBlock>
+
+        <IntroBlock>
+          <MockupImage src={intro3} alt="일정플로우 목업" />
+          <TextBox>
+            <Title>레크레이션 계획을<br/>일정플로우로 저장해요</Title>
+            <Description>
+              레크레이션을 즐길 때, 우리는 여러 활동을 함께<br/>
+              관리해요. 일정플로우를 통해 목적과 시간에 맞게<br/>
+              일정을 계획할 수 있어요. 다른 유저들의 플로우와<br/>
+              추천 레크레이션을 참고하여 일정을 세워보세요!
+            </Description>
+          </TextBox>
+        </IntroBlock>
+      </IntroSection>
+
     </>
   );
 }
@@ -151,3 +192,67 @@ const More = styled.button`
   font-style: normal;
   font-weight: 400;
 `;
+
+const IntroTitle = styled.div`
+  display: inline-block; 
+  align-items: center;
+  background-color: ${({ theme }) => theme.color.main01};
+  color: ${({ theme }) => theme.color.main05};
+  ${({ theme }) => theme.text.paragraph};
+  padding: 1.0rem 2.0rem;
+  border-radius: 9999px;
+  text-align: center;
+  align-self: flex-start;
+  width: fit-content;
+  margin-left: calc((100% - 927px) / 2);
+  margin-bottom: -2.0rem;
+`;
+
+const IntroSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12rem;
+  padding-bottom: 12rem;
+  gap: 6rem;
+  & > div:nth-of-type(3) > div {
+    text-align: right;
+  }
+`;
+
+const IntroBlock = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rem;
+  width: 100%;
+  max-width: 927px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
+`;
+
+const MockupImage = styled.img`
+  width: 35rem;
+  height: auto;
+`;
+
+const TextBox = styled.div`
+  width: 43rem;
+`;
+
+const Title = styled.h3`
+  ${({ theme }) => theme.text.h3};
+  line-height: normal;
+  margin-bottom: 1rem;
+  color: ${({ theme }) => theme.color.grayscale02};
+`;
+
+const Description = styled.p`
+  ${({ theme }) => theme.text.paragraph};
+  line-height: 2.5rem;
+  color: ${({ theme }) => theme.color.grayscale02};
+`;
+

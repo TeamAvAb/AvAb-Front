@@ -30,19 +30,33 @@ export default function FlowSummarySection({ flow }) {
         <Column className="right">
           <InfoRow>
             <Label>키워드</Label>
-            <span>{getTranslatedKeywords(flow.keywordList).join(' ')}</span>
+            <NullText isEmpty={!flow.keywordList?.length}>
+              {flow.keywordList?.length
+                ? getTranslatedKeywords(flow.keywordList).join(' ')
+                : '선택 안함'}
+            </NullText>
           </InfoRow>
           <InfoRow>
             <Label>성별</Label>
-            <span>{getTranslatedGenders(flow.gender).join(', ')}</span>
+            <NullText isEmpty={!flow.gender?.length}>
+              {flow.gender?.length
+                ? getTranslatedGenders(flow.gender).join(', ')
+                : '선택 안함'}
+            </NullText>
           </InfoRow>
           <InfoRow>
             <Label>연령대</Label>
-            <span>{getTranslatedAges(flow.age).join(', ')}</span>
+            <NullText isEmpty={!flow.age?.length}>
+              {flow.age?.length
+                ? getTranslatedAges(flow.age).join(', ')
+                : '선택 안함'}
+            </NullText>
           </InfoRow>
           <InfoRow>
             <Label>인원</Label>
-            <span>{flow.participants}명</span>
+            <NullText isEmpty={!flow.participants}>
+              {flow.participants ? `${flow.participants}명` : '선택 안함'}
+            </NullText>
           </InfoRow>
         </Column>
       </SummaryBox>
@@ -102,6 +116,10 @@ const InfoRow = styled.div`
 
 const Label = styled.h3`
   ${({ theme }) => theme.text.smallBold};
+`;
+
+const NullText = styled.span`
+  color: ${({ isEmpty }) => (isEmpty ? '#9FA4A9' : 'inherit')};
 `;
 
 const Line = styled.div`
