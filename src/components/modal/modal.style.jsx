@@ -32,9 +32,11 @@ const Content = styled.div`
   padding: 3rem 0;
   gap: 3.75rem;
   max-width: 70%;
+
   &.hasimage {
     gap: 0;
   }
+
   word-break: keep-all;
 `;
 const TitleContainer = styled.div`
@@ -62,12 +64,14 @@ const BtnContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2.5rem;
+
   &.btn-row {
     flex-direction: row;
   }
 `;
 const ModalBtn = styled(Button)`
   width: 13.93rem;
+
   &.btn-row {
     width: 8.62rem;
   }

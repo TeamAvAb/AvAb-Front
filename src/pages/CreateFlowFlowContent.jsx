@@ -10,6 +10,17 @@ import FlowContentPlayTimeErrorModal from '../components/modal/FlowContentPlayTi
 import FlowContentSection from '../components/createFlow/FlowContentSection';
 import { useNavigate } from 'react-router-dom';
 import SITE_URL from '../constants/url';
+import {
+  BtnContainer,
+  CloseBtn,
+  Content,
+  Modal,
+  SubTitle,
+  Title,
+  TitleContainer,
+} from '@/components/modal/modal.style.jsx';
+import xIcon from '@/assets/common/x.svg';
+import Button from '@/components/common/button/Button.jsx';
 
 export default function CreateFlowFlowContent({
   context,
@@ -40,17 +51,7 @@ export default function CreateFlowFlowContent({
   } = useForm({
     defaultValues: {
       title: contextTitle,
-      recreations: !!contextRecreations.length
-        ? contextRecreations
-        : [
-            {
-              id: null,
-              title: '',
-              keywords: [],
-              playTime: null,
-              isCustom: true,
-            },
-          ],
+      recreations: contextRecreations.length ? contextRecreations : [],
     },
   });
 
@@ -68,6 +69,8 @@ export default function CreateFlowFlowContent({
           return value.reduce((acc, recreation) => acc + recreation.playTime, 0) === totalPlayTime;
         },
       },
+      required: true,
+      minLength: 1,
       maxLength: 10,
     },
   });
@@ -78,6 +81,12 @@ export default function CreateFlowFlowContent({
     ModalWrapper: PlayTimeErrorModalWrapper,
     openModal: openPlayTimeErrorModal,
     closeModal: closePlayTimeErrorModal,
+  } = useModal();
+
+  const {
+    ModalWrapper: NoRecreationErrorModalWrapper,
+    openModal: openNoRecreationErrorModal,
+    closeModal: closeNoRecreationErrorModal,
   } = useModal();
 
   useEffect(() => {
@@ -203,11 +212,22 @@ export default function CreateFlowFlowContent({
     }
   };
 
+  const onlyNoRecreationError = (errors) =>
+    Object.keys(errors).length === 1 &&
+    Object.entries(errors.recreations).every(([key, val]) => key === 'root' || val === undefined) &&
+    errors.recreations?.root?.type === 'required';
+
+  const onlyTotalPlayTimeError = (errors) =>
+    Object.keys(errors).length === 1 &&
+    Object.entries(errors.recreations).every(([key, val]) => key === 'root' || val === undefined) &&
+    errors.recreations?.root?.type === 'totalPlayTimeEq';
+
   const handleInvalidData = (errors) => {
-    if (
-      Object.keys(errors.recreations).length === 1 &&
-      errors.recreations?.root?.type === 'totalPlayTimeEq'
-    ) {
+    if (onlyNoRecreationError(errors)) {
+      openNoRecreationErrorModal();
+    }
+
+    if (onlyTotalPlayTimeError(errors)) {
       openPlayTimeErrorModal();
     }
   };
@@ -264,6 +284,28 @@ export default function CreateFlowFlowContent({
           )}
         />
       </PlayTimeErrorModalWrapper>
+      <NoRecreationErrorModalWrapper>
+        <Modal>
+          <Content>
+            <TitleContainer>
+              <Title>레크레이션을 추가해주세요.</Title>
+              <SubTitle>
+                레크레이션은 하나 이상
+                <br />
+                포함되어야 합니다.
+              </SubTitle>
+            </TitleContainer>
+            <BtnContainer>
+              <Button backgroundColor="main02" color="main05" onClick={closeNoRecreationErrorModal}>
+                닫기
+              </Button>
+            </BtnContainer>
+          </Content>
+          <CloseBtn onClick={closeNoRecreationErrorModal}>
+            <img src={xIcon} alt="닫기" />
+          </CloseBtn>
+        </Modal>
+      </NoRecreationErrorModalWrapper>
     </Container>
   );
 }

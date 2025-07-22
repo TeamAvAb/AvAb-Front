@@ -59,7 +59,7 @@ export default function CreateFlow() {
       }
       openPreventLeaveModal();
     }
-  }, [blocker.state, openPreventLeaveModal, isFlowSaving]);
+  }, [openPreventLeaveModal, isFlowSaving, blocker]);
 
   const handleBasicInfoStepNext = async (purposes, totalPlayTime) => {
     await funnel.history.push('detail-info', { purposes, totalPlayTime });

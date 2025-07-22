@@ -304,7 +304,7 @@ const RadioInputContainer = styled.div`
 
 const ParticipantInput = styled.input`
   padding: 1rem 0.8rem;
-  width: 15%;
+  width: 11rem;
   border-radius: 1.25rem;
   border: 1px solid
     ${({ theme, $error }) => ($error ? theme.color.main04 : theme.color.grayscale04)};
