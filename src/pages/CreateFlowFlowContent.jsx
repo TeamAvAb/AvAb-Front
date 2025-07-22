@@ -3,7 +3,7 @@ import SelectRecreationSection from '../components/createFlow/SelectRecreationSe
 import StepControl from '../components/createFlow/StepControl';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import { privateAPI } from '../apis/user';
+import { privateAPI } from '@/apis/user';
 import KEYWORD from '../constants/enum/keyword';
 import useModal from '../hooks/useModal';
 import FlowContentPlayTimeErrorModal from '../components/modal/FlowContentPlayTimeErrorModal';
