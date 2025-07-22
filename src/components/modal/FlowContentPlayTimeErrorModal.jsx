@@ -43,7 +43,9 @@ export default function FlowContentPlayTimeErrorModal({
           </Button>
         </BtnContainer>
       </Content>
-      <CloseBtn src={xIcon} onClick={close} />
+      <CloseBtn onClick={close}>
+        <img src={xIcon} alt="닫기" />
+      </CloseBtn>
     </Modal>
   );
 }
