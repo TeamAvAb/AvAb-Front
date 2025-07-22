@@ -73,49 +73,55 @@ export default function FlowContentSection({
           </InfoRow>
         </Column>
       </SummaryBox>
-      <SectionHeader>일정플로우 제목</SectionHeader>
-      <TitleInputBox>
-        <TitleInput
-          placeholder="일정플로우의 제목을 입력해주세요."
-          {...register('title', {
-            required: {
-              value: true,
-              message: '플로우 제목을 입력해주세요.',
-            },
-            minLength: {
-              value: 2,
-              message: '2자 이상 40자 이하로 입력해주세요.',
-            },
-            maxLength: {
-              value: 40,
-              message: '2자 이상 40자 이하로 입력해주세요.',
-            },
-          })}
-        />
-        {titleError ? (
-          <AlertMessage message={titleError.message} />
-        ) : (
-          <div style={{ height: '1.13rem' }} />
-        )}
-      </TitleInputBox>
+      <form>
+        <SectionHeader>일정플로우 제목</SectionHeader>
+        <TitleInputBox>
+          <TitleInput
+            placeholder="일정플로우의 제목을 입력해주세요."
+            {...register('title', {
+              required: {
+                value: true,
+                message: '플로우 제목을 입력해주세요.',
+              },
+              minLength: {
+                value: 2,
+                message: '2자 이상 40자 이하로 입력해주세요.',
+              },
+              maxLength: {
+                value: 40,
+                message: '2자 이상 40자 이하로 입력해주세요.',
+              },
+            })}
+            id="flow-title"
+          />
+          {titleError ? (
+            <AlertMessage message={titleError.message} />
+          ) : (
+            <div style={{ height: '1.13rem' }} />
+          )}
+        </TitleInputBox>
 
-      <RecreationListContainer>
-        <h2 className={clsx({ 'empty-title': !flow.title })}>
-          {flow.title ? flow.title : '플로우 제목'}
-        </h2>
-        <RecreationList
-          recreations={flow.recreations}
-          register={register}
-          removeRecreation={removeRecreation}
-          control={control}
-        />
-        <AddCustomRecreationButton
-          onClick={handleAddCustomRecreationClick}
-          disabled={flow.recreations.length === 10}
-        >
-          <PlusIcon />
-        </AddCustomRecreationButton>
-      </RecreationListContainer>
+        <RecreationListContainer>
+          <label htmlFor="flow-title">
+            <h2 className={clsx({ 'empty-title': !flow.title })}>
+              {flow.title ? flow.title : '플로우 제목을 입력하세요.'}
+            </h2>
+          </label>
+
+          <RecreationList
+            recreations={flow.recreations}
+            register={register}
+            removeRecreation={removeRecreation}
+            control={control}
+          />
+          <AddCustomRecreationButton
+            onClick={handleAddCustomRecreationClick}
+            disabled={flow.recreations.length === 10}
+          >
+            <PlusIcon />
+          </AddCustomRecreationButton>
+        </RecreationListContainer>
+      </form>
     </Container>
   );
 }
@@ -208,7 +214,7 @@ const TitleInputBox = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  margin-bottom: 6rem;
+  margin: 0.75rem 0 7.5rem 0;
 `;
 
 const RecreationListContainer = styled.div`
