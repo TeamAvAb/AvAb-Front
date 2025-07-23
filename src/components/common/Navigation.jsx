@@ -40,11 +40,12 @@ const Ul = styled.ul`
   display: flex;
   justify-content: center;
   padding: 1.5rem 0;
-  font-size: 1.5rem;
-  gap: 8rem;
+  gap: clamp(1rem, 8vw, 12rem);
 `;
 
 const Li = styled.li`
   ${({ theme }) => theme.text.nav};
+  font-size: clamp(1.0rem, 1.6vw, 1.6rem);
+  white-space: nowrap;
   cursor: pointer;
 `;
