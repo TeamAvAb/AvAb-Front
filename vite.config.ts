@@ -6,6 +6,10 @@ import svgrPlugin from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [react(), svgrPlugin()],
+  assetsInclude: ['**/*.svg'],
+  build: {
+    assetsInlineLimit: 0,
+  },
   base: '/',
   server: {
     port: 3000,
