@@ -8,9 +8,13 @@ import Header from './common/Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './common/footer/Footer';
 import LoginModal from './modal/LoginModal';
+import APIErrorModal from './modal/APIErrorModal';
+import ModalWrapper from './modal/ModalWrapper';
+import { useErrorStore } from '../stores/errorStore';
 
 export default function AppLayout() {
   const { modalOpen } = useLoginModalStore();
+  const { hasError } = useErrorStore();
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -48,6 +52,11 @@ export default function AppLayout() {
           </main>
           <Footer />
           {modalOpen ? <LoginModal /> : null}
+          {hasError && (
+            <ModalWrapper>
+              <APIErrorModal />
+            </ModalWrapper>
+          )}
         </>
       )}
     </ThemeProvider>

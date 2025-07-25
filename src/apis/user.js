@@ -1,6 +1,7 @@
 import axios from 'axios';
 import useLoginStore from '../stores/loginStore';
 import qs from 'qs';
+import useErrorStore from '@/stores/errorStore';
 
 axios.defaults.paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'comma' });
 
@@ -8,6 +9,26 @@ axios.defaults.paramsSerializer = (params) => qs.stringify(params, { arrayFormat
 export const publicAPI = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
+
+publicAPI.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      const errorType = { statusCode: error.response.status, message: error.response.data.error };
+      useErrorStore.getState().setError(errorType);
+    } else if (error.message === 'Network Error' || error.message === 'Network Error') {
+      console.log('네트워크 에러 발생');
+      const errorType = { statusCode: error.message, message: error.message };
+      useErrorStore.getState().setError(errorType);
+    } else {
+      const errorType = { statusCode: 'Unknown Error', message: '알 수 없는 에러가 발생했습니다.' };
+      useErrorStore.getState().setError(errorType);
+    }
+    return Promise.reject(error);
+  },
+);
 
 //인증이 필요한 요청
 export const privateAPI = axios.create({
@@ -103,7 +124,19 @@ privateAPI.interceptors.response.use(
           alert('로그인이 필요한 서비스입니다.');
           return 'need login';
         }
+      } else {
+        const errorType = {
+          statusCode: error.response.status,
+          message: error.response.data.error,
+        };
+        useErrorStore.getState().setError(errorType);
       }
+    } else if (error.message === 'Network Error' || error.message === 'Network Error') {
+      const errorType = { statusCode: error.message, message: error.message };
+      useErrorStore.getState().setError(errorType);
+    } else {
+      const errorType = { statusCode: 'Unknown Error', message: '알 수 없는 에러가 발생했습니다.' };
+      useErrorStore.getState().setError(errorType);
     }
     return Promise.reject(error);
   },
