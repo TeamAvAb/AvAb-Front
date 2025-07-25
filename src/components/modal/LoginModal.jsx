@@ -2,28 +2,16 @@ import React from 'react';
 import { Backdrop } from './modal.style';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import characterImg from '../../assets/character/kakaoAvb.png';
-import closeIcon from '../../assets/common/x.svg';
+import characterImg from '@/assets/character/kakaoAvb.png';
+import closeIcon from '@/assets/common/x.svg';
 
-import useLoginModalStore from '../../stores/loginModalStore';
+import useLoginModalStore from '@/stores/loginModalStore';
 import Button from '../common/button/Button';
+import toKakaoLogin from '@/utils/kakaoLoginRedirectUtils';
 
 export default function LoginModal() {
   const { pathname } = useLocation();
   const { modalControl } = useLoginModalStore((state) => state);
-  const REST_API_KEY = import.meta.env.VITE_REST_API_KEY;
-  let REDIRECT_URI;
-
-  if (window.location.href.startsWith('http://localhost:3000/')) {
-    REDIRECT_URI = import.meta.env.VITE_REDIRECT_URL_LOCAL;
-  } else {
-    REDIRECT_URI = import.meta.env.VITE_REDIRECT_URL;
-  }
-
-  let kakaoURL = `https://kauth.kakao.com/oauth/authorize?&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${pathname}&prompt=select_account`;
-  const toKakaoLogin = () => {
-    window.location.href = kakaoURL;
-  };
 
   return (
     <Backdrop>
@@ -39,7 +27,12 @@ export default function LoginModal() {
               간편하게 로그인을 하고 <br />
               <span style={{ fontWeight: '700' }}>성공적인 레크레이션</span>을 <br /> 경험해보세요!
             </Comment>
-            <Button onClick={toKakaoLogin} backgroundColor="main01" color="main05" size="sm">
+            <Button
+              onClick={() => toKakaoLogin(pathname)}
+              backgroundColor="main01"
+              color="main05"
+              size="sm"
+            >
               간편 로그인하기
             </Button>
           </Text>

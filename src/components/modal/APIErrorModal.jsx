@@ -1,14 +1,39 @@
 import React from 'react';
 import * as S from './modal.style';
-import useErrorStore from '../../stores/errorStore';
+import useErrorStore from '@/stores/errorStore';
+import toKakaoLogin from '@/utils/kakaoLoginRedirectUtils';
+import { useLocation } from 'react-router';
 
 export default function APIErrorModal() {
   const { status, resetError } = useErrorStore();
+  const { pathname } = useLocation();
   const moveToHome = () => {
     resetError();
     window.location.href = '/';
   };
 
+  if (status === 401) {
+    // 세션 만료
+    return (
+      <S.Modal>
+        <S.Content>
+          <S.TitleContainer>
+            <S.Title>세션이 만료되었습니다.</S.Title>
+            <S.SubTitle>재로그인 해주세요.</S.SubTitle>
+          </S.TitleContainer>
+          <S.BtnContainer>
+            <S.ModalBtn
+              backgroundColor="main02"
+              color="main05"
+              onClick={() => toKakaoLogin(pathname)}
+            >
+              로그인
+            </S.ModalBtn>
+          </S.BtnContainer>
+        </S.Content>
+      </S.Modal>
+    );
+  }
   if (status >= 500) {
     // 서버 에러
     return (
@@ -54,7 +79,7 @@ export default function APIErrorModal() {
         <S.Content>
           <S.TitleContainer>
             <S.Title>알 수 없는 에러가 발생했습니다.</S.Title>
-            <S.SubTitle>잠시 후에 다시 시도해주세요.</S.SubTitle>
+            <S.SubTitle>관리자에게 문의해주세요.</S.SubTitle>
           </S.TitleContainer>
           <S.BtnContainer>
             <S.ModalBtn backgroundColor="main02" color="main05" onClick={moveToHome}>
