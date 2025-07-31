@@ -31,7 +31,7 @@ export default function Header() {
       ) : (
         <>
           <LockImg src={lock} />
-          <Button onClick={() => modalControl()}>로그인</Button>
+          <LoginButton onClick={() => modalControl()}>로그인</LoginButton>
         </>
       )}
     </HeaderContainer>
@@ -48,15 +48,15 @@ const HeaderContainer = styled.header`
 `;
 
 const LogoImg = styled.img`
-  width: 12.5rem;
-  margin-right: 3.5rem;
+  width: clamp(8rem, 15vw, 11.5rem);
+  margin-right: clamp(1.5rem, 6vw, 3.5rem);
   cursor: pointer;
 `;
 
 const LockImg = styled.img`
   width: 0.75rem;
   margin-left: 7.5rem;
-  margin-right: -1.5rem;
+  margin-right: -1.2rem;
 `;
 
 const LogoutImg = styled.img`
@@ -64,3 +64,15 @@ const LogoutImg = styled.img`
   margin-left: 8rem;
   cursor: pointer;
 `;
+
+const LoginButton = styled(Button)`
+  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  padding: clamp(0.4rem, 1vw, 0.5rem) clamp(1rem, 2vw, 1.2rem);
+  font-weight: 600;
+  margin-left: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+`;
+
