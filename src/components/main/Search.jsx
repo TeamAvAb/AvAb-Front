@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { publicAPI } from '../../apis/user';
 import qs from 'qs';
 import { useNavigate } from 'react-router';
@@ -27,7 +27,7 @@ import AlertMessage from '../common/AlertMessage';
 import SITE_URL from '../../constants/url';
 import theme from '../../styles/theme';
 
-export default function Search({ filtersOpen = false, initialParams = {} }) {
+export default function Search({ filtersOpen = false, initialParams = {}, resetPage }) {
   const getInitialKeywords = (keywords) => {
     if (!keywords) {
       return [];
@@ -113,6 +113,49 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
   const participantsLimit = 20;
   const playTimeOptions = [10, 20, 30, 40, 50, 60];
 
+  // 쿼리스트링이 바뀔 때마다 state를 동기화
+  const objCompare = (paramObj, stateObj) => {
+    if (paramObj.length !== stateObj.length) {
+      return false;
+    }
+    paramObj = Object.keys(paramObj).sort();
+    stateObj = Object.keys(stateObj).sort();
+    for (let i = 0; i < paramObj.length; i++) {
+      if (paramObj[i] !== stateObj[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+  // 검색 결과 페이지, 정렬 바꿀 때 데이터, 검색조건 ui 동기화
+  useEffect(() => {
+    if (params.searchKeyword !== searchKeyword) {
+      setSearchKeyword(params.searchKeyword);
+    }
+    if (!objCompare(params.keyword, keyword)) {
+      setKeyword(getInitialKeywords(params.keyword));
+    }
+    if (params.participants !== participants) {
+      setParticipants(params.participants);
+    }
+    if (params.playTime !== playTime) {
+      setPlayTime(params.playTime);
+    }
+    if (!objCompare(params.place, place)) {
+      setPlace(getInitialPlaces(params.place));
+    }
+    if (!objCompare(params.purpose, purpose)) {
+      setPurpose(getInitialPurpose(params.purpose));
+    }
+    if (!objCompare(params.gender, gender)) {
+      setGender(getInitialGenders(params.gender));
+    }
+
+    if (!objCompare(params.age, age)) {
+      setAge(getInitialAges(params.age));
+    }
+  }, [initialParams.page, initialParams.sortBy]);
+
   // 필터 더보기 메뉴
   const [isMenuOpen, setIsMenuOpen] = useState(filtersOpen);
   const openMenu = () => {
@@ -190,11 +233,8 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
 
   // 필터 적용
   const navigate = useNavigate();
-  publicAPI.defaults.paramsSerializer = (params) => {
-    return qs.stringify(params, { arrayFormat: 'repeat' });
-  };
   const submit = async () => {
-    const params = {
+    const rawParams = {
       searchKeyword: searchKeyword,
       keyword: keyword.map((el) => el.key),
       participants: participants,
@@ -205,12 +245,25 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
       age: age.map((el) => el.key),
     };
 
-    console.log(params);
+    // 값이 비어있는 항목은 params에서 제거
+    const params = Object.entries(rawParams).reduce((acc, [key, value]) => {
+      // 배열이면 길이가 0일 때 제외, 문자열/숫자면 '' 또는 null 제외
+      if (Array.isArray(value) && value.length > 0) {
+        acc[key] = value.sort();
+      } else if (
+        (typeof value === 'number' && value !== null) ||
+        (typeof value === 'string' && value !== '')
+      ) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
 
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
 
     navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
+    resetPage(); // 설정한 옵션 바뀌면 페이지 초기화
   };
 
   const handleSearch = (e) => {

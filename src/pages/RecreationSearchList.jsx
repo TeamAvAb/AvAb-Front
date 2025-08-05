@@ -3,9 +3,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
-
 import { Helmet } from 'react-helmet';
-
 import useLoginStore from '../stores/loginStore';
 import { privateAPI, publicAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -13,47 +11,51 @@ import RecreationCardL from '../components/common/card/recreationCard/Recreation
 import qs from 'qs';
 import SortControl from '../components/common/SortControl';
 import NoData from '../components/common/NoData';
+import { useQuery } from '@tanstack/react-query';
+import cryinAvb from '../assets/character/cryingAvb.png';
 
 export default function RecreationSearchList() {
-  const { isLoggedIn } = useLoginStore((state) => state);
+  // 현재 페이지
+  const [currentPage, setCurrentPage] = useState(0);
+  // 정렬 옵션
+  const [order, setOrder] = useState('LIKE');
+
+  const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const location = useLocation();
+
   const initialParams = useMemo(
     () => qs.parse(location.search, { ignoreQueryPrefix: true, parseArrays: true }),
     [location.search],
   );
 
-  // 데이터 가져오기
-  const [datas, setDatas] = useState([]);
-  // 데이터 불러오는 동안 로딩
-  const [loading, setLoading] = useState(false);
-  // 현재 페이지 상태
-  const [currentPage, setCurrentPage] = useState(0);
-  //전체 페이지 수
-  const [pages, setPages] = useState(1);
-  // 정렬 옵션
-  const [order, setOrder] = useState('LIKE');
+  const params = { ...initialParams, page: currentPage, sortBy: order };
 
-  // 처음 렌더링 시에만 데이터 불러오기
-  useEffect(() => {
+  const getRecreationList = async (isLoggedIn, params) => {
     const requestURL = `/api/recreations`;
-
-    const call = async () => {
-      setLoading(true);
-      try {
-        const api = isLoggedIn ? privateAPI : publicAPI;
-        const params = { ...initialParams, page: currentPage, sortBy: order };
-
-        const response = await api.get(requestURL, { params });
-        setDatas(response.data.result.recreationList);
-        setPages(response.data.result.totalPages);
-
-        setLoading(false);
-      } catch (error) {
-        console.log('레크레이션 로드 요청 에러 : ', error);
+    const api = isLoggedIn ? privateAPI : publicAPI;
+    try {
+      const response = await api.get(requestURL, { params });
+      if (response.status === 200) {
+        return response.data.result;
+      } else {
+        console.log('Error Accrued', response);
       }
-    };
-    call();
-  }, [currentPage, order, isLoggedIn, initialParams]);
+    } catch (error) {
+      console.log('Error Accrued', error);
+    }
+  };
+
+  const resetPage = () => {
+    setCurrentPage(0);
+  };
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['recreationList', isLoggedIn, params],
+    queryFn: () => getRecreationList(isLoggedIn, params),
+    staleTime: 60 * 1000 * 5, // 5분
+    gcTime: 60 * 1000 * 10, // 10분
+  });
+
   return (
     <>
       <Helmet>
@@ -69,29 +71,36 @@ export default function RecreationSearchList() {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen initialParams={initialParams} />
+        <Search filtersOpen initialParams={params} resetPage={resetPage} />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
             <SortControl setOption={setOrder} selectedOption={order} isFlow={false} />
           </ResultHeaderContainer>
-          {loading ? (
+          {isLoading ? (
             <LoadingSpinner height="lg" />
-          ) : datas.length === 0 ? (
+          ) : error ? (
+            <ErroAlert>
+              <AlertImg src={cryinAvb} />
+              <TextContainer>
+                <h2>에러가 발생했습니다!</h2>
+                <p>다시 시도해주세요.</p>
+              </TextContainer>
+            </ErroAlert>
+          ) : data.recreationList.length === 0 ? (
             <NoData variant="search" />
           ) : (
             <>
               <RecreationWrapper>
-                {datas.map((data) => (
-                  <RecreationCardL content={data} key={data.id} />
+                {data.recreationList.map((recreation) => (
+                  <RecreationCardL content={recreation} key={recreation.id} />
                 ))}
               </RecreationWrapper>
-
               <Pagination
                 currentPage={currentPage}
-                pageNum={pages}
+                pageNum={data.totalPages}
                 setCurrentPage={setCurrentPage}
-                scrollLocation={document.querySelector('#move').offsetTop}
+                scrollLocation={document.querySelector('#move')?.offsetTop ?? 0}
               />
             </>
           )}
@@ -136,4 +145,35 @@ const RecreationWrapper = styled.div`
   row-gap: 1.2rem;
   column-gap: 1.8rem;
   margin-bottom: 3rem;
+`;
+
+const ErroAlert = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+`;
+
+const AlertImg = styled.img`
+  width: 12rem;
+`;
+
+const TextContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+
+  h2 {
+    ${({ theme }) => theme.text.h4}
+    line-height: normal;
+  }
+
+  p {
+    ${({ theme }) => theme.text.paragraph}
+    line-height: normal;
+  }
 `;
