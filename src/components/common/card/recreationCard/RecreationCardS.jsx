@@ -38,7 +38,7 @@ export default function RecreationCardS({ content, refetch }) {
           console.log(response.data);
         }
       } catch (error) {
-        throw new Error('FavBtn Error');
+        throw new Error('FavBtn Error', error);
       }
     }
   };

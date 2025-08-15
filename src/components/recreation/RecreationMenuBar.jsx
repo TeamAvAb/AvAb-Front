@@ -34,7 +34,7 @@ export default function RecreationMenuBar({ scrollRefs }) {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollRefs]);
+  }, [scrollRefs, offset]);
 
   const handleButtonClick = (index) => {
     const targetPosition = scrollRefs.current[index].current.offsetTop + offset;

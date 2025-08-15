@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React from 'react';
 import yellowStar from '../../assets/recreation/yellowStar.svg';
 import greyStar from '../../assets/recreation/greyStar.svg';
 import GoodIcon from '../../assets/recreation/good.svg?react';
@@ -11,7 +11,6 @@ import useLoginStore from '../../stores/loginStore';
 import Button from '../common/button/Button';
 
 export default function RecreationReview({ review, refetch }) {
-  const [recommendation, setRecommendation] = useState(review.recommendation);
   const { modalControl } = useLoginModalStore();
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
 
@@ -33,7 +32,7 @@ export default function RecreationReview({ review, refetch }) {
         modalControl();
       }
     } catch (error) {
-      throw new Error('POST Recreation Review Error');
+      throw new Error('POST Recreation Review Error', error);
     }
   };
 

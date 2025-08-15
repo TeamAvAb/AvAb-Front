@@ -138,11 +138,6 @@ const WarnSpace = styled.div`
   gap: 0.5rem;
 `;
 
-const WarnImg = styled.img`
-  width: 1rem;
-  margin-right: 0.5rem;
-`;
-
 const Warn = styled.div`
   color: ${({ theme }) => theme.color.grayscale04};
   ${({ theme }) => theme.text.small};

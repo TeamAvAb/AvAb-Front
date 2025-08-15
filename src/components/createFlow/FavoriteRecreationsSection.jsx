@@ -42,7 +42,7 @@ export default function FavoriteRecreationsSection({
     };
 
     fetchFavoriteRecreations();
-  }, [page]);
+  }, [page, totalPages]);
 
   const incrementPage = () => setPage((prev) => prev + 1);
 
@@ -52,7 +52,7 @@ export default function FavoriteRecreationsSection({
       <Wrapper>
         {initialLoading ? (
           <LoadingSpinner />
-        ) : !!recreations.length ? (
+        ) : recreations.length ? (
           <RecreationCarousel
             recreations={recreations}
             onAddRecreationClick={onAddRecreationClick}
