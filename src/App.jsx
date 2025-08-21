@@ -3,7 +3,11 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  useLocation,
 } from 'react-router-dom';
+import ReactGA from 'react-ga4';
+import React, { useEffect } from 'react';
+
 import Main from './pages/Main';
 import MyPage from './pages/MyPage';
 import MyFavoriteRecreations from './pages/MyFavoriteRecreations';
@@ -19,6 +23,21 @@ import CreateFlow from './pages/CreateFlow';
 import SITE_URL from './constants/url';
 import AppLayout from './components/AppLayout';
 import LoginGuard from './components/LoginGuard';
+
+ReactGA.initialize('G-TCF3T0QJW0');
+
+function GAListener({ children }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: 'pageview',
+      page: location.pathname + location.search,
+    });
+  }, [location]);
+
+  return children;
+}
 
 function App() {
   const routes = (
