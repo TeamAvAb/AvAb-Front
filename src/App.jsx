@@ -24,7 +24,7 @@ import SITE_URL from './constants/url';
 import AppLayout from './components/AppLayout';
 import LoginGuard from './components/LoginGuard';
 
-ReactGA.initialize('G-TCF3T0QJW0');
+ReactGA.initialize('G-4MV0B5TDJS');
 
 function GAListener({ children }) {
   const location = useLocation();
