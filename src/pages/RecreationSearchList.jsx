@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
@@ -8,7 +8,6 @@ import useLoginStore from '../stores/loginStore';
 import { privateAPI, publicAPI } from '../apis/user';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import RecreationCardL from '../components/common/card/recreationCard/RecreationCardL';
-import qs from 'qs';
 import SortControl from '../components/common/SortControl';
 import NoData from '../components/common/NoData';
 import { useQuery } from '@tanstack/react-query';
@@ -16,18 +15,20 @@ import cryinAvb from '../assets/character/cryingAvb.png';
 
 export default function RecreationSearchList() {
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const order = searchParams.get('sortBy') || 'LIKE';
   const currentPage = Number(searchParams.get('page')) || 0;
 
-  const initialParams = useMemo(
-    () => qs.parse(location.search, { ignoreQueryPrefix: true, parseArrays: true }),
-    [location.search],
-  );
+  const params = useMemo(() => {
+    const obj = {};
+    for (const [k, v] of searchParams) {
+      if (k in obj) obj[k] = [].concat(obj[k], v);
+      else obj[k] = v;
+    }
+    return obj;
+  }, [searchParams]);
 
-  const params = { ...initialParams, page: currentPage, sortBy: order };
   const handleChangeOrder = (nextOrder) => {
     const next = new URLSearchParams(searchParams);
     next.set('sortBy', nextOrder);
@@ -77,7 +78,7 @@ export default function RecreationSearchList() {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen initialParams={params} />
+        <Search filtersOpen />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>

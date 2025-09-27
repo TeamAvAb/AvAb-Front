@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import qs from 'qs';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
@@ -27,82 +27,109 @@ import AlertMessage from '../common/AlertMessage';
 import SITE_URL from '../../constants/url';
 import theme from '../../styles/theme';
 
-export default function Search({ filtersOpen = false, initialParams = {} }) {
+const getInitialKeywords = (keywords) => {
+  if (!keywords) {
+    return [];
+  }
+
+  if (Array.isArray(keywords)) {
+    return keywords.map((keyword) => KEYWORD[keyword]).filter((v) => v);
+  }
+
+  return [KEYWORD[keywords]].filter((v) => v);
+};
+
+const getInitialPurpose = (purposes) => {
+  if (!purposes) {
+    return [];
+  }
+
+  if (Array.isArray(purposes)) {
+    return purposes.map((purpose) => PURPOSE[purpose]).filter((v) => v);
+  }
+
+  return [PURPOSE[purposes]].filter((v) => v);
+};
+
+const getInitialPlaces = (places) => {
+  if (!places) {
+    return [];
+  }
+
+  if (Array.isArray(places)) {
+    return places.map((place) => PLACE[place]).filter((v) => v);
+  }
+
+  return [PLACE[places]].filter((v) => v);
+};
+
+const getInitialGenders = (genders) => {
+  if (!genders) {
+    return [];
+  }
+
+  if (Array.isArray(genders)) {
+    return genders.map((gender) => GENDER[gender]).filter((v) => v);
+  }
+
+  return [GENDER[genders]].filter((v) => v);
+};
+
+const getInitialAges = (ages) => {
+  if (!ages) {
+    return [];
+  }
+
+  if (Array.isArray(ages)) {
+    return ages.map((age) => AGE[age]).filter((v) => v);
+  }
+
+  return [AGE[ages]].filter((v) => v);
+};
+
+const participantsLimit = 20;
+const playTimeOptions = [10, 20, 30, 40, 50, 60];
+
+// 쿼리스트링이 바뀔 때마다 state를 동기화하기 위한 비교 함수
+const objCompare = (paramObj, stateObj) => {
+  if (paramObj.length !== stateObj.length) {
+    return false;
+  }
+  paramObj = Object.keys(paramObj).sort();
+  stateObj = Object.keys(stateObj).sort();
+  for (let i = 0; i < paramObj.length; i++) {
+    if (paramObj[i] !== stateObj[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export default function Search({ filtersOpen = false }) {
   const [searchParams] = useSearchParams();
-  const urlSort = searchParams.get('sortBy') ?? 'LIKE';
-
-  const getInitialKeywords = (keywords) => {
-    if (!keywords) {
-      return [];
+  const searhParamsObj = useMemo(() => {
+    const obj = {};
+    for (const [k, v] of searchParams) {
+      if (k in obj) obj[k] = [].concat(obj[k], v);
+      else obj[k] = v;
     }
+    return obj;
+  }, [searchParams]);
 
-    if (Array.isArray(keywords)) {
-      return keywords.map((keyword) => KEYWORD[keyword]).filter((v) => v);
-    }
-
-    return [KEYWORD[keywords]].filter((v) => v);
-  };
-
-  const getInitialPurpose = (purposes) => {
-    if (!purposes) {
-      return [];
-    }
-
-    if (Array.isArray(purposes)) {
-      return purposes.map((purpose) => PURPOSE[purpose]).filter((v) => v);
-    }
-
-    return [PURPOSE[purposes]].filter((v) => v);
-  };
-
-  const getInitialPlaces = (places) => {
-    if (!places) {
-      return [];
-    }
-
-    if (Array.isArray(places)) {
-      return places.map((place) => PLACE[place]).filter((v) => v);
-    }
-
-    return [PLACE[places]].filter((v) => v);
-  };
-
-  const getInitialGenders = (genders) => {
-    if (!genders) {
-      return [];
-    }
-
-    if (Array.isArray(genders)) {
-      return genders.map((gender) => GENDER[gender]).filter((v) => v);
-    }
-
-    return [GENDER[genders]].filter((v) => v);
-  };
-
-  const getInitialAges = (ages) => {
-    if (!ages) {
-      return [];
-    }
-
-    if (Array.isArray(ages)) {
-      return ages.map((age) => AGE[age]).filter((v) => v);
-    }
-
-    return [AGE[ages]].filter((v) => v);
-  };
-
+  // 쿼리스트링으로부터 초기값 추출
   const params = {
-    searchKeyword: initialParams.searchKeyword ?? '',
-    keyword: getInitialKeywords(initialParams.keyword),
-    participants: initialParams.participants ?? '',
-    playTime: initialParams.playTime ?? null,
-    place: getInitialPlaces(initialParams.place),
-    purpose: getInitialPurpose(initialParams.purpose),
-    gender: getInitialGenders(initialParams.gender),
-    age: getInitialAges(initialParams.age),
+    searchKeyword: searhParamsObj.searchKeyword ?? '',
+    keyword: getInitialKeywords(searhParamsObj.keyword),
+    participants: searhParamsObj.participants ?? '',
+    playTime: searhParamsObj.playTime ?? null,
+    place: getInitialPlaces(searhParamsObj.place),
+    purpose: getInitialPurpose(searhParamsObj.purpose),
+    gender: getInitialGenders(searhParamsObj.gender),
+    age: getInitialAges(searhParamsObj.age),
+    sortBy: searhParamsObj.sortBy,
   };
 
-  // 검색어 및 키워드 저장
+  // UI는 state에만 의존 (초기값은 searchParams)
   const [searchKeyword, setSearchKeyword] = useState(params.searchKeyword);
   const [keyword, setKeyword] = useState(params.keyword);
   const [participants, setParticipants] = useState(params.participants);
@@ -113,24 +140,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
   const [age, setAge] = useState(params.age);
   const [participantsAlert, setParticipantsAlert] = useState(false);
 
-  const participantsLimit = 20;
-  const playTimeOptions = [10, 20, 30, 40, 50, 60];
-
-  // 쿼리스트링이 바뀔 때마다 state를 동기화
-  const objCompare = (paramObj, stateObj) => {
-    if (paramObj.length !== stateObj.length) {
-      return false;
-    }
-    paramObj = Object.keys(paramObj).sort();
-    stateObj = Object.keys(stateObj).sort();
-    for (let i = 0; i < paramObj.length; i++) {
-      if (paramObj[i] !== stateObj[i]) {
-        return false;
-      }
-    }
-    return true;
-  };
-  // 검색 결과 페이지, 정렬 바꿀 때 데이터, 검색조건 ui 동기화
+  // 페이지네이션, 정렬 바꿀 때 데이터와 UI 동기화
   useEffect(() => {
     if (params.searchKeyword !== searchKeyword) {
       setSearchKeyword(params.searchKeyword);
@@ -157,7 +167,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
     if (!objCompare(params.age, age)) {
       setAge(getInitialAges(params.age));
     }
-  }, [initialParams.page, initialParams.sortBy]);
+  }, [searhParamsObj.page, searhParamsObj.sortBy]);
 
   // 필터 더보기 메뉴
   const [isMenuOpen, setIsMenuOpen] = useState(filtersOpen);
@@ -234,7 +244,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
     setAge([]);
   };
 
-  // 필터 적용
+  // 필터 적용 함수
   const navigate = useNavigate();
   const submit = async () => {
     const rawParams = {
@@ -247,7 +257,7 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
       gender: gender.map((el) => el.key),
       age: age.map((el) => el.key),
       page: 0,
-      sortBy: urlSort,
+      sortBy: searhParamsObj.sortBy,
     };
 
     // 값이 비어있는 항목은 params에서 제거
@@ -263,14 +273,13 @@ export default function Search({ filtersOpen = false, initialParams = {} }) {
       }
       return acc;
     }, {});
-    console.log('쿼리 스트링', params);
 
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
 
     navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
   };
-
+  // 검색어 입력창에서 enter를 통해서 검색
   const handleSearch = (e) => {
     if (e.key === 'Enter') {
       submit();
