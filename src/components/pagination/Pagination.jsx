@@ -10,7 +10,7 @@ export default function Pagination({ currentPage, pageNum, setCurrentPage, scrol
   }
 
   const movePage = (page) => {
-    scrollLocation && window.scrollTo({ top: scrollLocation, behavior: 'smooth' });
+    window.scrollTo({ top: scrollLocation, behavior: 'smooth' });
     setCurrentPage(page);
   };
 
