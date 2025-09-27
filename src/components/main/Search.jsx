@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { publicAPI } from '../../apis/user';
 import qs from 'qs';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import KeywordModal from './KeywordModal';
@@ -27,7 +27,10 @@ import AlertMessage from '../common/AlertMessage';
 import SITE_URL from '../../constants/url';
 import theme from '../../styles/theme';
 
-export default function Search({ filtersOpen = false, initialParams = {}, resetPage }) {
+export default function Search({ filtersOpen = false, initialParams = {} }) {
+  const [searchParams] = useSearchParams();
+  const urlSort = searchParams.get('sortBy') ?? 'LIKE';
+
   const getInitialKeywords = (keywords) => {
     if (!keywords) {
       return [];
@@ -243,6 +246,8 @@ export default function Search({ filtersOpen = false, initialParams = {}, resetP
       purpose: purpose.map((el) => el.key),
       gender: gender.map((el) => el.key),
       age: age.map((el) => el.key),
+      page: 0,
+      sortBy: urlSort,
     };
 
     // 값이 비어있는 항목은 params에서 제거
@@ -258,12 +263,12 @@ export default function Search({ filtersOpen = false, initialParams = {}, resetP
       }
       return acc;
     }, {});
+    console.log('쿼리 스트링', params);
 
     const param = qs.stringify(params, { arrayFormat: 'repeat' });
 
     navigate(`${SITE_URL.RECREATION_SEARCH_LIST}?${param}`);
     scrollToTop();
-    resetPage(); // 설정한 옵션 바뀌면 페이지 초기화
   };
 
   const handleSearch = (e) => {

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Search from '../components/main/Search';
 import Pagination from '../components/pagination/Pagination';
@@ -15,13 +15,12 @@ import { useQuery } from '@tanstack/react-query';
 import cryinAvb from '../assets/character/cryingAvb.png';
 
 export default function RecreationSearchList() {
-  // 현재 페이지
-  const [currentPage, setCurrentPage] = useState(0);
-  // 정렬 옵션
-  const [order, setOrder] = useState('LIKE');
-
   const isLoggedIn = useLoginStore((state) => state.isLoggedIn);
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const order = searchParams.get('sortBy') || 'LIKE';
+  const currentPage = Number(searchParams.get('page')) || 0;
 
   const initialParams = useMemo(
     () => qs.parse(location.search, { ignoreQueryPrefix: true, parseArrays: true }),
@@ -29,6 +28,17 @@ export default function RecreationSearchList() {
   );
 
   const params = { ...initialParams, page: currentPage, sortBy: order };
+  const handleChangeOrder = (nextOrder) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('sortBy', nextOrder);
+    next.set('page', 0); // 정렬 변경 시 페이지 초기화
+    setSearchParams(next);
+  };
+  const handleChangePage = (nextPage) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('page', String(nextPage));
+    setSearchParams(next);
+  };
 
   const getRecreationList = async (isLoggedIn, params) => {
     const requestURL = `/api/recreations`;
@@ -43,10 +53,6 @@ export default function RecreationSearchList() {
     } catch (error) {
       console.log('Error Accrued', error);
     }
-  };
-
-  const resetPage = () => {
-    setCurrentPage(0);
   };
 
   const { isLoading, data, error } = useQuery({
@@ -71,11 +77,11 @@ export default function RecreationSearchList() {
         />
       </Helmet>
       <Container>
-        <Search filtersOpen initialParams={params} resetPage={resetPage} />
+        <Search filtersOpen initialParams={params} />
         <RecreationsContainer>
           <ResultHeaderContainer>
             <ResultHeader id="move">레크레이션 찾기</ResultHeader>
-            <SortControl setOption={setOrder} selectedOption={order} isFlow={false} />
+            <SortControl setOption={handleChangeOrder} selectedOption={order} isFlow={false} />
           </ResultHeaderContainer>
           {isLoading ? (
             <LoadingSpinner height="lg" />
@@ -99,7 +105,7 @@ export default function RecreationSearchList() {
               <Pagination
                 currentPage={currentPage}
                 pageNum={data.totalPages}
-                setCurrentPage={setCurrentPage}
+                setCurrentPage={handleChangePage}
                 scrollLocation={document.querySelector('#move')?.offsetTop ?? 0}
               />
             </>
