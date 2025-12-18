@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import Search from '../components/main/Search';
 import PopularRecreationCarousel from '../components/main/PopularRecreationCarousel';
 import BannerCarousel from '../components/main/BannerCarousel';
+import Button from '../components/common/button/Button';
 
 import characterImg from '../assets/character/greetingAvb.png';
+import characterMemoImg from '../assets/character/memoAvb.png';
 import plusIconImg from '../assets/common/plusIcon.svg';
 import intro1 from '../assets/intro/intro1.png';
 import intro2 from '../assets/intro/intro2.png';
@@ -23,7 +25,12 @@ import SITE_URL from '../constants/url';
 export default function Main() {
   const navigate = useNavigate();
   const goToSearchList = () => {
-    navigate(SITE_URL.RECREATION_SEARCH_LIST);
+    navigate(SITE_URL.RECREATION_ShEARCH_LIST);
+    scrollToTop();
+  };
+
+  const moveToBuyTemplate = () => {
+    window.location.href = "https://yunso.notion.site/template";
     scrollToTop();
   };
 
@@ -93,6 +100,15 @@ export default function Main() {
             </More>
           </PopularHeader>
           <PopularRecreationCarousel />
+          <TemplateHeader>
+            <TemplateTitle>1분 만에 레크레이션 준비 끝!</TemplateTitle>
+            <ButtonSection>
+              <CharacterImg src={characterMemoImg} />
+              <BuyTemplateBtn onClick={moveToBuyTemplate} backgroundColor="main01" color="main05" size="lg">
+                레크레이션 템플릿 구매하기
+              </BuyTemplateBtn>
+            </ButtonSection>
+          </TemplateHeader>
         </div>
       </Container>
       <BannerCarousel contents={banner} />
@@ -172,6 +188,45 @@ const PopularHeader = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`;
+
+const TemplateHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 2rem;
+`;
+
+const TemplateTitle = styled.div`
+  font-size: 2.5rem;
+  font-weight: 700;
+  align-self: flex-start;
+`;
+
+const ButtonSection = styled.div`
+  width: max-content;
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 2rem;
+`;
+
+const CharacterImg = styled.img`
+  width: 12.4rem;
+  margin-bottom: -1.5rem;
+`;
+
+const BuyTemplateBtn = styled(Button)`
+  padding: 1.6rem 5.7rem;
+  font-size: 3rem;
+  position: relative;
+  left: -1.5rem;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.main02};
+  }
 `;
 
 const HeaderTitle = styled.span`
