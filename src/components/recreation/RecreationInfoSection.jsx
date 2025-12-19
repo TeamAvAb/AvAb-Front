@@ -7,7 +7,6 @@ import PLACE from '../../constants/enum/place';
 import GENDER from '../../constants/enum/gender';
 import AGE from '../../constants/enum/age';
 import PURPOSE from '../../constants/enum/purpose';
-import theme from '@/styles/theme';
 
 const RecreationInfoSection = forwardRef(({ recreationData }, ref) => {
   const getPlaceText = () => recreationData.placeList.map((place) => PLACE[place].value).join(', ');

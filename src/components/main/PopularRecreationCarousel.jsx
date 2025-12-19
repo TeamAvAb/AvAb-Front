@@ -65,7 +65,7 @@ export default function PopularRecreationCarousel() {
       }
     };
     call();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <div

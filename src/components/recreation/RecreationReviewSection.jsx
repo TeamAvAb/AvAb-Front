@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import ReviewStars from './ReviewStars';
 import RecreationReview from './RecreationReview';
 import { privateAPI, publicAPI } from '@/apis/user.js';
@@ -30,7 +30,7 @@ const RecreationReviewSection = forwardRef(({ recreationId, handleModal }, ref) 
   };
 
   // 리뷰 목록 받아오기
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const api = isLoggedIn ? privateAPI : publicAPI;
       const response = await api.get(
@@ -39,13 +39,13 @@ const RecreationReviewSection = forwardRef(({ recreationId, handleModal }, ref) 
       setReviewListData(response.data.result.reviewList);
       setReviewData(response.data.result);
     } catch (error) {
-      throw new Error('GET Recreation Reviews Error');
+      throw new Error('GET Recreation Reviews Error', error);
     }
-  };
+  }, [isLoggedIn, currentPage, recreationId]);
 
   useEffect(() => {
     fetchReviews();
-  }, [currentPage, recreationId]);
+  }, [fetchReviews]);
 
   // 리뷰 작성
   const handleReviewSubmit = async () => {
@@ -76,14 +76,19 @@ const RecreationReviewSection = forwardRef(({ recreationId, handleModal }, ref) 
         stars: selectedStars,
         content: reviewInput,
       });
-
-      // 리뷰 목록 업데이트
-      fetchReviews();
-      handleModal(true);
-      setSelectedStars(0);
-      setReviewInput('');
+      console.log(response);
+      if (response.status === 201) {
+        // 리뷰 목록 업데이트
+        fetchReviews();
+        handleModal(true);
+        setSelectedStars(0);
+        setReviewInput('');
+      } else {
+        console.log('리뷰 등록 실패:', response.data);
+        alert('리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+      }
     } catch (error) {
-      alert('리뷰 등록에 실패했습니다');
+      alert('리뷰 등록에 실패했습니다', error);
     }
   };
 

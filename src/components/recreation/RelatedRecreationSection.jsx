@@ -20,7 +20,7 @@ const RelatedRecreationSection = forwardRef(({ recreationId }, ref) => {
     };
 
     fetchRelated();
-  }, [recreationId]);
+  }, [isLoggedIn, recreationId]);
 
   return (
     <RelatedRecreationContainer ref={ref}>

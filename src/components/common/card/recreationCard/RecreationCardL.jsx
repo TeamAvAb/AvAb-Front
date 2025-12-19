@@ -47,7 +47,7 @@ export default function RecreationCardL({ content }) {
           console.log(response.data);
         }
       } catch (error) {
-        throw new Error('FavBtn Error');
+        throw new Error('FavBtn Error', error);
       }
     }
   };

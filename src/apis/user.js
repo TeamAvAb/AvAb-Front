@@ -1,6 +1,7 @@
 import axios from 'axios';
 import useLoginStore from '../stores/loginStore';
 import qs from 'qs';
+import useErrorStore from '@/stores/errorStore';
 
 axios.defaults.paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'comma' });
 
@@ -8,6 +9,26 @@ axios.defaults.paramsSerializer = (params) => qs.stringify(params, { arrayFormat
 export const publicAPI = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
+
+publicAPI.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      const errorType = { statusCode: error.response.status };
+      useErrorStore.getState().setError(errorType);
+    } else if (error.message === 'Network Error' || error.message === 'Network Error') {
+      console.log('네트워크 에러 발생');
+      const errorType = { statusCode: error.message };
+      useErrorStore.getState().setError(errorType);
+    } else {
+      const errorType = { statusCode: 'Unknown Error' };
+      useErrorStore.getState().setError(errorType);
+    }
+    return Promise.reject(error);
+  },
+);
 
 //인증이 필요한 요청
 export const privateAPI = axios.create({
@@ -89,21 +110,31 @@ privateAPI.interceptors.response.use(
             originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
             console.log('원래 요청 : ', originRequest);
             return axios(originRequest);
-            //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
           } else if (response.data.status === 401) {
+            //리프레시 토큰 요청이 실패할때(리프레시 토큰도 만료되었을때 = 재로그인 안내)
             loginStorage.clear();
-            alert('세션이 만료되었습니다. 재로그인 해주세요.');
+            const errorType = { statusCode: 401 };
+            useErrorStore.getState().setError(errorType);
           } else {
             console.log('인터셉터 내부 기타 에러 : ', error);
-            alert('에러가 발생했습니다. 관리자에게 문의해주세요!');
+            const errorType = { statusCode: 'Unknown Error' };
+            useErrorStore.getState().setError(errorType);
           }
         } else {
           // 리프레시 토큰이 없는 경우 = 로그인 안내
-          console.log(error);
-          alert('로그인이 필요한 서비스입니다.');
-          return 'need login';
+          const errorType = { statusCode: 401 };
+          useErrorStore.getState().setError(errorType);
         }
+      } else {
+        const errorType = { statusCode: 'Unknown Error' };
+        useErrorStore.getState().setError(errorType);
       }
+    } else if (error.message === 'Network Error' || error.message === 'Network Error') {
+      const errorType = { statusCode: error.message };
+      useErrorStore.getState().setError(errorType);
+    } else {
+      const errorType = { statusCode: 'Unknown Error' };
+      useErrorStore.getState().setError(errorType);
     }
     return Promise.reject(error);
   },

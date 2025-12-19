@@ -88,7 +88,7 @@ export default function CustomRecreationItem({ index, register, removeRecreation
         </ErrorWrapper>
         <KeywordBox
           onClick={handleKeywordBoxClick}
-          data-tooltip-id={!!keywords.length ? KEYWORD_TOOLTIP_ID : ''}
+          data-tooltip-id={keywords.length ? KEYWORD_TOOLTIP_ID : ''}
         >
           {!keywords.length ? (
             <span>이곳을 클릭하여 3개의 키워드를 선택해주세요.</span>
